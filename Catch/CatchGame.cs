@@ -160,7 +160,8 @@ namespace Catch
                     break;
 
                 var block = new Block();
-                block.Position = new Vector2(0, _rng.Next((int)Size.Height - Block.Size));
+                var y = _rng.Next((int) Size.Height/Block.Size) * Block.Size;
+                block.Position = new Vector2(0, y);
                 block.Velocity = new Vector2(_rng.Next(1, 6), 0);
                 block.Acceleration = new Vector2(0, 0);
 
