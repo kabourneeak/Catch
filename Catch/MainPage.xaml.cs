@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Catch.Models;
 using Microsoft.Graphics.Canvas;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Catch
 {
@@ -25,7 +21,8 @@ namespace Catch
         {
             InitializeComponent();
 
-            _game = new CatchGame(SynchronizationContext.Current, GameStateHandler);
+            _game = new CatchGame();
+            _game.GameStateChanged += GameStateHandler;
         }
 
         private void cvs_CreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
@@ -53,12 +50,13 @@ namespace Catch
             }
         }
 
-        private void GameStateHandler(GameState state)
+        private void GameStateHandler(object sender, GameStateChangedEventArgs e)
         {
-            switch (state)
+            switch (e.State)
             {
                 case GameState.Init:
-                    _game.Initialize(new Rect(0, 0, cvs.ActualWidth, cvs.ActualHeight));
+                    var rect = new Rect(0, 0, cvs.ActualWidth, cvs.ActualHeight);
+                    _game.Initialize(rect);
                     break;
                 default:
                     throw new ArgumentException("Unhandled game state");

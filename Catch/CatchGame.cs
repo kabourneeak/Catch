@@ -14,6 +14,10 @@ namespace Catch
         Init, Title, Playing
     }
 
+    public class GameStateChangedEventArgs : EventArgs
+    {
+        public GameState State;
+    }
 
     /// <summary>
     /// Model Controller for game state
@@ -30,10 +34,8 @@ namespace Catch
         //
         // Game config
         //
-        private SynchronizationContext _ownerContext;
-        private GameStateChangedHandler _ownerHandler;
         public Rect Size { get; private set; }
-        private Random _rng = new Random();
+        private readonly Random _rng = new Random();
 
         //
         // Game State
@@ -44,22 +46,26 @@ namespace Catch
         private List<Block> _blocks;
 
 
-        public delegate void GameStateChangedHandler(GameState state);
+        //
+        // event handling
+        //
+        public delegate void GameStateChangedHandler(object sender, GameStateChangedEventArgs e);
+        public event GameStateChangedHandler GameStateChanged;
 
         protected virtual void RaiseGameStateChanged()
         {
-            _ownerContext.Post(delegate(object state)
-            {
-                // _ownerHandler((GameState)state);
-                Debug.WriteLine("yo");
-            }, State);
+            if (GameStateChanged != null)
+            { 
+                GameStateChanged(this, new GameStateChangedEventArgs {State = this.State});
+            }
         }
 
-        public CatchGame(SynchronizationContext ownerContext, GameStateChangedHandler ownerHandler)
-        {
-            _ownerContext = ownerContext;
-            _ownerHandler = ownerHandler;
 
+        //
+        // construction
+        //
+        public CatchGame()
+        {
             State = GameState.Init;
             _blocks = new List<Block>();
         }
