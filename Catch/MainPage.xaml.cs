@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Catch.Models;
@@ -38,39 +39,83 @@ namespace Catch
         private void cvs_Draw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
             _game.Draw(args.DrawingSession);
-
-            if (points.Count == 2)
-            {
-
-                var dist = Math.Sqrt(((points[0].X - points[1].X) * (points[0].X - points[1].X)) + ((points[0].Y - points[1].Y) * (points[0].Y - points[1].Y)));
-                txtLen.Text = String.Format("{0:0.00}", dist);
-
-                args.DrawingSession.DrawLine(points[0].X, points[0].Y, points[1].X, points[1].Y, Colors.Red);
-
-            }
         }
 
         private void GameStateHandler(object sender, GameStateChangedEventArgs e)
         {
+            
+            if (!Dispatcher.HasThreadAccess)
+            {
+                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, delegate { GameStateHandler(sender, e); }).Forget();
+                return;
+            }
+
+            // actual method body here
+
             switch (e.State)
             {
                 case GameState.Init:
                     var rect = new Rect(0, 0, cvs.ActualWidth, cvs.ActualHeight);
                     _game.Initialize(rect);
                     break;
+                case GameState.Title:
+                    _game.StartGame();
+                    break;
+                case GameState.Playing:
+                    break;
                 default:
                     throw new ArgumentException("Unhandled game state");
             }
         }
 
-        private void displayLog(String msg)
+        private void DisplayLog(String msg)
         {
+            if (!Dispatcher.HasThreadAccess)
+            {
+                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, delegate { DisplayLog(msg); }).Forget();
+                return;
+            }
+
             txtLog.Text += ("\n" + msg);
 
             scrlLog.ChangeView(0.0, scrlLog.ScrollableHeight, 1.0f);
         }
 
+        private void Canvas_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+        {
+            //
+            // update layout
+            //
+
+            // animated area
+            cvs.Height = e.NewSize.Height;
+            cvs.Width = e.NewSize.Width;
+
+            // log
+            Canvas.SetLeft(scrlLog, layout.ActualWidth - scrlLog.ActualWidth);
+        }
+
+
+        private void cvs_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+        {
+            var cvsSize = cvs.Size;
+
+            _game.Resize(new Rect(0, 0, cvsSize.Width, cvsSize.Height));
+        }
+
         List<PointerData> points = new List<PointerData>(2);
+
+        private void DrawLine(CanvasDrawingSession drawingSession)
+        {
+            if (points.Count == 2)
+            {
+
+                var dist = Math.Sqrt(((points[0].X - points[1].X) * (points[0].X - points[1].X)) + ((points[0].Y - points[1].Y) * (points[0].Y - points[1].Y)));
+                txtLen.Text = String.Format("{0:0.00}", dist);
+
+                drawingSession.DrawLine(points[0].X, points[0].Y, points[1].X, points[1].Y, Colors.Red);
+            }
+        }
 
         private void cvs_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
@@ -78,7 +123,7 @@ namespace Catch
 
             if (e.Pointer.PointerDeviceType == PointerDeviceType.Touch)
             {
-                displayLog(String.Format("[PointerPressed] id:{0}", p));
+                DisplayLog(String.Format("[PointerPressed] id:{0}", p));
 
                 if (points.Count < 2)
                 {
@@ -87,7 +132,7 @@ namespace Catch
                 }
                 else
                 {
-                    displayLog("Extra touch ignored");
+                    DisplayLog("Extra touch ignored");
                 }
             }
         }
@@ -111,16 +156,15 @@ namespace Catch
 
             if (p.PointerDeviceType == PointerDeviceType.Touch)
             {
-                displayLog(String.Format("[PointerReleased] id:{0}", p.PointerId));
+                DisplayLog(String.Format("[PointerReleased] id:{0}", p.PointerId));
 
                 var pid = e.Pointer.PointerId;
                 var removed = points.RemoveAll((PointerData pd) => {return pd.PointerId == pid;});
 
                 if (removed == 0)
                 {
-                    displayLog("Unknown touch released");
+                    DisplayLog("Unknown touch released");
                 }
-
             }
         }
 
@@ -163,7 +207,6 @@ namespace Catch
         {
             e.Handled = false;
         }
-
 
     }
 }

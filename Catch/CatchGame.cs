@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Numerics;
-using System.Threading;
 using Windows.Foundation;
 using Catch.Models;
 using Microsoft.Graphics.Canvas;
@@ -60,6 +58,11 @@ namespace Catch
             }
         }
 
+        private void ChangeGameState(GameState newState)
+        {
+            State = newState;
+            RaiseGameStateChanged();
+        }
 
         //
         // construction
@@ -77,10 +80,9 @@ namespace Catch
             ChangeGameState(GameState.Title);
         }
 
-        private void ChangeGameState(GameState newState)
+        public void Resize(Rect size)
         {
-            State = newState;
-            RaiseGameStateChanged();
+            Size = size;
         }
 
         public void StartGame()
@@ -92,6 +94,8 @@ namespace Catch
             Lives = StartLives;
 
             _blocks = new List<Block>();
+
+            ChangeGameState(GameState.Playing);
         }
 
         public void Draw(CanvasDrawingSession drawingSession)
@@ -156,7 +160,7 @@ namespace Catch
                     break;
 
                 var block = new Block();
-                block.Position = new Vector2(0, _rng.Next((int)Size.Height));
+                block.Position = new Vector2(0, _rng.Next((int)Size.Height - Block.Size));
                 block.Velocity = new Vector2(_rng.Next(1, 6), 0);
                 block.Acceleration = new Vector2(0, 0);
 

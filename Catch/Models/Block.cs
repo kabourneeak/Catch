@@ -11,7 +11,8 @@ namespace Catch.Models
         public Vector2 Velocity { get; set; }
         public Vector2 Acceleration { get; set; }
 
-        private const int Size = 20;
+        private const int _blockSize = 20;
+        public static int Size { get { return _blockSize; } } 
 
         public void Draw(CanvasDrawingSession drawingSession)
         {
