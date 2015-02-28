@@ -1,7 +1,7 @@
-﻿using System.Numerics;
+﻿using Microsoft.Graphics.Canvas;
+using System.Numerics;
 using Windows.Foundation;
 using Windows.UI;
-using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
