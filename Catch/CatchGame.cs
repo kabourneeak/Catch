@@ -126,8 +126,10 @@ namespace Catch
 
         private void UpdateInit()
         {
-            // wait for someone to call a method that will move us out of the Init state.
-            RaiseGameStateChanged();
+            // nothing to update
+
+            // raise GameState event so that someone calls our Initialize method.
+            ChangeGameState(GameState.Init);
         }
 
         private void UpdateTitle()
