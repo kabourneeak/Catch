@@ -1,11 +1,12 @@
-﻿using Microsoft.Graphics.Canvas;
-using System.Numerics;
+﻿using System.Numerics;
 using Windows.Foundation;
 using Windows.UI;
+using Catch.Models;
+using Microsoft.Graphics.Canvas;
 
-namespace Catch.Models
+namespace Catch.Drawable
 {
-    public class Block : IMovable
+    public class Block : IMovable, IUpdatable, IDrawable
     {
         public Vector2 Position { get; set; }
         public Vector2 Velocity { get; set; }
@@ -19,10 +20,25 @@ namespace Catch.Models
             drawingSession.FillRectangle(new Rect(Position.X, Position.Y, Size, Size), Colors.Red);
         }
 
-        public void Update()
+        public void Update(int ticks)
         {
             Velocity = Vector2.Add(Velocity, Acceleration);
             Position = Vector2.Add(Position, Velocity);
+        }
+
+        public IPath Path
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        public IHexTile Tile
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        public float TileProgress
+        {
+            get { throw new System.NotImplementedException(); }
         }
     }
 }

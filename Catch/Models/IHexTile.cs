@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
-    public interface IDrawable
+    public interface IHexTile
     {
-        void Draw(CanvasDrawingSession drawingSession);
+        int Row { get; }
+        int Column { get; }
 
-        void Update();
+        ITower GetTower();
     }
 }

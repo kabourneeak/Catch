@@ -6,6 +6,7 @@ using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Catch.Drawable;
 using Catch.Models;
 using Microsoft.Graphics.Canvas;
 

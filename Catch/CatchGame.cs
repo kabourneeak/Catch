@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Windows.Foundation;
-using Catch.Models;
+using Windows.UI;
+using Catch.Base;
+using Catch.Drawable;
 using Microsoft.Graphics.Canvas;
 
 namespace Catch
@@ -42,7 +44,9 @@ namespace Catch
         public int Score { get; private set; }
         public int Lives { get; private set; }
         private List<Block> _blocks;
-
+        private Map _map;
+        private List<IDrawable> _drawables;
+        private Win2DProvider _provider;
 
         //
         // event handling
@@ -70,12 +74,12 @@ namespace Catch
         public CatchGame()
         {
             State = GameState.Init;
-            _blocks = new List<Block>();
         }
 
         public void Initialize(Rect size)
         {
             Size = size;
+            _provider = new Win2DProvider();
 
             ChangeGameState(GameState.Title);
         }
@@ -94,15 +98,26 @@ namespace Catch
             Lives = StartLives;
 
             _blocks = new List<Block>();
+            _map = new Map(_provider);
+
+            _drawables = new List<IDrawable>();
+
+            CreateMap();
 
             ChangeGameState(GameState.Playing);
         }
 
         public void Draw(CanvasDrawingSession drawingSession)
         {
-            foreach (var drawable in _blocks)
+            Vector2 mapSize = _map.SizeInPixels;
+
+            drawingSession.Transform = Matrix3x2.CreateTranslation((float) ((Size.Width - mapSize.X) / 2), (float) ((Size.Height - mapSize.Y) / 2));
+
+            _map.Draw(drawingSession);
+
+            foreach (var drawable in _drawables)
             {
-                drawable.Draw(drawingSession);
+                // drawable.Draw(drawingSession);
             }
         }
 
@@ -145,8 +160,16 @@ namespace Catch
             SpawnBlocks();
 
             foreach (var block in _blocks)
-                block.Update();
+                block.Update(1);
 
+            _drawables.Clear();
+            _drawables.AddRange(_blocks);
+
+        }
+
+        private void CreateMap()
+        {
+            _map.Initialize(10, 19);
         }
 
         private void DestroyBlocks()
