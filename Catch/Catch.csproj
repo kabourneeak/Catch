@@ -115,7 +115,10 @@
     <Compile Include="CanvasExtensions.cs" />
     <Compile Include="CanvasUtils.cs" />
     <Compile Include="CatchGame.cs" />
+    <Compile Include="Drawable\CompiledConfig.cs" />
+    <Compile Include="Drawable\IConfig.cs" />
     <Compile Include="Drawable\Map.cs" />
+    <Compile Include="Drawable\EmptyConfig.cs" />
     <Compile Include="Drawable\Win2dProvider.cs" />
     <Compile Include="EnumUtils.cs" />
     <Compile Include="MainPage.xaml.cs">
