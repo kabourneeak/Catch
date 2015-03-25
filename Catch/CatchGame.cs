@@ -46,6 +46,7 @@ namespace Catch
         private List<Block> _blocks;
         private Map _map;
         private List<IDrawable> _drawables;
+        private IConfig _config = new CompiledConfig();
         private Win2DProvider _provider;
 
         //
@@ -98,7 +99,7 @@ namespace Catch
             Lives = StartLives;
 
             _blocks = new List<Block>();
-            _map = new Map(_provider);
+            _map = new Map(_config, _provider);
 
             _drawables = new List<IDrawable>();
 

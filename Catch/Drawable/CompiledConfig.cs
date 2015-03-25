@@ -11,6 +11,11 @@ namespace Catch.Drawable
         private readonly IConfig _parentConfig;
         private readonly Dictionary<string, object> _entries = new Dictionary<string, object>();
 
+        public CompiledConfig() : this(null)
+        {
+
+        }
+
         public CompiledConfig(IConfig parentConfig)
         {
             _parentConfig = (_parentConfig == null) ? new EmptyConfig() : parentConfig;
@@ -25,119 +30,93 @@ namespace Catch.Drawable
              * a config entry is the type that ultimately gets stored.
              */
 
-            AddInt(typeof(Hexagon), Hexagon.ConfigKeys.Radius, 60);
+            AddInt(Hexagon.ConfigKeys.Radius, 60);
         }
 
-        public int GetInt(string category, string name)
+        public int GetInt(string key)
         {
-            var key = Join(category, name);
-            return HasOwnKey(key) ? (int) _entries[key] : _parentConfig.GetInt(category, name);
+            return HasOwnKey(key) ? (int)_entries[key] : _parentConfig.GetInt(key);
         }
 
-        public int GetInt(string category, string name, int def)
+        public int GetInt(string key, int def)
         {
-            var key = Join(category, name);
-            return HasOwnKey(key) ? (int)_entries[key] : _parentConfig.GetInt(category, name, def);
+            return HasOwnKey(key) ? (int)_entries[key] : _parentConfig.GetInt(key, def);
         }
 
-        public string GetString(string category, string name)
+        public string GetString(string key)
         {
-            var key = Join(category, name);
-            return HasOwnKey(key) ? (string)_entries[key] : _parentConfig.GetString(category, name);
+            return HasOwnKey(key) ? (string)_entries[key] : _parentConfig.GetString(key);
         }
 
-        public string GetString(string category, string name, string def)
+        public string GetString(string key, string def)
         {
-            var key = Join(category, name);
-            return HasOwnKey(key) ? (string)_entries[key] : _parentConfig.GetString(category, name, def);
+            return HasOwnKey(key) ? (string)_entries[key] : _parentConfig.GetString(key, def);
         }
 
-        public float GetFloat(string category, string name)
+        public float GetFloat(string key)
         {
-            var key = Join(category, name);
-            return HasOwnKey(key) ? (float)_entries[key] : _parentConfig.GetFloat(category, name);
+            return HasOwnKey(key) ? (float)_entries[key] : _parentConfig.GetFloat(key);
         }
 
-        public float GetFloat(string category, string name, float def)
+        public float GetFloat(string key, float def)
         {
-            var key = Join(category, name);
-            return HasOwnKey(key) ? (float)_entries[key] : _parentConfig.GetFloat(category, name, def);
+            return HasOwnKey(key) ? (float)_entries[key] : _parentConfig.GetFloat(key, def);
         }
 
-        public double GetDouble(string category, string name)
+        public double GetDouble(string key)
         {
-            var key = Join(category, name);
-            return HasOwnKey(key) ? (double)_entries[key] : _parentConfig.GetDouble(category, name);
+            return HasOwnKey(key) ? (double)_entries[key] : _parentConfig.GetDouble(key);
         }
 
-        public double GetDouble(string category, string name, double def)
+        public double GetDouble(string key, double def)
         {
-            var key = Join(category, name);
-            return HasOwnKey(key) ? (double)_entries[key] : _parentConfig.GetDouble(category, name, def);
+            return HasOwnKey(key) ? (double)_entries[key] : _parentConfig.GetDouble(key, def);
         }
 
-        public bool GetBool(string category, string name)
+        public bool GetBool(string key)
         {
-            var key = Join(category, name);
-            return HasOwnKey(key) ? (bool)_entries[key] : _parentConfig.GetBool(category, name);
+            return HasOwnKey(key) ? (bool)_entries[key] : _parentConfig.GetBool(key);
         }
 
-        public bool GetBool(string category, string name, bool def)
+        public bool GetBool(string key, bool def)
         {
-            var key = Join(category, name);
-            return HasOwnKey(key) ? (bool)_entries[key] : _parentConfig.GetBool(category, name, def);
+            return HasOwnKey(key) ? (bool)_entries[key] : _parentConfig.GetBool(key, def);
         }
 
-        public bool HasKey(string category, string name)
+        public bool HasKey(string key)
         {
             // relies on short-circut eval of || for efficiency
-            return HasOwnKey(category, name) || _parentConfig.HasKey(category, name);
+            return HasOwnKey(key) || _parentConfig.HasKey(key);
         }
 
-        private string Join(string category, string name)
+        private bool HasOwnKey(string key)
         {
-            return string.Format("{0}.{1}", category, name);
+            return _entries.ContainsKey(key);
         }
 
-        private string Join(Type type, string name)
+        private void AddInt(string key, int val)
         {
-            return Join(type.FullName, name);
+            _entries.Add(key, val);
         }
 
-        private bool HasOwnKey(string category, string name)
+        private void AddString(string key, string val)
         {
-            return HasOwnKey(Join(category, name));
+            _entries.Add(key, val);
         }
 
-        private bool HasOwnKey(string joinedKey)
+        private void AddFloat(string key, float val)
         {
-            return _entries.ContainsKey(joinedKey);
+            _entries.Add(key, val);
         }
 
-        private void AddInt(Type type, string name, int val)
+        private void AddDouble(string key, double val)
         {
-            _entries.Add(Join(type, name), val);
+            _entries.Add(key, val);
         }
 
-        private void AddString(Type type, string name, string val)
+        private void AddBool(string key, bool val)
         {
-            _entries.Add(Join(type, name), val);
+            _entries.Add(key, val);
         }
-
-        private void AddFloat(Type type, string name, float val)
-        {
-            _entries.Add(Join(type, name), val);
-        }
-
-        private void AddDouble(Type type, string name, double val)
-        {
-            _entries.Add(Join(type, name), val);
-        }
-
-        private void AddBool(Type type, string name, bool val)
-        {
-            _entries.Add(Join(type, name), val);
-        }
-
     }
 }
