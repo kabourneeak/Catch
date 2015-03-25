@@ -11,14 +11,16 @@ namespace Catch.Base
     /// navigating the hexagonal grid coordinate system are found here, and
     /// may be useful to derived classes.
     /// </summary>
-    public abstract class BasicMap : IMap
+    public class BasicMap : IMap
     {
+        private readonly IHexTileProvider _tileProvider;
+
         protected List<IHexTile> Tiles;
-        protected abstract IHexTileProvider TileProvider { get; set; }
         protected Dictionary<string, IPath> Paths;
 
-        protected BasicMap()
+        protected BasicMap(IHexTileProvider tileProvider)
         {
+            _tileProvider = tileProvider;
         }
 
         public void Initialize(int rows, int columns)
@@ -37,7 +39,7 @@ namespace Catch.Base
                 // the odd nummbered columns have one fewer row
                 for (var row = 0; row < rows - (col % 2); ++row)
                 {
-                    var tile = TileProvider.CreateTile(row, col);
+                    var tile = _tileProvider.CreateTile(row, col);
                     Tiles.Add(tile);
                 }
             }

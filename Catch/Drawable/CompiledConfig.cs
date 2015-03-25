@@ -30,7 +30,7 @@ namespace Catch.Drawable
              * a config entry is the type that ultimately gets stored.
              */
 
-            AddInt(Hexagon.ConfigKeys.Radius, 60);
+            AddFloat(Map.ConfigKeys.TileRadius, 60.0f);
         }
 
         public int GetInt(string key)

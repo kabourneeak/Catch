@@ -16,12 +16,9 @@ namespace CatchTests
 
     public class BasicMapAdapter : BasicMap
     {
-        private readonly IHexTileProvider _tileProvider = new BasicTileProvider();
-
-        protected override IHexTileProvider TileProvider
+        public BasicMapAdapter() : base(new BasicTileProvider())
         {
-            get { return _tileProvider; }
-            set { throw new NotImplementedException(); }
+            
         }
 
         public List<IHexTile> GetTiles()

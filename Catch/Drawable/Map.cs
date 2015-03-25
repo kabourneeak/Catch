@@ -7,11 +7,16 @@ namespace Catch.Drawable
 {
     public class Map : BasicMap, IDrawable
     {
-        protected override sealed IHexTileProvider TileProvider { get; set; }
-
-        public Map(IHexTileProvider provider)
+        public class ConfigKeys
         {
-            TileProvider = provider;
+            public static readonly string TileRadius = typeof(Hexagon).FullName + "TileRadius";
+        }
+
+        private readonly float _tileRadius;
+
+        public Map(IConfig config, IHexTileProvider tileProvider) : base(tileProvider)
+        {
+            _tileRadius = config.GetFloat(Map.ConfigKeys.TileRadius);
         }
 
         public void Draw(CanvasDrawingSession drawingSession)
@@ -20,7 +25,6 @@ namespace Catch.Drawable
                 ((IDrawable)tile).Draw(drawingSession);
         }
 
-        // TODO where should we store the radius?  we can't put "60" everywhere!
-        public Vector2 SizeInPixels { get { return new Vector2((float)(Columns * 60 * 1.5 + 30), (float)(Rows * 2 * 60 * Hexagon.SIN60)); } }
+        public Vector2 SizeInPixels { get { return new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), (float)(Rows * 2 * Hexagon.GetRadiusHeight(_tileRadius))); } }
     }
 }

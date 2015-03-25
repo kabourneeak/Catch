@@ -1,6 +1,4 @@
-﻿using System;
-using System.Numerics;
-using Windows.Foundation;
+﻿using System.Numerics;
 using Windows.UI;
 using Catch.Base;
 using Catch.Models;
@@ -10,28 +8,27 @@ namespace Catch.Drawable
 {
     public class Hexagon : BasicHexTile, IHexTile, IDrawable
     {
+        private readonly float _radius;
+        private readonly float _radiusH;
+
         public class ConfigKeys
         {
-            public static readonly string Radius = typeof(Hexagon).FullName + "Radius";
         }
 
         public Vector2 CenterPoint { get; set; }
         public Color Colour { get; set; }
-        public int Radius { get; set; }
+        public float Radius { get { return _radius;} }
 
         public const float SIN60 = 0.8660254f;
         public const float COS60 = 0.5f;
 
-        public Hexagon(int row, int col) : base(row, col)
+        public Hexagon(int row, int col, float radius) : base(row, col)
         {
-            Radius = 60;
-            var radiusH = (float)(Radius * Hexagon.SIN60);
+            _radius = radius;
+            _radiusH = GetRadiusHeight(_radius);
 
-            //var x = (float)((col * Radius * 3) + Radius + (row % 2 * Radius * 1.5));
-            //var y = (float)((row * radiusH) + radiusH);
-
-            var x = (float) (Radius + (col * (Radius + Radius * COS60)));
-            var y = (float) ((col % 2 * radiusH) + (row * 2 * radiusH) + radiusH);
+            var x = _radius + (col * (_radius + _radius * COS60));
+            var y = (col % 2 * _radiusH) + (row * 2 * _radiusH) + _radiusH;
 
             CenterPoint = new Vector2(x, y);
 
@@ -41,18 +38,24 @@ namespace Catch.Drawable
         public void Draw(CanvasDrawingSession ds)
         {
             // TODO cache this between multiple instances
+
             var pb = new CanvasPathBuilder(ds);
-            pb.BeginFigure(-1 * Radius * COS60, Radius * SIN60);
-            pb.AddLine(Radius * COS60, Radius * SIN60);
-            pb.AddLine(Radius, 0);
-            pb.AddLine(Radius * COS60, -1 * Radius * SIN60);
-            pb.AddLine(-1 * Radius * COS60, -1 * Radius * SIN60);
-            pb.AddLine(-1 * Radius, 0);
+            pb.BeginFigure(-1 * _radius * COS60, _radiusH);
+            pb.AddLine(_radius * COS60, _radiusH);
+            pb.AddLine(_radius, 0);
+            pb.AddLine(_radius * COS60, -1 * _radiusH);
+            pb.AddLine(-1 * _radius * COS60, -1 * _radiusH);
+            pb.AddLine(-1 * _radius, 0);
             pb.EndFigure(CanvasFigureLoop.Closed);
 
             var geo = CanvasGeometry.CreatePath(pb);
 
-            ds.DrawGeometry(geo, (float) CenterPoint.X, (float) CenterPoint.Y, Colour, 4);
+            ds.DrawGeometry(geo, CenterPoint.X, CenterPoint.Y, Colour, 4);
+        }
+
+        public static float GetRadiusHeight(float radius)
+        {
+            return radius * SIN60;
         }
     }
 }
