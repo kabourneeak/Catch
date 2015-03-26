@@ -2,14 +2,14 @@
 
 namespace Catch.Base
 {
-    class BasicMob : IMovable
+    public class BasicMob : IMovable
     {
         public float TileProgress { get; protected set; }
         public IPath Path { get; protected set; }
         public IHexTile Tile { get; protected set; }
 
-        protected float Velocity { get; set; }
-        protected int PathIndex { get; set; }
+        public float Velocity { get; set; }
+        public int PathIndex { get; set; }
 
         public BasicMob(IPath path)
         {

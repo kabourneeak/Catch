@@ -28,6 +28,7 @@ namespace Catch.Services
              */
 
             AddFloat(Map.ConfigKeys.TileRadius, 60.0f);
+            AddInt(Block.ConfigKeys.BlockSize, 10);
         }
 
         public int GetInt(string key)

@@ -35,7 +35,8 @@ namespace Catch
 
         private void cvs_Update(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
         {
-            _game.Update();
+            // TODO make the number of ticks depend on wall time elapsed, maybe some other gamespeed setting?
+            _game.Update(1);
         }
 
         private void cvs_Draw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)

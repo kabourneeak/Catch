@@ -9,7 +9,7 @@ namespace Catch.Drawable
     {
         public class ConfigKeys
         {
-            public static readonly string TileRadius = typeof(Hexagon).FullName + "TileRadius";
+            public static readonly string TileRadius = typeof(Hexagon).FullName + ".TileRadius";
         }
 
         private readonly float _tileRadius;

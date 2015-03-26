@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Numerics;
 using Windows.Foundation;
 using Catch.Base;
@@ -23,13 +25,13 @@ namespace Catch
     /// <summary>
     /// Model Controller for game state
     /// </summary>
-    public class CatchGame
+    public class CatchGame : IUpdatable
     {
         private const int StartLives = 3;
         private const int StartScore = 0;
         private const int ScoreIncrement = 10;
 
-        private const int BlockMax = 100;
+        private const int BlockMax = 3;
         private const int BlockSpawnRate = 10;
 
         //
@@ -144,6 +146,36 @@ namespace Catch
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
             _path.Add(tile);
 
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.North);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.North);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
+            _path.Add(tile);
+
         }
 
         public void Draw(CanvasDrawingSession drawingSession)
@@ -156,29 +188,29 @@ namespace Catch
 
             foreach (var drawable in _drawables)
             {
-                // drawable.Draw(drawingSession);
+                drawable.Draw(drawingSession);
             }
         }
 
-        public void Update()
+        public void Update(int ticks)
         {
             switch (State)
             {
                 case GameState.Playing:
-                    UpdatePlaying();
+                    UpdatePlaying(ticks);
                     break;
                 case GameState.Title:
-                    UpdateTitle();
+                    UpdateTitle(ticks);
                     break;
                 case GameState.Init:
-                    UpdateInit();
+                    UpdateInit(ticks);
                     break;
                 default:
                     throw new ArgumentException("Unhandled game state");
             }
         }
 
-        private void UpdateInit()
+        private void UpdateInit(int ticks)
         {
             // nothing to update
 
@@ -186,12 +218,12 @@ namespace Catch
             ChangeGameState(GameState.Init);
         }
 
-        private void UpdateTitle()
+        private void UpdateTitle(int ticks)
         {
             // Nothing to do at the title screen for now
         }
 
-        private void UpdatePlaying()
+        private void UpdatePlaying(int ticks)
         {
             Score += ScoreIncrement;
 
@@ -199,7 +231,7 @@ namespace Catch
             SpawnBlocks();
 
             foreach (var block in _blocks)
-                block.Update(1);
+                block.Update(ticks);
 
             _drawables.Clear();
             _drawables.AddRange(_blocks);
@@ -214,7 +246,9 @@ namespace Catch
 
         private void DestroyBlocks()
         {
-            _blocks.RemoveAll(block => block.Position.X > Size.Width);
+            var lastTile = _path.Last();
+
+            _blocks.RemoveAll(block => block.Tile == lastTile && block.TileProgress > 0.5);
         }
 
         private void SpawnBlocks()
@@ -224,11 +258,8 @@ namespace Catch
                 if (!(_blocks.Count < BlockMax))
                     break;
 
-                var block = new Block();
-                var y = _rng.Next((int) Size.Height/Block.Size) * Block.Size;
-                block.Position = new Vector2(0, y);
-                block.Velocity = new Vector2(_rng.Next(1, 6), 0);
-                block.Acceleration = new Vector2(0, 0);
+                var block = new Block(_config, _path);
+                block.Velocity = (float) _rng.NextDouble();
 
                 _blocks.Add(block);
             }

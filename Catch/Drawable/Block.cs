@@ -1,44 +1,43 @@
 ﻿using System.Numerics;
 using Windows.Foundation;
 using Windows.UI;
+using Catch.Base;
 using Catch.Models;
+using Catch.Services;
 using Microsoft.Graphics.Canvas;
 
 namespace Catch.Drawable
 {
-    public class Block : IMovable, IUpdatable, IDrawable
+    public class Block : BasicMob, IMovable, IUpdatable, IDrawable
     {
-        public Vector2 Position { get; set; }
-        public Vector2 Velocity { get; set; }
-        public Vector2 Acceleration { get; set; }
+        private IConfig _config;
+        private readonly int _blockSize;
 
-        private const int _blockSize = 20;
-        public static int Size { get { return _blockSize; } } 
+        public Vector2 Position { get; set; }
+
+        public class ConfigKeys
+        {
+            public static readonly string BlockSize = typeof(Block).FullName + ".BlockSize";
+        }
+
+        public Block(IConfig config, IPath path) : base(path)
+        {
+            _config = config;
+
+            _blockSize = _config.GetInt(ConfigKeys.BlockSize);
+        }
 
         public void Draw(CanvasDrawingSession drawingSession)
         {
-            drawingSession.FillRectangle(new Rect(Position.X, Position.Y, Size, Size), Colors.Red);
+            var tile = (Hexagon) this.Tile;
+
+            drawingSession.FillRectangle(new Rect(tile.CenterPoint.X - _blockSize / 2, tile.CenterPoint.Y - _blockSize / 2, _blockSize, _blockSize), Colors.Yellow);
         }
 
-        public void Update(int ticks)
+        public new void Update(int ticks)
         {
-            Velocity = Vector2.Add(Velocity, Acceleration);
-            Position = Vector2.Add(Position, Velocity);
+            base.Update(ticks);
         }
 
-        public IPath Path
-        {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        public IHexTile Tile
-        {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        public float TileProgress
-        {
-            get { throw new System.NotImplementedException(); }
-        }
     }
 }
