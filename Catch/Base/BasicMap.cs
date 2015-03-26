@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Catch.Models;
 
@@ -25,8 +24,8 @@ namespace Catch.Base
 
         public void Initialize(int rows, int columns)
         {
-            Debug.Assert(rows >= 1);
-            Debug.Assert(columns >= 1);
+            Assert(rows >= 1);
+            Assert(columns >= 1);
 
             Tiles = new List<IHexTile>();
             Paths = new Dictionary<string, IPath>();
@@ -51,8 +50,8 @@ namespace Catch.Base
 
         public IHexTile GetTile(int row, int col)
         {
-            Debug.Assert(row >= 0);
-            Debug.Assert(col >= 0);
+            Assert(row >= 0);
+            Assert(col >= 0);
 
             if (GetCoordsAreValid(row, col))
             {
@@ -64,17 +63,17 @@ namespace Catch.Base
 
         public bool HasNeighbour(IHexTile tile, TileDirection direction)
         {
-            Debug.Assert(tile != null);
-            Debug.Assert(Tiles.Contains(tile));
+            Assert(tile != null);
+            Assert(Tiles.Contains(tile));
 
             return GetNeighbourCoords(tile.Row, tile.Column, direction).Valid;
         }
 
         public IHexTile GetNeighbour(IHexTile tile, TileDirection direction)
         {
-            Debug.Assert(tile != null);
-            Debug.Assert(Tiles.Contains(tile));
-            Debug.Assert(GetCoordsAreValid(tile.Row, tile.Column));
+            Assert(tile != null);
+            Assert(Tiles.Contains(tile));
+            Assert(GetCoordsAreValid(tile.Row, tile.Column));
 
             var coords = GetNeighbourCoords(tile.Row, tile.Column, direction);
 
@@ -88,9 +87,9 @@ namespace Catch.Base
 
         public List<IHexTile> GetNeighbours(IHexTile tile)
         {
-            Debug.Assert(tile != null);
-            Debug.Assert(Tiles.Contains(tile));
-            Debug.Assert(GetCoordsAreValid(tile.Row, tile.Column));
+            Assert(tile != null);
+            Assert(Tiles.Contains(tile));
+            Assert(GetCoordsAreValid(tile.Row, tile.Column));
 
             var neighbours = from direction in TileDirectionExtensions.AllTileDirections
                 let n = GetNeighbour(tile, direction)
@@ -102,10 +101,10 @@ namespace Catch.Base
 
         public List<IHexTile> GetNeighbours(IHexTile tile, int radius)
         {
-            Debug.Assert(tile != null);
-            Debug.Assert(Tiles.Contains(tile));
-            Debug.Assert(GetCoordsAreValid(tile.Row, tile.Column));
-            Debug.Assert(radius >= 1);
+            Assert(tile != null);
+            Assert(Tiles.Contains(tile));
+            Assert(GetCoordsAreValid(tile.Row, tile.Column));
+            Assert(radius >= 1);
 
             throw new NotImplementedException();
         }
@@ -133,10 +132,10 @@ namespace Catch.Base
         /// <returns></returns>
         protected HexCoords GetNeighbourCoords(int row, int col, TileDirection direction)
         {
-            Debug.Assert(row >= 0);
-            Debug.Assert(col >= 0);
-            Debug.Assert(row < Rows - col % 2);
-            Debug.Assert(col < Columns);
+            Assert(row >= 0);
+            Assert(col >= 0);
+            Assert(row < Rows - col % 2);
+            Assert(col < Columns);
 
             var coords = new HexCoords {Valid = false};
 
@@ -188,12 +187,19 @@ namespace Catch.Base
 
         protected int GetListOffset(int row, int col)
         {
-            Debug.Assert(row >= 0);
-            Debug.Assert(col >= 0);
-            Debug.Assert(row < Rows - col % 2);
-            Debug.Assert(col < Columns);
+            Assert(row >= 0);
+            Assert(col >= 0);
+            Assert(row < Rows - col % 2);
+            Assert(col < Columns);
 
             return (col * Rows) - (col / 2) + row;
+        }
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        private static void Assert(bool condition)
+        {
+            if (!condition)
+                System.Diagnostics.Debugger.Break();
         }
     }
 }

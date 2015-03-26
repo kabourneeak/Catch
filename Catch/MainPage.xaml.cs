@@ -7,7 +7,6 @@ using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Catch.Drawable;
-using Catch.Models;
 using Microsoft.Graphics.Canvas;
 
 namespace Catch
@@ -27,6 +26,8 @@ namespace Catch
             _game.GameStateChanged += GameStateHandler;
         }
 
+        #region " Game Loop "
+
         private void cvs_CreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
 
@@ -41,6 +42,8 @@ namespace Catch
         {
             _game.Draw(args.DrawingSession);
         }
+
+        #endregion
 
         private void GameStateHandler(object sender, GameStateChangedEventArgs e)
         {

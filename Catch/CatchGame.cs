@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Windows.Foundation;
+using Catch.Base;
 using Catch.Drawable;
+using Catch.Models;
 using Catch.Services;
 using Microsoft.Graphics.Canvas;
 
@@ -42,11 +44,13 @@ namespace Catch
         public GameState State { get; set; }
         public int Score { get; private set; }
         public int Lives { get; private set; }
+
         private List<Block> _blocks;
         private Map _map;
         private List<IDrawable> _drawables;
-        private IConfig _config = new CompiledConfig();
+        private IConfig _config;
         private Win2DProvider _provider;
+        private IPath _path;
 
         //
         // event handling
@@ -74,12 +78,20 @@ namespace Catch
         public CatchGame()
         {
             State = GameState.Init;
+
+            AssembleServices();
+        }
+
+        private void AssembleServices()
+        {
+            _config = new CompiledConfig();
+
+            _provider = new Win2DProvider(_config.GetFloat(Map.ConfigKeys.TileRadius));
         }
 
         public void Initialize(Rect size)
         {
             Size = size;
-            _provider = new Win2DProvider();
 
             ChangeGameState(GameState.Title);
         }
@@ -97,14 +109,41 @@ namespace Catch
             Score = StartScore;
             Lives = StartLives;
 
+            CreateMap();
+            CreatePath();
+
             _blocks = new List<Block>();
-            _map = new Map(_config, _provider);
 
             _drawables = new List<IDrawable>();
 
-            CreateMap();
-
             ChangeGameState(GameState.Playing);
+        }
+
+        private void CreatePath()
+        {
+            _path = new BasicPath();
+
+            var tile = _map.GetTile(0, 0);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.South);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.South);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
+            _path.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            _path.Add(tile);
+
         }
 
         public void Draw(CanvasDrawingSession drawingSession)
@@ -169,6 +208,7 @@ namespace Catch
 
         private void CreateMap()
         {
+            _map = new Map(_config, _provider);
             _map.Initialize(10, 19);
         }
 
