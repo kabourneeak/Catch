@@ -115,10 +115,7 @@
     <Compile Include="CanvasExtensions.cs" />
     <Compile Include="CanvasUtils.cs" />
     <Compile Include="CatchGame.cs" />
-    <Compile Include="Drawable\CompiledConfig.cs" />
-    <Compile Include="Drawable\IConfig.cs" />
     <Compile Include="Drawable\Map.cs" />
-    <Compile Include="Drawable\EmptyConfig.cs" />
     <Compile Include="Drawable\Win2dProvider.cs" />
     <Compile Include="EnumUtils.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -137,6 +134,9 @@
     <Compile Include="Models\IUpdatable.cs" />
     <Compile Include="Models\TileDirection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CompiledConfig.cs" />
+    <Compile Include="Services\EmptyConfig.cs" />
+    <Compile Include="Services\IConfig.cs" />
     <Compile Include="TaskExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

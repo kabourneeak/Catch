@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Catch.Drawable
+namespace Catch.Services
 {
     /// <summary>
     /// A very basic implementation of IConfig which does not contain any entries.  

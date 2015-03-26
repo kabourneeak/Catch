@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Numerics;
 using Catch.Base;
+using Catch.Services;
 using Microsoft.Graphics.Canvas;
-using System.Numerics;
 
 namespace Catch.Drawable
 {
@@ -16,7 +16,7 @@ namespace Catch.Drawable
 
         public Map(IConfig config, IHexTileProvider tileProvider) : base(tileProvider)
         {
-            _tileRadius = config.GetFloat(Map.ConfigKeys.TileRadius);
+            _tileRadius = config.GetFloat(ConfigKeys.TileRadius);
         }
 
         public void Draw(CanvasDrawingSession drawingSession)

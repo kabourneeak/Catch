@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Windows.Foundation;
-using Windows.UI;
-using Catch.Base;
 using Catch.Drawable;
+using Catch.Services;
 using Microsoft.Graphics.Canvas;
 
 namespace Catch

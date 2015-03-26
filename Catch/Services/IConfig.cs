@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Catch.Drawable
+﻿namespace Catch.Services
 {
     /// <summary>
     /// Provides "read-only" configuration data to consumers, although it cannot 
