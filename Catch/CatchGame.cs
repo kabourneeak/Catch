@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Numerics;
 using Windows.Foundation;
 using Catch.Base;
-using Catch.Drawable;
 using Catch.Models;
 using Catch.Services;
+using Catch.Win2d;
 using Microsoft.Graphics.Canvas;
 
 namespace Catch
@@ -15,11 +13,6 @@ namespace Catch
     public enum GameState
     {
         Init, Title, Playing
-    }
-
-    public class GameStateChangedEventArgs : EventArgs
-    {
-        public GameState State;
     }
 
     /// <summary>
@@ -47,9 +40,8 @@ namespace Catch
         public int Score { get; private set; }
         public int Lives { get; private set; }
 
-        private List<Block> _blocks;
-        private Map _map;
-        private List<IDrawable> _drawables;
+        private List<IAgent> _agents;
+        private IMap _map;
         private IConfig _config;
         private Win2DProvider _provider;
         private IPath _path;
@@ -88,7 +80,7 @@ namespace Catch
         {
             _config = new CompiledConfig();
 
-            _provider = new Win2DProvider(_config.GetFloat(Map.ConfigKeys.TileRadius));
+            _provider = new Win2DProvider(_config);
         }
 
         public void Initialize(Rect size)
@@ -114,9 +106,7 @@ namespace Catch
             CreateMap();
             CreatePath();
 
-            _blocks = new List<Block>();
-
-            _drawables = new List<IDrawable>();
+            _agents = new List<IAgent>();
 
             ChangeGameState(GameState.Playing);
         }
@@ -180,15 +170,18 @@ namespace Catch
 
         public void Draw(CanvasDrawingSession drawingSession)
         {
-            Vector2 mapSize = _map.SizeInPixels;
+            // TODO some method of objects to report their size
+            //Vector2 mapSize = _map.SizeInPixels;
+
+            var mapSize = new Vector2(1920, 1080);
 
             drawingSession.Transform = Matrix3x2.CreateTranslation((float) ((Size.Width - mapSize.X) / 2), (float) ((Size.Height - mapSize.Y) / 2));
 
-            _map.Draw(drawingSession);
+            _map.Graphics.Draw(drawingSession);
 
-            foreach (var drawable in _drawables)
+            foreach (var agent in _agents)
             {
-                drawable.Draw(drawingSession);
+                agent.Graphics.Draw(drawingSession);
             }
         }
 
@@ -227,43 +220,35 @@ namespace Catch
         {
             Score += ScoreIncrement;
 
-            DestroyBlocks();
-            SpawnBlocks();
+            // SpawnBlock();
 
-            foreach (var block in _blocks)
-                block.Update(ticks);
+            foreach (var agent in _agents)
+            {
+                agent.Update(ticks);
+            }
 
-            _drawables.Clear();
-            _drawables.AddRange(_blocks);
-
+            // TODO some method of remove agents that are dead
         }
 
         private void CreateMap()
         {
-            _map = new Map(_config, _provider);
+            _map = _provider.CreateMap();
             _map.Initialize(10, 19);
         }
 
-        private void DestroyBlocks()
+        private void SpawnBlock()
         {
-            var lastTile = _path.Last();
-
-            _blocks.RemoveAll(block => block.Tile == lastTile && block.TileProgress > 0.5);
-        }
-
-        private void SpawnBlocks()
-        {
-            for (var i = 0; i < _rng.Next(BlockSpawnRate); ++i)
+            if (_rng.Next() < (3 / 60.0))
             {
-                if (!(_blocks.Count < BlockMax))
-                    break;
-
-                var block = new Block(_config, _path);
-                block.Velocity = (float) _rng.NextDouble();
-
-                _blocks.Add(block);
+                var block = _provider.CreateAgent(typeof (BlockMob).Name);
+                _agents.Add(block);
             }
         }
+    }
+
+    public class GameStateChangedEventArgs : EventArgs
+    {
+        public GameState State;
     }
 }
 

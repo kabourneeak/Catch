@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Catch.Models
+namespace Catch.Base
 {
     /// <summary>
     /// Provides information about a hex tile grid, which has tiles, towers, 
@@ -13,7 +9,7 @@ namespace Catch.Models
     /// owing the hex shape. The even-numbered columns have one extra hexagon
     /// compared to the odd-numbered ones.
     /// </summary>
-    public interface IMap
+    public interface IMap : IGameObject
     {
         void Initialize(int rows, int columns);
 

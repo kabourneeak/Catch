@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Catch.Models
+namespace Catch.Base
 {
     /// <summary>
     /// A named list of tiles that objects can follow over time.

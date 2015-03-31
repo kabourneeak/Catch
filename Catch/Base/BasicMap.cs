@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Catch.Models;
 
 namespace Catch.Base
 {
@@ -10,17 +9,33 @@ namespace Catch.Base
     /// navigating the hexagonal grid coordinate system are found here, and
     /// may be useful to derived classes.
     /// </summary>
-    public class BasicMap : IMap
+    public class BasicMap : IGameObject, IMap
     {
         private readonly IHexTileProvider _tileProvider;
 
-        protected List<IHexTile> Tiles;
-        protected Dictionary<string, IPath> Paths;
-
-        protected BasicMap(IHexTileProvider tileProvider)
+        public BasicMap(IHexTileProvider tileProvider)
         {
             _tileProvider = tileProvider;
         }
+
+        #region BaseGameObject, IGameObject implementation
+
+        public void Update(float ticks)
+        {
+            Graphics.Update(ticks);
+        }
+
+        public IGraphicsComponent Graphics { get; set; }
+        public string DisplayName { get; private set; }
+        public string DisplayInfo { get; private set; }
+        public string DisplayStatus { get; private set; }
+
+        #endregion
+
+        #region IMap implementation
+
+        public List<IHexTile> Tiles;
+        protected Dictionary<string, IPath> Paths;
 
         public void Initialize(int rows, int columns)
         {
@@ -119,6 +134,8 @@ namespace Catch.Base
             return null;
         }
 
+        #endregion
+
         /// <summary>
         /// Calculates the row and column of the neighbout in the given 
         /// direction from the given coordinates. Also returns true or false
@@ -201,5 +218,6 @@ namespace Catch.Base
             if (!condition)
                 System.Diagnostics.Debugger.Break();
         }
+
     }
 }

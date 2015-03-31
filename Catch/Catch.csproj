@@ -107,37 +107,51 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Base\BasicMob.cs" />
+    <Compile Include="Base\AttackSpecs.cs" />
     <Compile Include="Base\BasicHexTile.cs" />
     <Compile Include="Base\BasicMap.cs" />
     <Compile Include="Base\BasicPath.cs" />
+    <Compile Include="Base\DefenceSpecs.cs" />
     <Compile Include="Base\HexCoords.cs" />
+    <Compile Include="Base\IAgent.cs" />
+    <Compile Include="Base\IAgentProvider.cs" />
+    <Compile Include="Base\IAgentStats.cs" />
+    <Compile Include="Base\IAttack.cs" />
+    <Compile Include="Base\IBehaviourComponent.cs" />
+    <Compile Include="Base\IGameObject.cs" />
+    <Compile Include="Base\IGraphicsComponent.cs" />
+    <Compile Include="Base\IHexTile.cs" />
+    <Compile Include="Base\IIndicator.cs" />
+    <Compile Include="Base\IIndicatorCollection.cs" />
+    <Compile Include="Base\IMap.cs" />
+    <Compile Include="Base\IMapProvider.cs" />
+    <Compile Include="Base\IModifier.cs" />
+    <Compile Include="Base\IModifierCollection.cs" />
+    <Compile Include="Base\IMovable.cs" />
+    <Compile Include="Base\IPath.cs" />
+    <Compile Include="Base\ITower.cs" />
+    <Compile Include="Base\IUpdatable.cs" />
+    <Compile Include="Base\TileDirection.cs" />
     <Compile Include="CanvasExtensions.cs" />
     <Compile Include="CanvasUtils.cs" />
     <Compile Include="CatchGame.cs" />
-    <Compile Include="Drawable\Map.cs" />
-    <Compile Include="Drawable\Win2dProvider.cs" />
     <Compile Include="EnumUtils.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Drawable\Block.cs" />
-    <Compile Include="Drawable\Hexagon.cs" />
-    <Compile Include="Drawable\IDrawable.cs" />
-    <Compile Include="Models\IHexTile.cs" />
-    <Compile Include="Models\IMap.cs" />
-    <Compile Include="Models\IMovable.cs" />
-    <Compile Include="Drawable\PointerData.cs" />
-    <Compile Include="Models\IPath.cs" />
     <Compile Include="Base\IHexTileProvider.cs" />
-    <Compile Include="Models\ITower.cs" />
-    <Compile Include="Models\IUpdatable.cs" />
-    <Compile Include="Models\TileDirection.cs" />
+    <Compile Include="Models\BlockMob.cs" />
+    <Compile Include="Models\PathMobAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CompiledConfig.cs" />
     <Compile Include="Services\EmptyConfig.cs" />
     <Compile Include="Services\IConfig.cs" />
     <Compile Include="TaskExtensions.cs" />
+    <Compile Include="Win2d\BlockMobGraphics.cs" />
+    <Compile Include="Win2d\BasicHexTileGraphics.cs" />
+    <Compile Include="Win2d\MapGraphics.cs" />
+    <Compile Include="Win2d\PointerData.cs" />
+    <Compile Include="Win2d\Win2dProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -171,6 +185,7 @@
       <HintPath>..\packages\Win2D.0.0.14\lib\win\Microsoft.Graphics.Canvas.winmd</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>

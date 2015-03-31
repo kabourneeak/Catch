@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.Foundation;
 
-namespace Catch.Drawable
+namespace Catch.Win2d
 {
     class PointerData : IEquatable<PointerData>
     {

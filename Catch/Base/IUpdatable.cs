@@ -1,4 +1,4 @@
-﻿namespace Catch.Models
+﻿namespace Catch.Base
 {
     public interface IUpdatable
     {

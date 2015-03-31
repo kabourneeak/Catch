@@ -1,6 +1,4 @@
-﻿using Catch.Models;
-
-namespace Catch.Base
+﻿namespace Catch.Base
 {
     public interface IHexTileProvider
     {

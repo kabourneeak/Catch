@@ -1,38 +1,48 @@
 ﻿using System.Numerics;
 using Windows.UI;
 using Catch.Base;
-using Catch.Models;
 using Microsoft.Graphics.Canvas;
 
-namespace Catch.Drawable
+namespace Catch.Win2d
 {
-    public class Hexagon : BasicHexTile, IHexTile, IDrawable
+    public class BasicHexTileGraphics : IGraphicsComponent
     {
         private readonly float _radius;
         private readonly float _radiusH;
 
-        public class ConfigKeys
-        {
-        }
-
-        public Vector2 CenterPoint { get; set; }
         public Color Colour { get; set; }
         public float Radius { get { return _radius;} }
 
         public const float SIN60 = 0.8660254f;
         public const float COS60 = 0.5f;
 
-        public Hexagon(int row, int col, float radius) : base(row, col)
+        public BasicHexTileGraphics(IHexTile tile, float radius)
         {
             _radius = radius;
             _radiusH = GetRadiusHeight(_radius);
 
+            var col = tile.Column;
+            var row = tile.Row;
+
             var x = _radius + (col * (_radius + _radius * COS60));
             var y = (col % 2 * _radiusH) + (row * 2 * _radiusH) + _radiusH;
 
-            CenterPoint = new Vector2(x, y);
+            Position = new Vector2(x, y);
 
             Colour = Colors.Red;
+        }
+
+        public Vector2 Position { get; private set; }
+        public DrawLayer Layer { get; private set; }
+
+        public void Update(float ticks)
+        {
+            // do nothing
+        }
+
+        public void CreateResources(CanvasDrawingSession drawingSession)
+        {
+            // do nothing
         }
 
         public void Draw(CanvasDrawingSession ds)
@@ -50,7 +60,7 @@ namespace Catch.Drawable
 
             var geo = CanvasGeometry.CreatePath(pb);
 
-            ds.DrawGeometry(geo, CenterPoint.X, CenterPoint.Y, Colour, 4);
+            ds.DrawGeometry(geo, Position.X, Position.Y, Colour, 4);
         }
 
         public static float GetRadiusHeight(float radius)

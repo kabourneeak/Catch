@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Catch.Models;
 
 namespace Catch.Base
 {

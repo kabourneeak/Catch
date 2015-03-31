@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using Catch.Drawable;
+using Catch.Models;
+using Catch.Win2d;
 
 namespace Catch.Services
 {
@@ -27,8 +28,8 @@ namespace Catch.Services
              * a config entry is the type that ultimately gets stored.
              */
 
-            AddFloat(Map.ConfigKeys.TileRadius, 60.0f);
-            AddInt(Block.ConfigKeys.BlockSize, 10);
+            AddFloat("TileRadius", 60.0f);
+            AddInt("BlockMobSize", 10);
         }
 
         public int GetInt(string key)
