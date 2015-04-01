@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Catch.Base;
 
-namespace Catch.Base
+namespace Catch.Models
 {
     /// <summary>
     /// Implements the core functionality of IMap.  Specifically, methods for 

@@ -108,9 +108,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Base\AttackSpecs.cs" />
-    <Compile Include="Base\BasicHexTile.cs" />
-    <Compile Include="Base\BasicMap.cs" />
-    <Compile Include="Base\BasicPath.cs" />
     <Compile Include="Base\DefenceSpecs.cs" />
     <Compile Include="Base\HexCoords.cs" />
     <Compile Include="Base\IAgent.cs" />
@@ -140,6 +137,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Base\IHexTileProvider.cs" />
+    <Compile Include="Models\BasicHexTile.cs" />
+    <Compile Include="Models\BasicMap.cs" />
+    <Compile Include="Models\BasicPath.cs" />
     <Compile Include="Models\BlockMob.cs" />
     <Compile Include="Models\PathMobAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
