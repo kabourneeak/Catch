@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Catch.Models;
-using Catch.Win2d;
 
 namespace Catch.Services
 {

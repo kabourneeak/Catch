@@ -18,7 +18,7 @@ namespace Catch
     /// <summary>
     /// Model Controller for game state
     /// </summary>
-    public class CatchGame : IUpdatable
+    public class CatchGame
     {
         private const int StartLives = 3;
         private const int StartScore = 0;
@@ -168,24 +168,24 @@ namespace Catch
 
         }
 
-        public void Draw(CanvasDrawingSession drawingSession)
+        public void Draw(CanvasDrawingSession ds)
         {
             // TODO some method of objects to report their size
             //Vector2 mapSize = _map.SizeInPixels;
 
             var mapSize = new Vector2(1920, 1080);
 
-            drawingSession.Transform = Matrix3x2.CreateTranslation((float) ((Size.Width - mapSize.X) / 2), (float) ((Size.Height - mapSize.Y) / 2));
+            ds.Transform = Matrix3x2.CreateTranslation((float) ((Size.Width - mapSize.X) / 2), (float) ((Size.Height - mapSize.Y) / 2));
 
-            _map.Graphics.Draw(drawingSession);
+            _map.Draw(ds);
 
             foreach (var agent in _agents)
             {
-                agent.Graphics.Draw(drawingSession);
+                agent.Draw(ds);
             }
         }
 
-        public void Update(int ticks)
+        public void Update(float ticks)
         {
             switch (State)
             {
@@ -203,7 +203,7 @@ namespace Catch
             }
         }
 
-        private void UpdateInit(int ticks)
+        private void UpdateInit(float ticks)
         {
             // nothing to update
 
@@ -211,16 +211,16 @@ namespace Catch
             ChangeGameState(GameState.Init);
         }
 
-        private void UpdateTitle(int ticks)
+        private void UpdateTitle(float ticks)
         {
             // Nothing to do at the title screen for now
         }
 
-        private void UpdatePlaying(int ticks)
+        private void UpdatePlaying(float ticks)
         {
             Score += ScoreIncrement;
 
-            // SpawnBlock();
+            SpawnBlock();
 
             foreach (var agent in _agents)
             {
@@ -238,9 +238,9 @@ namespace Catch
 
         private void SpawnBlock()
         {
-            if (_rng.Next() < (3 / 60.0))
+            if (_rng.NextDouble() < (3 / 60.0))
             {
-                var block = _provider.CreateAgent(typeof (BlockMob).Name);
+                var block = _provider.CreatePathAgent("BlockMob", _path);
                 _agents.Add(block);
             }
         }

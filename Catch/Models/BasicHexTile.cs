@@ -1,50 +1,96 @@
 ﻿using System;
+using System.Numerics;
+using Windows.UI;
 using Catch.Base;
+using Catch.Services;
+using Catch.Win2d;
+using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
     public class BasicHexTile : IHexTile
     {
         private ITower _tower;
+        private float _radius;
+        private float _radiusH;
 
-        public BasicHexTile(int row, int col)
+        public BasicHexTile(int row, int col, IConfig config)
         {
             Row = row;
             Column = col;
+
+            Layer = DrawLayer.Base;
+
+            // copy down config
+            _radius = config.GetFloat("TileRadius");
+
+            _radiusH = HexUtils.GetRadiusHeight(_radius);
+
+            var x = _radius + (col * (_radius + _radius * HexUtils.COS60));
+            var y = (col % 2 * _radiusH) + (row * 2 * _radiusH) + _radiusH;
+
+            Position = new Vector2(x, y);
+
+            // create sub-objects
+            Graphics = new BasicHexTileGraphics(this, _radius);
         }
 
-        /*
-         * IHexTile Implementation
-         */
-        public int Row { get; protected set; }
-        public int Column { get; protected set; }
+        #region BasicHexTile Implementation
 
-        public void Update(float ticks)
+        public IGraphicsComponent Graphics { get; protected set; }
+
+        public bool HasTower()
         {
-            throw new NotImplementedException();
+            return _tower != null;
+        }
+        
+        protected void SetTower(ITower tower)
+        {
+            _tower = tower;
         }
 
-        public IGraphicsComponent Graphics { get; set; }
-        public string DisplayName { get; private set; }
-        public string DisplayInfo { get; private set; }
-        public string DisplayStatus { get; private set; }
+        #endregion
+
+        #region IHexTile Implementation
+
+        public int Row { get; protected set; }
+
+        public int Column { get; protected set; }
 
         public ITower GetTower()
         {
             return _tower;
         }
 
-        /*
-         * Other 
-         */
-        public bool HasTower()
+        #endregion
+
+        #region IGameObject Implementation
+
+        public string DisplayName { get; protected set; }
+
+        public string DisplayInfo { get; protected set; }
+
+        public string DisplayStatus { get; protected set; }
+
+        public Vector2 Position { get; protected set; }
+
+        public DrawLayer Layer { get; protected set; }
+
+        public void Update(float ticks)
         {
-            return _tower != null;
+            Graphics.Update(ticks);
         }
 
-        protected void SetTower(ITower tower)
+        public void CreateResources(CanvasDrawingSession ds)
         {
-            _tower = tower;
+            Graphics.CreateResources(ds);
         }
+
+        public void Draw(CanvasDrawingSession ds)
+        {
+            Graphics.Draw(ds);
+        }
+
+        #endregion
     }
 }

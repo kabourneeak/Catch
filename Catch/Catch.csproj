@@ -110,6 +110,7 @@
     <Compile Include="Base\AttackSpecs.cs" />
     <Compile Include="Base\DefenceSpecs.cs" />
     <Compile Include="Base\HexCoords.cs" />
+    <Compile Include="Base\HexUtils.cs" />
     <Compile Include="Base\IAgent.cs" />
     <Compile Include="Base\IAgentProvider.cs" />
     <Compile Include="Base\IAgentStats.cs" />
@@ -124,10 +125,9 @@
     <Compile Include="Base\IMapProvider.cs" />
     <Compile Include="Base\IModifier.cs" />
     <Compile Include="Base\IModifierCollection.cs" />
-    <Compile Include="Base\IMovable.cs" />
     <Compile Include="Base\IPath.cs" />
+    <Compile Include="Base\IPathAgent.cs" />
     <Compile Include="Base\ITower.cs" />
-    <Compile Include="Base\IUpdatable.cs" />
     <Compile Include="Base\TileDirection.cs" />
     <Compile Include="CanvasExtensions.cs" />
     <Compile Include="CanvasUtils.cs" />
@@ -141,15 +141,15 @@
     <Compile Include="Models\BasicMap.cs" />
     <Compile Include="Models\BasicPath.cs" />
     <Compile Include="Models\BlockMob.cs" />
+    <Compile Include="Models\EmptyBrain.cs" />
     <Compile Include="Models\PathMobAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RectExtensions.cs" />
     <Compile Include="Services\CompiledConfig.cs" />
     <Compile Include="Services\EmptyConfig.cs" />
     <Compile Include="Services\IConfig.cs" />
     <Compile Include="TaskExtensions.cs" />
-    <Compile Include="Win2d\BlockMobGraphics.cs" />
     <Compile Include="Win2d\BasicHexTileGraphics.cs" />
-    <Compile Include="Win2d\MapGraphics.cs" />
     <Compile Include="Win2d\PointerData.cs" />
     <Compile Include="Win2d\Win2dProvider.cs" />
   </ItemGroup>

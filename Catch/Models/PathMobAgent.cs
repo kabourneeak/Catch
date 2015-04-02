@@ -1,14 +1,15 @@
-﻿using Catch.Base;
+﻿using System.Numerics;
+using Catch.Base;
+using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
-    public abstract class PathMobAgent : IAgent
+    public abstract class PathMobAgent : IPathAgent
     {
-        protected PathMobAgent(IPath path, IBehaviourComponent brain, IGraphicsComponent graphics)
+        protected PathMobAgent(IPath path, IBehaviourComponent brain)
         {
-            Brain = brain;
-            Graphics = graphics;
             Path = path;
+            Brain = brain;
 
             InitMobOnPath();
         }
@@ -21,15 +22,13 @@ namespace Catch.Models
             TileProgress = 0.5f; // start in the center of our source tile
         }
 
-        #region PathMobAgent Properties
+        #region IPathAgent Implementation
 
         public float TileProgress { get; protected set; }
 
         public float Velocity { get; set; }
 
         public IPath Path { get; protected set; }
-
-        public IHexTile Tile { get; protected set; }
 
         public int PathIndex { get; set; }
 
@@ -39,31 +38,9 @@ namespace Catch.Models
 
         public abstract string GetAgentType();
 
-        public void Update(float ticks)
-        {
-            // advance through tile
-            TileProgress += Velocity*ticks;
-
-            // advance to next tile, if necessary
-            while (TileProgress > 1 && PathIndex < (Path.Count - 1))
-            {
-                PathIndex += 1;
-                TileProgress -= 1.0f;
-                Tile = Path[PathIndex];
-            }
-
-            Brain.Update(ticks);
-        }
-
         public IBehaviourComponent Brain { get; protected set; }
 
-        public IGraphicsComponent Graphics { get; protected set; }
-
-        public string DisplayName { get; protected set; }
-
-        public string DisplayInfo { get; protected set; }
-
-        public string DisplayStatus { get; protected set; }
+        public IHexTile Tile { get; protected set; }
 
         public bool IsTargetable { get; protected set; }
 
@@ -78,6 +55,46 @@ namespace Catch.Models
         public DefenceSpecs DefenceSpecs { get; protected set; }
 
         public IAgentStats Stats { get; protected set; }
+
+        #endregion
+
+        #region IGameObject implementation
+
+        public string DisplayName { get; protected set; }
+
+        public string DisplayInfo { get; protected set; }
+
+        public string DisplayStatus { get; protected set; }
+
+        public Vector2 Position { get; protected set; }
+
+        public DrawLayer Layer { get; protected set; }
+
+        public virtual void Update(float ticks)
+        {
+            // advance through tile
+            TileProgress += Velocity * ticks;
+
+            // advance to next tile, if necessary
+            while (TileProgress > 1 && PathIndex < (Path.Count - 1))
+            {
+                PathIndex += 1;
+                TileProgress -= 1.0f;
+                Tile = Path[PathIndex];
+            }
+
+            Brain.Update(ticks);
+        }
+
+        public virtual void CreateResources(CanvasDrawingSession ds)
+        {
+            // do nothing
+        }
+
+        public virtual void Draw(CanvasDrawingSession ds)
+        {
+            // do nothing
+        }
 
         #endregion
     }

@@ -3,24 +3,17 @@ using System.Numerics;
 
 namespace Catch.Base
 {
+    /// <summary>
+    /// Just the basic methods for drawing
+    /// </summary>
     public interface IGraphicsComponent
     {
-        // Properties
-        Vector2 Position { get; }
-
-        DrawLayer Layer { get; }
-
         // Events
         void Update(float ticks);
 
-        void CreateResources(CanvasDrawingSession drawingSession);
+        void CreateResources(CanvasDrawingSession ds);
 
-        void Draw(CanvasDrawingSession drawingSession);
-    }
-
-    public enum DrawLayer
-    {
-        Background, Base, Tower, Agent, Mob, Effect, Ui
+        void Draw(CanvasDrawingSession ds);
     }
 
 }

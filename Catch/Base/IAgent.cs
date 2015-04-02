@@ -9,6 +9,8 @@
         IBehaviourComponent Brain { get; }
 
         // Properties
+        IHexTile Tile { get; }
+
         bool IsTargetable { get; }
 
         int Health { get; }

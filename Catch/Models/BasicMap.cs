@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Catch.Base;
+using Catch.Services;
+using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
@@ -13,23 +16,51 @@ namespace Catch.Models
     public class BasicMap : IGameObject, IMap
     {
         private readonly IHexTileProvider _tileProvider;
+        private readonly IConfig _config;
 
-        public BasicMap(IHexTileProvider tileProvider)
+        public BasicMap(IHexTileProvider tileProvider, IConfig config)
         {
             _tileProvider = tileProvider;
+            _config = config;
+
+            _tileRadius = config.GetFloat("TileRadius");
+
+            DisplayName = "Map";
+            Layer = DrawLayer.Base;
         }
 
-        #region BaseGameObject, IGameObject implementation
+        #region IGameObject implementation
+
+        public string DisplayName { get; private set; }
+        
+        public string DisplayInfo { get; private set; }
+        
+        public string DisplayStatus { get; private set; }
+        
+        public Vector2 Position { get; private set; }
+
+        public DrawLayer Layer { get; private set; }
 
         public void Update(float ticks)
         {
-            Graphics.Update(ticks);
+            foreach (var tile in Tiles)
+            {
+                tile.Update(ticks);
+            }
         }
 
-        public IGraphicsComponent Graphics { get; set; }
-        public string DisplayName { get; private set; }
-        public string DisplayInfo { get; private set; }
-        public string DisplayStatus { get; private set; }
+        public void CreateResources(CanvasDrawingSession ds)
+        {
+            // do nothing
+        }
+
+        public void Draw(CanvasDrawingSession ds)
+        {
+            foreach (var tile in Tiles)
+            {
+                tile.Draw(ds);
+            }
+        }
 
         #endregion
 
@@ -37,6 +68,7 @@ namespace Catch.Models
 
         public List<IHexTile> Tiles;
         protected Dictionary<string, IPath> Paths;
+        private float _tileRadius;
 
         public void Initialize(int rows, int columns)
         {
@@ -212,6 +244,9 @@ namespace Catch.Models
 
             return (col * Rows) - (col / 2) + row;
         }
+
+        public Vector2 SizeInPixels { get { return new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), (float)(Rows * 2 * HexUtils.GetRadiusHeight(_tileRadius))); } }
+
 
         [System.Diagnostics.Conditional("DEBUG")]
         private static void Assert(bool condition)

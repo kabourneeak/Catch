@@ -1,4 +1,5 @@
-﻿using Catch.Base;
+﻿using System;
+using Catch.Base;
 using Catch.Models;
 using Catch.Services;
 
@@ -21,8 +22,7 @@ namespace Catch.Win2d
 
         public IHexTile CreateTile(int row, int col)
         {
-            var tile = new BasicHexTile(row, col);
-            tile.Graphics = new BasicHexTileGraphics(tile, _tileRadius);
+            var tile = new BasicHexTile(row, col, _config);
 
             return tile;
         }
@@ -34,6 +34,16 @@ namespace Catch.Win2d
         public IAgent CreateAgent(string name)
         {
             throw new System.NotImplementedException();
+        }
+
+        public IPathAgent CreatePathAgent(string name, IPath path)
+        {
+            if (name == "BlockMob")
+            {
+                return new BlockMob(path, new EmptyBrain(), _config);
+            }
+            
+            throw new ArgumentException("I don't know how to construct that PathAgent");
         }
 
         public IModifier CreateModifier(string name)
@@ -52,8 +62,7 @@ namespace Catch.Win2d
 
         public IMap CreateMap()
         {
-            var map = new BasicMap(this);
-            map.Graphics = new MapGraphics(map);
+            var map = new BasicMap(this, _config);
 
             return map;
         }
