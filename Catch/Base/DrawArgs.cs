@@ -28,10 +28,15 @@ namespace Catch.Base
         
         public Matrix3x2 PushTranslation(float x, float y)
         {
-            return PushTranslation(Matrix3x2.CreateTranslation(x, y));
+            return Push(Matrix3x2.CreateTranslation(x, y));
         }
 
-        public Matrix3x2 PushTranslation(Matrix3x2 relativeTransform)
+        public Matrix3x2 PushRotation(float radians, Vector2 center)
+        {
+            return Push(Matrix3x2.CreateRotation(radians, center));
+        }
+
+        public Matrix3x2 Push(Matrix3x2 relativeTransform)
         {
             var newTransform = Matrix3x2.Multiply(relativeTransform, CurrentTransform);
             _transforms.Push(newTransform);

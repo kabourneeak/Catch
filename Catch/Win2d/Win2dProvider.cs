@@ -36,6 +36,16 @@ namespace Catch.Win2d
             throw new System.NotImplementedException();
         }
 
+        public ITower CreateTower(string name, IHexTile tile)
+        {
+            if (name == "GunTower")
+            {
+                return new GunTower(_config, tile);
+            }
+
+            throw new ArgumentException("I don't know how to construct that Tower");
+        }
+
         public IPathAgent CreatePathAgent(string name, IPath path)
         {
             if (name == "BlockMob")

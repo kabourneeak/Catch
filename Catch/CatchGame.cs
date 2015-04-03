@@ -105,12 +105,20 @@ namespace Catch
             Score = StartScore;
             Lives = StartLives;
 
-            CreateMap();
-            CreatePath();
-
             _agents.Clear();
 
+            CreateMap();
+            CreateTowers();
+            CreatePath();
+
             ChangeGameState(GameState.Playing);
+        }
+
+        private void CreateTowers()
+        {
+            var tower = _provider.CreateTower("GunTower", _map.GetTile(4, 5));
+
+            _agents.Add(tower);
         }
 
         private void CreatePath()
