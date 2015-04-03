@@ -37,16 +37,16 @@ namespace Catch.Win2d
             // do nothing
         }
 
-        public void CreateResources(CanvasDrawingSession drawingSession)
+        public void CreateResources(DrawArgs drawArgs)
         {
             // do nothing
         }
 
-        public void Draw(CanvasDrawingSession ds)
+        public void Draw(DrawArgs drawArgs)
         {
             // TODO cache this between multiple instances
 
-            var pb = new CanvasPathBuilder(ds);
+            var pb = new CanvasPathBuilder(drawArgs.Ds);
             pb.BeginFigure(-1 * _radius * HexUtils.COS60, _radiusH);
             pb.AddLine(_radius * HexUtils.COS60, _radiusH);
             pb.AddLine(_radius, 0);
@@ -57,7 +57,7 @@ namespace Catch.Win2d
 
             var geo = CanvasGeometry.CreatePath(pb);
 
-            ds.DrawGeometry(geo, Position.X, Position.Y, Colour, 4);
+            drawArgs.Ds.DrawGeometry(geo, Position.X, Position.Y, Colour, 4);
         }
     }
 }

@@ -81,14 +81,14 @@ namespace Catch.Models
             Graphics.Update(ticks);
         }
 
-        public void CreateResources(CanvasDrawingSession ds)
+        public void CreateResources(DrawArgs drawArgs)
         {
-            Graphics.CreateResources(ds);
+            Graphics.CreateResources(drawArgs);
         }
 
-        public void Draw(CanvasDrawingSession ds)
+        public void Draw(DrawArgs drawArgs)
         {
-            Graphics.Draw(ds);
+            Graphics.Draw(drawArgs);
         }
 
         #endregion

@@ -31,16 +31,16 @@ namespace Catch.Models
             return typeof (BlockMob).Name;
         }
 
-        public override void CreateResources(CanvasDrawingSession ds)
+        public override void CreateResources(DrawArgs drawArgs)
         {
             // do nothing
         }
 
-        public override void Draw(CanvasDrawingSession ds)
+        public override void Draw(DrawArgs drawArgs)
         {
             var tilePos = Tile.Position;
 
-            ds.FillRectangle(new Rect(tilePos.X - _blockSize / 2, tilePos.Y - _blockSize / 2, _blockSize,
+            drawArgs.Ds.FillRectangle(new Rect(tilePos.X - _blockSize / 2, tilePos.Y - _blockSize / 2, _blockSize,
                     _blockSize), _blockColour);
         }
     }

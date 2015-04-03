@@ -172,16 +172,17 @@ namespace Catch
         {
             // TODO some method of objects to report their size
             //Vector2 mapSize = _map.SizeInPixels;
+            var mapSize = new Vector2(1820, 1080);
 
-            var mapSize = new Vector2(1920, 1080);
+            var drawArgs = new DrawArgs(ds, ds.Transform);
 
-            ds.Transform = Matrix3x2.CreateTranslation((float) ((Size.Width - mapSize.X) / 2), (float) ((Size.Height - mapSize.Y) / 2));
+            drawArgs.PushTranslation((float) ((Size.Width - mapSize.X) / 2), (float) ((Size.Height - mapSize.Y) / 2));
 
-            _map.Draw(ds);
+            _map.Draw(drawArgs);
 
             foreach (var agent in _agents)
             {
-                agent.Draw(ds);
+                agent.Draw(drawArgs);
             }
         }
 

@@ -86,12 +86,12 @@ namespace Catch.Models
             Brain.Update(ticks);
         }
 
-        public virtual void CreateResources(CanvasDrawingSession ds)
+        public virtual void CreateResources(DrawArgs drawArgs)
         {
             // do nothing
         }
 
-        public virtual void Draw(CanvasDrawingSession ds)
+        public virtual void Draw(DrawArgs drawArgs)
         {
             // do nothing
         }

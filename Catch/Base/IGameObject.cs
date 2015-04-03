@@ -1,5 +1,5 @@
-﻿using Microsoft.Graphics.Canvas;
-using System.Numerics;
+﻿using System.Numerics;
+using Windows.Foundation;
 
 namespace Catch.Base
 {
@@ -16,13 +16,12 @@ namespace Catch.Base
 
         DrawLayer Layer { get; }
 
-
         // Events
         void Update(float ticks);
 
-        void CreateResources(CanvasDrawingSession ds);
+        void CreateResources(DrawArgs drawArgs);
 
-        void Draw(CanvasDrawingSession ds);
+        void Draw(DrawArgs drawArgs);
     }
 
     public enum DrawLayer

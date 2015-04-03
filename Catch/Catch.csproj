@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="Base\AttackSpecs.cs" />
     <Compile Include="Base\DefenceSpecs.cs" />
+    <Compile Include="Base\DrawArgs.cs" />
     <Compile Include="Base\HexCoords.cs" />
     <Compile Include="Base\HexUtils.cs" />
     <Compile Include="Base\IAgent.cs" />
@@ -129,7 +130,6 @@
     <Compile Include="Base\IPathAgent.cs" />
     <Compile Include="Base\ITower.cs" />
     <Compile Include="Base\TileDirection.cs" />
-    <Compile Include="CanvasExtensions.cs" />
     <Compile Include="CanvasUtils.cs" />
     <Compile Include="CatchGame.cs" />
     <Compile Include="EnumUtils.cs" />

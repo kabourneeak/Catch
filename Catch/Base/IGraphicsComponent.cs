@@ -11,9 +11,9 @@ namespace Catch.Base
         // Events
         void Update(float ticks);
 
-        void CreateResources(CanvasDrawingSession ds);
+        void CreateResources(DrawArgs drawArgs);
 
-        void Draw(CanvasDrawingSession ds);
+        void Draw(DrawArgs drawArgs);
     }
 
 }

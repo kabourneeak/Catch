@@ -49,16 +49,16 @@ namespace Catch.Models
             }
         }
 
-        public void CreateResources(CanvasDrawingSession ds)
+        public void CreateResources(DrawArgs drawArgs)
         {
             // do nothing
         }
 
-        public void Draw(CanvasDrawingSession ds)
+        public void Draw(DrawArgs drawArgs)
         {
             foreach (var tile in Tiles)
             {
-                tile.Draw(ds);
+                tile.Draw(drawArgs);
             }
         }
 
