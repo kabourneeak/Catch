@@ -83,7 +83,29 @@ namespace Catch.Models
                 Tile = Path[PathIndex];
             }
 
+            // calculate Position
+            UpdatePosition();
+
             Brain.Update(ticks);
+        }
+
+        private void UpdatePosition()
+        {
+            Vector2 prev;
+            Vector2 next;
+
+            if (TileProgress < 0.5)
+            {
+                next = Tile.Position;
+                prev = (PathIndex > 0) ? Path[PathIndex - 1].Position : next;
+                Position = Vector2.Lerp(prev, next, 0.5f + TileProgress);
+            }
+            else
+            {
+                prev = Tile.Position;
+                next = (PathIndex < Path.Count - 1) ? Path[PathIndex + 1].Position : prev;
+                Position = Vector2.Lerp(prev, next, TileProgress - 0.5f);
+            }
         }
 
         public virtual void CreateResources(DrawArgs drawArgs)

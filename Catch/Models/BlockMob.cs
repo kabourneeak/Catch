@@ -19,7 +19,7 @@ namespace Catch.Models
 
             _config = config;
 
-            Velocity = 0.5f;
+            Velocity = 0.005f;
 
             // TODO copy down relevant config
             _blockSize = 10;
@@ -38,9 +38,7 @@ namespace Catch.Models
 
         public override void Draw(DrawArgs drawArgs)
         {
-            var tilePos = Tile.Position;
-
-            drawArgs.Ds.FillRectangle(new Rect(tilePos.X - _blockSize / 2, tilePos.Y - _blockSize / 2, _blockSize,
+            drawArgs.Ds.FillRectangle(new Rect(Position.X - _blockSize / 2, Position.Y - _blockSize / 2, _blockSize,
                     _blockSize), _blockColour);
         }
     }
