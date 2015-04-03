@@ -44,22 +44,19 @@ namespace Catch.Models
         public void Update(float ticks)
         {
             foreach (var tile in Tiles)
-            {
                 tile.Update(ticks);
-            }
         }
 
-        public void CreateResources(DrawArgs drawArgs)
+        public void CreateResources(CreateResourcesArgs createArgs)
         {
-            // do nothing
+            foreach (var tile in Tiles)
+                tile.CreateResources(createArgs);
         }
 
         public void Draw(DrawArgs drawArgs)
         {
             foreach (var tile in Tiles)
-            {
                 tile.Draw(drawArgs);
-            }
         }
 
         #endregion

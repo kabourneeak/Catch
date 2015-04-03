@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Numerics;
 using Windows.Foundation;
+using Windows.UI.ViewManagement;
 using Catch.Base;
 using Catch.Models;
 using Catch.Services;
@@ -10,11 +13,6 @@ using Microsoft.Graphics.Canvas;
 
 namespace Catch
 {
-    public enum GameState
-    {
-        Init, Title, Playing
-    }
-
     /// <summary>
     /// Model Controller for game state
     /// </summary>
@@ -40,10 +38,13 @@ namespace Catch
         public int Score { get; private set; }
         public int Lives { get; private set; }
 
-        private List<IAgent> _agents;
-        private IMap _map;
         private IConfig _config;
         private Win2DProvider _provider;
+        private readonly List<IAgent> _agents;
+        private IMap _map;
+        private int _frameId;
+
+        // testing
         private IPath _path;
 
         //
@@ -74,12 +75,13 @@ namespace Catch
             State = GameState.Init;
 
             AssembleServices();
+
+            _agents = new List<IAgent>();
         }
 
         private void AssembleServices()
         {
             _config = new CompiledConfig();
-
             _provider = new Win2DProvider(_config);
         }
 
@@ -106,7 +108,7 @@ namespace Catch
             CreateMap();
             CreatePath();
 
-            _agents = new List<IAgent>();
+            _agents.Clear();
 
             ChangeGameState(GameState.Playing);
         }
@@ -168,22 +170,39 @@ namespace Catch
 
         }
 
+        public void CreateResources(ICanvasResourceCreator resourceCreator)
+        {
+            Debug.WriteLine("Mandatory CreateResources");
+            CreateResources(resourceCreator, true);
+        }
+
+        private void CreateResources(ICanvasResourceCreator resourceCreator, bool mandatory)
+        {
+            var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, mandatory);
+
+            if (_map != null)
+                _map.CreateResources(createArgs);
+
+            foreach (var agent in _agents)
+                agent.CreateResources(createArgs);
+        }
+
         public void Draw(CanvasDrawingSession ds)
         {
+            CreateResources(ds, false);
+
             // TODO some method of objects to report their size
             //Vector2 mapSize = _map.SizeInPixels;
             var mapSize = new Vector2(1820, 1080);
 
-            var drawArgs = new DrawArgs(ds, ds.Transform);
+            var drawArgs = new DrawArgs(ds, ds.Transform, ++_frameId);
 
             drawArgs.PushTranslation((float) ((Size.Width - mapSize.X) / 2), (float) ((Size.Height - mapSize.Y) / 2));
 
             _map.Draw(drawArgs);
 
             foreach (var agent in _agents)
-            {
                 agent.Draw(drawArgs);
-            }
         }
 
         public void Update(float ticks)
@@ -245,6 +264,11 @@ namespace Catch
                 _agents.Add(block);
             }
         }
+    }
+
+    public enum GameState
+    {
+        Init, Title, Playing
     }
 
     public class GameStateChangedEventArgs : EventArgs

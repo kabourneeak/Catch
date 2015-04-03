@@ -9,14 +9,18 @@ namespace Catch.Base
     {
         private readonly Stack<Matrix3x2> _transforms;
 
-        public DrawArgs(CanvasDrawingSession ds, Matrix3x2 baseTransform)
+        public DrawArgs(CanvasDrawingSession ds, Matrix3x2 baseTransform, int frameId)
         {
             Ds = ds;
+            FrameId = frameId;
+
             _transforms = new Stack<Matrix3x2>();
             _transforms.Push(baseTransform);
 
             Ds.Transform = CurrentTransform;
         }
+
+        public int FrameId { get; private set; }
 
         public CanvasDrawingSession Ds { get; private set; }
 

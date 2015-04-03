@@ -108,6 +108,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Base\AttackSpecs.cs" />
+    <Compile Include="Base\CreateResourcesArgs.cs" />
     <Compile Include="Base\DefenceSpecs.cs" />
     <Compile Include="Base\DrawArgs.cs" />
     <Compile Include="Base\HexCoords.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Base\IPath.cs" />
     <Compile Include="Base\IPathAgent.cs" />
     <Compile Include="Base\ITower.cs" />
+    <Compile Include="Base\StyleArgs.cs" />
     <Compile Include="Base\TileDirection.cs" />
     <Compile Include="CanvasUtils.cs" />
     <Compile Include="CatchGame.cs" />

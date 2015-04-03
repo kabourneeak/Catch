@@ -108,7 +108,7 @@ namespace Catch.Models
             }
         }
 
-        public virtual void CreateResources(DrawArgs drawArgs)
+        public virtual void CreateResources(CreateResourcesArgs createArgs)
         {
             // do nothing
         }

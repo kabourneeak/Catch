@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Windows.Foundation;
 using Windows.UI;
 using Catch.Base;
@@ -22,7 +23,7 @@ namespace Catch.Models
             Velocity = 0.005f;
 
             // TODO copy down relevant config
-            _blockSize = 10;
+            _blockSize = 20;
             _blockColour = Colors.Yellow;
         }
 
@@ -31,15 +32,40 @@ namespace Catch.Models
             return typeof (BlockMob).Name;
         }
 
-        public override void CreateResources(DrawArgs drawArgs)
+        private static int _createFrameId = -1;
+        private static CanvasCachedGeometry _geo;
+        private static ICanvasBrush _brush;
+
+        public override void CreateResources(CreateResourcesArgs createArgs)
         {
-            // do nothing
+            if (!(createArgs.IsMandatory || _geo == null))
+                return;
+
+            if (_createFrameId == createArgs.FrameId)
+                return;
+
+            _createFrameId = createArgs.FrameId;
+
+            if (_geo != null)
+                _geo.Dispose();
+
+            // define style
+            var strokeStyle = new CanvasStrokeStyle() {LineJoin = CanvasLineJoin.Round};
+            var strokeWidth = 4;
+
+            // define brush
+            _brush = new CanvasSolidColorBrush(createArgs.ResourceCreator, _blockColour);
+
+            // create and cache
+            var offset = _blockSize / 2.0f;
+            var geo = CanvasGeometry.CreateRectangle(createArgs.ResourceCreator, -offset, -offset, _blockSize, _blockSize);
+
+            _geo = CanvasCachedGeometry.CreateStroke(geo, strokeWidth, strokeStyle);
         }
 
         public override void Draw(DrawArgs drawArgs)
         {
-            drawArgs.Ds.FillRectangle(new Rect(Position.X - _blockSize / 2, Position.Y - _blockSize / 2, _blockSize,
-                    _blockSize), _blockColour);
+            drawArgs.Ds.DrawCachedGeometry(_geo, Position, _brush);
         }
     }
 }

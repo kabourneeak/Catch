@@ -30,7 +30,7 @@ namespace Catch
 
         private void cvs_CreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
-
+            _game.CreateResources(sender.Device);
         }
 
         private void cvs_Update(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Numerics;
-using Windows.UI;
+﻿using System.Numerics;
 using Catch.Base;
 using Catch.Services;
 using Catch.Win2d;
-using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
@@ -81,9 +78,9 @@ namespace Catch.Models
             Graphics.Update(ticks);
         }
 
-        public void CreateResources(DrawArgs drawArgs)
+        public void CreateResources(CreateResourcesArgs createArgs)
         {
-            Graphics.CreateResources(drawArgs);
+            Graphics.CreateResources(createArgs);
         }
 
         public void Draw(DrawArgs drawArgs)

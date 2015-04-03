@@ -37,16 +37,33 @@ namespace Catch.Win2d
             // do nothing
         }
 
-        public void CreateResources(DrawArgs drawArgs)
-        {
-            // do nothing
-        }
+        private static int _createFrameId = -1;
+        private static CanvasCachedGeometry _geo;
+        private static ICanvasBrush _brush;
 
-        public void Draw(DrawArgs drawArgs)
+        public void CreateResources(CreateResourcesArgs createArgs)
         {
-            // TODO cache this between multiple instances
+            if (!(createArgs.IsMandatory || _geo == null))
+                return;
 
-            var pb = new CanvasPathBuilder(drawArgs.Ds);
+            if (_createFrameId == createArgs.FrameId)
+                return;
+
+            _createFrameId = createArgs.FrameId;
+
+            if (_geo != null)
+                _geo.Dispose();
+             
+            // define style
+            var strokeStyle = new CanvasStrokeStyle() {};
+            var strokeWidth = 4;
+
+            // define brush
+            _brush = new CanvasSolidColorBrush(createArgs.ResourceCreator, Colour);
+   
+            // define path
+            var pb = new CanvasPathBuilder(createArgs.ResourceCreator);
+
             pb.BeginFigure(-1 * _radius * HexUtils.COS60, _radiusH);
             pb.AddLine(_radius * HexUtils.COS60, _radiusH);
             pb.AddLine(_radius, 0);
@@ -55,9 +72,15 @@ namespace Catch.Win2d
             pb.AddLine(-1 * _radius, 0);
             pb.EndFigure(CanvasFigureLoop.Closed);
 
+            // create and cache
             var geo = CanvasGeometry.CreatePath(pb);
+            
+            _geo = CanvasCachedGeometry.CreateStroke(geo, strokeWidth, strokeStyle);
+        }
 
-            drawArgs.Ds.DrawGeometry(geo, Position.X, Position.Y, Colour, 4);
+        public void Draw(DrawArgs drawArgs)
+        {
+            drawArgs.Ds.DrawCachedGeometry(_geo, Position, _brush);
         }
     }
 }
