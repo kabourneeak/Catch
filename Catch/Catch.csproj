@@ -135,6 +135,8 @@
     <Compile Include="CanvasUtils.cs" />
     <Compile Include="CatchGame.cs" />
     <Compile Include="EnumUtils.cs" />
+    <Compile Include="FloatExtentions.cs" />
+    <Compile Include="IntExtensions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

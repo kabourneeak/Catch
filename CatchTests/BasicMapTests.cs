@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Catch.Base;
 using Catch.Models;
+using Catch.Services;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace CatchTests
@@ -10,13 +11,13 @@ namespace CatchTests
     {
         public IHexTile CreateTile(int row, int col)
         {
-            return new BasicHexTile(row, col);
+            return new BasicHexTile(row, col, new CompiledConfig());
         }
     }
 
     public class BasicMapAdapter : BasicMap
     {
-        public BasicMapAdapter() : base(new BasicTileProvider())
+        public BasicMapAdapter() : base(new BasicTileProvider(), new CompiledConfig())
         {
             
         }

@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using Windows.UI;
 using Catch.Base;
 using Catch.Services;
@@ -30,18 +31,45 @@ namespace Catch.Models
 
         public DrawLayer Layer { get; private set; }
 
+        private float _holdTicks;
+        private const float _rotationRate = (float)(2 * Math.PI / 60);
+        private float _rotationVel;
+        private float _rotation = 0.0f;
+        private TileDirection _targetDirection = TileDirection.North;
+        private TileDirection _currentDirection = TileDirection.North;
+
         public void Update(float ticks)
         {
-            // 2*PI / 60
-            _rotation += 0.10471976f;
+            if (_targetDirection == _currentDirection)
+            {
+                _holdTicks -= ticks;
 
-            // TODO targetting
+                if (_holdTicks < 0)
+                {
+                    while (_targetDirection == _currentDirection)
+                        _targetDirection = TileDirectionExtensions.GetRandom();
+
+                    _rotationVel = _rotationRate *
+                                   TileDirectionExtensions.ShortestRotationDirection(_currentDirection, _targetDirection);
+                    _holdTicks = 30.0f;
+                }
+            }
+            else
+            {
+                _rotation = _rotation.Wrap(_rotationVel, 0.0f, (float) (2 * Math.PI));
+
+                if (Math.Abs(_rotation - _targetDirection.CenterRadians()) <= _rotationRate * 1.5f)
+                {
+                    _currentDirection = _targetDirection;
+                    _rotation = _currentDirection.CenterRadians();
+                    _rotationVel = 0.0f;
+                }
+            }
         }
 
         private static int _createFrameId = -1;
         private static CanvasCachedGeometry _geo;
         private static ICanvasBrush _brush;
-        private float _rotation = 0;
 
         public void CreateResources(CreateResourcesArgs createArgs)
         {
