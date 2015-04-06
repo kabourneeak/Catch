@@ -142,8 +142,10 @@
     </Compile>
     <Compile Include="Base\IHexTileProvider.cs" />
     <Compile Include="Models\BasicHexTile.cs" />
+    <Compile Include="Models\BasicIndicatorCollection.cs" />
     <Compile Include="Models\BasicMap.cs" />
     <Compile Include="Models\BasicPath.cs" />
+    <Compile Include="Models\BasicTower.cs" />
     <Compile Include="Models\BlockMob.cs" />
     <Compile Include="Models\EmptyBrain.cs" />
     <Compile Include="Models\GunTower.cs" />

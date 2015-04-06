@@ -1,9 +1,8 @@
 ﻿using System.Numerics;
-using Windows.Foundation;
 
 namespace Catch.Base
 {
-    public interface IGameObject
+    public interface IGameObject : IGraphicsComponent
     {
         // properties
         string DisplayName { get; }
@@ -15,13 +14,6 @@ namespace Catch.Base
         Vector2 Position { get; }
 
         DrawLayer Layer { get; }
-
-        // Events
-        void Update(float ticks);
-
-        void CreateResources(CreateResourcesArgs createArgs);
-
-        void Draw(DrawArgs drawArgs);
     }
 
     public enum DrawLayer

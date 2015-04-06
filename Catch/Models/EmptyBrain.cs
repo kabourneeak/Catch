@@ -9,9 +9,9 @@ namespace Catch.Models
             // do nothing
         }
 
-        public bool Update(float ticks)
+        public void Update(float ticks)
         {
-            return true;
+            // do nothing
         }
 
         public void OnRemove()

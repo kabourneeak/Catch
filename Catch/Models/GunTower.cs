@@ -7,64 +7,51 @@ using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
-    public class GunTower : ITower
+    public class GunTower : BasicTower
     {
         private readonly IConfig _config;
 
-        public GunTower(IConfig config, IHexTile tile)
+        public GunTower(IHexTile tile, IConfig config) : base(tile)
         {
             _config = config;
 
-            Tile = tile;
             Layer = DrawLayer.Tower;
+
+            Brain = new GunTowerBaseBehaviour(this, config);
+            Indicators.Add(new GunTowerBaseIndicator(this, config));
         }
+
+        public float Rotation { get; set; }
 
         #region IGameObject Implementation
 
-        public string DisplayName { get; private set; }
+        // no overrides
 
-        public string DisplayInfo { get; private set; }
+        #endregion
 
-        public string DisplayStatus { get; private set; }
+        #region IAgent Implementation
 
-        public Vector2 Position { get { return Tile.Position; } }
+        public override string GetAgentType()
+        {
+            return typeof (GunTower).Name;
+        }
+        
+        #endregion
+    }
 
-        public DrawLayer Layer { get; private set; }
+    public class GunTowerBaseIndicator : IIndicator
+    {
+        private readonly GunTower _tower;
 
-        private float _holdTicks;
-        private const float _rotationRate = (float)(2 * Math.PI / 60);
-        private float _rotationVel;
-        private float _rotation = 0.0f;
-        private TileDirection _targetDirection = TileDirection.North;
-        private TileDirection _currentDirection = TileDirection.North;
+        public GunTowerBaseIndicator(GunTower tower, IConfig config)
+        {
+            _tower = tower;
+            Layer = DrawLayer.Tower;
+        }
 
         public void Update(float ticks)
         {
-            if (_targetDirection == _currentDirection)
-            {
-                _holdTicks -= ticks;
-
-                if (_holdTicks < 0)
-                {
-                    while (_targetDirection == _currentDirection)
-                        _targetDirection = TileDirectionExtensions.GetRandom();
-
-                    _rotationVel = _rotationRate *
-                                   TileDirectionExtensions.ShortestRotationDirection(_currentDirection, _targetDirection);
-                    _holdTicks = 30.0f;
-                }
-            }
-            else
-            {
-                _rotation = _rotation.Wrap(_rotationVel, 0.0f, (float) (2 * Math.PI));
-
-                if (Math.Abs(_rotation - _targetDirection.CenterRadians()) <= _rotationRate * 1.5f)
-                {
-                    _currentDirection = _targetDirection;
-                    _rotation = _currentDirection.CenterRadians();
-                    _rotationVel = 0.0f;
-                }
-            }
+            // do nothing
         }
 
         private static int _createFrameId = -1;
@@ -94,7 +81,7 @@ namespace Catch.Models
             // create geometry
             var body = CanvasGeometry.CreateCircle(createArgs.ResourceCreator, new Vector2(0.0f), 24);
             var cannon = CanvasGeometry.CreateRectangle(createArgs.ResourceCreator, -3, 23, 6, 10);
-            
+
             var comb = body.CombineWith(cannon, Matrix3x2.Identity, CanvasGeometryCombine.Union);
 
             // cache
@@ -103,40 +90,73 @@ namespace Catch.Models
 
         public void Draw(DrawArgs drawArgs)
         {
-            drawArgs.PushRotation(_rotation, Position);
-            
-            drawArgs.Ds.DrawCachedGeometry(_geo, Position, _brush);
+            drawArgs.PushRotation(_tower.Rotation);
+
+            drawArgs.Ds.DrawCachedGeometry(_geo, _brush);
 
             drawArgs.Pop();
         }
 
-        #endregion
+        public DrawLayer Layer { get; private set; }
+    }
 
-        #region IAgent Implementation
+    public class GunTowerBaseBehaviour : IBehaviourComponent
+    {
+        private readonly GunTower _tower;
 
-        public string GetAgentType()
+        public GunTowerBaseBehaviour(GunTower tower, IConfig config)
         {
-            return typeof (GunTower).Name;
+            _tower = tower;
         }
 
-        public IBehaviourComponent Brain { get; private set; }
+        public void OnSpawn()
+        {
+            // do nothing;
+        }
 
-        public IHexTile Tile { get; private set; }
+        private float _holdTicks;
+        private const float _rotationRate = (float)(2 * Math.PI / 60);
+        private float _rotationVel;
+        private TileDirection _targetDirection = TileDirection.North;
+        private TileDirection _currentDirection = TileDirection.North;
 
-        public bool IsTargetable { get; private set; }
+        public void Update(float ticks)
+        {
+            if (_targetDirection == _currentDirection)
+            {
+                _holdTicks -= ticks;
 
-        public int Health { get; private set; }
+                if (_holdTicks < 0)
+                {
+                    while (_targetDirection == _currentDirection)
+                        _targetDirection = TileDirectionExtensions.GetRandom();
 
-        public IModifierCollection Modifiers { get; private set; }
+                    _rotationVel = _rotationRate *
+                                   TileDirectionExtensions.ShortestRotationDirection(_currentDirection, _targetDirection);
+                    _holdTicks = 30.0f;
+                }
+            }
+            else
+            {
+                _tower.Rotation = _tower.Rotation.Wrap(_rotationVel, 0.0f, (float)(2 * Math.PI));
 
-        public IIndicatorCollection Indicators { get; private set; }
+                if (Math.Abs(_tower.Rotation - _targetDirection.CenterRadians()) <= _rotationRate * 1.5f)
+                {
+                    _currentDirection = _targetDirection;
+                    _tower.Rotation = _currentDirection.CenterRadians();
+                    _rotationVel = 0.0f;
+                }
+            }
+        }
 
-        public AttackSpecs AttackSpecs { get; private set; }
+        public void OnRemove()
+        {
+            // do nothing
+        }
 
-        public DefenceSpecs DefenceSpecs { get; private set; }
-
-        public IAgentStats Stats { get; private set; }
-
-        #endregion
+        public void OnAttacked(IAttack attack)
+        {
+            // do nothing
+        }
     }
 }

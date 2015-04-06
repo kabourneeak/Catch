@@ -116,9 +116,18 @@ namespace Catch
 
         private void CreateTowers()
         {
-            var tower = _provider.CreateTower("GunTower", _map.GetTile(4, 5));
+            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(4, 5)));
+            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(5, 5)));
+            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(4, 4)));
+            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(6, 5)));
+            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(5, 6)));
 
-            _agents.Add(tower);
+            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(4, 15)));
+            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(5, 15)));
+            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(4, 14)));
+            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(6, 15)));
+            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(5, 16)));
+
         }
 
         private void CreatePath()

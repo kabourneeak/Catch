@@ -40,7 +40,7 @@ namespace Catch.Win2d
         {
             if (name == "GunTower")
             {
-                return new GunTower(_config, tile);
+                return new GunTower(tile, _config);
             }
 
             throw new ArgumentException("I don't know how to construct that Tower");

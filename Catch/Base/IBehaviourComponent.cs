@@ -4,7 +4,7 @@
     {
         void OnSpawn();
 
-        bool Update(float ticks);
+        void Update(float ticks);
 
         void OnRemove();
 

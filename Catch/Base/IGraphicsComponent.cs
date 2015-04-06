@@ -4,7 +4,7 @@ using System.Numerics;
 namespace Catch.Base
 {
     /// <summary>
-    /// Just the basic methods for drawing
+    /// Just the basic methods for drawing and animation
     /// </summary>
     public interface IGraphicsComponent
     {
@@ -15,5 +15,4 @@ namespace Catch.Base
 
         void Draw(DrawArgs drawArgs);
     }
-
 }

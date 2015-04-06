@@ -31,6 +31,16 @@ namespace Catch.Base
             return Push(Matrix3x2.CreateTranslation(x, y));
         }
 
+        public Matrix3x2 PushTranslation(Vector2 offset)
+        {
+            return Push(Matrix3x2.CreateTranslation(offset));
+        }
+
+        public Matrix3x2 PushRotation(float radians)
+        {
+            return Push(Matrix3x2.CreateRotation(radians));
+        }
+
         public Matrix3x2 PushRotation(float radians, Vector2 center)
         {
             return Push(Matrix3x2.CreateRotation(radians, center));
