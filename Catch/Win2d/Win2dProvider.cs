@@ -31,11 +31,6 @@ namespace Catch.Win2d
 
         #region IAgentProvider implementation
 
-        public IAgent CreateAgent(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public ITower CreateTower(string name, IHexTile tile)
         {
             if (name == "GunTower")

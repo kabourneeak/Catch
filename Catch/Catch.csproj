@@ -130,7 +130,6 @@
     <Compile Include="Base\IModifier.cs" />
     <Compile Include="Base\IModifierCollection.cs" />
     <Compile Include="Base\IPath.cs" />
-    <Compile Include="Base\IPathAgent.cs" />
     <Compile Include="Base\ITower.cs" />
     <Compile Include="Base\StyleArgs.cs" />
     <Compile Include="Base\TileDirection.cs" />
@@ -152,7 +151,6 @@
     <Compile Include="Models\BlockMob.cs" />
     <Compile Include="Models\EmptyBrain.cs" />
     <Compile Include="Models\GunTower.cs" />
-    <Compile Include="Models\PathMobAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RectExtensions.cs" />
     <Compile Include="Services\CompiledConfig.cs" />
