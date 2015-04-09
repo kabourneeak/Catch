@@ -277,7 +277,7 @@ namespace Catch
         {
             if (_rng.NextDouble() < (3 / 60.0))
             {
-                var block = _provider.CreatePathAgent("BlockMob", _path);
+                var block = _provider.CreateMob("BlockMob", _path);
                 _agents.Add(block);
             }
         }

@@ -111,6 +111,7 @@
     <Compile Include="Base\CreateResourcesArgs.cs" />
     <Compile Include="Base\DefenceSpecs.cs" />
     <Compile Include="Base\DrawArgs.cs" />
+    <Compile Include="Base\DrawLayer.cs" />
     <Compile Include="Base\HexCoords.cs" />
     <Compile Include="Base\HexUtils.cs" />
     <Compile Include="Base\IAgent.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Base\IIndicatorCollection.cs" />
     <Compile Include="Base\IMap.cs" />
     <Compile Include="Base\IMapProvider.cs" />
+    <Compile Include="Base\IMob.cs" />
     <Compile Include="Base\IModifier.cs" />
     <Compile Include="Base\IModifierCollection.cs" />
     <Compile Include="Base\IPath.cs" />
@@ -144,6 +146,7 @@
     <Compile Include="Models\BasicHexTile.cs" />
     <Compile Include="Models\BasicIndicatorCollection.cs" />
     <Compile Include="Models\BasicMap.cs" />
+    <Compile Include="Models\BasicMob.cs" />
     <Compile Include="Models\BasicPath.cs" />
     <Compile Include="Models\BasicTower.cs" />
     <Compile Include="Models\BlockMob.cs" />

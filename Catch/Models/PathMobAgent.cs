@@ -40,11 +40,11 @@ namespace Catch.Models
 
         public IBehaviourComponent Brain { get; protected set; }
 
-        public IHexTile Tile { get; protected set; }
+        public IHexTile Tile { get; set; }
 
-        public bool IsTargetable { get; protected set; }
+        public bool IsTargetable { get; set; }
 
-        public int Health { get; protected set; }
+        public int Health { get; set; }
 
         public IModifierCollection Modifiers { get; protected set; }
 
@@ -66,7 +66,7 @@ namespace Catch.Models
 
         public string DisplayStatus { get; protected set; }
 
-        public Vector2 Position { get; protected set; }
+        public Vector2 Position { get; set; }
 
         public DrawLayer Layer { get; protected set; }
 

@@ -11,13 +11,8 @@ namespace Catch.Base
 
         string DisplayStatus { get; }
 
-        Vector2 Position { get; }
+        Vector2 Position { get; set; }
 
         DrawLayer Layer { get; }
-    }
-
-    public enum DrawLayer
-    {
-        Background, Base, Tower, Agent, Mob, Effect, Ui
     }
 }

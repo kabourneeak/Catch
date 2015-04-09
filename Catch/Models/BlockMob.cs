@@ -1,42 +1,135 @@
-using System.Linq.Expressions;
-using Windows.Foundation;
 using Windows.UI;
+using System.Numerics;
 using Catch.Base;
 using Catch.Services;
 using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
-    public class BlockMob : PathMobAgent
+    public class BlockMob : BasicMob
     {
         private readonly IConfig _config;
-        private readonly int _blockSize;
-        private readonly Color _blockColour;
 
-        public BlockMob(IPath path, IBehaviourComponent brain, IConfig config) : base(path, brain)
+        public BlockMob(IPath path, IConfig config) : base()
         {
             // This class can be massively generalized!  e.g., take in a config object and a mob name, and then fill out
             // all of the other details like health, speed, attack, defense, mod loadout, from config.
 
+            // TODO copy down relevant config
             _config = config;
 
-            Velocity = 0.005f;
+            int blockSize = 20;
+            Color blockColour = Colors.Yellow;
+            float velocity = 0.005f;
+            
 
-            // TODO copy down relevant config
-            _blockSize = 20;
-            _blockColour = Colors.Yellow;
+            Brain = new PathMobBehaviour(this, path, velocity);
+            Indicators.Add(new BlockMobBaseIndicator(this, blockSize, blockColour));
         }
 
         public override string GetAgentType()
         {
             return typeof (BlockMob).Name;
         }
+    }
+
+    public class PathMobBehaviour : IBehaviourComponent
+    {
+        private readonly IMob _mob;
+        private readonly IPath _path;
+        private int _pathIndex;
+        private float _tileProgress;
+        private float _velocity;
+
+        public PathMobBehaviour(IMob mob, IPath path, float velocity)
+        {
+            _mob = mob;
+            _path = path;
+            _velocity = velocity;
+
+            _pathIndex = 0;
+            _mob.Tile = _path[_pathIndex];
+            _tileProgress = 0.5f; // start in the center of our source tile
+        }
+
+        public void OnSpawn()
+        {
+            // do nothing
+        }
+
+        public void Update(float ticks)
+        {
+            // advance through tile
+            _tileProgress += _velocity * ticks;
+
+            // advance to next tile, if necessary
+            while (_tileProgress > 1 && _pathIndex < (_path.Count - 1))
+            {
+                _pathIndex += 1;
+                _tileProgress -= 1.0f;
+                _mob.Tile = _path[_pathIndex];
+            }
+
+            // calculate Position
+            UpdatePosition();
+        }
+
+        private void UpdatePosition()
+        {
+            Vector2 prev;
+            Vector2 next;
+
+            if (_tileProgress < 0.5)
+            {
+                next = _mob.Tile.Position;
+                prev = (_pathIndex > 0) ? _path[_pathIndex - 1].Position : next;
+                _mob.Position = Vector2.Lerp(prev, next, 0.5f + _tileProgress);
+            }
+            else
+            {
+                prev = _mob.Tile.Position;
+                next = (_pathIndex < _path.Count - 1) ? _path[_pathIndex + 1].Position : prev;
+                _mob.Position = Vector2.Lerp(prev, next, _tileProgress - 0.5f);
+            }
+        }
+
+        public void OnRemove()
+        {
+            // do nothing
+        }
+
+        public void OnAttacked(IAttack attack)
+        {
+            // do nothing
+        }
+    }
+
+    public class BlockMobBaseIndicator : IIndicator
+    {
+        private readonly IMob _mob;
+
+        private readonly int _blockSize;
+        private readonly Color _blockColour;
+
+        public BlockMobBaseIndicator(IMob mob, int blockSize, Color blockColour)
+        {
+            _mob = mob;
+            _blockSize = blockSize;
+            _blockColour = blockColour;
+
+            Layer = DrawLayer.Mob;
+        }
+
+        public void Update(float ticks)
+        {
+            // do nothing
+        }
 
         private static int _createFrameId = -1;
         private static CanvasCachedGeometry _geo;
         private static ICanvasBrush _brush;
 
-        public override void CreateResources(CreateResourcesArgs createArgs)
+        public void CreateResources(CreateResourcesArgs createArgs)
         {
             if (!(createArgs.IsMandatory || _geo == null))
                 return;
@@ -50,7 +143,7 @@ namespace Catch.Models
                 _geo.Dispose();
 
             // define style
-            var strokeStyle = new CanvasStrokeStyle() {LineJoin = CanvasLineJoin.Round};
+            var strokeStyle = new CanvasStrokeStyle() { LineJoin = CanvasLineJoin.Round };
             var strokeWidth = 4;
 
             // define brush
@@ -63,9 +156,11 @@ namespace Catch.Models
             _geo = CanvasCachedGeometry.CreateStroke(geo, strokeWidth, strokeStyle);
         }
 
-        public override void Draw(DrawArgs drawArgs)
+        public void Draw(DrawArgs drawArgs)
         {
-            drawArgs.Ds.DrawCachedGeometry(_geo, Position, _brush);
+            drawArgs.Ds.DrawCachedGeometry(_geo, _brush);
         }
+
+        public DrawLayer Layer { get; private set; }
     }
 }

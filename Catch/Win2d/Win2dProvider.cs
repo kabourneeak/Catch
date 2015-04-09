@@ -46,11 +46,11 @@ namespace Catch.Win2d
             throw new ArgumentException("I don't know how to construct that Tower");
         }
 
-        public IPathAgent CreatePathAgent(string name, IPath path)
+        public IMob CreateMob(string name, IPath path)
         {
             if (name == "BlockMob")
             {
-                return new BlockMob(path, new EmptyBrain(), _config);
+                return new BlockMob(path, _config);
             }
             
             throw new ArgumentException("I don't know how to construct that PathAgent");

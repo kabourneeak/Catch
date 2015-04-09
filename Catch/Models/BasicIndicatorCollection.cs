@@ -52,6 +52,8 @@ namespace Catch.Models
             _indicators.Remove(indicator);
         }
 
+        public int Count { get { return _indicators.Count; } }
+
         public IIndicator HasIndicator(string indicatorType)
         {
             throw new NotImplementedException();

@@ -9,6 +9,8 @@ namespace Catch.Base
 
         void Remove(IIndicator indicator);
 
+        int Count { get; }
+
         IIndicator HasIndicator(string indicatorType);
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using Catch.Base;
 using Catch.Services;
-using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
@@ -37,7 +37,7 @@ namespace Catch.Models
         
         public string DisplayStatus { get; private set; }
         
-        public Vector2 Position { get; private set; }
+        public Vector2 Position { get; set; }
 
         public DrawLayer Layer { get; private set; }
 
@@ -245,11 +245,11 @@ namespace Catch.Models
         public Vector2 SizeInPixels { get { return new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), (float)(Rows * 2 * HexUtils.GetRadiusHeight(_tileRadius))); } }
 
 
-        [System.Diagnostics.Conditional("DEBUG")]
+        [Conditional("DEBUG")]
         private static void Assert(bool condition)
         {
             if (!condition)
-                System.Diagnostics.Debugger.Break();
+                Debugger.Break();
         }
 
     }

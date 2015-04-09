@@ -9,11 +9,11 @@
         IBehaviourComponent Brain { get; }
 
         // Properties
-        IHexTile Tile { get; }
+        IHexTile Tile { get; set; }
 
-        bool IsTargetable { get; }
+        bool IsTargetable { get; set; }
 
-        int Health { get; }
+        int Health { get; set; }
 
         IModifierCollection Modifiers { get; }
 

@@ -6,7 +6,7 @@
 
         ITower CreateTower(string name, IHexTile tile);
 
-        IPathAgent CreatePathAgent(string name, IPath path);
+        IMob CreateMob(string name, IPath path);
 
         IModifier CreateModifier(string name);
 
