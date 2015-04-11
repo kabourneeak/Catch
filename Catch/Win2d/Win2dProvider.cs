@@ -41,7 +41,7 @@ namespace Catch.Win2d
             throw new ArgumentException("I don't know how to construct that Tower");
         }
 
-        public IMob CreateMob(string name, MapPath mapPath)
+        public Mob CreateMob(string name, MapPath mapPath)
         {
             if (name == "BlockMob")
             {

@@ -6,7 +6,7 @@ using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
-    public class BlockMob : BasicMob
+    public class BlockMob : Mob
     {
         private readonly IConfig _config;
 
@@ -35,13 +35,13 @@ namespace Catch.Models
 
     public class PathMobBehaviour : IBehaviourComponent
     {
-        private readonly IMob _mob;
+        private readonly Mob _mob;
         private readonly MapPath _mapPath;
         private int _pathIndex;
         private float _tileProgress;
         private float _velocity;
 
-        public PathMobBehaviour(IMob mob, MapPath mapPath, float velocity)
+        public PathMobBehaviour(Mob mob, MapPath mapPath, float velocity)
         {
             _mob = mob;
             _mapPath = mapPath;
@@ -106,12 +106,12 @@ namespace Catch.Models
 
     public class BlockMobBaseIndicator : IIndicator
     {
-        private readonly IMob _mob;
+        private readonly Mob _mob;
 
         private readonly int _blockSize;
         private readonly Color _blockColour;
 
-        public BlockMobBaseIndicator(IMob mob, int blockSize, Color blockColour)
+        public BlockMobBaseIndicator(Mob mob, int blockSize, Color blockColour)
         {
             _mob = mob;
             _blockSize = blockSize;

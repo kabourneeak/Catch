@@ -6,7 +6,7 @@ namespace Catch.Base
     {
         ITower CreateTower(string name, IHexTile tile);
 
-        IMob CreateMob(string name, MapPath mapPath);
+        Mob CreateMob(string name, MapPath mapPath);
 
         IModifier CreateModifier(string name);
 

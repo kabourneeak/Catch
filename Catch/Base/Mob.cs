@@ -1,11 +1,11 @@
 ﻿using System.Numerics;
-using Catch.Base;
+using Catch.Models;
 
-namespace Catch.Models
+namespace Catch.Base
 {
-    public abstract class BasicMob : IMob
+    public abstract class Mob : IAgent
     {
-        protected BasicMob()
+        protected Mob()
         {
             Position = new Vector2(0.0f);
             Indicators = new BasicIndicatorCollection();
