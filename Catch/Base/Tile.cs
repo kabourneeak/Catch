@@ -1,6 +1,7 @@
 using System.Numerics;
+using Windows.UI;
+using Catch.Models;
 using Catch.Services;
-using Catch.Win2d;
 
 namespace Catch.Base
 {
@@ -20,6 +21,7 @@ namespace Catch.Base
             // copy down config
             _radius = config.GetFloat("TileRadius");
 
+            // calculate position
             _radiusH = HexUtils.GetRadiusHeight(_radius);
 
             var x = _radius + (col * (_radius + _radius * HexUtils.COS60));
@@ -28,7 +30,8 @@ namespace Catch.Base
             Position = new Vector2(x, y);
 
             // create sub-objects
-            Graphics = new BasicHexTileGraphics(this, _radius);
+            var style = new StyleArgs() {BrushType = BrushType.Solid, Color = Colors.DarkRed, StrokeWidth = 4};
+            Graphics = new HexagonGraphics(Position, _radius, style);
         }
 
         #region Tile Implementation

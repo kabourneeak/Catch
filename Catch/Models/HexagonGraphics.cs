@@ -1,32 +1,22 @@
-﻿using System.Numerics;
-using Windows.UI;
+using System.Numerics;
 using Catch.Base;
 using Microsoft.Graphics.Canvas;
 
-namespace Catch.Win2d
+namespace Catch.Models
 {
-    public class BasicHexTileGraphics : IGraphicsComponent
+    public class HexagonGraphics : IGraphicsComponent, IIndicator
     {
+        private readonly StyleArgs _style;
         private readonly float _radius;
         private readonly float _radiusH;
 
-        public Color Colour { get; set; }
-        public float Radius { get { return _radius;} }
-
-        public BasicHexTileGraphics(Tile tile, float radius)
+        public HexagonGraphics(Vector2 position, float radius, StyleArgs style)
         {
+            Position = position;
+
+            _style = style;
             _radius = radius;
             _radiusH = HexUtils.GetRadiusHeight(_radius);
-
-            var col = tile.Column;
-            var row = tile.Row;
-
-            var x = _radius + (col * (_radius + _radius * HexUtils.COS60));
-            var y = (col % 2 * _radiusH) + (row * 2 * _radiusH) + _radiusH;
-
-            Position = new Vector2(x, y);
-
-            Colour = Colors.Red;
         }
 
         public Vector2 Position { get; private set; }
@@ -53,14 +43,10 @@ namespace Catch.Win2d
 
             if (_geo != null)
                 _geo.Dispose();
-             
-            // define style
-            var strokeStyle = new CanvasStrokeStyle() {};
-            var strokeWidth = 4;
 
             // define brush
-            _brush = new CanvasSolidColorBrush(createArgs.ResourceCreator, Colour);
-   
+            _brush = _style.CreateBrush(createArgs.ResourceCreator);
+
             // define path
             var pb = new CanvasPathBuilder(createArgs.ResourceCreator);
 
@@ -74,8 +60,8 @@ namespace Catch.Win2d
 
             // create and cache
             var geo = CanvasGeometry.CreatePath(pb);
-            
-            _geo = CanvasCachedGeometry.CreateStroke(geo, strokeWidth, strokeStyle);
+
+            _geo = CanvasCachedGeometry.CreateStroke(geo, _style.StrokeWidth, _style.StrokeStyle);
         }
 
         public void Draw(DrawArgs drawArgs)
