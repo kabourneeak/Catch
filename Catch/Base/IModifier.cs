@@ -2,5 +2,6 @@
 {
     public interface IModifier
     {
+        void Update(float ticks);
     }
 }

@@ -8,7 +8,7 @@ namespace Catch.Base
         protected Mob()
         {
             Position = new Vector2(0.0f);
-            Indicators = new BasicIndicatorCollection();
+            Indicators = new IndicatorCollection();
         }
 
         #region IGameObject Implementation
@@ -53,8 +53,8 @@ namespace Catch.Base
         public Tile Tile { get; set; }
         public bool IsTargetable { get; set; }
         public int Health { get; set; }
-        public IModifierCollection Modifiers { get; protected set; }
-        public IIndicatorCollection Indicators { get; protected set; }
+        public ModifierCollection Modifiers { get; protected set; }
+        public IndicatorCollection Indicators { get; protected set; }
         public AttackSpecs AttackSpecs { get; protected set; }
         public DefenceSpecs DefenceSpecs { get; protected set; }
         public IAgentStats Stats { get; protected set; }

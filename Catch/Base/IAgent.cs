@@ -15,9 +15,9 @@
 
         int Health { get; set; }
 
-        IModifierCollection Modifiers { get; }
+        ModifierCollection Modifiers { get; }
 
-        IIndicatorCollection Indicators { get; }
+        IndicatorCollection Indicators { get; }
 
         AttackSpecs AttackSpecs { get; }
 

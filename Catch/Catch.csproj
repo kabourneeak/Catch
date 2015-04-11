@@ -108,6 +108,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Base\AttackSpecs.cs" />
+    <Compile Include="Base\IndicatorCollection.cs" />
     <Compile Include="Base\Tile.cs" />
     <Compile Include="Base\Tower.cs" />
     <Compile Include="Base\Mob.cs" />
@@ -125,11 +126,10 @@
     <Compile Include="Base\IGameObject.cs" />
     <Compile Include="Base\IGraphicsComponent.cs" />
     <Compile Include="Base\IIndicator.cs" />
-    <Compile Include="Base\IIndicatorCollection.cs" />
     <Compile Include="Base\IMap.cs" />
     <Compile Include="Base\IMapProvider.cs" />
     <Compile Include="Base\IModifier.cs" />
-    <Compile Include="Base\IModifierCollection.cs" />
+    <Compile Include="Base\ModifierCollection.cs" />
     <Compile Include="Base\MapPath.cs" />
     <Compile Include="Base\StyleArgs.cs" />
     <Compile Include="Base\TileDirection.cs" />
@@ -142,7 +142,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Base\ITileProvider.cs" />
-    <Compile Include="Models\BasicIndicatorCollection.cs" />
     <Compile Include="Models\BasicMap.cs" />
     <Compile Include="Models\BlockMob.cs" />
     <Compile Include="Models\EmptyBrain.cs" />

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Catch.Base;
 
-namespace Catch.Models
+namespace Catch.Base
 {
-    public class BasicIndicatorCollection : IIndicatorCollection
+    public class IndicatorCollection : IEnumerable<IIndicator>, IGraphicsComponent
     {
         private readonly SortedSet<IIndicator> _indicators;
 
-        public BasicIndicatorCollection()
+        public IndicatorCollection()
         {
             _indicators = new SortedSet<IIndicator>(IndicatorComparer.GetComparer());
         }
