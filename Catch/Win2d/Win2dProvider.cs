@@ -5,7 +5,7 @@ using Catch.Services;
 
 namespace Catch.Win2d
 {
-    public class Win2DProvider : IHexTileProvider, IAgentProvider, IMapProvider
+    public class Win2DProvider : ITileProvider, IAgentProvider, IMapProvider
     {
         private readonly IConfig _config;
         private readonly float _tileRadius;
@@ -18,11 +18,11 @@ namespace Catch.Win2d
             _tileRadius = _config.GetFloat("TileRadius");
         }
 
-        #region IHexTileProvider implementation
+        #region ITileProvider implementation
 
-        public IHexTile CreateTile(int row, int col)
+        public Tile CreateTile(int row, int col)
         {
-            var tile = new BasicHexTile(row, col, _config);
+            var tile = new Tile(row, col, _config);
 
             return tile;
         }
@@ -31,7 +31,7 @@ namespace Catch.Win2d
 
         #region IAgentProvider implementation
 
-        public Tower CreateTower(string name, IHexTile tile)
+        public Tower CreateTower(string name, Tile tile)
         {
             if (name == "GunTower")
             {

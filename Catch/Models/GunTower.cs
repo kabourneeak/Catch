@@ -11,7 +11,7 @@ namespace Catch.Models
     {
         private readonly IConfig _config;
 
-        public GunTower(IHexTile tile, IConfig config) : base(tile)
+        public GunTower(Tile tile, IConfig config) : base(tile)
         {
             _config = config;
 

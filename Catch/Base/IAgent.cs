@@ -9,7 +9,7 @@
         IBehaviourComponent Brain { get; }
 
         // Properties
-        IHexTile Tile { get; set; }
+        Tile Tile { get; set; }
 
         bool IsTargetable { get; set; }
 

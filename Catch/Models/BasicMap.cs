@@ -15,10 +15,10 @@ namespace Catch.Models
     /// </summary>
     public class BasicMap : IGameObject, IMap
     {
-        private readonly IHexTileProvider _tileProvider;
+        private readonly ITileProvider _tileProvider;
         private readonly IConfig _config;
 
-        public BasicMap(IHexTileProvider tileProvider, IConfig config)
+        public BasicMap(ITileProvider tileProvider, IConfig config)
         {
             _tileProvider = tileProvider;
             _config = config;
@@ -65,7 +65,7 @@ namespace Catch.Models
 
         #region IMap implementation
 
-        public List<IHexTile> Tiles;
+        public List<Tile> Tiles;
         protected Dictionary<string, MapPath> Paths;
         private float _tileRadius;
 
@@ -74,7 +74,7 @@ namespace Catch.Models
             Assert(rows >= 1);
             Assert(columns >= 1);
 
-            Tiles = new List<IHexTile>();
+            Tiles = new List<Tile>();
             Paths = new Dictionary<string, MapPath>();
 
             Rows = rows;
@@ -95,7 +95,7 @@ namespace Catch.Models
 
         public int Columns { get; private set; }
 
-        public IHexTile GetTile(int row, int col)
+        public Tile GetTile(int row, int col)
         {
             Assert(row >= 0);
             Assert(col >= 0);
@@ -108,7 +108,7 @@ namespace Catch.Models
             throw new IndexOutOfRangeException(string.Format("Row/Column ({0},{1}) are invalid for a grid of size ({2},{3}).", row, col, Rows, Columns));
         }
 
-        public bool HasNeighbour(IHexTile tile, TileDirection direction)
+        public bool HasNeighbour(Tile tile, TileDirection direction)
         {
             Assert(tile != null);
             Assert(Tiles.Contains(tile));
@@ -116,7 +116,7 @@ namespace Catch.Models
             return GetNeighbourCoords(tile.Row, tile.Column, direction).Valid;
         }
 
-        public IHexTile GetNeighbour(IHexTile tile, TileDirection direction)
+        public Tile GetNeighbour(Tile tile, TileDirection direction)
         {
             Assert(tile != null);
             Assert(Tiles.Contains(tile));
@@ -132,7 +132,7 @@ namespace Catch.Models
             return null;
         }
 
-        public List<IHexTile> GetNeighbours(IHexTile tile)
+        public List<Tile> GetNeighbours(Tile tile)
         {
             Assert(tile != null);
             Assert(Tiles.Contains(tile));
@@ -146,7 +146,7 @@ namespace Catch.Models
             return neighbours.ToList();
         }
 
-        public List<IHexTile> GetNeighbours(IHexTile tile, int radius)
+        public List<Tile> GetNeighbours(Tile tile, int radius)
         {
             Assert(tile != null);
             Assert(Tiles.Contains(tile));

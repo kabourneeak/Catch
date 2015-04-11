@@ -50,7 +50,7 @@ namespace Catch.Base
         public abstract string GetAgentType();
 
         public IBehaviourComponent Brain { get; protected set; }
-        public IHexTile Tile { get; set; }
+        public Tile Tile { get; set; }
         public bool IsTargetable { get; set; }
         public int Health { get; set; }
         public IModifierCollection Modifiers { get; protected set; }

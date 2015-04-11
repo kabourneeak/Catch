@@ -13,7 +13,7 @@ namespace Catch.Win2d
         public Color Colour { get; set; }
         public float Radius { get { return _radius;} }
 
-        public BasicHexTileGraphics(IHexTile tile, float radius)
+        public BasicHexTileGraphics(Tile tile, float radius)
         {
             _radius = radius;
             _radiusH = HexUtils.GetRadiusHeight(_radius);

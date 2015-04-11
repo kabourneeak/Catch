@@ -12,7 +12,7 @@ namespace Catch.Base
     /// </summary>
     public abstract class Tower : IAgent
     {
-        protected Tower(IHexTile tile)
+        protected Tower(Tile tile)
         {
             Tile = tile;
             Position = tile.Position;
@@ -58,7 +58,7 @@ namespace Catch.Base
         public abstract string GetAgentType();
 
         public IBehaviourComponent Brain { get; protected set; }
-        public IHexTile Tile { get; set; }
+        public Tile Tile { get; set; }
         public bool IsTargetable { get; set; }
         public int Health { get; set; }
         public IModifierCollection Modifiers { get; protected set; }

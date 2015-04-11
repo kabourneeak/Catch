@@ -1,17 +1,16 @@
-﻿using System.Numerics;
-using Catch.Base;
+using System.Numerics;
 using Catch.Services;
 using Catch.Win2d;
 
-namespace Catch.Models
+namespace Catch.Base
 {
-    public class BasicHexTile : IHexTile
+    public class Tile : IGameObject
     {
         private Tower _tower;
         private float _radius;
         private float _radiusH;
 
-        public BasicHexTile(int row, int col, IConfig config)
+        public Tile(int row, int col, IConfig config)
         {
             Row = row;
             Column = col;
@@ -32,23 +31,9 @@ namespace Catch.Models
             Graphics = new BasicHexTileGraphics(this, _radius);
         }
 
-        #region BasicHexTile Implementation
+        #region Tile Implementation
 
         public IGraphicsComponent Graphics { get; protected set; }
-
-        public bool HasTower()
-        {
-            return _tower != null;
-        }
-        
-        protected void SetTower(Tower tower)
-        {
-            _tower = tower;
-        }
-
-        #endregion
-
-        #region IHexTile Implementation
 
         public int Row { get; protected set; }
 
@@ -57,6 +42,16 @@ namespace Catch.Models
         public Tower GetTower()
         {
             return _tower;
+        }
+
+        public bool HasTower()
+        {
+            return _tower != null;
+        }
+
+        protected void SetTower(Tower tower)
+        {
+            _tower = tower;
         }
 
         #endregion

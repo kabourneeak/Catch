@@ -7,11 +7,11 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace CatchTests
 {
-    public class BasicTileProvider : IHexTileProvider
+    public class BasicTileProvider : ITileProvider
     {
-        public IHexTile CreateTile(int row, int col)
+        public Tile CreateTile(int row, int col)
         {
-            return new BasicHexTile(row, col, new CompiledConfig());
+            return new Tile(row, col, new CompiledConfig());
         }
     }
 
@@ -22,7 +22,7 @@ namespace CatchTests
             
         }
 
-        public List<IHexTile> GetTiles()
+        public List<Tile> GetTiles()
         {
             return Tiles;
         }

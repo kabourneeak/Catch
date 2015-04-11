@@ -21,13 +21,13 @@ namespace Catch.Base
         /// <summary>
         /// Gets a tile based on the internal coordinate system of the map
         /// </summary>
-        IHexTile GetTile(int row, int col);
+        Tile GetTile(int row, int col);
 
-        bool HasNeighbour(IHexTile tile, TileDirection direction);
+        bool HasNeighbour(Tile tile, TileDirection direction);
 
-        IHexTile GetNeighbour(IHexTile tile, TileDirection direction);
+        Tile GetNeighbour(Tile tile, TileDirection direction);
         
-        List<IHexTile> GetNeighbours(IHexTile tile);
+        List<Tile> GetNeighbours(Tile tile);
 
         /// <summary>
         /// Access a path by name
