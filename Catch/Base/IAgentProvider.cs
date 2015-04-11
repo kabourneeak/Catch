@@ -4,7 +4,7 @@ namespace Catch.Base
 {
     public interface IAgentProvider
     {
-        ITower CreateTower(string name, IHexTile tile);
+        Tower CreateTower(string name, IHexTile tile);
 
         Mob CreateMob(string name, MapPath mapPath);
 

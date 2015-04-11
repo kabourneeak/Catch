@@ -31,7 +31,7 @@ namespace Catch.Win2d
 
         #region IAgentProvider implementation
 
-        public ITower CreateTower(string name, IHexTile tile)
+        public Tower CreateTower(string name, IHexTile tile)
         {
             if (name == "GunTower")
             {

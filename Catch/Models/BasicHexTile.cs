@@ -7,7 +7,7 @@ namespace Catch.Models
 {
     public class BasicHexTile : IHexTile
     {
-        private ITower _tower;
+        private Tower _tower;
         private float _radius;
         private float _radiusH;
 
@@ -41,7 +41,7 @@ namespace Catch.Models
             return _tower != null;
         }
         
-        protected void SetTower(ITower tower)
+        protected void SetTower(Tower tower)
         {
             _tower = tower;
         }
@@ -54,7 +54,7 @@ namespace Catch.Models
 
         public int Column { get; protected set; }
 
-        public ITower GetTower()
+        public Tower GetTower()
         {
             return _tower;
         }

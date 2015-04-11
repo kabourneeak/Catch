@@ -1,20 +1,18 @@
-﻿using System;
-using System.Numerics;
-using Catch.Base;
+﻿using System.Numerics;
+using Catch.Models;
 
-namespace Catch.Models
+namespace Catch.Base
 {
     /// <summary>
-    /// Implementation of ITower. Instantiates all of the underlying objects required for a "full" instance of
-    /// an ITower, and exposes protected setters for the entire interface.
+    /// Instantiates all of the underlying objects required for a "full" instance of a Tower
     /// 
     /// Dispatches update/create resources/draw to all child objects that require them in some sane order. Pushes
     /// and pops a translation to Draw.DrawArgs for the center point of the tower, so that all Indicators can 
     /// draw relatively.
     /// </summary>
-    public abstract class BasicTower : ITower
+    public abstract class Tower : IAgent
     {
-        protected BasicTower(IHexTile tile)
+        protected Tower(IHexTile tile)
         {
             Tile = tile;
             Position = tile.Position;

@@ -7,6 +7,6 @@
 
         int Column { get; }
 
-        ITower GetTower();
+        Tower GetTower();
     }
 }

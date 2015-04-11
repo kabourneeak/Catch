@@ -7,7 +7,7 @@ using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
-    public class GunTower : BasicTower
+    public class GunTower : Tower
     {
         private readonly IConfig _config;
 

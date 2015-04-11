@@ -108,6 +108,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Base\AttackSpecs.cs" />
+    <Compile Include="Base\Tower.cs" />
     <Compile Include="Base\Mob.cs" />
     <Compile Include="Base\CreateResourcesArgs.cs" />
     <Compile Include="Base\DefenceSpecs.cs" />
@@ -129,7 +130,6 @@
     <Compile Include="Base\IMapProvider.cs" />
     <Compile Include="Base\IModifier.cs" />
     <Compile Include="Base\IModifierCollection.cs" />
-    <Compile Include="Base\ITower.cs" />
     <Compile Include="Base\MapPath.cs" />
     <Compile Include="Base\StyleArgs.cs" />
     <Compile Include="Base\TileDirection.cs" />
@@ -145,7 +145,6 @@
     <Compile Include="Models\BasicHexTile.cs" />
     <Compile Include="Models\BasicIndicatorCollection.cs" />
     <Compile Include="Models\BasicMap.cs" />
-    <Compile Include="Models\BasicTower.cs" />
     <Compile Include="Models\BlockMob.cs" />
     <Compile Include="Models\EmptyBrain.cs" />
     <Compile Include="Models\GunTower.cs" />
