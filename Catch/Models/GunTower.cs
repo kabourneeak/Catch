@@ -21,8 +21,6 @@ namespace Catch.Models
             Indicators.Add(new GunTowerBaseIndicator(this, config));
         }
 
-        public float Rotation { get; set; }
-
         #region IGameObject Implementation
 
         // no overrides

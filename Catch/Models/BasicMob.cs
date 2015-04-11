@@ -17,6 +17,7 @@ namespace Catch.Models
         public string DisplayInfo { get; protected set; }
         public string DisplayStatus { get; protected set; }
         public Vector2 Position { get; set; }
+        public float Rotation { get; set; }
         public DrawLayer Layer { get; protected set; }
 
         public void Update(float ticks)
