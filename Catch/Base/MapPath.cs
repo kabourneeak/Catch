@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using Catch.Base;
 
-namespace Catch.Models
+namespace Catch.Base
 {
-    public class BasicPath : List<IHexTile>, IPath
+    public class MapPath : List<IHexTile>
     {
         public string Name { get; set; }
     }

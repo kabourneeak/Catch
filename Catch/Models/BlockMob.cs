@@ -10,7 +10,7 @@ namespace Catch.Models
     {
         private readonly IConfig _config;
 
-        public BlockMob(IPath path, IConfig config) : base()
+        public BlockMob(MapPath mapPath, IConfig config) : base()
         {
             // This class can be massively generalized!  e.g., take in a config object and a mob name, and then fill out
             // all of the other details like health, speed, attack, defense, mod loadout, from config.
@@ -23,7 +23,7 @@ namespace Catch.Models
             float velocity = 0.005f;
             
 
-            Brain = new PathMobBehaviour(this, path, velocity);
+            Brain = new PathMobBehaviour(this, mapPath, velocity);
             Indicators.Add(new BlockMobBaseIndicator(this, blockSize, blockColour));
         }
 
@@ -36,19 +36,19 @@ namespace Catch.Models
     public class PathMobBehaviour : IBehaviourComponent
     {
         private readonly IMob _mob;
-        private readonly IPath _path;
+        private readonly MapPath _mapPath;
         private int _pathIndex;
         private float _tileProgress;
         private float _velocity;
 
-        public PathMobBehaviour(IMob mob, IPath path, float velocity)
+        public PathMobBehaviour(IMob mob, MapPath mapPath, float velocity)
         {
             _mob = mob;
-            _path = path;
+            _mapPath = mapPath;
             _velocity = velocity;
 
             _pathIndex = 0;
-            _mob.Tile = _path[_pathIndex];
+            _mob.Tile = _mapPath[_pathIndex];
             _tileProgress = 0.5f; // start in the center of our source tile
         }
 
@@ -63,11 +63,11 @@ namespace Catch.Models
             _tileProgress += _velocity * ticks;
 
             // advance to next tile, if necessary
-            while (_tileProgress > 1 && _pathIndex < (_path.Count - 1))
+            while (_tileProgress > 1 && _pathIndex < (_mapPath.Count - 1))
             {
                 _pathIndex += 1;
                 _tileProgress -= 1.0f;
-                _mob.Tile = _path[_pathIndex];
+                _mob.Tile = _mapPath[_pathIndex];
             }
 
             // calculate Position
@@ -82,13 +82,13 @@ namespace Catch.Models
             if (_tileProgress < 0.5)
             {
                 next = _mob.Tile.Position;
-                prev = (_pathIndex > 0) ? _path[_pathIndex - 1].Position : next;
+                prev = (_pathIndex > 0) ? _mapPath[_pathIndex - 1].Position : next;
                 _mob.Position = Vector2.Lerp(prev, next, 0.5f + _tileProgress);
             }
             else
             {
                 prev = _mob.Tile.Position;
-                next = (_pathIndex < _path.Count - 1) ? _path[_pathIndex + 1].Position : prev;
+                next = (_pathIndex < _mapPath.Count - 1) ? _mapPath[_pathIndex + 1].Position : prev;
                 _mob.Position = Vector2.Lerp(prev, next, _tileProgress - 0.5f);
             }
         }

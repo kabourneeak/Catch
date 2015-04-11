@@ -64,7 +64,7 @@ namespace Catch.Models
         #region IMap implementation
 
         public List<IHexTile> Tiles;
-        protected Dictionary<string, IPath> Paths;
+        protected Dictionary<string, MapPath> Paths;
         private float _tileRadius;
 
         public void Initialize(int rows, int columns)
@@ -73,7 +73,7 @@ namespace Catch.Models
             Assert(columns >= 1);
 
             Tiles = new List<IHexTile>();
-            Paths = new Dictionary<string, IPath>();
+            Paths = new Dictionary<string, MapPath>();
 
             Rows = rows;
             Columns = columns;
@@ -154,7 +154,7 @@ namespace Catch.Models
             throw new NotImplementedException();
         }
 
-        public IPath GetPath(string pathName)
+        public MapPath GetPath(string pathName)
         {
             if (Paths.ContainsKey(pathName))
             {

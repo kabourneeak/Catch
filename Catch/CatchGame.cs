@@ -45,7 +45,7 @@ namespace Catch
         private int _frameId;
 
         // testing
-        private IPath _path;
+        private MapPath _mapPath;
 
         //
         // event handling
@@ -132,58 +132,58 @@ namespace Catch
 
         private void CreatePath()
         {
-            _path = new BasicPath();
+            _mapPath = new MapPath();
 
             var tile = _map.GetTile(0, 0);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.South);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.South);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.North);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.North);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
-            _path.Add(tile);
+            _mapPath.Add(tile);
 
         }
 
@@ -277,7 +277,7 @@ namespace Catch
         {
             if (_rng.NextDouble() < (3 / 60.0))
             {
-                var block = _provider.CreateMob("BlockMob", _path);
+                var block = _provider.CreateMob("BlockMob", _mapPath);
                 _agents.Add(block);
             }
         }

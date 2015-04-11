@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Catch.Models;
 
 namespace Catch.Base
 {
@@ -33,7 +34,7 @@ namespace Catch.Base
         /// </summary>
         /// <param name="pathName">The name of the path to get</param>
         /// <returns>An IPath instance</returns>
-        IPath GetPath(string pathName);
+        MapPath GetPath(string pathName);
 
     }
 }
