@@ -41,7 +41,7 @@ namespace Catch
         private IConfig _config;
         private Win2DProvider _provider;
         private readonly List<IAgent> _agents;
-        private IMap _map;
+        private Map _map;
         private int _frameId;
 
         // testing
@@ -197,9 +197,6 @@ namespace Catch
         {
             var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, mandatory);
 
-            if (_map != null)
-                _map.CreateResources(createArgs);
-
             foreach (var agent in _agents)
                 agent.CreateResources(createArgs);
         }
@@ -208,15 +205,11 @@ namespace Catch
         {
             CreateResources(ds, false);
 
-            // TODO some method of objects to report their size
-            //Vector2 mapSize = _map.SizeInPixels;
-            var mapSize = new Vector2(1820, 1080);
-
+            var mapSize = _map.Size;
+            
             var drawArgs = new DrawArgs(ds, ds.Transform, ++_frameId);
 
             drawArgs.PushTranslation((float) ((Size.Width - mapSize.X) / 2), (float) ((Size.Height - mapSize.Y) / 2));
-
-            _map.Draw(drawArgs);
 
             foreach (var agent in _agents)
                 agent.Draw(drawArgs);
@@ -271,6 +264,16 @@ namespace Catch
         {
             _map = _provider.CreateMap();
             _map.Initialize(10, 19);
+
+            for (var c = 0; c < 2; ++c)
+            {
+                for (var r = 0; r < 2; ++r)
+                {
+                    var tile = _map.GetTile(r, c);
+                    var tower = new VoidTower(tile, _config);
+                    tile.SetTower(tower);
+                }
+            }
         }
 
         private void SpawnBlock()

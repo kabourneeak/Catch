@@ -16,6 +16,7 @@ namespace Catch.Base
         {
             Tile = tile;
             Position = tile.Position;
+            Layer = DrawLayer.Tower;
             Indicators = new IndicatorCollection();
         }
 
@@ -28,18 +29,18 @@ namespace Catch.Base
         public float Rotation { get; set; }
         public DrawLayer Layer { get; protected set; }
 
-        public void Update(float ticks)
+        public virtual void Update(float ticks)
         {
             Brain.Update(ticks);
             Indicators.Update(ticks);
         }
 
-        public void CreateResources(CreateResourcesArgs createArgs)
+        public virtual void CreateResources(CreateResourcesArgs createArgs)
         {
             Indicators.CreateResources(createArgs);
         }
 
-        public void Draw(DrawArgs drawArgs)
+        public virtual void Draw(DrawArgs drawArgs)
         {
             if (Indicators.Count == 0)
                 return;

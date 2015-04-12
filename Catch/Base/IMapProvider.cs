@@ -2,6 +2,6 @@
 {
     public interface IMapProvider
     {
-        IMap CreateMap();
+        Map CreateMap();
     }
 }

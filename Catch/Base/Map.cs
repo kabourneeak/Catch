@@ -1,71 +1,39 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
-using Catch.Base;
 using Catch.Services;
 
-namespace Catch.Models
+namespace Catch.Base
 {
     /// <summary>
-    /// Implements the core functionality of IMap.  Specifically, methods for 
-    /// navigating the hexagonal grid coordinate system are found here, and
-    /// may be useful to derived classes.
+    /// Implements a hex tile grid, which has tiles, towers, 
+    /// paths. A grid is always a full rectangle -- there are no missing 
+    /// instances in the middle.  However, the grid is not a proper rectangle
+    /// owing the hex shape. The even-numbered columns have one extra hexagon
+    /// compared to the odd-numbered ones.
+    /// 
+    /// Methods for navigating the hexagonal grid coordinate system are found 
+    /// here.
     /// </summary>
-    public class BasicMap : IGameObject, IMap
+    public class Map : IEnumerable<Tile>
     {
         private readonly ITileProvider _tileProvider;
         private readonly IConfig _config;
 
-        public BasicMap(ITileProvider tileProvider, IConfig config)
+        public Map(ITileProvider tileProvider, IConfig config)
         {
             _tileProvider = tileProvider;
             _config = config;
 
             _tileRadius = config.GetFloat("TileRadius");
-
-            DisplayName = "Map";
-            Layer = DrawLayer.Base;
         }
 
-        #region IGameObject implementation
+        #region Map implementation
 
-        public string DisplayName { get; private set; }
-        
-        public string DisplayInfo { get; private set; }
-        
-        public string DisplayStatus { get; private set; }
-        
-        public Vector2 Position { get; set; }
-
-        public float Rotation { get; set; }
-
-        public DrawLayer Layer { get; private set; }
-
-        public void Update(float ticks)
-        {
-            foreach (var tile in Tiles)
-                tile.Update(ticks);
-        }
-
-        public void CreateResources(CreateResourcesArgs createArgs)
-        {
-            foreach (var tile in Tiles)
-                tile.CreateResources(createArgs);
-        }
-
-        public void Draw(DrawArgs drawArgs)
-        {
-            foreach (var tile in Tiles)
-                tile.Draw(drawArgs);
-        }
-
-        #endregion
-
-        #region IMap implementation
-
-        public List<Tile> Tiles;
+        protected List<Tile> Tiles;
         protected Dictionary<string, MapPath> Paths;
         private float _tileRadius;
 
@@ -89,11 +57,15 @@ namespace Catch.Models
                     Tiles.Add(tile);
                 }
             }
+
+            Size = new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), (float)(Rows * 2 * HexUtils.GetRadiusHeight(_tileRadius)));
         }
 
         public int Rows { get; private set; }
 
         public int Columns { get; private set; }
+
+        public Vector2 Size { get; private set; }
 
         public Tile GetTile(int row, int col)
         {
@@ -244,8 +216,15 @@ namespace Catch.Models
             return (col * Rows) - (col / 2) + row;
         }
 
-        public Vector2 SizeInPixels { get { return new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), (float)(Rows * 2 * HexUtils.GetRadiusHeight(_tileRadius))); } }
+        public IEnumerator<Tile> GetEnumerator()
+        {
+            return Tiles.GetEnumerator();
+        }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
         [Conditional("DEBUG")]
         private static void Assert(bool condition)
@@ -253,6 +232,5 @@ namespace Catch.Models
             if (!condition)
                 Debugger.Break();
         }
-
     }
 }

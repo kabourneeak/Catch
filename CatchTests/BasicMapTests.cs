@@ -15,9 +15,9 @@ namespace CatchTests
         }
     }
 
-    public class BasicMapAdapter : BasicMap
+    public class MapAdapter : Map
     {
-        public BasicMapAdapter() : base(new BasicTileProvider(), new CompiledConfig())
+        public MapAdapter() : base(new BasicTileProvider(), new CompiledConfig())
         {
             
         }
@@ -44,7 +44,7 @@ namespace CatchTests
         [TestMethod]
         public void TestSize()
         {
-            var map = new BasicMapAdapter();
+            var map = new MapAdapter();
 
             map.Initialize(3, 3);
 
@@ -56,7 +56,7 @@ namespace CatchTests
         [TestMethod]
         public void TestListOffset()
         {
-            var map = new BasicMapAdapter();
+            var map = new MapAdapter();
 
             map.Initialize(3, 3);
 
@@ -73,7 +73,7 @@ namespace CatchTests
         [TestMethod]
         public void TestGetCoordsAreValid()
         {
-            var map = new BasicMapAdapter();
+            var map = new MapAdapter();
 
             map.Initialize(3, 3);
 
@@ -102,7 +102,7 @@ namespace CatchTests
         [TestMethod]
         public void TestIndexing()
         {
-            var map = new BasicMapAdapter();
+            var map = new MapAdapter();
 
             map.Initialize(3, 3);
 

@@ -65,9 +65,9 @@ namespace Catch.Win2d
 
         #region IMapProvider
 
-        public IMap CreateMap()
+        public Map CreateMap()
         {
-            var map = new BasicMap(this, _config);
+            var map = new Map(this, _config);
 
             return map;
         }

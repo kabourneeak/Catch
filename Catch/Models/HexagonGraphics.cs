@@ -66,7 +66,7 @@ namespace Catch.Models
 
         public void Draw(DrawArgs drawArgs)
         {
-            drawArgs.Ds.DrawCachedGeometry(_geo, Position, _brush);
+            drawArgs.Ds.DrawCachedGeometry(_geo, _brush);
         }
     }
 }
