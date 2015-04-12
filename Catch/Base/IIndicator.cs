@@ -11,6 +11,6 @@ namespace Catch.Base
     public interface IIndicator : IGraphicsComponent
     {
         // Properties
-        DrawLayer Layer { get; }
+        DrawLayer Layer { get; set; }
     }
 }

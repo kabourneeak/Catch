@@ -46,6 +46,12 @@ namespace Catch.Base
             _indicators.Add(indicator);
         }
 
+        public void AddRange(IEnumerable<IIndicator> collection)
+        {
+            foreach (var ind in collection)
+                _indicators.Add(ind);
+        }
+
         public void Remove(IIndicator indicator)
         {
             _indicators.Remove(indicator);

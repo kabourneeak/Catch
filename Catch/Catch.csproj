@@ -143,10 +143,14 @@
     </Compile>
     <Compile Include="Base\ITileProvider.cs" />
     <Compile Include="Models\BlockMob.cs" />
+    <Compile Include="Models\BlockMobBaseIndicator.cs" />
     <Compile Include="Models\EmptyBrain.cs" />
     <Compile Include="Models\GunTower.cs" />
+    <Compile Include="Models\GunTowerBaseBehaviour.cs" />
+    <Compile Include="Models\GunTowerBaseIndicator.cs" />
     <Compile Include="Models\HexagonGraphics.cs" />
     <Compile Include="Models\NilTower.cs" />
+    <Compile Include="Models\PathMobBehaviour.cs" />
     <Compile Include="Models\VoidTower.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RectExtensions.cs" />

@@ -27,6 +27,7 @@ namespace Catch.Services
              */
 
             AddFloat("TileRadius", 60.0f);
+            AddFloat("TileRadiusInset", 1.5f);
             AddInt("BlockMobSize", 10);
         }
 

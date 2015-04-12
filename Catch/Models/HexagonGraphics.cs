@@ -10,17 +10,14 @@ namespace Catch.Models
         private readonly float _radius;
         private readonly float _radiusH;
 
-        public HexagonGraphics(Vector2 position, float radius, StyleArgs style)
+        public HexagonGraphics(float radius, StyleArgs style)
         {
-            Position = position;
-
             _style = style;
             _radius = radius;
             _radiusH = HexUtils.GetRadiusHeight(_radius);
         }
 
-        public Vector2 Position { get; private set; }
-        public DrawLayer Layer { get; private set; }
+        public DrawLayer Layer { get; set; }
 
         public void Update(float ticks)
         {
