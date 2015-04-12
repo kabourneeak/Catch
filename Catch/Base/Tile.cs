@@ -1,6 +1,4 @@
 using System.Numerics;
-using Windows.UI;
-using Catch.Models;
 using Catch.Services;
 
 namespace Catch.Base
@@ -50,5 +48,10 @@ namespace Catch.Base
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("Tile {0},{1}", Row, Column);
+        }
     }
 }

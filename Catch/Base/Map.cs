@@ -51,7 +51,7 @@ namespace Catch.Base
             for (var col = 0; col < columns; ++col)
             {
                 // the odd nummbered columns have one fewer row
-                for (var row = 0; row < rows - (col % 2); ++row)
+                for (var row = 0; row < rows - (col.Mod(2)); ++row)
                 {
                     var tile = _tileProvider.CreateTile(row, col);
                     Tiles.Add(tile);
@@ -80,6 +80,11 @@ namespace Catch.Base
             throw new IndexOutOfRangeException(string.Format("Row/Column ({0},{1}) are invalid for a grid of size ({2},{3}).", row, col, Rows, Columns));
         }
 
+        protected Tile GetTile(HexCoords coords)
+        {
+            return GetTile(coords.Row, coords.Column);
+        }
+
         public bool HasNeighbour(Tile tile, TileDirection direction)
         {
             Assert(tile != null);
@@ -104,19 +109,14 @@ namespace Catch.Base
             return null;
         }
 
-        public List<Tile> GetNeighbours(Tile tile)
-        {
-            Assert(tile != null);
-            Assert(Tiles.Contains(tile));
-            Assert(GetCoordsAreValid(tile.Row, tile.Column));
-
-            var neighbours = from direction in TileDirectionExtensions.AllTileDirections
-                let n = GetNeighbour(tile, direction)
-                where n != null
-                select n;
-
-            return neighbours.ToList();
-        }
+        private static readonly TileDirection[] clockwiseWalk = {
+                TileDirection.SouthEast,
+                TileDirection.South,
+                TileDirection.SouthWest,
+                TileDirection.NorthWest,
+                TileDirection.North,
+                TileDirection.NorthEast
+            };
 
         public List<Tile> GetNeighbours(Tile tile, int radius)
         {
@@ -125,39 +125,70 @@ namespace Catch.Base
             Assert(GetCoordsAreValid(tile.Row, tile.Column));
             Assert(radius >= 1);
 
-            throw new NotImplementedException();
+            var neighbours = new List<Tile>();
+            var coords = new HexCoords() {Row = tile.Row, Column = tile.Column, Valid = true};
+
+            // walk north by radius
+            for (var i = 0; i < radius; ++i)
+                coords = GetNeighbourCoords(coords, TileDirection.North);
+
+            // walk around clockwise
+            foreach (var d in clockwiseWalk)
+            {
+                for (var i = 0; i < radius; ++i)
+                {
+                    coords = GetNeighbourCoords(coords, d);
+                    if (coords.Valid)
+                        neighbours.Add(GetTile(coords));
+                }
+            }
+
+            return neighbours;
+        }
+
+        /// <summary>
+        /// Get all immediately neighbouring tiles to the given tile (i.e., radius equals 1)
+        /// </summary>
+        public List<Tile> GetNeighbours(Tile tile)
+        {
+            return GetNeighbours(tile, 1);
+        }
+
+        /// <summary>
+        /// Get all neighbouring tiles to the given tile within the band defined by fromRadius and toRadius, inclusive.
+        /// </summary>
+        public List<Tile> GetNeighbours(Tile tile, int fromRadius, int toRadius)
+        {
+            Assert(1 <= fromRadius);
+            Assert(fromRadius <= toRadius);
+
+            var neighbours = GetNeighbours(tile, fromRadius);
+
+            for (var i = fromRadius + 1; i <= toRadius; ++i)
+                neighbours.AddRange(GetNeighbours(tile, i));
+
+            return neighbours;
         }
 
         public MapPath GetPath(string pathName)
         {
-            if (Paths.ContainsKey(pathName))
-            {
-                return Paths[pathName];
-            }
-
-            return null;
+            return Paths.ContainsKey(pathName) ? Paths[pathName] : null;
         }
 
         #endregion
 
         /// <summary>
-        /// Calculates the row and column of the neighbout in the given 
-        /// direction from the given coordinates. Also returns true or false
-        /// depending on if those coordinates are valid.
+        /// Calculates the row and column of the neighbour in the given direction from the
+        /// given coordinates, whether or not those coordinates are valid on this map.
         /// </summary>
         /// <param name="row">The origin row</param>
         /// <param name="col">The origin column</param>
         /// <param name="direction">The direction of the neighbour</param>
         /// <param name="rows">The total number of rows in the grid</param>
         /// <param name="columns">The total number of columns in the grid</param>
-        /// <returns></returns>
+        /// <returns>A HexCoords object containing the results</returns>
         protected HexCoords GetNeighbourCoords(int row, int col, TileDirection direction)
         {
-            Assert(row >= 0);
-            Assert(col >= 0);
-            Assert(row < Rows - col % 2);
-            Assert(col < Columns);
-
             var coords = new HexCoords {Valid = false};
 
             switch (direction)
@@ -167,11 +198,11 @@ namespace Catch.Base
                     coords.Column = col;
                     break;
                 case TileDirection.NorthEast:
-                    coords.Row = row - (1 - col % 2); // even column moves up a row
+                    coords.Row = row - (1 - col.Mod(2)); // even column moves up a row
                     coords.Column = col + 1;
                     break;
                 case TileDirection.SouthEast:
-                    coords.Row = row + (col % 2); // even column stays in same row
+                    coords.Row = row + (col.Mod(2)); // even column stays in same row
                     coords.Column = col + 1;
                     break;
                 case TileDirection.South:
@@ -179,11 +210,11 @@ namespace Catch.Base
                     coords.Column = col;
                     break;
                 case TileDirection.SouthWest:
-                    coords.Row = row + (col % 2); // even column stays in same row
+                    coords.Row = row + (col.Mod(2)); // even column stays in same row
                     coords.Column = col - 1;
                     break;
                 case TileDirection.NorthWest:
-                    coords.Row = row - (1 - col % 2); // even column moves up a row
+                    coords.Row = row - (1 - col.Mod(2)); // even column moves up a row
                     coords.Column = col - 1;
                     break;
             }
@@ -193,11 +224,16 @@ namespace Catch.Base
             return coords;
         }
 
+        protected HexCoords GetNeighbourCoords(HexCoords coords, TileDirection direction)
+        {
+            return GetNeighbourCoords(coords.Row, coords.Column, direction);
+        }
+
         protected bool GetCoordsAreValid(int row, int col)
         {
             if (col >= 0 && col < Columns)
             {
-                if (row >= 0 && row < Rows - (col % 2))
+                if (row >= 0 && row < Rows - (col.Mod(2)))
                 {
                     return true;
                 }
@@ -210,7 +246,7 @@ namespace Catch.Base
         {
             Assert(row >= 0);
             Assert(col >= 0);
-            Assert(row < Rows - col % 2);
+            Assert(row < Rows - (col.Mod(2)));
             Assert(col < Columns);
 
             return (col * Rows) - (col / 2) + row;
