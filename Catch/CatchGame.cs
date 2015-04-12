@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Numerics;
 using Windows.Foundation;
 using Catch.Base;
-using Catch.Models;
 using Catch.Services;
 using Catch.Win2d;
 using Microsoft.Graphics.Canvas;
@@ -40,9 +40,6 @@ namespace Catch
         private readonly List<IAgent> _agents;
         private Map _map;
         private int _frameId;
-
-        // testing
-        private MapPath _mapPath;
 
         //
         // event handling
@@ -105,8 +102,9 @@ namespace Catch
             _agents.Clear();
 
             CreateMap();
+            CreatePaths();
             CreateTowers();
-            CreatePath();
+            SpawnBlock();
 
             ChangeGameState(GameState.Playing);
         }
@@ -131,64 +129,66 @@ namespace Catch
                 for (var r = 0; r < 2; ++r)
                     _agents.Add(_provider.CreateTower("VoidTower", _map.GetTile(r, c)));
 
-
+            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(2, 1)));
         }
 
-        private void CreatePath()
+        private void CreatePaths()
         {
-            _mapPath = new MapPath();
+            var mapPath = new MapPath();
 
             var tile = _map.GetTile(0, 0);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.South);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.South);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.North);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.North);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
-            _mapPath.Add(tile);
+            mapPath.Add(tile);
 
+            _map.AddPath("TestPath", mapPath);
+            
         }
 
         public void CreateResources(ICanvasResourceCreator resourceCreator)
@@ -199,6 +199,9 @@ namespace Catch
 
         private void CreateResources(ICanvasResourceCreator resourceCreator, bool mandatory)
         {
+            if (State != GameState.Playing)
+                return;
+
             var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, mandatory);
 
             foreach (var agent in _agents)
@@ -207,12 +210,20 @@ namespace Catch
 
         public void Draw(CanvasDrawingSession ds)
         {
+            if (State != GameState.Playing)
+                return;
+
             CreateResources(ds, false);
 
             var mapSize = _map.Size;
-            
+
             var drawArgs = new DrawArgs(ds, ds.Transform, ++_frameId);
 
+            // place origin in lower left
+            drawArgs.Push(Matrix3x2.CreateTranslation(0, (float)Size.Height));
+            drawArgs.Push(Matrix3x2.CreateScale(1.0f, -1.0f));
+            
+            // center w.r.t. map
             drawArgs.PushTranslation((float) ((Size.Width - mapSize.X) / 2), (float) ((Size.Height - mapSize.Y) / 2));
 
             foreach (var agent in _agents)
@@ -254,8 +265,6 @@ namespace Catch
         {
             Score += ScoreIncrement;
 
-            SpawnBlock();
-
             foreach (var agent in _agents)
             {
                 agent.Update(ticks);
@@ -272,11 +281,8 @@ namespace Catch
 
         private void SpawnBlock()
         {
-            if (_rng.NextDouble() < (3 / 60.0))
-            {
-                var block = _provider.CreateMob("BlockMob", _mapPath);
-                _agents.Add(block);
-            }
+            var block = _provider.CreateMob("BlockMob", _map.GetPath("TestPath"));
+            _agents.Add(block);
         }
     }
 

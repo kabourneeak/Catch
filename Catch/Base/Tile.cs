@@ -29,8 +29,6 @@ namespace Catch.Base
             Position = new Vector2(x, y);
         }
 
-        #region Tile Implementation
-
         public Map Map { get; protected set; }
 
         public int Row { get; protected set; }
@@ -38,6 +36,8 @@ namespace Catch.Base
         public int Column { get; protected set; }
 
         public Vector2 Position { get; protected set; }
+
+        #region Tower Management
 
         public Tower GetTower()
         {
@@ -49,9 +49,30 @@ namespace Catch.Base
             return _tower != null;
         }
 
-        public void SetTower(Tower tower)
+        public bool RemoveTower(Tower tower)
         {
+            if (_tower == tower)
+            {
+                _tower = null;
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool AddTower(Tower tower)
+        {
+            if (_tower == tower)
+                return false;
+
+            if (_tower != null)
+            {
+                // TODO send OnRemove event
+            }
+
             _tower = tower;
+
+            return true;
         }
 
         #endregion

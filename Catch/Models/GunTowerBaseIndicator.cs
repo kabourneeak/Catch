@@ -47,7 +47,7 @@ namespace Catch.Models
 
             // create geometry
             var body = CanvasGeometry.CreateCircle(createArgs.ResourceCreator, new Vector2(0.0f), 24);
-            var cannon = CanvasGeometry.CreateRectangle(createArgs.ResourceCreator, -3, 23, 6, 10);
+            var cannon = CanvasGeometry.CreateRectangle(createArgs.ResourceCreator, 23, -3, 10, 6);
 
             var comb = body.CombineWith(cannon, Matrix3x2.Identity, CanvasGeometryCombine.Union);
 

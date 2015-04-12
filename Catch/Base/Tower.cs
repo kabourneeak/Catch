@@ -20,7 +20,7 @@ namespace Catch.Base
             Indicators = new IndicatorCollection();
 
             // site into tile
-            tile.SetTower(this);
+            tile.AddTower(this);
         }
 
         #region IGameObject Implementation

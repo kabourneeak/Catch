@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="BasicMapTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TargettingTests.cs" />
     <Compile Include="TileDirectionTests.cs" />
   </ItemGroup>
   <ItemGroup>

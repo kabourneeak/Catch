@@ -48,7 +48,7 @@ namespace Catch.Base
                 case TileDirection.NorthEast:
                     return 10 * pi / 6;
                 default:
-                    throw new InvalidOperationException("Missing enumeration");
+                    throw new ArgumentException("Missing enumeration");
             }
         }
 

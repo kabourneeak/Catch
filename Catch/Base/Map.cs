@@ -170,6 +170,11 @@ namespace Catch.Base
 
         #region Paths
 
+        public void AddPath(string name, MapPath path)
+        {
+            _paths.Add(name, path);
+        }
+
         public IEnumerable<MapPath> Paths { get { return _paths.Values; } }
 
         public MapPath GetPath(string pathName)

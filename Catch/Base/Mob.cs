@@ -9,6 +9,7 @@ namespace Catch.Base
         {
             Position = new Vector2(0.0f);
             Indicators = new IndicatorCollection();
+            IsTargetable = true;
         }
 
         #region Mob Specific

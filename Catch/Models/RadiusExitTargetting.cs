@@ -10,11 +10,11 @@ namespace Catch.Models
     /// </summary>
     public class RadiusExitTargetting : Targetting
     {
-        private readonly SortedSet<Tuple<int, Tile>> _ranked;
+        private readonly List<Tuple<int, Tile>> _ranked;
 
         public RadiusExitTargetting(Tile center, int fromRadius, int toRadius)
         {
-            _ranked = new SortedSet<Tuple<int, Tile>>(RadiusExitTargettingComparer.GetComparer());
+            _ranked = new List<Tuple<int, Tile>>();
             
             var neighbours = center.Map.GetNeighbours(center, fromRadius, toRadius);
 
@@ -31,6 +31,8 @@ namespace Catch.Models
                 var score = CalcExitScore(tile, map);
                 _ranked.Add(new Tuple<int, Tile>(score, tile));
             }
+
+            _ranked.Sort(RadiusExitTargettingComparer.GetComparer());
         }
 
         private int CalcExitScore(Tile tile, Map map)
@@ -69,13 +71,18 @@ namespace Catch.Models
 
         public override Mob GetBestTargetMob()
         {
-            var tile = GetBestTargetTile();
+            return GetBestTargetMob(GetBestTargetTile());
+        }
 
+        public override Mob GetBestTargetMob(Tile tile)
+        {
             Mob best = null;
 
             foreach (var mob in tile.Mobs)
             {
-                if (best == null || best.TileProgress < mob.TileProgress)
+                if (best == null)
+                    best = mob;
+                else if (best.TileProgress < mob.TileProgress && mob.IsTargetable)
                     best = mob;
             }
 
