@@ -20,7 +20,7 @@ namespace Catch.Models
             Brain = new GunTowerBaseBehaviour(this, config);
 
             var radius = config.GetFloat("TileRadius");
-            var style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.DeepSkyBlue, StrokeWidth = 4 };
+            var style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.DeepSkyBlue, StrokeWidth = 3, BrushOpacity = 0.5f};
 
             Indicators.Add(new HexagonGraphics(tile.Position, radius, style));
             Indicators.Add(new GunTowerBaseIndicator(this, config));

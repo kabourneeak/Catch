@@ -15,7 +15,7 @@ namespace Catch.Models
         {
             // copy down config
             var radius = config.GetFloat("TileRadius");
-            var style = new StyleArgs() {BrushType = BrushType.Solid, Color = Colors.DarkRed, StrokeWidth = 4};
+            var style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.DarkRed, StrokeWidth = 3, BrushOpacity = 0.5f };
 
             Brain = new EmptyBrain();
             Indicators.Add(new HexagonGraphics(tile.Position, radius, style));

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq.Expressions;
-using System.Numerics;
 using Windows.Foundation;
-using Windows.UI.ViewManagement;
 using Catch.Base;
 using Catch.Models;
 using Catch.Services;
@@ -127,6 +124,13 @@ namespace Catch
             _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(4, 14)));
             _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(6, 15)));
             _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(5, 16)));
+
+            _agents.Add(_provider.CreateTower("VoidTower", _map.GetTile(3, 15)));
+
+            for (var c = 0; c < 2; ++c)
+                for (var r = 0; r < 2; ++r)
+                    _agents.Add(_provider.CreateTower("VoidTower", _map.GetTile(r, c)));
+
 
         }
 
@@ -264,16 +268,6 @@ namespace Catch
         {
             _map = _provider.CreateMap();
             _map.Initialize(10, 19);
-
-            for (var c = 0; c < 2; ++c)
-            {
-                for (var r = 0; r < 2; ++r)
-                {
-                    var tile = _map.GetTile(r, c);
-                    var tower = new VoidTower(tile, _config);
-                    tile.SetTower(tower);
-                }
-            }
         }
 
         private void SpawnBlock()

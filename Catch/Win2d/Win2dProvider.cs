@@ -33,9 +33,17 @@ namespace Catch.Win2d
 
         public Tower CreateTower(string name, Tile tile)
         {
-            if (name == "GunTower")
+            if (name == typeof(GunTower).Name)
             {
                 return new GunTower(tile, _config);
+            }
+            else if (name == typeof(VoidTower).Name)
+            {
+                return new VoidTower(tile, _config);
+            }
+            else if (name == typeof (NilTower).Name)
+            {
+                return new NilTower(tile);
             }
 
             throw new ArgumentException("I don't know how to construct that Tower");

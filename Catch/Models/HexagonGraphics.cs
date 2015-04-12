@@ -27,9 +27,9 @@ namespace Catch.Models
             // do nothing
         }
 
-        private static int _createFrameId = -1;
-        private static CanvasCachedGeometry _geo;
-        private static ICanvasBrush _brush;
+        private int _createFrameId = -1;
+        private CanvasCachedGeometry _geo;
+        private ICanvasBrush _brush;
 
         public void CreateResources(CreateResourcesArgs createArgs)
         {
@@ -46,6 +46,7 @@ namespace Catch.Models
 
             // define brush
             _brush = _style.CreateBrush(createArgs.ResourceCreator);
+            _brush.Opacity = _style.BrushOpacity;
 
             // define path
             var pb = new CanvasPathBuilder(createArgs.ResourceCreator);

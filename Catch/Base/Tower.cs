@@ -18,6 +18,9 @@ namespace Catch.Base
             Position = tile.Position;
             Layer = DrawLayer.Tower;
             Indicators = new IndicatorCollection();
+
+            // site into tile
+            tile.SetTower(this);
         }
 
         #region IGameObject Implementation
