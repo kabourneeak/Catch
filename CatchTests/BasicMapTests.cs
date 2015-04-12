@@ -6,17 +6,9 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace CatchTests
 {
-    public class BasicTileProvider : ITileProvider
-    {
-        public Tile CreateTile(int row, int col)
-        {
-            return new Tile(row, col, new CompiledConfig());
-        }
-    }
-
     public class MapAdapter : Map
     {
-        public MapAdapter() : base(new BasicTileProvider(), new CompiledConfig())
+        public MapAdapter() : base(new CompiledConfig())
         {
             
         }

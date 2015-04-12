@@ -20,12 +20,13 @@ namespace Catch.Base
     /// </summary>
     public class Map : IEnumerable<Tile>
     {
-        private readonly ITileProvider _tileProvider;
         private readonly IConfig _config;
+        protected List<Tile> Tiles;
+        private Dictionary<string, MapPath> _paths;
+        private float _tileRadius;
 
-        public Map(ITileProvider tileProvider, IConfig config)
+        public Map(IConfig config)
         {
-            _tileProvider = tileProvider;
             _config = config;
 
             _tileRadius = config.GetFloat("TileRadius");
@@ -33,17 +34,13 @@ namespace Catch.Base
 
         #region Map implementation
 
-        protected List<Tile> Tiles;
-        protected Dictionary<string, MapPath> Paths;
-        private float _tileRadius;
-
         public void Initialize(int rows, int columns)
         {
-            Assert(rows >= 1);
-            Assert(columns >= 1);
+            DebugUtils.Assert(rows >= 1);
+            DebugUtils.Assert(columns >= 1);
 
             Tiles = new List<Tile>();
-            Paths = new Dictionary<string, MapPath>();
+            _paths = new Dictionary<string, MapPath>();
 
             Rows = rows;
             Columns = columns;
@@ -53,8 +50,7 @@ namespace Catch.Base
                 // the odd nummbered columns have one fewer row
                 for (var row = 0; row < rows - (col.Mod(2)); ++row)
                 {
-                    var tile = _tileProvider.CreateTile(row, col);
-                    Tiles.Add(tile);
+                    Tiles.Add(new Tile(row, col, this, _config));
                 }
             }
 
@@ -69,8 +65,8 @@ namespace Catch.Base
 
         public Tile GetTile(int row, int col)
         {
-            Assert(row >= 0);
-            Assert(col >= 0);
+            DebugUtils.Assert(row >= 0);
+            DebugUtils.Assert(col >= 0);
 
             if (GetCoordsAreValid(row, col))
             {
@@ -87,17 +83,17 @@ namespace Catch.Base
 
         public bool HasNeighbour(Tile tile, TileDirection direction)
         {
-            Assert(tile != null);
-            Assert(Tiles.Contains(tile));
+            DebugUtils.Assert(tile != null);
+            DebugUtils.Assert(Tiles.Contains(tile));
 
             return GetNeighbourCoords(tile.Row, tile.Column, direction).Valid;
         }
 
         public Tile GetNeighbour(Tile tile, TileDirection direction)
         {
-            Assert(tile != null);
-            Assert(Tiles.Contains(tile));
-            Assert(GetCoordsAreValid(tile.Row, tile.Column));
+            DebugUtils.Assert(tile != null);
+            DebugUtils.Assert(Tiles.Contains(tile));
+            DebugUtils.Assert(GetCoordsAreValid(tile.Row, tile.Column));
 
             var coords = GetNeighbourCoords(tile.Row, tile.Column, direction);
 
@@ -120,10 +116,10 @@ namespace Catch.Base
 
         public List<Tile> GetNeighbours(Tile tile, int radius)
         {
-            Assert(tile != null);
-            Assert(Tiles.Contains(tile));
-            Assert(GetCoordsAreValid(tile.Row, tile.Column));
-            Assert(radius >= 1);
+            DebugUtils.Assert(tile != null);
+            DebugUtils.Assert(Tiles.Contains(tile));
+            DebugUtils.Assert(GetCoordsAreValid(tile.Row, tile.Column));
+            DebugUtils.Assert(radius >= 1);
 
             var neighbours = new List<Tile>();
             var coords = new HexCoords() {Row = tile.Row, Column = tile.Column, Valid = true};
@@ -159,8 +155,8 @@ namespace Catch.Base
         /// </summary>
         public List<Tile> GetNeighbours(Tile tile, int fromRadius, int toRadius)
         {
-            Assert(1 <= fromRadius);
-            Assert(fromRadius <= toRadius);
+            DebugUtils.Assert(1 <= fromRadius);
+            DebugUtils.Assert(fromRadius <= toRadius);
 
             var neighbours = GetNeighbours(tile, fromRadius);
 
@@ -170,13 +166,18 @@ namespace Catch.Base
             return neighbours;
         }
 
+        #endregion
+
+        #region Paths
+
+        public IEnumerable<MapPath> Paths { get { return _paths.Values; } }
+
         public MapPath GetPath(string pathName)
         {
-            return Paths.ContainsKey(pathName) ? Paths[pathName] : null;
+            return _paths.ContainsKey(pathName) ? _paths[pathName] : null;
         }
 
         #endregion
-
         /// <summary>
         /// Calculates the row and column of the neighbour in the given direction from the
         /// given coordinates, whether or not those coordinates are valid on this map.
@@ -244,10 +245,10 @@ namespace Catch.Base
 
         protected int GetListOffset(int row, int col)
         {
-            Assert(row >= 0);
-            Assert(col >= 0);
-            Assert(row < Rows - (col.Mod(2)));
-            Assert(col < Columns);
+            DebugUtils.Assert(row >= 0);
+            DebugUtils.Assert(col >= 0);
+            DebugUtils.Assert(row < Rows - (col.Mod(2)));
+            DebugUtils.Assert(col < Columns);
 
             return (col * Rows) - (col / 2) + row;
         }
@@ -260,13 +261,6 @@ namespace Catch.Base
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        [Conditional("DEBUG")]
-        private static void Assert(bool condition)
-        {
-            if (!condition)
-                Debugger.Break();
         }
     }
 }

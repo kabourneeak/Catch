@@ -110,6 +110,7 @@
     <Compile Include="Base\AttackSpecs.cs" />
     <Compile Include="Base\Map.cs" />
     <Compile Include="Base\IndicatorCollection.cs" />
+    <Compile Include="Base\Targetting.cs" />
     <Compile Include="Base\Tile.cs" />
     <Compile Include="Base\Tower.cs" />
     <Compile Include="Base\Mob.cs" />
@@ -135,16 +136,17 @@
     <Compile Include="Base\TileDirection.cs" />
     <Compile Include="CanvasUtils.cs" />
     <Compile Include="CatchGame.cs" />
+    <Compile Include="DebugUtils.cs" />
     <Compile Include="EnumUtils.cs" />
     <Compile Include="FloatExtentions.cs" />
     <Compile Include="IntExtensions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Base\ITileProvider.cs" />
     <Compile Include="Models\BlockMob.cs" />
     <Compile Include="Models\BlockMobBaseIndicator.cs" />
     <Compile Include="Models\EmptyBrain.cs" />
+    <Compile Include="Models\RadiusExitTargetting.cs" />
     <Compile Include="Models\GunTower.cs" />
     <Compile Include="Models\GunTowerBaseBehaviour.cs" />
     <Compile Include="Models\GunTowerBaseIndicator.cs" />

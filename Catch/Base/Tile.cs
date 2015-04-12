@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Numerics;
 using Catch.Services;
 
@@ -6,11 +7,15 @@ namespace Catch.Base
     public class Tile
     {
         private Tower _tower;
+        private readonly ISet<Mob> _mobs;
 
-        public Tile(int row, int col, IConfig config)
+        public Tile(int row, int col, Map map, IConfig config)
         {
+            Map = map;
             Row = row;
             Column = col;
+
+            _mobs = new HashSet<Mob>();
 
             // copy down config
             var radius = config.GetFloat("TileRadius");
@@ -25,6 +30,8 @@ namespace Catch.Base
         }
 
         #region Tile Implementation
+
+        public Map Map { get; protected set; }
 
         public int Row { get; protected set; }
 
@@ -46,6 +53,29 @@ namespace Catch.Base
         {
             _tower = tower;
         }
+
+        #endregion
+
+        #region Mob Management 
+
+        public bool AddMob(Mob mob)
+        {
+            return _mobs.Add(mob);
+        }
+
+        public bool ContainsMob(Mob mob)
+        {
+            return _mobs.Contains(mob);
+        }
+
+        public bool RemoveMob(Mob mob)
+        {
+            return _mobs.Remove(mob);
+        }
+
+        public int MobCount {get { return _mobs.Count; }}
+
+        public IEnumerable<Mob> Mobs { get { return _mobs; } }
 
         #endregion
 

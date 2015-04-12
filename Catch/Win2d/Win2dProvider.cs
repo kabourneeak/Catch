@@ -5,7 +5,7 @@ using Catch.Services;
 
 namespace Catch.Win2d
 {
-    public class Win2DProvider : ITileProvider, IAgentProvider, IMapProvider
+    public class Win2DProvider : IAgentProvider, IMapProvider
     {
         private readonly IConfig _config;
         private readonly float _tileRadius;
@@ -17,17 +17,6 @@ namespace Catch.Win2d
             // copy-down config
             _tileRadius = _config.GetFloat("TileRadius");
         }
-
-        #region ITileProvider implementation
-
-        public Tile CreateTile(int row, int col)
-        {
-            var tile = new Tile(row, col, _config);
-
-            return tile;
-        }
-
-        #endregion
 
         #region IAgentProvider implementation
 
@@ -75,7 +64,7 @@ namespace Catch.Win2d
 
         public Map CreateMap()
         {
-            var map = new Map(this, _config);
+            var map = new Map(_config);
 
             return map;
         }

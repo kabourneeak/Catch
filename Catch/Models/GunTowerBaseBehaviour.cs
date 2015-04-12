@@ -7,10 +7,12 @@ namespace Catch.Models
     public class GunTowerBaseBehaviour : IBehaviourComponent
     {
         private readonly GunTower _tower;
+        private readonly Targetting _targetting;
 
         public GunTowerBaseBehaviour(GunTower tower, IConfig config)
         {
             _tower = tower;
+            _targetting = new RadiusExitTargetting(tower.Tile, 1, 1);
         }
 
         public void OnSpawn()
