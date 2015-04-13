@@ -123,13 +123,13 @@ namespace Catch
             _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(6, 15)));
             _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(5, 16)));
 
-            _agents.Add(_provider.CreateTower("VoidTower", _map.GetTile(3, 15)));
-
-            for (var c = 0; c < 2; ++c)
-                for (var r = 0; r < 2; ++r)
-                    _agents.Add(_provider.CreateTower("VoidTower", _map.GetTile(r, c)));
-
             _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(2, 1)));
+
+            foreach (var tile in _map)
+            {
+                if (!tile.HasTower())
+                    _agents.Add(_provider.CreateTower("VoidTower", tile));
+            }
         }
 
         private void CreatePaths()
@@ -139,16 +139,16 @@ namespace Catch
             var tile = _map.GetTile(0, 0);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.South);
+            tile = _map.GetNeighbour(tile, TileDirection.North);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.South);
+            tile = _map.GetNeighbour(tile, TileDirection.North);
             mapPath.Add(tile);
 
             tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
@@ -160,35 +160,16 @@ namespace Catch
             tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.North);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.North);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            mapPath.Add(tile);
-
             tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
+            mapPath.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.North);
+            mapPath.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
             mapPath.Add(tile);
 
             _map.AddPath("TestPath", mapPath);
-            
         }
 
         public void CreateResources(ICanvasResourceCreator resourceCreator)

@@ -48,7 +48,7 @@ namespace Catch.Base
             for (var col = 0; col < columns; ++col)
             {
                 // the odd nummbered columns have one fewer row
-                for (var row = 0; row < rows - (col.Mod(2)); ++row)
+                for (var row = 0 + col.Mod(2); row < rows; ++row)
                 {
                     Tiles.Add(new Tile(row, col, this, _config));
                 }
@@ -183,6 +183,7 @@ namespace Catch.Base
         }
 
         #endregion
+
         /// <summary>
         /// Calculates the row and column of the neighbour in the given direction from the
         /// given coordinates, whether or not those coordinates are valid on this map.
@@ -200,27 +201,27 @@ namespace Catch.Base
             switch (direction)
             {
                 case TileDirection.North:
-                    coords.Row = row - 1;
-                    coords.Column = col;
-                    break;
-                case TileDirection.NorthEast:
-                    coords.Row = row - (1 - col.Mod(2)); // even column moves up a row
-                    coords.Column = col + 1;
-                    break;
-                case TileDirection.SouthEast:
-                    coords.Row = row + (col.Mod(2)); // even column stays in same row
-                    coords.Column = col + 1;
-                    break;
-                case TileDirection.South:
                     coords.Row = row + 1;
                     coords.Column = col;
                     break;
+                case TileDirection.NorthEast:
+                    coords.Row = row + (1 - col.Mod(2)); // if currently in even column, move up a row
+                    coords.Column = col + 1;
+                    break;
+                case TileDirection.SouthEast:
+                    coords.Row = row - (col.Mod(2)); // if currently in even column, stay in same row
+                    coords.Column = col + 1;
+                    break;
+                case TileDirection.South:
+                    coords.Row = row - 1;
+                    coords.Column = col;
+                    break;
                 case TileDirection.SouthWest:
-                    coords.Row = row + (col.Mod(2)); // even column stays in same row
+                    coords.Row = row - (col.Mod(2)); // if currently in even column, stay in same row
                     coords.Column = col - 1;
                     break;
                 case TileDirection.NorthWest:
-                    coords.Row = row - (1 - col.Mod(2)); // even column moves up a row
+                    coords.Row = row + (1 - col.Mod(2)); // if currently in even column, move up a row
                     coords.Column = col - 1;
                     break;
             }
@@ -239,7 +240,7 @@ namespace Catch.Base
         {
             if (col >= 0 && col < Columns)
             {
-                if (row >= 0 && row < Rows - (col.Mod(2)))
+                if (row >= 0 + col.Mod(2) && row < Rows)
                 {
                     return true;
                 }
@@ -250,12 +251,12 @@ namespace Catch.Base
 
         protected int GetListOffset(int row, int col)
         {
-            DebugUtils.Assert(row >= 0);
+            DebugUtils.Assert(row >= 0 + col.Mod(2));
             DebugUtils.Assert(col >= 0);
-            DebugUtils.Assert(row < Rows - (col.Mod(2)));
+            DebugUtils.Assert(row < Rows);
             DebugUtils.Assert(col < Columns);
 
-            return (col * Rows) - (col / 2) + row;
+            return (col * Rows) - (col / 2) + (row - col.Mod(2));
         }
 
         public IEnumerator<Tile> GetEnumerator()

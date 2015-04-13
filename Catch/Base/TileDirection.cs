@@ -36,17 +36,17 @@ namespace Catch.Base
             switch (tileDirection)
             {
                 case TileDirection.North:
-                    return 0.0f;
+                    return 3 * pi / 6;
                 case TileDirection.NorthWest:
-                    return 2 * pi / 6;
+                    return 5 * pi / 6;
                 case TileDirection.SouthWest:
-                    return 4 * pi / 6;
+                    return 7 * pi / 6;
                 case TileDirection.South:
-                    return 6 * pi / 6;
+                    return 9 * pi / 6;
                 case TileDirection.SouthEast:
-                    return 8 * pi / 6;
+                    return 11 * pi / 6;
                 case TileDirection.NorthEast:
-                    return 10 * pi / 6;
+                    return 1 * pi / 6;
                 default:
                     throw new ArgumentException("Missing enumeration");
             }

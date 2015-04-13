@@ -24,7 +24,7 @@ namespace Catch.Base
             var radiusH = HexUtils.GetRadiusHeight(radius);
 
             var x = radius + (col * (radius + radius * HexUtils.COS60));
-            var y = (col % 2 * radiusH) + (row * 2 * radiusH) + radiusH;
+            var y = (col % 2 * radiusH) + ((row - col.Mod(2)) * 2 * radiusH) + radiusH;
 
             Position = new Vector2(x, y);
         }
