@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Windows.UI;
 using Catch.Base;
 using Catch.Services;
@@ -16,6 +15,7 @@ namespace Catch.Models
         {
             Brain = GetSharedBrain();
             Indicators.AddRange(GetSharedIndicators(config));
+            Indicators.Add(new LabelIndicator(tile, string.Format("{0},{1}", tile.Row, tile.Column)));
         }
 
         public override string GetAgentType()
