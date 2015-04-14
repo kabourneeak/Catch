@@ -19,9 +19,6 @@ namespace Catch
         private const int StartScore = 0;
         private const int ScoreIncrement = 10;
 
-        private const int BlockMax = 3;
-        private const int BlockSpawnRate = 10;
-
         //
         // Game config
         //
@@ -41,9 +38,8 @@ namespace Catch
         private Map _map;
         private int _frameId;
 
-        //
-        // event handling
-        //
+        #region Event Handling
+
         public delegate void GameStateChangedHandler(object sender, GameStateChangedEventArgs e);
         public event GameStateChangedHandler GameStateChanged;
 
@@ -61,9 +57,10 @@ namespace Catch
             RaiseGameStateChanged();
         }
 
-        //
-        // construction
-        //
+        #endregion
+
+        #region Construction
+
         public CatchGame()
         {
             State = GameState.Init;
@@ -78,6 +75,10 @@ namespace Catch
             _config = new CompiledConfig();
             _provider = new Win2DProvider(_config);
         }
+
+        #endregion
+
+        #region CatchGame API
 
         public void Initialize(Rect size)
         {
@@ -109,6 +110,16 @@ namespace Catch
             ChangeGameState(GameState.Playing);
         }
 
+        #endregion
+
+        #region Test Environment Setup
+
+        private void CreateMap()
+        {
+            _map = _provider.CreateMap();
+            _map.Initialize(10, 19);
+        }
+
         private void CreateTowers()
         {
             _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(4, 5)));
@@ -125,6 +136,7 @@ namespace Catch
 
             _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(2, 1)));
 
+            // fill the rest of the board
             foreach (var tile in _map)
             {
                 if (!tile.HasTower())
@@ -172,6 +184,16 @@ namespace Catch
             _map.AddPath("TestPath", mapPath);
         }
 
+        private void SpawnBlock()
+        {
+            var block = _provider.CreateMob("BlockMob", _map.GetPath("TestPath"));
+            _agents.Add(block);
+        }
+
+        #endregion
+
+        #region CreateResources
+
         public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
             Debug.WriteLine("Mandatory CreateResources");
@@ -180,36 +202,71 @@ namespace Catch
 
         private void CreateResources(ICanvasResourceCreator resourceCreator, bool mandatory)
         {
-            if (State != GameState.Playing)
-                return;
-
             var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, mandatory);
 
+            switch (State)
+            {
+                case GameState.Init:
+                    break;
+                case GameState.Title:
+                    break;
+                case GameState.Playing:
+                    CreateResourcesPlaying(createArgs);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void CreateResourcesPlaying(CreateResourcesArgs createArgs)
+        {
             foreach (var agent in _agents)
                 agent.CreateResources(createArgs);
         }
 
+        #endregion
+
+        #region Draw
+
         public void Draw(CanvasDrawingSession ds)
         {
-            if (State != GameState.Playing)
-                return;
-
             CreateResources(ds, false);
 
-            var mapSize = _map.Size;
-
-            var drawArgs = new DrawArgs(ds, ds.Transform, ++_frameId);
+            // prepare draw arguments
+            _frameId += 1;
+            var drawArgs = new DrawArgs(ds, ds.Transform, _frameId);
 
             // place origin in lower left
             drawArgs.Push(Matrix3x2.CreateTranslation(0, (float)Size.Height));
             drawArgs.Push(Matrix3x2.CreateScale(1.0f, -1.0f));
             
             // center w.r.t. map
-            drawArgs.PushTranslation((float) ((Size.Width - mapSize.X) / 2), (float) ((Size.Height - mapSize.Y) / 2));
+            var mapSize = _map.Size;
+            drawArgs.PushTranslation((float)((Size.Width - mapSize.X) / 2), (float)((Size.Height - mapSize.Y) / 2));
 
+            switch (State)
+            {
+                case GameState.Init:
+                    break;
+                case GameState.Title:
+                    break;
+                case GameState.Playing:
+                    DrawPlaying(drawArgs);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void DrawPlaying(DrawArgs drawArgs)
+        {
             foreach (var agent in _agents)
                 agent.Draw(drawArgs);
         }
+
+        #endregion
+
+        #region Update
 
         public void Update(float ticks)
         {
@@ -254,17 +311,7 @@ namespace Catch
             // TODO some method of remove agents that are dead
         }
 
-        private void CreateMap()
-        {
-            _map = _provider.CreateMap();
-            _map.Initialize(10, 19);
-        }
-
-        private void SpawnBlock()
-        {
-            var block = _provider.CreateMob("BlockMob", _map.GetPath("TestPath"));
-            _agents.Add(block);
-        }
+        #endregion
     }
 
     public enum GameState
