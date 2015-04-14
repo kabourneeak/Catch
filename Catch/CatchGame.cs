@@ -29,6 +29,7 @@ namespace Catch
         // Game State
         //
         public GameState State { get; set; }
+        private GameState AppliedState { get; set; }
         public int Score { get; private set; }
         public int Lives { get; private set; }
 
@@ -204,7 +205,7 @@ namespace Catch
         {
             var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, mandatory);
 
-            switch (State)
+            switch (AppliedState)
             {
                 case GameState.Init:
                     break;
@@ -230,10 +231,11 @@ namespace Catch
 
         public void Draw(CanvasDrawingSession ds)
         {
+            _frameId += 1;
+
             CreateResources(ds, false);
 
             // prepare draw arguments
-            _frameId += 1;
             var drawArgs = new DrawArgs(ds, ds.Transform, _frameId);
 
             // place origin in lower left
@@ -244,7 +246,7 @@ namespace Catch
             var mapSize = _map.Size;
             drawArgs.PushTranslation((float)((Size.Width - mapSize.X) / 2), (float)((Size.Height - mapSize.Y) / 2));
 
-            switch (State)
+            switch (AppliedState)
             {
                 case GameState.Init:
                     break;
@@ -270,7 +272,11 @@ namespace Catch
 
         public void Update(float ticks)
         {
-            switch (State)
+            // AppliedState is only updated here, and is meant ot keep Update, CreateResources, 
+            // and Draw working on a consistent value
+            AppliedState = State;
+
+            switch (AppliedState)
             {
                 case GameState.Playing:
                     UpdatePlaying(ticks);
