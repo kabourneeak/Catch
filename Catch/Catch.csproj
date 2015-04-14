@@ -146,6 +146,7 @@
     <Compile Include="Models\BlockMob.cs" />
     <Compile Include="Models\BlockMobBaseIndicator.cs" />
     <Compile Include="Models\EmptyBrain.cs" />
+    <Compile Include="Models\LabelIndicator.cs" />
     <Compile Include="Models\RadiusExitTargetting.cs" />
     <Compile Include="Models\GunTower.cs" />
     <Compile Include="Models\GunTowerBaseBehaviour.cs" />

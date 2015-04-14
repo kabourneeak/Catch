@@ -46,6 +46,11 @@ namespace Catch.Base
             return Push(Matrix3x2.CreateRotation(radians, center));
         }
 
+        public Matrix3x2 PushScale(float xScale, float yScale)
+        {
+            return Push(Matrix3x2.CreateScale(xScale, yScale));
+        }
+
         public Matrix3x2 Push(Matrix3x2 relativeTransform)
         {
             var newTransform = Matrix3x2.Multiply(relativeTransform, CurrentTransform);
