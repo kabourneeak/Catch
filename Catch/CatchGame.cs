@@ -288,7 +288,7 @@ namespace Catch
                     UpdateInit(ticks);
                     break;
                 default:
-                    throw new ArgumentException("Unhandled game state");
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

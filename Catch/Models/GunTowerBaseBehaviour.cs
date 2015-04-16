@@ -49,7 +49,7 @@ namespace Catch.Models
                     // do nothing
                     break;
                 default:
-                    throw new ArgumentException("Unhandled state");
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

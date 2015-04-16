@@ -69,7 +69,7 @@ namespace Catch
                 case GameState.Playing:
                     break;
                 default:
-                    throw new ArgumentException("Unhandled game state");
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

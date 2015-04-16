@@ -54,7 +54,7 @@ namespace Catch.Base
                 case BrushType.Image:
                     return CreateImageBrush(resourceCreator);
                 default:
-                    throw new ArgumentException("This BrushType is not handled.");
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
