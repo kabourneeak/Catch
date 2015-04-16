@@ -82,17 +82,19 @@ namespace CatchTests
             Assert.IsTrue(map.GetCoordsAreValid(0, 0));
             Assert.IsTrue(map.GetCoordsAreValid(1, 0));
             Assert.IsTrue(map.GetCoordsAreValid(2, 0));
-            Assert.IsTrue(map.GetCoordsAreValid(0, 1));
             Assert.IsTrue(map.GetCoordsAreValid(1, 1));
+            Assert.IsTrue(map.GetCoordsAreValid(2, 1));
             Assert.IsTrue(map.GetCoordsAreValid(0, 2));
             Assert.IsTrue(map.GetCoordsAreValid(1, 2));
             Assert.IsTrue(map.GetCoordsAreValid(2, 2));
+
+            // 0 row has no elements in odd columns
+            Assert.IsFalse(map.GetCoordsAreValid(0, 1));
 
             Assert.IsFalse(map.GetCoordsAreValid(-1, 0));
             Assert.IsFalse(map.GetCoordsAreValid(0, -1));
 
             Assert.IsFalse(map.GetCoordsAreValid(3, 0));
-            Assert.IsFalse(map.GetCoordsAreValid(2, 1));
             Assert.IsFalse(map.GetCoordsAreValid(3, 2));
 
             Assert.IsFalse(map.GetCoordsAreValid(3, 0));
@@ -115,16 +117,16 @@ namespace CatchTests
             Assert.AreEqual(tiles[i++], map.GetTile(0, 0));
             Assert.AreEqual(tiles[i++], map.GetTile(1, 0));
             Assert.AreEqual(tiles[i++], map.GetTile(2, 0));
-            Assert.AreEqual(tiles[i++], map.GetTile(0, 1));
             Assert.AreEqual(tiles[i++], map.GetTile(1, 1));
+            Assert.AreEqual(tiles[i++], map.GetTile(2, 1));
             Assert.AreEqual(tiles[i++], map.GetTile(0, 2));
             Assert.AreEqual(tiles[i++], map.GetTile(1, 2));
             Assert.AreEqual(tiles[i++], map.GetTile(2, 2));
 
+            Assert.ThrowsException<IndexOutOfRangeException>(() => map.GetTile(0, 1));
             Assert.ThrowsException<IndexOutOfRangeException>(() => map.GetTile(-1, 0));
             Assert.ThrowsException<IndexOutOfRangeException>(() => map.GetTile(0, -1));
             Assert.ThrowsException<IndexOutOfRangeException>(() => map.GetTile(3, 0));
-            Assert.ThrowsException<IndexOutOfRangeException>(() => map.GetTile(2, 1));
             Assert.ThrowsException<IndexOutOfRangeException>(() => map.GetTile(3, 2));
             Assert.ThrowsException<IndexOutOfRangeException>(() => map.GetTile(0, 3));
         }
