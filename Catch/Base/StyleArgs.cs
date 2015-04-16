@@ -36,6 +36,11 @@ namespace Catch.Base
             StrokeWidth = 1;
         }
 
+        public ICanvasBrush CreateBrush(CreateResourcesArgs createArgs)
+        {
+            return CreateBrush(createArgs.ResourceCreator);
+        }
+
         public ICanvasBrush CreateBrush(ICanvasResourceCreator resourceCreator)
         {
             switch (BrushType)

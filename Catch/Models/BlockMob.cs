@@ -1,6 +1,7 @@
 using Windows.UI;
 using Catch.Base;
 using Catch.Services;
+using Microsoft.Graphics.Canvas;
 
 namespace Catch.Models
 {
@@ -17,12 +18,13 @@ namespace Catch.Models
             _config = config;
 
             int blockSize = 20;
-            Color blockColour = Colors.Yellow;
             float velocity = 0.005f;
-            
 
             Brain = new PathMobBehaviour(this, mapPath, velocity);
-            Indicators.Add(new BlockMobBaseIndicator(this, blockSize, blockColour));
+
+            var strokeStyle = new CanvasStrokeStyle() {LineJoin = CanvasLineJoin.Round};
+            var style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.Yellow, StrokeWidth = 4, StrokeStyle = strokeStyle};
+            Indicators.Add(new BlockMobBaseIndicator(blockSize, style));
         }
 
         public override string GetAgentType()

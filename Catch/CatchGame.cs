@@ -309,6 +309,9 @@ namespace Catch
         {
             Score += ScoreIncrement;
 
+            if (_frameId % 300 == 0)
+                SpawnBlock();
+
             foreach (var agent in _agents)
             {
                 agent.Update(ticks);

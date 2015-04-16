@@ -1,4 +1,3 @@
-using System.Numerics;
 using Catch.Base;
 using Microsoft.Graphics.Canvas;
 
@@ -42,7 +41,7 @@ namespace Catch.Models
                 _geo.Dispose();
 
             // define brush
-            _brush = _style.CreateBrush(createArgs.ResourceCreator);
+            _brush = _style.CreateBrush(createArgs);
             _brush.Opacity = _style.BrushOpacity;
 
             // define path
