@@ -1,7 +1,6 @@
 using System;
 using Catch.Base;
 using Catch.Services;
-using System.Numerics;
 
 namespace Catch.Models
 {
@@ -23,8 +22,9 @@ namespace Catch.Models
             // do nothing;
         }
 
-        private float _holdTicks;
-        private const float _rotationRate = (float)(2 * Math.PI / 60);
+        private const float RotationRate = (float)(2 * Math.PI / 60);
+        private const float Twopi = (float) Math.PI * 2;
+
         private float _rotationVel;
         private float _targetDirection = 0.0f;
         private float _currentDirection = 0.0f;
@@ -41,9 +41,6 @@ namespace Catch.Models
                     break;
                 case TowerBehaviourState.OnTarget:
                     UpdateOnTarget(ticks);
-                    break;
-                case TowerBehaviourState.TargetLost:
-                    UpdateTargetLost(ticks);
                     break;
                 case TowerBehaviourState.Removed:
                     // do nothing
@@ -64,10 +61,9 @@ namespace Catch.Models
             {
                 _targetTile = _targetMob.Tile;
 
-                var a = _tower.Position;
-                var b = _targetMob.Position;
-                _targetDirection = (float)Math.Atan2(b.Y - a.Y, b.X - a.X);
-                _rotationVel = _rotationRate * Targetting.ShortestRotationDirection(_currentDirection, _targetDirection);
+                // determine rotation speed and direction
+                CalcTargetDirection();
+                _rotationVel = RotationRate * Targetting.ShortestRotationDirection(_currentDirection, _targetDirection);
 
                 _state = TowerBehaviourState.Aiming;
             }
@@ -75,16 +71,12 @@ namespace Catch.Models
 
         private void UpdateAiming(float ticks)
         {
-            const float twopi = (float) Math.PI * 2;
-
             // find rotation angle from us to target tile
-            var a = _tower.Position;
-            var b = _targetMob.Position;
-            _targetDirection = (float)Math.Atan2(b.Y - a.Y, b.X - a.X);
-            _currentDirection = _currentDirection.Wrap(_rotationVel, 0.0f, twopi);
+            CalcTargetDirection();
+            _currentDirection = _currentDirection.Wrap(_rotationVel * ticks, 0.0f, Twopi);
 
             // see if we've arrived
-            if (Math.Abs(_currentDirection.Wrap(-_targetDirection, 0.0f, twopi)) <= _rotationRate * 1.5f)
+            if (Math.Abs(_currentDirection.Wrap(-_targetDirection, 0.0f, Twopi)) <= RotationRate * ticks * 1.5f)
             {
                 _currentDirection = _targetDirection;
                 _state = TowerBehaviourState.OnTarget;
@@ -98,17 +90,13 @@ namespace Catch.Models
             // check if mob has become untargetable
             if (_targetMob.IsTargetable == false)
             {
-                _state = TowerBehaviourState.TargetLost;
+                _state = TowerBehaviourState.Targetting;
                 return;
             }
 
-            // find rotation angle from us to target tile
-            const float twopi = (float)Math.PI * 2;
-            var a = _tower.Position;
-            var b = _targetMob.Position;
-            _targetDirection = (float)Math.Atan2(b.Y - a.Y, b.X - a.X);
+            // follow the target
+            CalcTargetDirection();
             _currentDirection = _targetDirection;
-
             _tower.Rotation = _currentDirection;
 
             // check if mob is out of range
@@ -117,23 +105,14 @@ namespace Catch.Models
                 _state = TowerBehaviourState.Targetting;
             }
 
-            // fire
+            // TODO fire at enemy
         }
 
-        private void UpdateTargetLost(float ticks)
+        private void CalcTargetDirection()
         {
-            _targetMob = _targetting.GetBestTargetMob(_targetTile);
-
-            if (_targetMob == null)
-            {
-                // no other targets in this tile, look for a new tile
-                _state = TowerBehaviourState.Targetting;
-            }
-            else
-            {
-                // switch to the next target in this tile
-                _state = TowerBehaviourState.Aiming;
-            }
+            var a = _tower.Position;
+            var b = _targetMob.Position;
+            _targetDirection = (float) Math.Atan2(b.Y - a.Y, b.X - a.X);
         }
 
         public void OnRemove()
@@ -149,6 +128,6 @@ namespace Catch.Models
 
     public enum TowerBehaviourState
     {
-        Targetting, Aiming, OnTarget, TargetLost, Removed
+        Targetting, Aiming, OnTarget, Removed
     }
 }

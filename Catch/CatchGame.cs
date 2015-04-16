@@ -309,7 +309,7 @@ namespace Catch
         {
             Score += ScoreIncrement;
 
-            if (_frameId % 300 == 0)
+            if (_frameId % 360 == 0)
                 SpawnBlock();
 
             foreach (var agent in _agents)
