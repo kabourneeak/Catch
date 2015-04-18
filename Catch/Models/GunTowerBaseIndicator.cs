@@ -2,7 +2,8 @@ using System.Numerics;
 using Windows.UI;
 using Catch.Base;
 using Catch.Services;
-using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Brushes;
+using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Models
 {

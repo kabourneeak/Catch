@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using Windows.Foundation;
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch
 {
@@ -12,7 +10,7 @@ namespace Catch
         public static Matrix3x2 GetDisplayTransform(Size controlSize, ICanvasResourceCreatorWithDpi canvas, int designWidth, int designHeight)
         {
             // Scale the display to fill the control.
-            Vector2 canvasSize = controlSize.ToVector2();
+            var canvasSize = controlSize.ToVector2();
             var simulationSize = new Vector2(canvas.ConvertPixelsToDips(designWidth), canvas.ConvertPixelsToDips(designHeight));
             var scale = canvasSize / simulationSize;
             var offset = Vector2.Zero;

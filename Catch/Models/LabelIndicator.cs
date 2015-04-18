@@ -1,7 +1,6 @@
 ﻿using Windows.UI;
-using Windows.UI.Text;
 using Catch.Base;
-using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.Models
 {
@@ -43,7 +42,7 @@ namespace Catch.Models
             var format = new CanvasTextFormat()
             {
                 VerticalAlignment = CanvasVerticalAlignment.Center,
-                ParagraphAlignment = ParagraphAlignment.Center
+                HorizontalAlignment = CanvasHorizontalAlignment.Center
             };
 
             _label = new CanvasTextLayout(createArgs.ResourceCreator, Label, format, 100, 100);

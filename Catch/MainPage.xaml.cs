@@ -8,6 +8,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Catch.Win2d;
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace Catch
 {
