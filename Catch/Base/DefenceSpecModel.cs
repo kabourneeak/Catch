@@ -1,6 +1,6 @@
 ﻿namespace Catch.Base
 {
-    public class AttackSpecs
+    public class DefenceSpecModel
     {
     }
 }

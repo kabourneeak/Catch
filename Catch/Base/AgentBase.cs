@@ -12,6 +12,9 @@ namespace Catch.Base
             Position = new Vector2(0.0f);
             Indicators = new IndicatorCollection();
             IsActive = true;
+            BaseSpecs = new BaseSpecModel();
+            AttackSpecs = new AttackSpecModel();
+            DefenceSpecs = new DefenceSpecModel();
         }
 
         #region AgentBase Implementation
@@ -67,11 +70,11 @@ namespace Catch.Base
         public bool IsActive { get; set; }
         public Tile Tile { get; set; }
         public bool IsTargetable { get; set; }
-        public int Health { get; set; }
         public ModifierCollection Modifiers { get; protected set; }
         public IndicatorCollection Indicators { get; protected set; }
-        public AttackSpecs AttackSpecs { get; protected set; }
-        public DefenceSpecs DefenceSpecs { get; protected set; }
+        public BaseSpecModel BaseSpecs { get; protected set; }
+        public AttackSpecModel AttackSpecs { get; protected set; }
+        public DefenceSpecModel DefenceSpecs { get; protected set; }
         public IAgentStats Stats { get; protected set; }
 
         public virtual void OnRemove()

@@ -18,15 +18,15 @@
 
         bool IsTargetable { get; set; }
 
-        int Health { get; set; }
-
         ModifierCollection Modifiers { get; }
 
         IndicatorCollection Indicators { get; }
 
-        AttackSpecs AttackSpecs { get; }
+        BaseSpecModel BaseSpecs { get; }
 
-        DefenceSpecs DefenceSpecs { get; }
+        AttackSpecModel AttackSpecs { get; }
+
+        DefenceSpecModel DefenceSpecs { get; }
 
         IAgentStats Stats { get; }
 
