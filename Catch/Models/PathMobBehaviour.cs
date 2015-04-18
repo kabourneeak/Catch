@@ -50,7 +50,6 @@ namespace Catch.Models
 
         private void UpdateAdvancing(float ticks)
         {
-
             // advance through tile
             _mob.TileProgress += _velocity * ticks;
 
@@ -102,6 +101,7 @@ namespace Catch.Models
         public void OnRemove()
         {
             _state = PathMobBehaviourStates.Removed;
+            _mob.IsTargetable = false;
             _mob.IsActive = false;
             _mob.Tile.RemoveMob(_mob);
         }

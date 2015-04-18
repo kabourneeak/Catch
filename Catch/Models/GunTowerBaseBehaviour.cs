@@ -83,22 +83,16 @@ namespace Catch.Models
         private void UpdateOnTarget(float ticks)
         {
             // check if mob has become untargetable
-            if (_targetMob.IsTargetable == false)
+            if (!_targetMob.IsTargetable || _targetMob.Tile != _targetTile)
             {
                 _state = TowerBehaviourState.Targetting;
                 return;
             }
-
+            
             // follow the target
             CalcTargetDirection();
             _currentDirection = _targetDirection;
             _tower.Rotation = _currentDirection;
-
-            // check if mob is out of range
-            if (_targetMob.Tile != _targetTile)
-            {
-                _state = TowerBehaviourState.Targetting;
-            }
 
             // TODO fire at enemy
         }
@@ -113,6 +107,7 @@ namespace Catch.Models
         public void OnRemove()
         {
             _state = TowerBehaviourState.Removed;
+            _tower.IsTargetable = false;
             _tower.IsActive = false;
             _tower.Tile.RemoveTower(_tower);
         }
