@@ -21,7 +21,7 @@ namespace Catch.Models
             var style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.DeepSkyBlue, StrokeWidth = 3};
 
             Indicators.Add(new HexagonGraphics(radius - inset, style));
-            Indicators.Add(new GunTowerBaseIndicator(this, config));
+            Indicators.Add(new GunTowerBaseIndicator(config));
         }
 
         #region IGameObject Implementation

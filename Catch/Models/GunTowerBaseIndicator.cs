@@ -8,11 +8,8 @@ namespace Catch.Models
 {
     public class GunTowerBaseIndicator : IIndicator
     {
-        private readonly GunTower _tower;
-
-        public GunTowerBaseIndicator(GunTower tower, IConfig config)
+        public GunTowerBaseIndicator(IConfig config)
         {
-            _tower = tower;
             Layer = DrawLayer.Tower;
         }
 
