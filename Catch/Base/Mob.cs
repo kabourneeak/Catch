@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Catch.Models;
 
 namespace Catch.Base
 {
@@ -10,6 +9,7 @@ namespace Catch.Base
             Position = new Vector2(0.0f);
             Indicators = new IndicatorCollection();
             IsTargetable = true;
+            IsActive = true;
         }
 
         #region Mob Specific
@@ -64,6 +64,8 @@ namespace Catch.Base
         public abstract string GetAgentType();
 
         public IBehaviourComponent Brain { get; protected set; }
+
+        public bool IsActive { get; set; }
         public Tile Tile { get; set; }
         public bool IsTargetable { get; set; }
         public int Health { get; set; }

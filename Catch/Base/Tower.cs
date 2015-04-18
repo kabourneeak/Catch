@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Catch.Models;
 
 namespace Catch.Base
 {
@@ -18,6 +17,7 @@ namespace Catch.Base
             Position = tile.Position;
             Layer = DrawLayer.Tower;
             Indicators = new IndicatorCollection();
+            IsActive = true;
 
             // site into tile
             tile.AddTower(this);
@@ -63,6 +63,8 @@ namespace Catch.Base
         public abstract string GetAgentType();
 
         public IBehaviourComponent Brain { get; protected set; }
+
+        public bool IsActive { get; set; }
         public Tile Tile { get; set; }
         public bool IsTargetable { get; set; }
         public int Health { get; set; }
@@ -73,6 +75,5 @@ namespace Catch.Base
         public IAgentStats Stats { get; protected set; }
 
         #endregion
-
     }
 }

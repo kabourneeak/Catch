@@ -4,7 +4,6 @@ namespace Catch.Base
 {
     public interface IGameObject : IGraphicsComponent
     {
-        // properties
         string DisplayName { get; }
 
         string DisplayInfo { get; }

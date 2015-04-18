@@ -313,11 +313,9 @@ namespace Catch
                 SpawnBlock();
 
             foreach (var agent in _agents)
-            {
                 agent.Update(ticks);
-            }
 
-            // TODO some method of remove agents that are dead
+            _agents.RemoveAll(a => !a.IsActive);
         }
 
         #endregion
