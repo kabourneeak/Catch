@@ -112,6 +112,7 @@
     <Compile Include="Base\BaseSpecModel.cs" />
     <Compile Include="Base\Map.cs" />
     <Compile Include="Base\IndicatorCollection.cs" />
+    <Compile Include="Base\ModifierPriority.cs" />
     <Compile Include="Base\Targetting.cs" />
     <Compile Include="Base\Tile.cs" />
     <Compile Include="Base\Tower.cs" />
@@ -131,7 +132,7 @@
     <Compile Include="Base\IGraphicsComponent.cs" />
     <Compile Include="Base\IIndicator.cs" />
     <Compile Include="Base\IMapProvider.cs" />
-    <Compile Include="Base\IModifier.cs" />
+    <Compile Include="Base\Modifier.cs" />
     <Compile Include="Base\ModifierCollection.cs" />
     <Compile Include="Base\MapPath.cs" />
     <Compile Include="Base\StyleArgs.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Models\BlockMob.cs" />
     <Compile Include="Models\BlockMobBaseIndicator.cs" />
     <Compile Include="Models\EmptyBrain.cs" />
+    <Compile Include="Models\GunTowerBaseModifier.cs" />
     <Compile Include="Models\LabelIndicator.cs" />
     <Compile Include="Models\RadiusExitTargetting.cs" />
     <Compile Include="Models\GunTower.cs" />

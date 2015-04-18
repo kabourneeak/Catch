@@ -48,7 +48,7 @@ namespace Catch.Win2d
             throw new ArgumentException("I don't know how to construct that PathAgent");
         }
 
-        public IModifier CreateModifier(string name)
+        public Modifier CreateModifier(string name)
         {
             throw new System.NotImplementedException();
         }

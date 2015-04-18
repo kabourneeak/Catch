@@ -8,7 +8,7 @@ namespace Catch.Base
 
         Mob CreateMob(string name, MapPath mapPath);
 
-        IModifier CreateModifier(string name);
+        Modifier CreateModifier(string name);
 
         IIndicator CreateIndicator(string name);
     }

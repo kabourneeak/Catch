@@ -1,19 +1,75 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace Catch.Base
 {
-    public class ModifierCollection : IEnumerable<IModifier>
+    public class ModifierCollection : IEnumerable<Modifier>
     {
-        private readonly SortedSet<IModifier> _modifiers;
+        private readonly IAgent _agent;
+        private readonly SortedSet<Modifier> _modifiers;
+        private bool _needsApply;
 
-        public ModifierCollection()
+        public ModifierCollection(IAgent agent)
         {
-            _modifiers = new SortedSet<IModifier>(ModifierComparer.GetComparer());
+            _agent = agent;
+            _modifiers = new SortedSet<Modifier>(ModifierComparer.GetComparer());
         }
 
-        public IEnumerator<IModifier> GetEnumerator()
+        public void Update(float ticks)
+        {
+            foreach (var m in _modifiers)
+            {
+                m.Update(ticks);
+                _needsApply = _needsApply || m.NeedsApply;
+            }
+
+            var numRemoved = _modifiers.RemoveWhere(m => !m.IsActive);
+
+            if (numRemoved > 0)
+                _needsApply = true;
+
+            if (_needsApply)
+                Apply();
+        }
+
+        private void Apply()
+        {
+            _agent.BaseSpecs.Reset();
+            _agent.AttackSpecs.Reset();
+            _agent.DefenceSpecs.Reset();
+
+            foreach (var m in _modifiers)
+            {
+                m.Apply();
+            }
+
+            _needsApply = false;
+        }
+
+        public void Add(Modifier modifier)
+        {
+            _modifiers.Add(modifier);
+            _needsApply = true;
+        }
+
+        public void AddRange(IEnumerable<Modifier> collection)
+        {
+            foreach (var mod in collection)
+                _modifiers.Add(mod);
+
+            _needsApply = true;
+        }
+
+        public void Remove(Modifier modifier)
+        {
+            _modifiers.Remove(modifier);
+
+            _needsApply = true;
+        }
+
+        public int Count { get { return _modifiers.Count; } }
+
+        public IEnumerator<Modifier> GetEnumerator()
         {
             return _modifiers.GetEnumerator();
         }
@@ -23,13 +79,7 @@ namespace Catch.Base
             return GetEnumerator();
         }
 
-        public void Update(float ticks)
-        {
-            foreach (var m in _modifiers)
-                m.Update(ticks);
-        }
-
-        private class ModifierComparer : IComparer<IModifier>
+        private class ModifierComparer : IComparer<Modifier>
         {
             private static ModifierComparer _instance;
 
@@ -43,9 +93,9 @@ namespace Catch.Base
 
             }
 
-            public int Compare(IModifier x, IModifier y)
+            public int Compare(Modifier x, Modifier y)
             {
-                throw new NotImplementedException();
+                return x.Priority.CompareTo(y.Priority);
             }
         }
     }

@@ -11,6 +11,7 @@ namespace Catch.Base
         {
             Position = new Vector2(0.0f);
             Indicators = new IndicatorCollection();
+            Modifiers = new ModifierCollection(this);
             IsActive = true;
             BaseSpecs = new BaseSpecModel();
             AttackSpecs = new AttackSpecModel();
@@ -34,6 +35,7 @@ namespace Catch.Base
 
         public virtual void Update(float ticks)
         {
+            Modifiers.Update(ticks);
             Brain.Update(ticks);
             Indicators.Update(ticks);
         }

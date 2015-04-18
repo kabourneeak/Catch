@@ -4,9 +4,7 @@
     {
         public BaseSpecModel()
         {
-            MaxHealth = 1;
-            Health = 1;
-            Level = 1;
+            Reset();
         }
 
         public int Health { get; set; }
@@ -15,5 +13,13 @@
         public int Level { get; set; }
 
         public float MovementSpeed { get; set; }
+
+        public void Reset()
+        {
+            MaxHealth = 1;
+            Health = 1;
+            Level = 1;
+            MovementSpeed = 0.0f;
+        }
     }
 }

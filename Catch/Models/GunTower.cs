@@ -14,6 +14,8 @@ namespace Catch.Models
 
             Layer = DrawLayer.Tower;
 
+            Modifiers.Add(new GunTowerBaseModifier(this));
+
             Brain = new GunTowerBaseBehaviour(this, config);
 
             var radius = config.GetFloat("TileRadius");
