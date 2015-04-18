@@ -14,6 +14,12 @@ namespace Catch.Base
             IsActive = true;
         }
 
+        #region AgentBase Implementation
+
+        protected IBehaviourComponent Brain { get; set; }
+
+        #endregion
+
         #region IGameObject Implementation
 
         public string DisplayName { get; protected set; }
@@ -57,8 +63,6 @@ namespace Catch.Base
         #region IAgent Implementation
 
         public abstract string GetAgentType();
-
-        public IBehaviourComponent Brain { get; protected set; }
 
         public bool IsActive { get; set; }
         public Tile Tile { get; set; }

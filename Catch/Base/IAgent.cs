@@ -5,9 +5,6 @@
         // Identification
         string GetAgentType();
         
-        // Components
-        IBehaviourComponent Brain { get; }
-
         #region Properties
 
         /// <summary>
