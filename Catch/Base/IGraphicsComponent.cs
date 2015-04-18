@@ -5,10 +5,17 @@
     /// </summary>
     public interface IGraphicsComponent
     {
-        // Events
+        #region Events
+
         void Update(float ticks);
 
         void CreateResources(CreateResourcesArgs createArgs);
+
+        /// <summary>
+        /// When called, an IGraphicsComponent should free any caches resources. The object may be called
+        /// upon later to CreateResources.
+        /// </summary>
+        void DestroyResources();
 
         /// <summary>
         /// Has the IGraphicsComponent draw itself.
@@ -20,5 +27,7 @@
         /// <param name="drawArgs">The DrawArgs to draw against, which includes the output device</param>
         /// <param name="rotation">A hint from the caller as to the orientation of what is being drawn.</param>
         void Draw(DrawArgs drawArgs, float rotation);
+
+        #endregion
     }
 }

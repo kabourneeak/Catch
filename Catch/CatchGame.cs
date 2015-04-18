@@ -161,26 +161,26 @@ namespace Catch
             tile = _map.GetNeighbour(tile, TileDirection.North);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.North);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.North);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-            mapPath.Add(tile);
+//            tile = _map.GetNeighbour(tile, TileDirection.North);
+//            mapPath.Add(tile);
+//
+//            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
+//            mapPath.Add(tile);
+//
+//            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+//            mapPath.Add(tile);
+//
+//            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+//            mapPath.Add(tile);
+//
+//            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
+//            mapPath.Add(tile);
+//
+//            tile = _map.GetNeighbour(tile, TileDirection.North);
+//            mapPath.Add(tile);
+//
+//            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+//            mapPath.Add(tile);
 
             _map.AddPath("TestPath", mapPath);
         }
@@ -315,7 +315,12 @@ namespace Catch
             foreach (var agent in _agents)
                 agent.Update(ticks);
 
-            _agents.RemoveAll(a => !a.IsActive);
+            _agents.RemoveAll(delegate(IAgent a)
+            {
+                if (a.IsActive) return false;
+                a.DestroyResources();
+                return true;
+            });
         }
 
         #endregion

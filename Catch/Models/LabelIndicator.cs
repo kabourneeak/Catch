@@ -36,6 +36,10 @@ namespace Catch.Models
             if (_createFrameId == createArgs.FrameId)
                 return;
 
+            DestroyResources();
+
+            _createFrameId = createArgs.FrameId;
+
             var format = new CanvasTextFormat()
             {
                 VerticalAlignment = CanvasVerticalAlignment.Center,
@@ -43,6 +47,17 @@ namespace Catch.Models
             };
 
             _label = new CanvasTextLayout(createArgs.ResourceCreator, Label, format, 100, 100);
+        }
+
+        public void DestroyResources()
+        {
+            if (_label == null)
+                return;
+
+            _label.Dispose();
+            _label = null;
+
+            _createFrameId = -1;
         }
 
         public void Draw(DrawArgs drawArgs, float rotation)

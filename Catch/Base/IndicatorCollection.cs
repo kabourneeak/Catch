@@ -35,6 +35,12 @@ namespace Catch.Base
                 i.CreateResources(createArgs);
         }
 
+        public void DestroyResources()
+        {
+            foreach (var i in _indicators)
+                i.DestroyResources();
+        }
+
         public void Draw(DrawArgs drawArgs, float rotation)
         {
             foreach (var i in _indicators)

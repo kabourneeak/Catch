@@ -33,18 +33,23 @@ namespace Catch.Base
         public float Rotation { get; set; }
         public DrawLayer Layer { get; protected set; }
 
-        public void Update(float ticks)
+        public virtual void Update(float ticks)
         {
             Brain.Update(ticks);
             Indicators.Update(ticks);
         }
 
-        public void CreateResources(CreateResourcesArgs createArgs)
+        public virtual void CreateResources(CreateResourcesArgs createArgs)
         {
             Indicators.CreateResources(createArgs);
         }
 
-        public void Draw(DrawArgs drawArgs, float rotation)
+        public virtual void DestroyResources()
+        {
+            Indicators.DestroyResources();
+        }
+
+        public virtual void Draw(DrawArgs drawArgs, float rotation)
         {
             if (Indicators.Count == 0)
                 return;

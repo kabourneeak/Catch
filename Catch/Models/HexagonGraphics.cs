@@ -35,10 +35,9 @@ namespace Catch.Models
             if (_createFrameId == createArgs.FrameId)
                 return;
 
-            _createFrameId = createArgs.FrameId;
+            DestroyResources();
 
-            if (_geo != null)
-                _geo.Dispose();
+            _createFrameId = createArgs.FrameId;
 
             // define brush
             _brush = _style.CreateBrush(createArgs);
@@ -59,6 +58,17 @@ namespace Catch.Models
             var geo = CanvasGeometry.CreatePath(pb);
 
             _geo = CanvasCachedGeometry.CreateStroke(geo, _style.StrokeWidth, _style.StrokeStyle);
+        }
+
+        public void DestroyResources()
+        {
+            if (_geo == null) 
+                return;
+
+            _geo.Dispose();
+            _geo = null;
+
+            _createFrameId = -1;
         }
 
         public void Draw(DrawArgs drawArgs, float rotation)
