@@ -107,6 +107,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Base\AgentBase.cs" />
     <Compile Include="Base\AttackSpecs.cs" />
     <Compile Include="Base\Map.cs" />
     <Compile Include="Base\IndicatorCollection.cs" />
