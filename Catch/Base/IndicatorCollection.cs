@@ -35,10 +35,10 @@ namespace Catch.Base
                 i.CreateResources(createArgs);
         }
 
-        public void Draw(DrawArgs drawArgs)
+        public void Draw(DrawArgs drawArgs, float rotation)
         {
             foreach (var i in _indicators)
-                i.Draw(drawArgs);
+                i.Draw(drawArgs, rotation);
         }
 
         public void Add(IIndicator indicator)

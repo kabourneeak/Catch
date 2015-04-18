@@ -61,7 +61,7 @@ namespace Catch.Models
             _geo = CanvasCachedGeometry.CreateStroke(geo, _style.StrokeWidth, _style.StrokeStyle);
         }
 
-        public void Draw(DrawArgs drawArgs)
+        public void Draw(DrawArgs drawArgs, float rotation)
         {
             drawArgs.Ds.DrawCachedGeometry(_geo, _brush);
         }

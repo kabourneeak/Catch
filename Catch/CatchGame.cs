@@ -263,7 +263,7 @@ namespace Catch
         private void DrawPlaying(DrawArgs drawArgs)
         {
             foreach (var agent in _agents)
-                agent.Draw(drawArgs);
+                agent.Draw(drawArgs, 0.0f);
         }
 
         #endregion

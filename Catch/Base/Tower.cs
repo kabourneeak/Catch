@@ -43,14 +43,15 @@ namespace Catch.Base
             Indicators.CreateResources(createArgs);
         }
 
-        public virtual void Draw(DrawArgs drawArgs)
+        public virtual void Draw(DrawArgs drawArgs, float rotation)
         {
             if (Indicators.Count == 0)
                 return;
 
             drawArgs.PushTranslation(Position);
 
-            Indicators.Draw(drawArgs);
+            // ignore the rotation parameter, and replace by our Rotation
+            Indicators.Draw(drawArgs, Rotation);
 
             drawArgs.Pop();
         }

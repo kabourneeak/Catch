@@ -45,7 +45,7 @@ namespace Catch.Models
             _label = new CanvasTextLayout(createArgs.ResourceCreator, Label, format, 100, 100);
         }
 
-        public void Draw(DrawArgs drawArgs)
+        public void Draw(DrawArgs drawArgs, float rotation)
         {
             drawArgs.PushScale(1.0f, -1.0f);
             drawArgs.Ds.DrawTextLayout(_label, -50.0f, -50.0f, Colour);

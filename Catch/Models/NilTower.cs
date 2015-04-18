@@ -28,10 +28,9 @@ namespace Catch.Models
             // do nothing
         }
 
-        public override void Draw(DrawArgs drawArgs)
+        public override void Draw(DrawArgs drawArgs, float rotation)
         {
             // do nothing;
         }
-
     }
 }
