@@ -74,6 +74,16 @@ namespace Catch.Base
         public DefenceSpecs DefenceSpecs { get; protected set; }
         public IAgentStats Stats { get; protected set; }
 
+        public virtual void OnRemove()
+        {
+            Brain.OnRemove();
+        }
+
+        public virtual void OnAttacked(IAttack attack)
+        {
+            Brain.OnAttacked(attack);
+        }
+
         #endregion
     }
 }

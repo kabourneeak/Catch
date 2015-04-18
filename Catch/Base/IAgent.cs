@@ -34,5 +34,19 @@
         IAgentStats Stats { get; }
 
         #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Called when the Agent is being removed from the game due to some external reason
+        /// (e.g., a tower is sold). Agents must set IsActive to false when this is called.
+        /// 
+        /// When an agent sets IsActive to false of its own accord, this method is not called.
+        /// </summary>
+        void OnRemove();
+
+        void OnAttacked(IAttack attack);
+
+        #endregion
     }
 }

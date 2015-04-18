@@ -30,11 +30,6 @@ namespace Catch.Models
             _mob.Tile.AddMob(_mob);
         }
 
-        public void OnSpawn()
-        {
-            // do nothing
-        }
-
         public void Update(float ticks)
         {
             switch (_state)
@@ -106,10 +101,9 @@ namespace Catch.Models
 
         public void OnRemove()
         {
+            _state = PathMobBehaviourStates.Removed;
             _mob.IsActive = false;
             _mob.Tile.RemoveMob(_mob);
-
-            _state = PathMobBehaviourStates.Removed;
         }
 
         public void OnAttacked(IAttack attack)

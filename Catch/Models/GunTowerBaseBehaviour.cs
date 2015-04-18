@@ -17,11 +17,6 @@ namespace Catch.Models
             _state = TowerBehaviourState.Targetting;
         }
 
-        public void OnSpawn()
-        {
-            // do nothing;
-        }
-
         private const float RotationRate = (float)(2 * Math.PI / 60);
         private const float Twopi = (float) Math.PI * 2;
 
@@ -118,6 +113,8 @@ namespace Catch.Models
         public void OnRemove()
         {
             _state = TowerBehaviourState.Removed;
+            _tower.IsActive = false;
+            _tower.Tile.RemoveTower(_tower);
         }
 
         public void OnAttacked(IAttack attack)

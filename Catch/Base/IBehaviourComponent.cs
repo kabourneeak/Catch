@@ -2,8 +2,6 @@
 {
     public interface IBehaviourComponent
     {
-        void OnSpawn();
-
         void Update(float ticks);
 
         void OnRemove();
