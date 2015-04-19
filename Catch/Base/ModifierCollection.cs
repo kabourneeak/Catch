@@ -7,7 +7,7 @@ namespace Catch.Base
     {
         private readonly IAgent _agent;
         private readonly SortedSet<Modifier> _modifiers;
-        private bool _needsApply;
+        private bool _needsApplyToBase;
 
         public ModifierCollection(IAgent agent)
         {
@@ -20,36 +20,34 @@ namespace Catch.Base
             foreach (var m in _modifiers)
             {
                 m.Update(ticks);
-                _needsApply = _needsApply || m.NeedsApply;
+                _needsApplyToBase = _needsApplyToBase || m.NeedsApplyToBase;
             }
 
             var numRemoved = _modifiers.RemoveWhere(m => !m.IsActive);
 
             if (numRemoved > 0)
-                _needsApply = true;
+                _needsApplyToBase = true;
 
-            if (_needsApply)
-                Apply();
+            if (_needsApplyToBase)
+                ApplyToBase();
         }
 
-        private void Apply()
+        private void ApplyToBase()
         {
             _agent.BaseSpecs.Reset();
-            _agent.AttackSpecs.Reset();
-            _agent.DefenceSpecs.Reset();
 
             foreach (var m in _modifiers)
             {
-                m.Apply();
+                m.ApplyToBase();
             }
 
-            _needsApply = false;
+            _needsApplyToBase = false;
         }
 
         public void Add(Modifier modifier)
         {
             _modifiers.Add(modifier);
-            _needsApply = true;
+            _needsApplyToBase = true;
         }
 
         public void AddRange(IEnumerable<Modifier> collection)
@@ -57,14 +55,14 @@ namespace Catch.Base
             foreach (var mod in collection)
                 _modifiers.Add(mod);
 
-            _needsApply = true;
+            _needsApplyToBase = true;
         }
 
         public void Remove(Modifier modifier)
         {
             _modifiers.Remove(modifier);
 
-            _needsApply = true;
+            _needsApplyToBase = true;
         }
 
         public int Count { get { return _modifiers.Count; } }

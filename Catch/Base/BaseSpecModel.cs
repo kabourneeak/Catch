@@ -13,6 +13,7 @@
         public int Level { get; set; }
 
         public float MovementSpeed { get; set; }
+        public float FiringInterval { get; set; }
 
         public void Reset()
         {
@@ -20,6 +21,7 @@
             Health = 1;
             Level = 1;
             MovementSpeed = 0.0f;
+            FiringInterval = 0.0f;
         }
     }
 }

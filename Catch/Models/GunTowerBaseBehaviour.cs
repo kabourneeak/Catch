@@ -112,7 +112,7 @@ namespace Catch.Models
             _tower.Tile.RemoveTower(_tower);
         }
 
-        public void OnAttacked(IAttack attack)
+        public void OnAttacked(AttackModel attack)
         {
             // do nothing
         }

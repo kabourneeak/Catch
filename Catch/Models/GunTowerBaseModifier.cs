@@ -2,14 +2,21 @@
 
 namespace Catch.Models
 {
-    class GunTowerBaseModifier : Modifier
+    public class GunTowerBaseModifier : Modifier
     {
+        private const int BaseDamage = 10;
+
         public GunTowerBaseModifier(IAgent agent) : base(agent)
         {
             Priority = ModifierPriority.Base;
         }
 
-        public override void Apply()
+        public override void Update(float ticks)
+        {
+            // do nothing
+        }
+
+        public override void ApplyToBase()
         {
             var bs = Agent.BaseSpecs;
 
@@ -17,12 +24,17 @@ namespace Catch.Models
             bs.Health = 100;
             bs.Level = 1;
 
-            NeedsApply = false;
+            NeedsApplyToBase = false;
         }
 
-        public override void Update(float ticks)
+        public override bool ApplyToAttack(AttackModel outgoingAttack)
         {
-            // do nothing
+            base.ApplyToAttack(outgoingAttack);
+
+            // override any value with base damage
+            outgoingAttack.Damage = Agent.BaseSpecs.Level * BaseDamage;
+
+            return true;
         }
     }
 }

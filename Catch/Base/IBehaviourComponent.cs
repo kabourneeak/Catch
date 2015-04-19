@@ -6,6 +6,6 @@
 
         void OnRemove();
 
-        void OnAttacked(IAttack attack);
+        void OnAttacked(AttackModel attack);
     }
 }

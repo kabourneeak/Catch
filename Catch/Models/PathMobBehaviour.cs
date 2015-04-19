@@ -106,7 +106,7 @@ namespace Catch.Models
             _mob.Tile.RemoveMob(_mob);
         }
 
-        public void OnAttacked(IAttack attack)
+        public void OnAttacked(AttackModel attack)
         {
             // do nothing
         }

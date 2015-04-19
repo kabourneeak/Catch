@@ -108,8 +108,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Base\AgentBase.cs" />
-    <Compile Include="Base\AttackSpecModel.cs" />
     <Compile Include="Base\BaseSpecModel.cs" />
+    <Compile Include="Base\AttackModel.cs" />
     <Compile Include="Base\Map.cs" />
     <Compile Include="Base\IndicatorCollection.cs" />
     <Compile Include="Base\ModifierPriority.cs" />
@@ -118,7 +118,6 @@
     <Compile Include="Base\Tower.cs" />
     <Compile Include="Base\Mob.cs" />
     <Compile Include="Base\CreateResourcesArgs.cs" />
-    <Compile Include="Base\DefenceSpecModel.cs" />
     <Compile Include="Base\DrawArgs.cs" />
     <Compile Include="Base\DrawLayer.cs" />
     <Compile Include="Base\HexCoords.cs" />
@@ -126,7 +125,6 @@
     <Compile Include="Base\IAgent.cs" />
     <Compile Include="Base\IAgentProvider.cs" />
     <Compile Include="Base\IAgentStats.cs" />
-    <Compile Include="Base\IAttack.cs" />
     <Compile Include="Base\IBehaviourComponent.cs" />
     <Compile Include="Base\IGameObject.cs" />
     <Compile Include="Base\IGraphicsComponent.cs" />

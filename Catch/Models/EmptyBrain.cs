@@ -14,7 +14,7 @@ namespace Catch.Models
             // do nothing
         }
 
-        public void OnAttacked(IAttack attack)
+        public void OnAttacked(AttackModel attack)
         {
             // do nothing
         }

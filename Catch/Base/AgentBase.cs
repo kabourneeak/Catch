@@ -14,8 +14,6 @@ namespace Catch.Base
             Modifiers = new ModifierCollection(this);
             IsActive = true;
             BaseSpecs = new BaseSpecModel();
-            AttackSpecs = new AttackSpecModel();
-            DefenceSpecs = new DefenceSpecModel();
         }
 
         #region AgentBase Implementation
@@ -75,8 +73,6 @@ namespace Catch.Base
         public ModifierCollection Modifiers { get; protected set; }
         public IndicatorCollection Indicators { get; protected set; }
         public BaseSpecModel BaseSpecs { get; protected set; }
-        public AttackSpecModel AttackSpecs { get; protected set; }
-        public DefenceSpecModel DefenceSpecs { get; protected set; }
         public IAgentStats Stats { get; protected set; }
 
         public virtual void OnRemove()
@@ -84,7 +80,7 @@ namespace Catch.Base
             Brain.OnRemove();
         }
 
-        public virtual void OnAttacked(IAttack attack)
+        public virtual void OnAttacked(AttackModel attack)
         {
             Brain.OnAttacked(attack);
         }

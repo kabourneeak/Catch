@@ -2,26 +2,73 @@
 {
     public abstract class Modifier
     {
-        public IAgent Agent { get; protected set; }
+        #region Properties
+
+        public int Level { get; set; }
+
+        public float Intensity { get; set; }
+
+        public float Duration { get; set; }
+
+        #endregion
+
+        #region Base
 
         protected Modifier(IAgent agent)
         {
             Agent = agent;
-            NeedsApply = true;
+            NeedsApplyToBase = true;
             IsActive = true;
+
+            Level = 1;
+            Intensity = 1.0f;
+            Duration = -1.0f;
         }
-
-        /// <summary>
-        /// Adjust the specs of the associated Agent. NeedsApply must return false after this is called.
-        /// </summary>
-        public abstract void Apply();
-
-        public abstract void Update(float ticks);
-
-        public bool NeedsApply { get; set; }
 
         public bool IsActive { get; protected set; }
 
         public ModifierPriority Priority { get; protected set; }
+        
+        public IAgent Agent { get; protected set; }
+
+        #endregion
+
+        #region Behaviour
+
+        public abstract void Update(float ticks);
+
+        /// <summary>
+        /// Adjust the specs of the associated Agent. NeedsApplyToBase must return false after this is called.
+        /// </summary>
+        public virtual void ApplyToBase()
+        {
+            // do nothing
+        }
+
+        public bool NeedsApplyToBase { get; set; }
+
+        public virtual bool ApplyToModifier(Modifier incomingMod)
+        {
+            // do nothing
+            return true;
+        }
+
+        public virtual bool ApplyToAttack(AttackModel outgoingAttack)
+        {
+            // do nothing
+            return true;
+        }
+
+        public virtual bool ApplyToHit(AttackModel incomingAttack)
+        {
+            // do nothing
+            return true;
+        }
+
+        #endregion
+
+        #region Sandbox Methods
+
+        #endregion
     }
 }

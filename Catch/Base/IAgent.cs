@@ -24,10 +24,6 @@
 
         BaseSpecModel BaseSpecs { get; }
 
-        AttackSpecModel AttackSpecs { get; }
-
-        DefenceSpecModel DefenceSpecs { get; }
-
         IAgentStats Stats { get; }
 
         #endregion
@@ -42,7 +38,7 @@
         /// </summary>
         void OnRemove();
 
-        void OnAttacked(IAttack attack);
+        void OnAttacked(AttackModel attack);
 
         #endregion
     }
