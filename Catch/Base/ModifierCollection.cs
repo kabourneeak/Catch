@@ -32,6 +32,30 @@ namespace Catch.Base
                 ApplyToBase();
         }
 
+        public bool ApplyToAttack(AttackModel outgoingAttack)
+        {
+            var apply = true;
+
+            foreach (var m in _modifiers)
+            {
+                apply = apply && m.ApplyToAttack(outgoingAttack);
+            }
+
+            return apply;
+        }
+
+        public bool ApplyToHit(AttackModel incomingAttack)
+        {
+            var apply = true;
+
+            foreach (var m in _modifiers)
+            {
+                apply = apply && m.ApplyToHit(incomingAttack);
+            }
+
+            return apply;
+        }
+
         private void ApplyToBase()
         {
             _agent.BaseSpecs.Reset();
@@ -46,8 +70,18 @@ namespace Catch.Base
 
         public void Add(Modifier modifier)
         {
-            _modifiers.Add(modifier);
-            _needsApplyToBase = true;
+            var apply = true;
+
+            foreach (var m in _modifiers)
+            {
+                apply = apply && m.ApplyToModifier(modifier);
+            }
+
+            if (apply)
+            {
+                _modifiers.Add(modifier);
+                _needsApplyToBase = true;
+            }
         }
 
         public void AddRange(IEnumerable<Modifier> collection)

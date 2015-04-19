@@ -4,8 +4,6 @@
     {
         #region Properties
 
-        public int Level { get; set; }
-
         public float Intensity { get; set; }
 
         public float Duration { get; set; }
@@ -20,7 +18,6 @@
             NeedsApplyToBase = true;
             IsActive = true;
 
-            Level = 1;
             Intensity = 1.0f;
             Duration = -1.0f;
         }
@@ -35,7 +32,10 @@
 
         #region Behaviour
 
-        public abstract void Update(float ticks);
+        public virtual void Update(float ticks)
+        {
+            // do nothing
+        }
 
         /// <summary>
         /// Adjust the specs of the associated Agent. NeedsApplyToBase must return false after this is called.

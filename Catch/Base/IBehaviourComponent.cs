@@ -6,6 +6,6 @@
 
         void OnRemove();
 
-        void OnAttacked(AttackModel attack);
+        void OnHit(AttackModel incomingAttack);
     }
 }

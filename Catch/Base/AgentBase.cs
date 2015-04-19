@@ -80,9 +80,9 @@ namespace Catch.Base
             Brain.OnRemove();
         }
 
-        public virtual void OnAttacked(AttackModel attack)
+        public virtual void OnHit(AttackModel incomingAttack)
         {
-            Brain.OnAttacked(attack);
+            Brain.OnHit(incomingAttack);
         }
 
         #endregion

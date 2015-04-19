@@ -1,4 +1,6 @@
-﻿namespace Catch.Base
+﻿using System.Diagnostics.Contracts;
+
+namespace Catch.Base
 {
     public interface IAgent : IGameObject
     {
@@ -38,7 +40,7 @@
         /// </summary>
         void OnRemove();
 
-        void OnAttacked(AttackModel attack);
+        void OnHit(AttackModel incomingAttack);
 
         #endregion
     }

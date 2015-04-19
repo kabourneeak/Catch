@@ -11,11 +11,6 @@ namespace Catch.Models
             Priority = ModifierPriority.Base;
         }
 
-        public override void Update(float ticks)
-        {
-            // do nothing
-        }
-
         public override void ApplyToBase()
         {
             var bs = Agent.BaseSpecs;
@@ -29,10 +24,8 @@ namespace Catch.Models
 
         public override bool ApplyToAttack(AttackModel outgoingAttack)
         {
-            base.ApplyToAttack(outgoingAttack);
-
-            // override any value with base damage
-            outgoingAttack.Damage = Agent.BaseSpecs.Level * BaseDamage;
+            // This is a base modifier, so we override any existing value
+            outgoingAttack.Damage = (int) (BaseDamage * Intensity * Agent.BaseSpecs.Level);
 
             return true;
         }
