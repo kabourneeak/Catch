@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-
-namespace Catch.Base
+﻿namespace Catch.Base
 {
     public interface IAgent : IGameObject
     {
@@ -27,6 +25,12 @@ namespace Catch.Base
         BaseSpecModel BaseSpecs { get; }
 
         IAgentStats Stats { get; }
+
+        #endregion
+
+        #region Actions
+
+        void PerformAttack(IAgent target);
 
         #endregion
 

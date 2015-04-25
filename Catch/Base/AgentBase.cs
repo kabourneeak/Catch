@@ -75,6 +75,11 @@ namespace Catch.Base
         public BaseSpecModel BaseSpecs { get; protected set; }
         public IAgentStats Stats { get; protected set; }
 
+        public void PerformAttack(IAgent target)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public virtual void OnRemove()
         {
             Brain.OnRemove();
