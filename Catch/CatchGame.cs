@@ -22,7 +22,9 @@ namespace Catch
         //
         // Game config
         //
-        public Rect Size { get; private set; }
+        public Rect WindowSize { get; private set; }
+        private float _zoom;
+        public float Zoom { get {return _zoom;} set { _zoom = Math.Max(0.4f, Math.Min(2.0f, value)); } }
         private readonly Random _rng = new Random();
 
         //
@@ -38,6 +40,7 @@ namespace Catch
         private readonly List<IAgent> _agents;
         private Map _map;
         private int _frameId;
+        private Matrix3x2 _mapTransform;
 
         #region Event Handling
 
@@ -69,6 +72,7 @@ namespace Catch
             AssembleServices();
 
             _agents = new List<IAgent>();
+            Zoom = 1.0f;
         }
 
         private void AssembleServices()
@@ -83,14 +87,15 @@ namespace Catch
 
         public void Initialize(Rect size)
         {
-            Size = size;
+            WindowSize = size;
+            Zoom = 1.0f;
 
             ChangeGameState(GameState.Title);
         }
 
         public void Resize(Rect size)
         {
-            Size = size;
+            WindowSize = size;
         }
 
         public void StartGame()
@@ -109,6 +114,11 @@ namespace Catch
             SpawnBlock();
 
             ChangeGameState(GameState.Playing);
+        }
+
+        public Vector2 TranslateToMap(Vector2 coords)
+        {
+            return Vector2.Transform(coords, _mapTransform);
         }
 
         #endregion
@@ -238,14 +248,25 @@ namespace Catch
             // prepare draw arguments
             var drawArgs = new DrawArgs(ds, ds.Transform, _frameId);
 
-            // place origin in lower left
-            drawArgs.Push(Matrix3x2.CreateTranslation(0, (float)Size.Height));
+            // flip y direction
             drawArgs.Push(Matrix3x2.CreateScale(1.0f, -1.0f));
-            
-            // center w.r.t. map
-            var mapSize = _map.Size;
-            drawArgs.PushTranslation((float)((Size.Width - mapSize.X) / 2), (float)((Size.Height - mapSize.Y) / 2));
 
+            // place origin in lower left
+            var viewportSize = new Vector2((float)WindowSize.Width, (float)WindowSize.Height);
+            drawArgs.Push(Matrix3x2.CreateTranslation(0, -viewportSize.Y));
+
+            // apply zoom
+            drawArgs.PushScale(Zoom, Zoom);
+            viewportSize = Vector2.Multiply(viewportSize, 1 / Zoom);
+
+            // pan position of relative origin for map so that it is centered.
+            var pan = Matrix3x2.CreateTranslation((viewportSize.X - _map.Size.X) / 2.0f, (viewportSize.Y - _map.Size.Y) / 2.0f);
+            drawArgs.Push(pan);
+
+            // calculate viewport transform
+            Matrix3x2.Invert(drawArgs.CurrentTransform, out _mapTransform);
+
+            // delegate for the rest of the draw
             switch (AppliedState)
             {
                 case GameState.Init:

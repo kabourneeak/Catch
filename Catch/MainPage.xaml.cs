@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI;
@@ -26,6 +27,9 @@ namespace Catch
 
             _game = new CatchGame();
             _game.GameStateChanged += GameStateHandler;
+
+            cvs.Input.PointerPressed += cvs_PointerPressed;
+            cvs.Input.PointerWheelChanged += cvs_PointerWheelChanged;
         }
 
         #region " Game Loop "
@@ -124,17 +128,22 @@ namespace Catch
             }
         }
 
-        private void cvs_PointerPressed(object sender, PointerRoutedEventArgs e)
+        private void cvs_PointerPressed(object sender, PointerEventArgs e)
         {
-            var p = e.Pointer.PointerId;
+            var p = e.CurrentPoint.PointerId;
 
-            if (e.Pointer.PointerDeviceType == PointerDeviceType.Touch)
+            var coords = e.CurrentPoint.Position;
+            var translated = _game.TranslateToMap(new Vector2((float) coords.X, (float) coords.Y));
+
+            DisplayLog(string.Format("PointerPresses: Screen:({0:F0},{1:F0}) Translated:({2:F0},{3:F0})", coords.X, coords.Y, translated.X, translated.Y));
+
+            if (e.CurrentPoint.PointerDevice.PointerDeviceType == PointerDeviceType.Touch)
             {
                 DisplayLog(String.Format("[PointerPressed] id:{0}", p));
 
                 if (points.Count < 2)
                 {
-                    var pd = new PointerData(e.Pointer.PointerId, e.GetCurrentPoint(cvs).Position);
+                    var pd = new PointerData(e.CurrentPoint.PointerId, e.CurrentPoint.Position);
                     points.Add(pd);
                 }
                 else
@@ -142,6 +151,14 @@ namespace Catch
                     DisplayLog("Extra touch ignored");
                 }
             }
+        }
+
+        private void cvs_PointerWheelChanged(object sender, PointerEventArgs args)
+        {
+            var delta = args.CurrentPoint.Properties.MouseWheelDelta;
+            delta = delta / 120;
+
+            _game.Zoom = _game.Zoom + (delta * 0.1f);
         }
 
         private void cvs_PointerMoved(object sender, PointerRoutedEventArgs e)
@@ -214,6 +231,5 @@ namespace Catch
         {
             e.Handled = false;
         }
-
     }
 }
