@@ -22,7 +22,7 @@ namespace Catch
         //
         // Game config
         //
-        public Rect WindowSize { get; private set; }
+        public Vector2 WindowSize { get; private set; }
         private float _zoom;
         public float Zoom { get {return _zoom;} set { _zoom = Math.Max(0.4f, Math.Min(2.0f, value)); } }
         private readonly Random _rng = new Random();
@@ -87,15 +87,16 @@ namespace Catch
 
         public void Initialize(Rect size)
         {
-            WindowSize = size;
+            WindowSize = new Vector2((float) size.Width, (float) size.Height);
             Zoom = 1.0f;
+            Pan = new Vector2(WindowSize.X * 0.5f, WindowSize.Y * -1.5f);
 
             ChangeGameState(GameState.Title);
         }
 
         public void Resize(Rect size)
         {
-            WindowSize = size;
+            WindowSize = new Vector2((float)size.Width, (float)size.Height);
         }
 
         public void StartGame()
@@ -114,6 +115,13 @@ namespace Catch
             SpawnBlock();
 
             ChangeGameState(GameState.Playing);
+        }
+
+        public Vector2 Pan { get; private set; }
+
+        public void PanBy(Vector2 panDelta)
+        {
+            Pan = Vector2.Add(Pan, panDelta);
         }
 
         public Vector2 TranslateToMap(Vector2 coords)
@@ -171,26 +179,26 @@ namespace Catch
             tile = _map.GetNeighbour(tile, TileDirection.North);
             mapPath.Add(tile);
 
-//            tile = _map.GetNeighbour(tile, TileDirection.North);
-//            mapPath.Add(tile);
-//
-//            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
-//            mapPath.Add(tile);
-//
-//            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-//            mapPath.Add(tile);
-//
-//            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-//            mapPath.Add(tile);
-//
-//            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
-//            mapPath.Add(tile);
-//
-//            tile = _map.GetNeighbour(tile, TileDirection.North);
-//            mapPath.Add(tile);
-//
-//            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
-//            mapPath.Add(tile);
+            tile = _map.GetNeighbour(tile, TileDirection.North);
+            mapPath.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
+            mapPath.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            mapPath.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            mapPath.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
+            mapPath.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.North);
+            mapPath.Add(tile);
+
+            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            mapPath.Add(tile);
 
             _map.AddPath("TestPath", mapPath);
         }
@@ -251,16 +259,12 @@ namespace Catch
             // flip y direction
             drawArgs.Push(Matrix3x2.CreateScale(1.0f, -1.0f));
 
-            // place origin in lower left
-            var viewportSize = new Vector2((float)WindowSize.Width, (float)WindowSize.Height);
-            drawArgs.Push(Matrix3x2.CreateTranslation(0, -viewportSize.Y));
-
             // apply zoom
             drawArgs.PushScale(Zoom, Zoom);
-            viewportSize = Vector2.Multiply(viewportSize, 1 / Zoom);
+            var viewportSize = Vector2.Multiply(WindowSize, 1 / Zoom);
 
             // pan position of relative origin for map so that it is centered.
-            var pan = Matrix3x2.CreateTranslation((viewportSize.X - _map.Size.X) / 2.0f, (viewportSize.Y - _map.Size.Y) / 2.0f);
+            var pan = Matrix3x2.CreateTranslation(Pan.X - (viewportSize.X / 2.0f), Pan.Y + (viewportSize.Y / 2.0f));
             drawArgs.Push(pan);
 
             // calculate viewport transform

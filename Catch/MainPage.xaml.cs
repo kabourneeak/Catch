@@ -30,6 +30,7 @@ namespace Catch
 
             cvs.Input.PointerPressed += cvs_PointerPressed;
             cvs.Input.PointerWheelChanged += cvs_PointerWheelChanged;
+            cvs.Input.PointerMoved += cvs_PointerMoved;
         }
 
         #region " Game Loop "
@@ -114,43 +115,42 @@ namespace Catch
             _game.Resize(new Rect(0, 0, cvsSize.Width, cvsSize.Height));
         }
 
-        List<PointerData> points = new List<PointerData>(2);
 
-        private void DrawLine(CanvasDrawingSession drawingSession)
-        {
-            if (points.Count == 2)
-            {
+        #region Pan and Zoom
 
-                var dist = Math.Sqrt(((points[0].X - points[1].X) * (points[0].X - points[1].X)) + ((points[0].Y - points[1].Y) * (points[0].Y - points[1].Y)));
-                txtLen.Text = String.Format("{0:0.00}", dist);
-
-                drawingSession.DrawLine(points[0].X, points[0].Y, points[1].X, points[1].Y, Colors.Red);
-            }
-        }
+        private Vector2 _lastPoint = Vector2.Zero;
+        private Vector2 _screenDelta = Vector2.Zero;
 
         private void cvs_PointerPressed(object sender, PointerEventArgs e)
         {
-            var p = e.CurrentPoint.PointerId;
+            var coords = e.CurrentPoint.Position.ToVector2();
 
-            var coords = e.CurrentPoint.Position;
             var translated = _game.TranslateToMap(new Vector2((float) coords.X, (float) coords.Y));
 
             DisplayLog(string.Format("PointerPresses: Screen:({0:F0},{1:F0}) Translated:({2:F0},{3:F0})", coords.X, coords.Y, translated.X, translated.Y));
 
-            if (e.CurrentPoint.PointerDevice.PointerDeviceType == PointerDeviceType.Touch)
-            {
-                DisplayLog(String.Format("[PointerPressed] id:{0}", p));
+            _lastPoint = coords;
+        }
 
-                if (points.Count < 2)
-                {
-                    var pd = new PointerData(e.CurrentPoint.PointerId, e.CurrentPoint.Position);
-                    points.Add(pd);
-                }
-                else
-                {
-                    DisplayLog("Extra touch ignored");
-                }
+        private void cvs_PointerMoved(object sender, PointerEventArgs e)
+        {
+            var coords = e.CurrentPoint.Position.ToVector2();
+
+            if (e.CurrentPoint.Properties.IsLeftButtonPressed)
+            {
+                _screenDelta.Y = _lastPoint.Y - coords.Y;
+                _screenDelta.X = coords.X - _lastPoint.X;
+                var worldDelta = Vector2.Multiply(_screenDelta, 1 / _game.Zoom);
+
+                _game.PanBy(worldDelta);
             }
+
+            _lastPoint = coords;
+        }
+
+        private void cvs_PointerReleased(object sender, PointerEventArgs e)
+        {
+           
         }
 
         private void cvs_PointerWheelChanged(object sender, PointerEventArgs args)
@@ -161,36 +161,7 @@ namespace Catch
             _game.Zoom = _game.Zoom + (delta * 0.1f);
         }
 
-        private void cvs_PointerMoved(object sender, PointerRoutedEventArgs e)
-        {
-            var pos = e.GetCurrentPoint(cvs).Position;
-            var pid = e.Pointer.PointerId;
-
-            foreach(var pd in points) {
-                if (pd.PointerId == pid) {
-                    pd.update(pos);
-                    break;
-                }
-            }
-        }
-
-        private void cvs_PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            var p = e.Pointer;
-
-            if (p.PointerDeviceType == PointerDeviceType.Touch)
-            {
-                DisplayLog(String.Format("[PointerReleased] id:{0}", p.PointerId));
-
-                var pid = e.Pointer.PointerId;
-                var removed = points.RemoveAll((PointerData pd) => {return pd.PointerId == pid;});
-
-                if (removed == 0)
-                {
-                    DisplayLog("Unknown touch released");
-                }
-            }
-        }
+        #endregion
 
         private void scrlLog_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
