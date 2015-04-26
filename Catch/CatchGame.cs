@@ -24,7 +24,13 @@ namespace Catch
         //
         public Vector2 WindowSize { get; private set; }
         private float _zoom;
-        public float Zoom { get {return _zoom;} set { _zoom = Math.Max(0.4f, Math.Min(2.0f, value)); } }
+        public float Zoom { get {return _zoom;} 
+            set {
+                var newzoom = Math.Max(0.4f, Math.Min(2.0f, value));
+                Pan = Vector2.Multiply(Pan, _zoom / newzoom);
+                _zoom = newzoom;
+            } 
+        }
         private readonly Random _rng = new Random();
 
         //
