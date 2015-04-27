@@ -24,6 +24,8 @@ namespace Catch
         //
         public Vector2 WindowSize { get; private set; }
         public float Zoom { get; private set; }
+        public Vector2 Pan { get { return _pan; } }
+
         private readonly Random _rng = new Random();
 
         //
@@ -40,6 +42,7 @@ namespace Catch
         private Map _map;
         private int _frameId;
         private Matrix3x2 _mapTransform;
+        private Vector2 _pan;
 
         #region Event Handling
 
@@ -88,7 +91,7 @@ namespace Catch
         {
             WindowSize = new Vector2((float) size.Width, (float) size.Height);
             Zoom = 1.0f;
-            Pan = new Vector2(WindowSize.X * 0.5f, WindowSize.Y * -1.5f);
+            _pan = Vector2.Zero;
 
             ChangeGameState(GameState.Title);
         }
@@ -113,14 +116,16 @@ namespace Catch
             CreateTowers();
             SpawnBlock();
 
+            Zoom = 1.0f;
+            _pan.X = (WindowSize.X - _map.Size.X) / 2.0f;
+            _pan.Y = WindowSize.Y * -1.0f + (WindowSize.Y - _map.Size.Y) / 2.0f;
+
             ChangeGameState(GameState.Playing);
         }
 
-        public Vector2 Pan { get; private set; }
-
         public void PanBy(Vector2 panDelta)
         {
-            Pan = Vector2.Add(Pan, panDelta);
+            _pan = Vector2.Add(_pan, panDelta);
         }
 
         public void ZoomToPoint(Vector2 viewCoords, float zoomDelta)
@@ -128,9 +133,9 @@ namespace Catch
             var newZoom = Math.Max(0.4f, Math.Min(2.0f, Zoom + zoomDelta));
 
             var zoomCenter = TranslateToMap(viewCoords);
-            Pan = Vector2.Add(Pan, zoomCenter);
-            Pan = Vector2.Multiply(Pan, Zoom / newZoom);
-            Pan = Vector2.Subtract(Pan, zoomCenter);
+            _pan = Vector2.Add(_pan, zoomCenter);
+            _pan = Vector2.Multiply(_pan, Zoom / newZoom);
+            _pan = Vector2.Subtract(_pan, zoomCenter);
 
             Zoom = newZoom;
         }
@@ -267,16 +272,10 @@ namespace Catch
             // prepare draw arguments
             var drawArgs = new DrawArgs(ds, ds.Transform, _frameId);
 
-            // flip y direction
-            drawArgs.Push(Matrix3x2.CreateScale(1.0f, -1.0f));
-
-            // apply zoom
-            drawArgs.PushScale(Zoom, Zoom);
-            var viewportSize = Vector2.Multiply(WindowSize, 1 / Zoom);
-
-            // pan position of relative origin for map so that it is centered.
-            var pan = Matrix3x2.CreateTranslation(Pan.X - (viewportSize.X / 2.0f), Pan.Y + (viewportSize.Y / 2.0f));
-            drawArgs.Push(pan);
+            // apply view matrix
+            drawArgs.PushScale(1.0f, -1.0f);
+            drawArgs.PushScale(Zoom);
+            drawArgs.PushTranslation(_pan);
 
             // calculate viewport transform
             Matrix3x2.Invert(drawArgs.CurrentTransform, out _mapTransform);

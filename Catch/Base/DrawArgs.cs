@@ -46,6 +46,11 @@ namespace Catch.Base
             return Push(Matrix3x2.CreateRotation(radians, center));
         }
 
+        public Matrix3x2 PushScale(float xyScale)
+        {
+            return PushScale(xyScale, xyScale);
+        }
+
         public Matrix3x2 PushScale(float xScale, float yScale)
         {
             return Push(Matrix3x2.CreateScale(xScale, yScale));
