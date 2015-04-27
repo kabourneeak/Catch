@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
-using Windows.Devices.Input;
 using Windows.Foundation;
-using Windows.UI;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Catch.Win2d;
-using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
@@ -93,7 +89,7 @@ namespace Catch
             scrlLog.ChangeView(0.0, scrlLog.ScrollableHeight, 1.0f);
         }
 
-        private void Canvas_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+        private void Canvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             //
             // update layout
@@ -108,7 +104,7 @@ namespace Catch
         }
 
 
-        private void cvs_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+        private void cvs_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var cvsSize = cvs.Size;
 
@@ -153,12 +149,15 @@ namespace Catch
            
         }
 
-        private void cvs_PointerWheelChanged(object sender, PointerEventArgs args)
+        private void cvs_PointerWheelChanged(object sender, PointerEventArgs e)
         {
-            var delta = args.CurrentPoint.Properties.MouseWheelDelta;
-            delta = delta / 120;
+            var coords = e.CurrentPoint.Position.ToVector2();
+            var wheelTicks = e.CurrentPoint.Properties.MouseWheelDelta;
+            wheelTicks = wheelTicks / 120;
 
-            _game.Zoom = _game.Zoom + (delta * 0.1f);
+            _game.ZoomToPoint(coords, wheelTicks * 0.1f);
+
+            _lastPoint = coords;
         }
 
         #endregion

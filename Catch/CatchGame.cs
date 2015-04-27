@@ -23,14 +23,7 @@ namespace Catch
         // Game config
         //
         public Vector2 WindowSize { get; private set; }
-        private float _zoom;
-        public float Zoom { get {return _zoom;} 
-            set {
-                var newzoom = Math.Max(0.4f, Math.Min(2.0f, value));
-                Pan = Vector2.Multiply(Pan, _zoom / newzoom);
-                _zoom = newzoom;
-            } 
-        }
+        public float Zoom { get; private set; }
         private readonly Random _rng = new Random();
 
         //
@@ -128,6 +121,18 @@ namespace Catch
         public void PanBy(Vector2 panDelta)
         {
             Pan = Vector2.Add(Pan, panDelta);
+        }
+
+        public void ZoomToPoint(Vector2 viewCoords, float zoomDelta)
+        {
+            var newZoom = Math.Max(0.4f, Math.Min(2.0f, Zoom + zoomDelta));
+
+            var zoomCenter = TranslateToMap(viewCoords);
+            Pan = Vector2.Add(Pan, zoomCenter);
+            Pan = Vector2.Multiply(Pan, Zoom / newZoom);
+            Pan = Vector2.Subtract(Pan, zoomCenter);
+
+            Zoom = newZoom;
         }
 
         public Vector2 TranslateToMap(Vector2 coords)
