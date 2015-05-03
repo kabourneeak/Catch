@@ -125,7 +125,7 @@ namespace Catch
 
         public void PanBy(Vector2 panDelta)
         {
-            _pan = Vector2.Add(_pan, panDelta);
+            _pan = Vector2.Add(_pan, Vector2.Multiply(panDelta, 1.0f / Zoom));
         }
 
         public void ZoomToPoint(Vector2 viewCoords, float zoomDelta)

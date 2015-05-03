@@ -9,10 +9,11 @@
     mc:Ignorable="d">
 
     <Canvas x:Name="layout" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="Canvas_SizeChanged">
-        <xaml:CanvasAnimatedControl x:Name="cvs" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" IsTapEnabled="False" ClearColor="Black" Update="cvs_Update" Draw="cvs_Draw" CreateResources="cvs_CreateResources" SizeChanged="cvs_SizeChanged"/>
+        <xaml:CanvasAnimatedControl x:Name="cvs" ClearColor="Black" Update="cvs_Update" Draw="cvs_Draw" CreateResources="cvs_CreateResources" SizeChanged="cvs_SizeChanged"/>
         <TextBlock x:Name="txtLen" Canvas.Left="10" TextWrapping="Wrap" Text="0.0" Canvas.Top="10" Height="80" Width="282" FontSize="72" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <ScrollViewer x:Name="scrlLog" Height="248" Width="345" HorizontalAlignment="Right" VerticalAlignment="Top" Canvas.Left="1011" Canvas.Top="10" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" IsTapEnabled="False" ManipulationMode="None">
             <TextBlock x:Name="txtLog" TextWrapping="Wrap" Text="Log" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsTapEnabled="False" IsRightTapEnabled="False" PointerPressed="txtLog_PointerPressed" PointerMoved="txtLog_PointerMoved" PointerReleased="txtLog_PointerReleased" PointerExited="txtLog_PointerExited"/>
         </ScrollViewer>
+        <Rectangle x:Name="manipInput" Fill="Transparent" ManipulationDelta="cvs_ManipulationDelta" ManipulationMode="All" IsDoubleTapEnabled="False" IsHoldingEnabled="False" />
     </Canvas>
 </Page>

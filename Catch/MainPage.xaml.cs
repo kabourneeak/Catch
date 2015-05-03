@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -27,6 +28,8 @@ namespace Catch
             cvs.Input.PointerPressed += cvs_PointerPressed;
             cvs.Input.PointerWheelChanged += cvs_PointerWheelChanged;
             cvs.Input.PointerMoved += cvs_PointerMoved;
+
+            manipInput.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY | ManipulationModes.TranslateInertia | ManipulationModes.Scale;
         }
 
         #region " Game Loop "
@@ -99,6 +102,9 @@ namespace Catch
             cvs.Height = e.NewSize.Height;
             cvs.Width = e.NewSize.Width;
 
+            manipInput.Height = e.NewSize.Height;
+            manipInput.Width = e.NewSize.Width;
+
             // log
             Canvas.SetLeft(scrlLog, layout.ActualWidth - scrlLog.ActualWidth);
         }
@@ -119,6 +125,12 @@ namespace Catch
 
         private void cvs_PointerPressed(object sender, PointerEventArgs e)
         {
+            if (e.CurrentPoint.PointerDevice.PointerDeviceType == PointerDeviceType.Touch)
+            {
+                e.Handled = false;
+                return;
+            }
+
             var coords = e.CurrentPoint.Position.ToVector2();
 
             var translated = _game.TranslateToMap(new Vector2((float) coords.X, (float) coords.Y));
@@ -130,6 +142,12 @@ namespace Catch
 
         private void cvs_PointerMoved(object sender, PointerEventArgs e)
         {
+            if (e.CurrentPoint.PointerDevice.PointerDeviceType == PointerDeviceType.Touch)
+            { 
+                e.Handled = false;
+                return;
+            }
+
             var coords = e.CurrentPoint.Position.ToVector2();
 
             if (e.CurrentPoint.Properties.IsLeftButtonPressed)
@@ -158,6 +176,17 @@ namespace Catch
             _game.ZoomToPoint(coords, wheelTicks * 0.1f);
 
             _lastPoint = coords;
+        }
+
+        private void cvs_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            _screenDelta.X = (float) e.Delta.Translation.X;
+            _screenDelta.Y = (float) e.Delta.Translation.Y * -1.0f;
+            _game.PanBy(_screenDelta);
+
+            _game.ZoomToPoint(e.Position.ToVector2(), e.Delta.Scale - 1.0f);
+
+            e.Handled = true;
         }
 
         #endregion
