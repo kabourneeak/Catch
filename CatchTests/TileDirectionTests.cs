@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Catch.Base;
+﻿using Catch.Base;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace CatchTests

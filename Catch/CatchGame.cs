@@ -307,7 +307,7 @@ namespace Catch
 
         public void Update(float ticks)
         {
-            // AppliedState is only updated here, and is meant ot keep Update, CreateResources, 
+            // AppliedState is only updated here, and is meant to keep Update, CreateResources, 
             // and Draw working on a consistent value
             AppliedState = State;
 

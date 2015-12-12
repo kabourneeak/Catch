@@ -25,27 +25,41 @@ namespace Catch
             _game = new CatchGame();
             _game.GameStateChanged += GameStateHandler;
 
-            cvs.Input.PointerPressed += cvs_PointerPressed;
-            cvs.Input.PointerWheelChanged += cvs_PointerWheelChanged;
-            cvs.Input.PointerMoved += cvs_PointerMoved;
-
             manipInput.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY | ManipulationModes.TranslateInertia | ManipulationModes.Scale;
         }
 
         #region " Game Loop "
 
-        private void cvs_CreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
+        private CoreIndependentInputSource _inputDevice;
+
+        private void OnGameLoopStarting(ICanvasAnimatedControl sender, object args)
+        {
+            _inputDevice = cvs.CreateCoreIndependentInputSource(CoreInputDeviceTypes.Mouse | CoreInputDeviceTypes.Touch | CoreInputDeviceTypes.Pen);
+
+            _inputDevice.PointerPressed += cvs_PointerPressed;
+            _inputDevice.PointerWheelChanged += cvs_PointerWheelChanged;
+            _inputDevice.PointerMoved += cvs_PointerMoved;
+        }
+
+        private void OnGameLoopStopped(ICanvasAnimatedControl sender, object args)
+        {
+            _inputDevice.PointerPressed -= cvs_PointerPressed;
+            _inputDevice.PointerWheelChanged -= cvs_PointerWheelChanged;
+            _inputDevice.PointerMoved -= cvs_PointerMoved;
+        }
+
+        private void OnCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
             _game.CreateResources(sender.Device);
         }
 
-        private void cvs_Update(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
+        private void OnUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
         {
             // TODO make the number of ticks depend on wall time elapsed, maybe some other gamespeed setting?
             _game.Update(1);
         }
 
-        private void cvs_Draw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
+        private void OnDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
             _game.Draw(args.DrawingSession);
         }
@@ -230,5 +244,6 @@ namespace Catch
         {
             e.Handled = false;
         }
+
     }
 }
