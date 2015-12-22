@@ -363,7 +363,9 @@ namespace Catch
 
     public enum GameState
     {
-        Init, Title, Playing
+        Init,
+        Title,
+        Playing
     }
 
     public class GameStateChangedEventArgs : EventArgs

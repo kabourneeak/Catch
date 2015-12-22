@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Numerics;
-using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI.Core;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
@@ -24,28 +23,53 @@ namespace Catch
 
             _game = new CatchGame();
             _game.GameStateChanged += GameStateHandler;
-
-            manipInput.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY | ManipulationModes.TranslateInertia | ManipulationModes.Scale;
         }
 
         #region " Game Loop "
 
         private CoreIndependentInputSource _inputDevice;
+        private GestureRecognizer _gestureRecognizer;
 
         private void OnGameLoopStarting(ICanvasAnimatedControl sender, object args)
         {
-            _inputDevice = cvs.CreateCoreIndependentInputSource(CoreInputDeviceTypes.Mouse | CoreInputDeviceTypes.Touch | CoreInputDeviceTypes.Pen);
+            _gestureRecognizer = new GestureRecognizer();
+            _gestureRecognizer.GestureSettings = GestureSettings.ManipulationTranslateX |
+                                                 GestureSettings.ManipulationTranslateY |
+                                                 GestureSettings.ManipulationScale;
 
-            _inputDevice.PointerPressed += cvs_PointerPressed;
-            _inputDevice.PointerWheelChanged += cvs_PointerWheelChanged;
-            _inputDevice.PointerMoved += cvs_PointerMoved;
+            _gestureRecognizer.ManipulationStarted += gestureRecognizer_ManipulationStarted;
+            _gestureRecognizer.ManipulationUpdated += gestureRecognizer_ManipulationUpdated;
+            _gestureRecognizer.ManipulationCompleted += gestureRecognizer_ManipulationCompleted;
+
+            //
+            // When the GestureRecognizer goes into intertia mode (ie after the pointer is released)
+            // we want it to generate ManipulationUpdated events in sync with the game loop's Update.
+            // We do this by disabling AutoProcessIntertia and explicitly calling ProcessInertia() 
+            // from the Update.
+            //
+            _gestureRecognizer.InertiaTranslationDeceleration = -5.0f;
+            _gestureRecognizer.AutoProcessInertia = false;
+
+            _inputDevice =
+                cvs.CreateCoreIndependentInputSource(CoreInputDeviceTypes.Mouse | CoreInputDeviceTypes.Touch |
+                                                     CoreInputDeviceTypes.Pen);
+
+            _inputDevice.PointerPressed += OnPointerPressed;
+            _inputDevice.PointerReleased += OnPointerReleased;
+            _inputDevice.PointerWheelChanged += OnPointerWheelChanged;
+            _inputDevice.PointerMoved += OnPointerMoved;
         }
 
         private void OnGameLoopStopped(ICanvasAnimatedControl sender, object args)
         {
-            _inputDevice.PointerPressed -= cvs_PointerPressed;
-            _inputDevice.PointerWheelChanged -= cvs_PointerWheelChanged;
-            _inputDevice.PointerMoved -= cvs_PointerMoved;
+            _inputDevice.PointerPressed -= OnPointerPressed;
+            _inputDevice.PointerReleased -= OnPointerReleased;
+            _inputDevice.PointerWheelChanged -= OnPointerWheelChanged;
+            _inputDevice.PointerMoved -= OnPointerMoved;
+
+            _gestureRecognizer.ManipulationStarted -= gestureRecognizer_ManipulationStarted;
+            _gestureRecognizer.ManipulationUpdated -= gestureRecognizer_ManipulationUpdated;
+            _gestureRecognizer.ManipulationCompleted -= gestureRecognizer_ManipulationCompleted;
         }
 
         private void OnCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
@@ -55,6 +79,9 @@ namespace Catch
 
         private void OnUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
         {
+            if (_inManipulation && _gestureRecognizer != null)
+                _gestureRecognizer.ProcessInertia();
+
             // TODO make the number of ticks depend on wall time elapsed, maybe some other gamespeed setting?
             _game.Update(1);
         }
@@ -66,18 +93,18 @@ namespace Catch
 
         #endregion
 
-        private void GameStateHandler(object sender, GameStateChangedEventArgs e)
+        private void GameStateHandler(object sender, GameStateChangedEventArgs args)
         {
-            
             if (!Dispatcher.HasThreadAccess)
             {
-                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, delegate { GameStateHandler(sender, e); }).Forget();
+                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, delegate { GameStateHandler(sender, args); })
+                    .Forget();
                 return;
             }
 
             // actual method body here
 
-            switch (e.State)
+            switch (args.State)
             {
                 case GameState.Init:
                     var rect = new Rect(0, 0, cvs.ActualWidth, cvs.ActualHeight);
@@ -93,157 +120,77 @@ namespace Catch
             }
         }
 
-        private void DisplayLog(String msg)
-        {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, delegate { DisplayLog(msg); }).Forget();
-                return;
-            }
-
-            txtLog.Text += ("\n" + msg);
-
-            scrlLog.ChangeView(0.0, scrlLog.ScrollableHeight, 1.0f);
-        }
-
-        private void Canvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void Canvas_SizeChanged(object sender, SizeChangedEventArgs args)
         {
             //
             // update layout
             //
 
             // animated area
-            cvs.Height = e.NewSize.Height;
-            cvs.Width = e.NewSize.Width;
-
-            manipInput.Height = e.NewSize.Height;
-            manipInput.Width = e.NewSize.Width;
-
-            // log
-            Canvas.SetLeft(scrlLog, layout.ActualWidth - scrlLog.ActualWidth);
+            cvs.Height = args.NewSize.Height;
+            cvs.Width = args.NewSize.Width;
         }
 
-
-        private void cvs_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void cvs_SizeChanged(object sender, SizeChangedEventArgs args)
         {
             var cvsSize = cvs.Size;
 
             _game.Resize(new Rect(0, 0, cvsSize.Width, cvsSize.Height));
         }
 
-
         #region Pan and Zoom
 
-        private Vector2 _lastPoint = Vector2.Zero;
-        private Vector2 _screenDelta = Vector2.Zero;
+        private bool _inManipulation = false;
 
-        private void cvs_PointerPressed(object sender, PointerEventArgs e)
+        private void OnPointerPressed(object sender, PointerEventArgs args)
         {
-            if (e.CurrentPoint.PointerDevice.PointerDeviceType == PointerDeviceType.Touch)
-            {
-                e.Handled = false;
-                return;
-            }
-
-            var coords = e.CurrentPoint.Position.ToVector2();
-
-            var translated = _game.TranslateToMap(new Vector2((float) coords.X, (float) coords.Y));
-
-            DisplayLog(string.Format("PointerPresses: Screen:({0:F0},{1:F0}) Translated:({2:F0},{3:F0})", coords.X, coords.Y, translated.X, translated.Y));
-
-            _lastPoint = coords;
+            _gestureRecognizer.ProcessDownEvent(args.CurrentPoint);
+            args.Handled = true;
         }
 
-        private void cvs_PointerMoved(object sender, PointerEventArgs e)
+        private void OnPointerMoved(object sender, PointerEventArgs args)
         {
-            if (e.CurrentPoint.PointerDevice.PointerDeviceType == PointerDeviceType.Touch)
-            { 
-                e.Handled = false;
-                return;
-            }
-
-            var coords = e.CurrentPoint.Position.ToVector2();
-
-            if (e.CurrentPoint.Properties.IsLeftButtonPressed)
-            {
-                _screenDelta.Y = _lastPoint.Y - coords.Y;
-                _screenDelta.X = coords.X - _lastPoint.X;
-                var worldDelta = Vector2.Multiply(_screenDelta, 1 / _game.Zoom);
-
-                _game.PanBy(worldDelta);
-            }
-
-            _lastPoint = coords;
+            _gestureRecognizer.ProcessMoveEvents(args.GetIntermediatePoints());
+            args.Handled = true;
         }
 
-        private void cvs_PointerReleased(object sender, PointerEventArgs e)
+        private void OnPointerReleased(object sender, PointerEventArgs args)
         {
-           
+            _gestureRecognizer.ProcessUpEvent(args.CurrentPoint);
+            args.Handled = true;
         }
 
-        private void cvs_PointerWheelChanged(object sender, PointerEventArgs e)
+        private void OnPointerWheelChanged(object sender, PointerEventArgs args)
         {
-            var coords = e.CurrentPoint.Position.ToVector2();
-            var wheelTicks = e.CurrentPoint.Properties.MouseWheelDelta;
+            var coords = args.CurrentPoint.Position.ToVector2();
+            var wheelTicks = args.CurrentPoint.Properties.MouseWheelDelta;
             wheelTicks = wheelTicks / 120;
 
             _game.ZoomToPoint(coords, wheelTicks * 0.1f);
-
-            _lastPoint = coords;
         }
 
-        private void cvs_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        private void gestureRecognizer_ManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)
         {
-            _screenDelta.X = (float) e.Delta.Translation.X;
-            _screenDelta.Y = (float) e.Delta.Translation.Y * -1.0f;
-            _game.PanBy(_screenDelta);
+            _inManipulation = true;
+        }
 
-            _game.ZoomToPoint(e.Position.ToVector2(), e.Delta.Scale - 1.0f);
+        private void gestureRecognizer_ManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
+        {
+            var screenDelta = Vector2.Zero;
 
-            e.Handled = true;
+            screenDelta.X = (float) args.Delta.Translation.X;
+            screenDelta.Y = (float) args.Delta.Translation.Y * -1.0f;
+            _game.PanBy(screenDelta);
+
+            _game.ZoomToPoint(args.Position.ToVector2(), args.Delta.Scale - 1.0f);
+        }
+
+        private void gestureRecognizer_ManipulationCompleted(GestureRecognizer sender,
+            ManipulationCompletedEventArgs args)
+        {
+            _inManipulation = false;
         }
 
         #endregion
-
-        private void scrlLog_PointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-            e.Handled = false;
-        }
-
-        private void scrlLog_PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            e.Handled = false;
-        }
-
-        private void scrlLog_PointerMoved(object sender, PointerRoutedEventArgs e)
-        {
-            e.Handled = false;
-        }
-
-        private void scrlLog_PointerCanceled(object sender, PointerRoutedEventArgs e)
-        {
-            e.Handled = false;
-        }
-
-        private void txtLog_PointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-            e.Handled = false;
-        }
-
-        private void txtLog_PointerMoved(object sender, PointerRoutedEventArgs e)
-        {
-            e.Handled = false;
-        }
-
-        private void txtLog_PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            e.Handled = false;
-        }
-
-        private void txtLog_PointerExited(object sender, PointerRoutedEventArgs e)
-        {
-            e.Handled = false;
-        }
-
     }
 }
