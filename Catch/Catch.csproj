@@ -136,6 +136,7 @@
     <Compile Include="Base\StyleArgs.cs" />
     <Compile Include="Base\TileDirection.cs" />
     <Compile Include="CanvasUtils.cs" />
+    <Compile Include="FieldController.cs" />
     <Compile Include="LevelController.cs" />
     <Compile Include="DebugUtils.cs" />
     <Compile Include="EnumUtils.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Models\PathMobBehaviour.cs" />
     <Compile Include="Models\VoidTower.cs" />
     <Compile Include="NilGameController.cs" />
+    <Compile Include="OverlayController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RectExtensions.cs" />
     <Compile Include="Services\CompiledConfig.cs" />

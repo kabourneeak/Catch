@@ -8,7 +8,7 @@ using Catch.Win2d;
 namespace Catch
 {
     /// <summary>
-    /// Model Controller for game state
+    /// Controls the execution of a level, executing instructions from a map definition
     /// </summary>
     public class LevelController : IGameController
     {
@@ -16,56 +16,30 @@ namespace Catch
         private const int StartScore = 0;
         private const int ScoreIncrement = 10;
 
+        private FieldController _fieldController;
+        private OverlayController _overlayController;
+        private readonly Random _rng = new Random();
+
         //
         // Game config
         //
-        public Vector2 WindowSize { get; private set; }
-        public float Zoom { get; private set; }
-        public Vector2 Pan { get { return _pan; } }
-
-        private readonly Random _rng = new Random();
+        private Vector2 WindowSize { get; set; }
 
         //
         // Game State
         //
-        public GameState State { get; set; }
-        private GameState AppliedState { get; set; }
-        public int Score { get; private set; }
-        public int Lives { get; private set; }
+        private int Score { get; set; }
+        private int Lives { get; set; }
 
-        private IConfig _config;
-        private Win2DProvider _provider;
+        private readonly IConfig _config;
+        private readonly Win2DProvider _provider;
         private readonly List<IAgent> _agents;
         private Map _map;
-        private Matrix3x2 _mapTransform;
-        private Vector2 _pan;
-
-        #region Event Handling
-
-        public event GameStateChangedHandler GameStateChanged;
-
-        protected virtual void RaiseGameStateChanged()
-        {
-            if (GameStateChanged != null)
-            { 
-                GameStateChanged(this, new GameStateChangeRequestEventArgs {State = this.State});
-            }
-        }
-
-        private void ChangeGameState(GameState newState)
-        {
-            State = newState;
-            RaiseGameStateChanged();
-        }
-
-        #endregion
 
         #region Construction
 
         public LevelController()
         {
-            State = GameState.Initializing;
-
             _config = new CompiledConfig();
             _provider = new Win2DProvider(_config);
             _agents = new List<IAgent>();
@@ -80,8 +54,6 @@ namespace Catch
         public void Initialize(Vector2 size)
         {
             WindowSize = size;
-            Zoom = 1.0f;
-            _pan = Vector2.Zero;
 
             Score = StartScore;
             Lives = StartLives;
@@ -91,10 +63,13 @@ namespace Catch
             CreateMap();
             CreatePaths();
             CreateTowers();
+            SpawnBlock();
 
-            Zoom = 1.0f;
-            _pan.X = (WindowSize.X - _map.Size.X) / 2.0f;
-            _pan.Y = WindowSize.Y * -1.0f + (WindowSize.Y - _map.Size.Y) / 2.0f;
+            _overlayController = new OverlayController();
+            _overlayController.Initialize(WindowSize);
+
+            _fieldController = new FieldController(_agents, _map);
+            _fieldController.Initialize(WindowSize);
         }
 
         #endregion
@@ -103,32 +78,23 @@ namespace Catch
 
         public void PanBy(Vector2 panDelta)
         {
-            _pan = Vector2.Add(_pan, Vector2.Multiply(panDelta, 1.0f / Zoom));
+            _fieldController.PanBy(panDelta);
         }
 
         public void ZoomToPoint(Vector2 viewCoords, float zoomDelta)
         {
-            var newZoom = Math.Max(0.4f, Math.Min(2.0f, Zoom + zoomDelta));
-
-            var zoomCenter = TranslateToMap(viewCoords);
-            _pan = Vector2.Add(_pan, zoomCenter);
-            _pan = Vector2.Multiply(_pan, Zoom / newZoom);
-            _pan = Vector2.Subtract(_pan, zoomCenter);
-
-            Zoom = newZoom;
+            _fieldController.ZoomToPoint(viewCoords, zoomDelta);
         }
 
         public void Resize(Vector2 size)
         {
             WindowSize = size;
+
+            _fieldController.Resize(size);
+            _overlayController.Resize(size);
         }
 
         #endregion
-
-        public Vector2 TranslateToMap(Vector2 coords)
-        {
-            return Vector2.Transform(coords, _mapTransform);
-        }
 
         #region IGraphicsComponent Implementation
 
@@ -155,32 +121,36 @@ namespace Catch
                 a.DestroyResources();
                 return true;
             });
+
+            _fieldController.Update(ticks);
+            _overlayController.Update(ticks);
         }
 
         public void CreateResources(CreateResourcesArgs createArgs)
         {
             foreach (var agent in _agents)
                 agent.CreateResources(createArgs);
+
+            _fieldController.CreateResources(createArgs);
+            _overlayController.CreateResources(createArgs);
         }
 
         public void DestroyResources()
         {
             foreach (var agent in _agents)
                 agent.DestroyResources();
+
+            _fieldController.DestroyResources();
+            _overlayController.DestroyResources();
         }
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {
-            // apply view matrix
-            drawArgs.PushScale(1.0f, -1.0f);
-            drawArgs.PushScale(Zoom);
-            drawArgs.PushTranslation(_pan);
+            // the FieldController draws the agents, so they are sited onto the map
+            _fieldController.Draw(drawArgs, rotation);
 
-            // calculate viewport transform, used for zoom/pan
-            Matrix3x2.Invert(drawArgs.CurrentTransform, out _mapTransform);
-
-            foreach (var agent in _agents)
-                agent.Draw(drawArgs, 0.0f);
+            // the overlay draws second so that it is on top
+            _overlayController.Draw(drawArgs, rotation);
         }
 
         #endregion
