@@ -1,31 +1,34 @@
-﻿using System;
-using System.Numerics;
-using Windows.Foundation;
+﻿using System.Numerics;
 using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Catch.Base;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace Catch
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Handles low-level input, timing, and other "device-level" things such as the view size
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private CatchGame _game;
+        private readonly MainGameController _gameController;
+        private int _frameId;
+        private const float TicksPerSecond = 60.0f;
 
         public MainPage()
         {
             InitializeComponent();
 
-            _game = new CatchGame();
-            _game.GameStateChanged += GameStateHandler;
+            _frameId = 0;
+
+            _gameController = new MainGameController();
+            _gameController.Initialize(new Vector2((float)cvs.Size.Width, (float)cvs.Size.Height));
         }
 
-        #region " Game Loop "
+        #region Animation Loop
 
         private CoreIndependentInputSource _inputDevice;
         private GestureRecognizer _gestureRecognizer;
@@ -72,53 +75,48 @@ namespace Catch
             _gestureRecognizer.ManipulationCompleted -= gestureRecognizer_ManipulationCompleted;
         }
 
-        private void OnCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
+        private void OnCreateResources(ICanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
-            _game.CreateResources(sender.Device);
+            _frameId += 1;
+
+            var resourceCreator = sender.Device;
+            var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, true);
+
+            _gameController.CreateResources(createArgs);
         }
 
         private void OnUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
         {
-            if (_inManipulation && _gestureRecognizer != null)
-                _gestureRecognizer.ProcessInertia();
+            if (_inManipulation)
+                _gestureRecognizer?.ProcessInertia();
 
-            // TODO make the number of ticks depend on wall time elapsed, maybe some other gamespeed setting?
-            _game.Update(1);
+            var elapsedMs = args.Timing.ElapsedTime.Milliseconds;
+            var elapsedTicks = TicksPerSecond * elapsedMs / 1000.0f;
+
+            _gameController.Update(elapsedTicks);
         }
 
         private void OnDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
-            _game.Draw(args.DrawingSession);
+            _frameId += 1;
+
+            // send non-mandatory CreateResources
+            // TODO we might be able to remove this by making other resources self-initializing
+            var resourceCreator = sender.Device;
+            var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, false);
+
+            _gameController.CreateResources(createArgs);
+
+            // send draw
+            var ds = args.DrawingSession;
+            var drawArgs = new DrawArgs(ds, ds.Transform, _frameId);
+
+            _gameController.Draw(drawArgs, 0.0f);
         }
 
         #endregion
 
-        private void GameStateHandler(object sender, GameStateChangedEventArgs args)
-        {
-            if (!Dispatcher.HasThreadAccess)
-            {
-                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, delegate { GameStateHandler(sender, args); })
-                    .Forget();
-                return;
-            }
-
-            // actual method body here
-
-            switch (args.State)
-            {
-                case GameState.Init:
-                    var rect = new Rect(0, 0, cvs.ActualWidth, cvs.ActualHeight);
-                    _game.Initialize(rect);
-                    break;
-                case GameState.Title:
-                    _game.StartGame();
-                    break;
-                case GameState.Playing:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
+        #region Viewport Size
 
         private void Canvas_SizeChanged(object sender, SizeChangedEventArgs args)
         {
@@ -135,8 +133,10 @@ namespace Catch
         {
             var cvsSize = cvs.Size;
 
-            _game.Resize(new Rect(0, 0, cvsSize.Width, cvsSize.Height));
+            _gameController.Resize(new Vector2((float)cvsSize.Width, (float)cvsSize.Height));
         }
+
+        #endregion
 
         #region Pan and Zoom
 
@@ -166,7 +166,7 @@ namespace Catch
             var wheelTicks = args.CurrentPoint.Properties.MouseWheelDelta;
             wheelTicks = wheelTicks / 120;
 
-            _game.ZoomToPoint(coords, wheelTicks * 0.1f);
+            _gameController.ZoomToPoint(coords, wheelTicks * 0.1f);
         }
 
         private void gestureRecognizer_ManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)
@@ -180,9 +180,9 @@ namespace Catch
 
             screenDelta.X = (float) args.Delta.Translation.X;
             screenDelta.Y = (float) args.Delta.Translation.Y * -1.0f;
-            _game.PanBy(screenDelta);
+            _gameController.PanBy(screenDelta);
 
-            _game.ZoomToPoint(args.Position.ToVector2(), args.Delta.Scale - 1.0f);
+            _gameController.ZoomToPoint(args.Position.ToVector2(), args.Delta.Scale - 1.0f);
         }
 
         private void gestureRecognizer_ManipulationCompleted(GestureRecognizer sender,

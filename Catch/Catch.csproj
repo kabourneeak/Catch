@@ -136,11 +136,16 @@
     <Compile Include="Base\StyleArgs.cs" />
     <Compile Include="Base\TileDirection.cs" />
     <Compile Include="CanvasUtils.cs" />
-    <Compile Include="CatchGame.cs" />
+    <Compile Include="LevelController.cs" />
     <Compile Include="DebugUtils.cs" />
     <Compile Include="EnumUtils.cs" />
     <Compile Include="FloatExtentions.cs" />
+    <Compile Include="GameState.cs" />
+    <Compile Include="GameStateChangeRequestEventArgs.cs" />
+    <Compile Include="MainGameController.cs" />
+    <Compile Include="IGameController.cs" />
     <Compile Include="IntExtensions.cs" />
+    <Compile Include="IViewportController.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -157,6 +162,7 @@
     <Compile Include="Models\NilTower.cs" />
     <Compile Include="Models\PathMobBehaviour.cs" />
     <Compile Include="Models\VoidTower.cs" />
+    <Compile Include="NilGameController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RectExtensions.cs" />
     <Compile Include="Services\CompiledConfig.cs" />

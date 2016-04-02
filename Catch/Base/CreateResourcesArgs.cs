@@ -16,5 +16,10 @@ namespace Catch.Base
         public bool IsMandatory { get; private set; }
 
         public ICanvasResourceCreator ResourceCreator { get; private set; }
+
+        public void SetMandatory()
+        {
+            IsMandatory = true;
+        }
     }
 }
