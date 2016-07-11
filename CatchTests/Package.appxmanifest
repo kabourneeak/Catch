@@ -1,56 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  
-  <Identity Name="f8168071-23ee-4705-9d8b-de8c3c9cda9a"
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  IgnorableNamespaces="uap mp">
+
+  <Identity Name="654f4d20-f91e-4e01-87ca-27154169eeec"
             Publisher="CN=Gregory"
             Version="1.0.0.0" />
-  
+
+  <mp:PhoneIdentity PhoneProductId="654f4d20-f91e-4e01-87ca-27154169eeec" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
   <Properties>
     <DisplayName>CatchTests</DisplayName>
     <PublisherDisplayName>Gregory</PublisherDisplayName>
-    <Logo>Images\UnitTestStoreLogo.png</Logo>
-    <Description>CatchTests</Description>
+    <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   
-  <Prerequisites>
-    <OSMinVersion>6.3.0</OSMinVersion>
-    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
-  </Prerequisites>
-  
-  <Resources>
-    <Resource Language="x-generate"/>
-  </Resources>
-  
-  <Applications>
-    <Application Id="vstest.executionengine.App" 
-        Executable="vstest.executionengine.appcontainer.exe" 
-        EntryPoint="vstest.executionengine.App">
-        <VisualElements 
-            DisplayName="NoUIEntryPoints"
-            Logo="Images\UnitTestLogo.png"
-            SmallLogo="Images\UnitTestSmallLogo.png"
-            Description="vstest.executionengine.App"
-            ForegroundText="light"
-            BackgroundColor="#0084FF">
-            <SplashScreen Image="Images\UnitTestSplashScreen.png" />
-        </VisualElements>
-    </Application>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
 
-    <Application Id="vstest.executionengine.x86.App" 
-        Executable="vstest.executionengine.appcontainer.x86.exe" 
-        EntryPoint="vstest.executionengine.x86.App">
-        <VisualElements 
-            DisplayName="NoUIEntryPoints"
-            Logo="Images\UnitTestLogo.png"
-            SmallLogo="Images\UnitTestSmallLogo.png"
-            Description="vstest.executionengine.x86.App"
-            ForegroundText="light"
-            BackgroundColor="#0084FF">
-            <SplashScreen Image="Images\UnitTestSplashScreen.png" />
-        </VisualElements>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="vstest.executionengine.universal.App" 
+        Executable="$targetnametoken$.exe"
+        EntryPoint="CatchTests.App">
+      <uap:VisualElements
+        DisplayName="CatchTests"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        Description="CatchTests"
+        BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+      </uap:VisualElements>
     </Application>
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
-  </Capabilities>
+  </Capabilities> 
 </Package>
