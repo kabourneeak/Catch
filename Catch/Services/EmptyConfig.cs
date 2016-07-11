@@ -15,7 +15,7 @@ namespace Catch.Services
     {
         public int GetInt(string key)
         {
-            throw new KeyNotFoundException(string.Format("No such config key cat:{0} name:{1}", key));
+            throw new KeyNotFoundException($"No such config key:{key}");
         }
 
         public int GetInt(string key, int def)
@@ -25,7 +25,7 @@ namespace Catch.Services
 
         public string GetString(string key)
         {
-            throw new KeyNotFoundException(string.Format("No such config key cat:{0} name:{1}", key));
+            throw new KeyNotFoundException($"No such config key:{key}");
         }
 
         public string GetString(string key, string def)
@@ -35,7 +35,7 @@ namespace Catch.Services
 
         public float GetFloat(string key)
         {
-            throw new KeyNotFoundException(string.Format("No such config key cat:{0} name:{1}", key));
+            throw new KeyNotFoundException($"No such config key:{key}");
         }
 
         public float GetFloat(string key, float def)
@@ -45,7 +45,7 @@ namespace Catch.Services
 
         public double GetDouble(string key)
         {
-            throw new KeyNotFoundException(string.Format("No such config key cat:{0} name:{1}", key));
+            throw new KeyNotFoundException($"No such config key:{key}");
         }
 
         public double GetDouble(string key, double def)
@@ -55,7 +55,7 @@ namespace Catch.Services
 
         public bool GetBool(string key)
         {
-            throw new KeyNotFoundException(string.Format("No such config key cat:{0} name:{1}", key));
+            throw new KeyNotFoundException($"No such config key:{key}");
         }
 
         public bool GetBool(string key, bool def)
