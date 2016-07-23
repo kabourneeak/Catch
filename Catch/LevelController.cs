@@ -114,8 +114,7 @@ namespace Catch
                 _spawnTimer = SPAWN_TICKS;
             }
 
-            foreach (var agent in _agents)
-                agent.Update(ticks);
+            _fieldController.Update(ticks);
 
             _agents.RemoveAll(delegate(IAgent a)
             {
@@ -124,24 +123,17 @@ namespace Catch
                 return true;
             });
 
-            _fieldController.Update(ticks);
             _overlayController.Update(ticks);
         }
 
         public void CreateResources(CreateResourcesArgs createArgs)
         {
-            foreach (var agent in _agents)
-                agent.CreateResources(createArgs);
-
             _fieldController.CreateResources(createArgs);
             _overlayController.CreateResources(createArgs);
         }
 
         public void DestroyResources()
         {
-            foreach (var agent in _agents)
-                agent.DestroyResources();
-
             _fieldController.DestroyResources();
             _overlayController.DestroyResources();
         }

@@ -43,17 +43,20 @@ namespace Catch
 
         public void Update(float ticks)
         {
-
+            foreach (var agent in _agents)
+                agent.Update(ticks);
         }
 
         public void CreateResources(CreateResourcesArgs createArgs)
         {
-            
+            foreach (var agent in _agents)
+                agent.CreateResources(createArgs);
         }
 
         public void DestroyResources()
         {
-
+            foreach (var agent in _agents)
+                agent.DestroyResources();
         }
 
         public void Draw(DrawArgs drawArgs, float rotation)
