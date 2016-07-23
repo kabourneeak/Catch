@@ -2,6 +2,6 @@
 {
     public interface IMapProvider
     {
-        Map CreateMap();
+        Map.Map CreateMap();
     }
 }

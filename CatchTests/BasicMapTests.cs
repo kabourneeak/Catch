@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Catch.Base;
+using Catch.Map;
 using Catch.Services;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 

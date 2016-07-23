@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Catch.Base;
+using Catch.Graphics;
 
 namespace Catch
 {
@@ -18,9 +19,9 @@ namespace Catch
         private Matrix3x2 _mapTransform;
 
         private readonly List<IAgent> _agents;
-        private readonly Map _map;
+        private readonly Map.Map _map;
 
-        public FieldController(List<IAgent> agents, Map map)
+        public FieldController(List<IAgent> agents, Map.Map map)
         {
             _agents = agents;
             _map = map;

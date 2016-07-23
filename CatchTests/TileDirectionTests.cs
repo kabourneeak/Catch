@@ -1,4 +1,5 @@
 ﻿using Catch.Base;
+using Catch.Map;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace CatchTests

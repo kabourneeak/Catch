@@ -1,7 +1,9 @@
 ﻿using System;
 using Catch.Base;
-using Catch.Models;
+using Catch.Map;
+using Catch.Mobs;
 using Catch.Services;
+using Catch.Towers;
 
 namespace Catch.Win2d
 {
@@ -20,7 +22,7 @@ namespace Catch.Win2d
 
         #region IAgentProvider implementation
 
-        public Tower CreateTower(string name, Tile tile)
+        public TowerBase CreateTower(string name, Tile tile)
         {
             if (name == typeof(GunTower).Name)
             {
@@ -38,7 +40,7 @@ namespace Catch.Win2d
             throw new ArgumentException("I don't know how to construct that Tower");
         }
 
-        public Mob CreateMob(string name, MapPath mapPath)
+        public MobBase CreateMob(string name, MapPath mapPath)
         {
             if (name == "BlockMob")
             {
@@ -62,9 +64,9 @@ namespace Catch.Win2d
 
         #region IMapProvider
 
-        public Map CreateMap()
+        public Map.Map CreateMap()
         {
-            var map = new Map(_config);
+            var map = new Map.Map(_config);
 
             return map;
         }

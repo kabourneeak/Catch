@@ -1,4 +1,6 @@
-﻿namespace Catch.Base
+﻿using Catch.Map;
+
+namespace Catch.Base
 {
     public interface IAgent : IGameObject
     {

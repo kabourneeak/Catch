@@ -1,12 +1,14 @@
-﻿using Catch.Models;
+﻿using Catch.Map;
+using Catch.Mobs;
+using Catch.Towers;
 
 namespace Catch.Base
 {
     public interface IAgentProvider
     {
-        Tower CreateTower(string name, Tile tile);
+        TowerBase CreateTower(string name, Tile tile);
 
-        Mob CreateMob(string name, MapPath mapPath);
+        MobBase CreateMob(string name, MapPath mapPath);
 
         Modifier CreateModifier(string name);
 

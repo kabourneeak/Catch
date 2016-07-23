@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Catch.Graphics;
 
 namespace Catch.Base
 {

@@ -1,5 +1,5 @@
-﻿using Catch.Base;
-using System.Numerics;
+﻿using System.Numerics;
+using Catch.Graphics;
 
 namespace Catch
 {

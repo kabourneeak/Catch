@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Catch.Base;
+using Catch.Graphics;
+using Catch.Map;
 using Catch.Services;
 using Catch.Win2d;
 
@@ -34,7 +36,7 @@ namespace Catch
         private readonly IConfig _config;
         private readonly Win2DProvider _provider;
         private readonly List<IAgent> _agents;
-        private Map _map;
+        private Map.Map _map;
 
         #region Construction
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using Catch.Base;
+using Catch.Towers;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace CatchTests
@@ -14,12 +14,12 @@ namespace CatchTests
             const float clockwise = -1.0f;
             const float anticlockwise = 1.0f;
 
-            Assert.AreEqual(Targetting.ShortestRotationDirection(0.0f, 1.0f), anticlockwise, 0.01f);
-            Assert.AreEqual(Targetting.ShortestRotationDirection(0.0f, pi - 1.0f), anticlockwise, 0.01f);
-            Assert.AreEqual(Targetting.ShortestRotationDirection(0.0f, pi + 1.0f), clockwise, 0.01f);
-            Assert.AreEqual(Targetting.ShortestRotationDirection(0.0f, 2 * pi - 1.0f), clockwise, 0.01f);
+            Assert.AreEqual(TargettingBase.ShortestRotationDirection(0.0f, 1.0f), anticlockwise, 0.01f);
+            Assert.AreEqual(TargettingBase.ShortestRotationDirection(0.0f, pi - 1.0f), anticlockwise, 0.01f);
+            Assert.AreEqual(TargettingBase.ShortestRotationDirection(0.0f, pi + 1.0f), clockwise, 0.01f);
+            Assert.AreEqual(TargettingBase.ShortestRotationDirection(0.0f, 2 * pi - 1.0f), clockwise, 0.01f);
 
-            Assert.AreEqual(Targetting.ShortestRotationDirection(0.0f, -1.0f), clockwise, 0.01f);
+            Assert.AreEqual(TargettingBase.ShortestRotationDirection(0.0f, -1.0f), clockwise, 0.01f);
         }
     }
 }

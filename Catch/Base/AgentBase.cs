@@ -1,4 +1,6 @@
 ﻿using System.Numerics;
+using Catch.Graphics;
+using Catch.Map;
 
 namespace Catch.Base
 {

@@ -1,3 +1,5 @@
+using Catch.Graphics;
+
 namespace Catch.Base
 {
     /// <summary>
