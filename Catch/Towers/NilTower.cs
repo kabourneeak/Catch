@@ -16,7 +16,7 @@ namespace Catch.Towers
 
         public override string GetAgentType()
         {
-            return typeof (NilTower).Name;
+            return nameof(NilTower);
         }
 
         public override void Update(float ticks)

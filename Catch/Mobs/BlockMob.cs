@@ -30,7 +30,7 @@ namespace Catch.Mobs
 
         public override string GetAgentType()
         {
-            return typeof (BlockMob).Name;
+            return nameof(BlockMob);
         }
     }
 }

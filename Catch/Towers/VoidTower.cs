@@ -22,7 +22,7 @@ namespace Catch.Towers
 
         public override string GetAgentType()
         {
-            return typeof(NilTower).Name;
+            return nameof(VoidTower);
         }
 
         #region Shared Resources

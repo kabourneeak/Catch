@@ -10,54 +10,48 @@ namespace Catch.Win2d
     public class Win2DProvider : IAgentProvider, IMapProvider
     {
         private readonly IConfig _config;
-        private readonly float _tileRadius;
 
         public Win2DProvider(IConfig config)
         {
             _config = config;
-
-            // copy-down config
-            _tileRadius = _config.GetFloat("TileRadius");
         }
 
         #region IAgentProvider implementation
 
         public TowerBase CreateTower(string name, Tile tile)
         {
-            if (name == typeof(GunTower).Name)
+            switch (name)
             {
-                return new GunTower(tile, _config);
+                case nameof(GunTower):
+                    return new GunTower(tile, _config);
+                case nameof(VoidTower):
+                    return new VoidTower(tile, _config);
+                case nameof(NilTower):
+                    return new NilTower(tile);
+                default:
+                    throw new ArgumentException("I don't know how to construct that Tower");
             }
-            else if (name == typeof(VoidTower).Name)
-            {
-                return new VoidTower(tile, _config);
-            }
-            else if (name == typeof (NilTower).Name)
-            {
-                return new NilTower(tile);
-            }
-
-            throw new ArgumentException("I don't know how to construct that Tower");
         }
 
         public MobBase CreateMob(string name, MapPath mapPath)
         {
-            if (name == "BlockMob")
+            switch (name)
             {
-                return new BlockMob(mapPath, _config);
+                case nameof(BlockMob):
+                    return new BlockMob(mapPath, _config);
+                default:
+                    throw new ArgumentException("I don't know how to construct that PathAgent");
             }
-            
-            throw new ArgumentException("I don't know how to construct that PathAgent");
         }
 
         public Modifier CreateModifier(string name)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IIndicator CreateIndicator(string name)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         #endregion
