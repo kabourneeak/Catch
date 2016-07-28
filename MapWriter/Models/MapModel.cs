@@ -26,11 +26,12 @@ namespace MapWriter.Models
         {
             Tiles.Clear();
 
-            for (var row = 0; row < Rows; ++row)
+            for (var col = 0; col < Columns; ++col)
             {
-                for (var col = 0; col < Columns; ++col)
+                // the odd nummbered columns have one fewer row
+                for (var row = 0 + col.Mod(2); row < Rows; ++row)
                 {
-                    Tiles.Add(new TileModel {Row = row, Column = col, TowerName = towerName});
+                    Tiles.Add(new TileModel { Row = row, Column = col, TowerName = towerName });
                 }
             }
         }
