@@ -20,13 +20,13 @@ namespace CatchLibrary.Serialization
         /// HexGrid for interacting with the TileModels.
         /// </summary>
         [DataMember]
-        public List<TileModel> Tiles { get; set; } = new List<TileModel>();
+        public List<TileModel> TileList { get; set; } = new List<TileModel>();
 
         /// <summary>
         /// The primary container of the TileModel objects
         /// </summary>
         [IgnoreDataMember]
-        public HexGridCollection<TileModel> HexGrid { get; private set; }
+        public HexGridCollection<TileModel> Tiles { get; private set; }
 
         [DataMember]
         public List<EmitScriptEntryModel> EmitScript { get; set; } = new List<EmitScriptEntryModel>();
@@ -36,23 +36,23 @@ namespace CatchLibrary.Serialization
 
         protected void InitializeHexGrid()
         {
-            HexGrid = new HexGridCollection<TileModel>(Rows, Columns);
+            Tiles = new HexGridCollection<TileModel>(Rows, Columns);
         }
 
         [OnSerializing]
         internal void OnSerializing(StreamingContext context)
         {
             // rewrite the Tiles list when time to serialize
-            Tiles = HexGrid.ToList();
+            TileList = Tiles.ToList();
         }
 
         [OnDeserialized]
         internal void OnDeserialized(StreamingContext context)
         {
             InitializeHexGrid();
-            foreach (var tileModel in Tiles)
+            foreach (var tileModel in TileList)
             {
-                HexGrid.SetHex(tileModel.Row, tileModel.Column, tileModel);
+                Tiles.SetHex(tileModel.Row, tileModel.Column, tileModel);
             }
         }
     }
