@@ -107,5 +107,10 @@ namespace Catch.Map
         {
             return string.Format("Tile {0},{1}", Row, Column);
         }
+
+        public static explicit operator HexCoords(Tile t)
+        {
+            return new HexCoords { Row = t.Row, Column = t.Column, Valid = true };
+        }
     }
 }

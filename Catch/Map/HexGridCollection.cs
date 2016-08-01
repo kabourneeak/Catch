@@ -69,6 +69,8 @@ namespace Catch.Map
 
         #region IEnumerable
 
+        public bool Contains(T obj) => Hexes.Contains(obj);
+
         public IEnumerator<T> GetEnumerator()
         {
             return Hexes.GetEnumerator();
@@ -161,12 +163,22 @@ namespace Catch.Map
             return neighbours;
         }
 
+        public List<T> GetNeighbours(int row, int column, int radius)
+        {
+            return GetNeighbours(new HexCoords {Row = row, Column = column, Valid = true}, radius);
+        }
+
         /// <summary>
         /// Get all immediately neighbouring tiles to the given tile (i.e., radius equals 1)
         /// </summary>
         public List<T> GetNeighbours(HexCoords hexCoords)
         {
             return GetNeighbours(hexCoords, 1);
+        }
+
+        public List<T> GetNeighbours(int row, int column)
+        {
+            return GetNeighbours(row, column, 1);
         }
 
         /// <summary>
@@ -184,8 +196,6 @@ namespace Catch.Map
 
             return neighbours;
         }
-
-        #endregion
 
         protected HexCoords GetNeighbourCoords(HexCoords hexCoords, TileDirection direction)
         {
@@ -261,5 +271,7 @@ namespace Catch.Map
 
             return (col * Rows) - (col / 2) + (row - col.Mod(2));
         }
+
+        #endregion
     }
 }
