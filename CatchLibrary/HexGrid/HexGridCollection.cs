@@ -103,22 +103,22 @@ namespace CatchLibrary.HexGrid
                 $"Row/Column ({row},{col}) are invalid for a grid of size ({Rows},{Columns}).");
         }
 
-        public bool HasNeighbour(HexCoords hexCoords, TileDirection direction)
+        public bool HasNeighbour(HexCoords hexCoords, HexDirection direction)
         {
             return GetNeighbourCoords(hexCoords.Row, hexCoords.Column, direction).Valid;
         }
 
-        public bool HasNeighbour(int row, int column, TileDirection direction)
+        public bool HasNeighbour(int row, int column, HexDirection direction)
         {
             return GetNeighbourCoords(row, column, direction).Valid;
         }
 
-        public T GetNeighbour(HexCoords hexCoords, TileDirection direction)
+        public T GetNeighbour(HexCoords hexCoords, HexDirection direction)
         {
             return GetNeighbour(hexCoords.Row, hexCoords.Column, direction);
         }
 
-        public T GetNeighbour(int row, int column, TileDirection direction)
+        public T GetNeighbour(int row, int column, HexDirection direction)
         {
             DebugUtils.Assert(GetCoordsAreValid(row, column));
 
@@ -127,14 +127,14 @@ namespace CatchLibrary.HexGrid
             return coords.Valid ? GetHex(coords.Row, coords.Column) : null;
         }
 
-        private static readonly TileDirection[] clockwiseWalk =
+        private static readonly HexDirection[] clockwiseWalk =
         {
-            TileDirection.SouthEast,
-            TileDirection.South,
-            TileDirection.SouthWest,
-            TileDirection.NorthWest,
-            TileDirection.North,
-            TileDirection.NorthEast
+            HexDirection.SouthEast,
+            HexDirection.South,
+            HexDirection.SouthWest,
+            HexDirection.NorthWest,
+            HexDirection.North,
+            HexDirection.NorthEast
         };
 
         public List<T> GetNeighbours(HexCoords hexCoords, int radius)
@@ -146,7 +146,7 @@ namespace CatchLibrary.HexGrid
 
             // walk north by radius
             for (var i = 0; i < radius; ++i)
-                hexCoords = GetNeighbourCoords(hexCoords, TileDirection.North);
+                hexCoords = GetNeighbourCoords(hexCoords, HexDirection.North);
 
             // walk around clockwise
             foreach (var d in clockwiseWalk)
@@ -196,7 +196,7 @@ namespace CatchLibrary.HexGrid
             return neighbours;
         }
 
-        protected HexCoords GetNeighbourCoords(HexCoords hexCoords, TileDirection direction)
+        protected HexCoords GetNeighbourCoords(HexCoords hexCoords, HexDirection direction)
         {
             return GetNeighbourCoords(hexCoords.Row, hexCoords.Column, direction);
         }
@@ -211,33 +211,33 @@ namespace CatchLibrary.HexGrid
         /// <param name="rows">The total number of rows in the grid</param>
         /// <param name="columns">The total number of columns in the grid</param>
         /// <returns>A HexCoords object containing the results</returns>
-        protected HexCoords GetNeighbourCoords(int row, int col, TileDirection direction)
+        protected HexCoords GetNeighbourCoords(int row, int col, HexDirection direction)
         {
             var coords = new HexCoords {Valid = false};
 
             switch (direction)
             {
-                case TileDirection.North:
+                case HexDirection.North:
                     coords.Row = row + 1;
                     coords.Column = col;
                     break;
-                case TileDirection.NorthEast:
+                case HexDirection.NorthEast:
                     coords.Row = row + (1 - col.Mod(2)); // if currently in even column, move up a row
                     coords.Column = col + 1;
                     break;
-                case TileDirection.SouthEast:
+                case HexDirection.SouthEast:
                     coords.Row = row - (col.Mod(2)); // if currently in even column, stay in same row
                     coords.Column = col + 1;
                     break;
-                case TileDirection.South:
+                case HexDirection.South:
                     coords.Row = row - 1;
                     coords.Column = col;
                     break;
-                case TileDirection.SouthWest:
+                case HexDirection.SouthWest:
                     coords.Row = row - (col.Mod(2)); // if currently in even column, stay in same row
                     coords.Column = col - 1;
                     break;
-                case TileDirection.NorthWest:
+                case HexDirection.NorthWest:
                     coords.Row = row + (1 - col.Mod(2)); // if currently in even column, move up a row
                     coords.Column = col - 1;
                     break;

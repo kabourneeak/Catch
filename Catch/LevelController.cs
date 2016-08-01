@@ -189,34 +189,34 @@ namespace Catch
             var tile = _map.GetTile(0, 0);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
+            tile = _map.GetNeighbour(tile, HexDirection.NorthEast);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
+            tile = _map.GetNeighbour(tile, HexDirection.NorthEast);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.North);
+            tile = _map.GetNeighbour(tile, HexDirection.North);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.North);
+            tile = _map.GetNeighbour(tile, HexDirection.North);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
+            tile = _map.GetNeighbour(tile, HexDirection.NorthEast);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            tile = _map.GetNeighbour(tile, HexDirection.SouthEast);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            tile = _map.GetNeighbour(tile, HexDirection.SouthEast);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.NorthEast);
+            tile = _map.GetNeighbour(tile, HexDirection.NorthEast);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.North);
+            tile = _map.GetNeighbour(tile, HexDirection.North);
             mapPath.Add(tile);
 
-            tile = _map.GetNeighbour(tile, TileDirection.SouthEast);
+            tile = _map.GetNeighbour(tile, HexDirection.SouthEast);
             mapPath.Add(tile);
 
             _map.AddPath("TestPath", mapPath);

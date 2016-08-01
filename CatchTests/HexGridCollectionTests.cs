@@ -19,12 +19,12 @@ namespace CatchTests
             return Hexes;
         }
 
-        public new HexCoords GetNeighbourCoords(int row, int col, TileDirection direction)
+        public new HexCoords GetNeighbourCoords(int row, int col, HexDirection direction)
         {
             return base.GetNeighbourCoords(row, col, direction);
         }
 
-        public new HexCoords GetNeighbourCoords(HexCoords coords, TileDirection direction)
+        public new HexCoords GetNeighbourCoords(HexCoords coords, HexDirection direction)
         {
             return base.GetNeighbourCoords(coords, direction);
         }
@@ -131,31 +131,31 @@ namespace CatchTests
 
             var coords = new HexCoords() {Row = 4, Column = 3};
 
-            coords = hgc.GetNeighbourCoords(coords, TileDirection.North);
+            coords = hgc.GetNeighbourCoords(coords, HexDirection.North);
             Assert.AreEqual(5, coords.Row);
             Assert.AreEqual(3, coords.Column);
 
-            coords = hgc.GetNeighbourCoords(coords, TileDirection.SouthEast);
+            coords = hgc.GetNeighbourCoords(coords, HexDirection.SouthEast);
             Assert.AreEqual(4, coords.Row);
             Assert.AreEqual(4, coords.Column);
 
-            coords = hgc.GetNeighbourCoords(coords, TileDirection.South);
+            coords = hgc.GetNeighbourCoords(coords, HexDirection.South);
             Assert.AreEqual(3, coords.Row);
             Assert.AreEqual(4, coords.Column);
 
-            coords = hgc.GetNeighbourCoords(coords, TileDirection.SouthWest);
+            coords = hgc.GetNeighbourCoords(coords, HexDirection.SouthWest);
             Assert.AreEqual(3, coords.Row);
             Assert.AreEqual(3, coords.Column);
 
-            coords = hgc.GetNeighbourCoords(coords, TileDirection.NorthWest);
+            coords = hgc.GetNeighbourCoords(coords, HexDirection.NorthWest);
             Assert.AreEqual(3, coords.Row);
             Assert.AreEqual(2, coords.Column);
             
-            coords = hgc.GetNeighbourCoords(coords, TileDirection.North);
+            coords = hgc.GetNeighbourCoords(coords, HexDirection.North);
             Assert.AreEqual(4, coords.Row);
             Assert.AreEqual(2, coords.Column);
 
-            coords = hgc.GetNeighbourCoords(coords, TileDirection.NorthEast);
+            coords = hgc.GetNeighbourCoords(coords, HexDirection.NorthEast);
             Assert.AreEqual(5, coords.Row);
             Assert.AreEqual(3, coords.Column);
 

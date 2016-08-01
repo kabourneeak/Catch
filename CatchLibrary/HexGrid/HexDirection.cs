@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CatchLibrary.HexGrid
 {
-    public enum TileDirection
+    public enum HexDirection
     {
         North,
         NorthWest,
@@ -13,46 +13,46 @@ namespace CatchLibrary.HexGrid
         NorthEast
     }
 
-    public static class TileDirectionExtensions
+    public static class HexDirectionExtensions
     {
         private static readonly Random _rng = new Random();
 
-        private static readonly List<TileDirection> _allDirections = new List<TileDirection>() {TileDirection.North, 
-            TileDirection.NorthWest, TileDirection.SouthWest, TileDirection.South, TileDirection.SouthEast, TileDirection.NorthEast};
+        private static readonly List<HexDirection> _allDirections = new List<HexDirection>() {HexDirection.North, 
+            HexDirection.NorthWest, HexDirection.SouthWest, HexDirection.South, HexDirection.SouthEast, HexDirection.NorthEast};
 
         private const int numDirections = 6;
         
         private const float pi = (float)Math.PI;
 
-        public static IEnumerable<TileDirection> AllTileDirections {get { return _allDirections; } }
+        public static IEnumerable<HexDirection> AllTileDirections {get { return _allDirections; } }
 
-        public static TileDirection GetRandom()
+        public static HexDirection GetRandom()
         {
             return _allDirections[_rng.Next(numDirections)];
         }
 
-        public static float CenterRadians(this TileDirection tileDirection)
+        public static float CenterRadians(this HexDirection hexDirection)
         {
-            switch (tileDirection)
+            switch (hexDirection)
             {
-                case TileDirection.North:
+                case HexDirection.North:
                     return 3 * pi / 6;
-                case TileDirection.NorthWest:
+                case HexDirection.NorthWest:
                     return 5 * pi / 6;
-                case TileDirection.SouthWest:
+                case HexDirection.SouthWest:
                     return 7 * pi / 6;
-                case TileDirection.South:
+                case HexDirection.South:
                     return 9 * pi / 6;
-                case TileDirection.SouthEast:
+                case HexDirection.SouthEast:
                     return 11 * pi / 6;
-                case TileDirection.NorthEast:
+                case HexDirection.NorthEast:
                     return 1 * pi / 6;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private static int Ordinal(this TileDirection d)
+        private static int Ordinal(this HexDirection d)
         {
             return _allDirections.IndexOf(d);
         }
@@ -66,7 +66,7 @@ namespace CatchLibrary.HexGrid
         /// <returns>-1.0f if clockwise is the shortest rotation to reach to, 1.0f otherwise. 
         /// One of these is chosen randomly if from and to are opposites (e.g., north and 
         /// south)</returns>
-        public static float ShortestRotationDirection(TileDirection from, TileDirection to)
+        public static float ShortestRotationDirection(HexDirection from, HexDirection to)
         {
             const float clockwise = -1.0f;
             const float anticlockwise = 1.0f;

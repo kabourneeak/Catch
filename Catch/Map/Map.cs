@@ -50,7 +50,7 @@ namespace Catch.Map
 
         public Tile GetTile(int row, int col) => _tiles.GetHex(row, col);
 
-        public Tile GetNeighbour(Tile tile, TileDirection direction) => _tiles.GetNeighbour(tile.Row, tile.Column, direction);
+        public Tile GetNeighbour(Tile tile, HexDirection direction) => _tiles.GetNeighbour(tile.Row, tile.Column, direction);
 
         public List<Tile> GetNeighbours(Tile tile, int radius) => _tiles.GetNeighbours(tile.Row, tile.Column, radius);
 
