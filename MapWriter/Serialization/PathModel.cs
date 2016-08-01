@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace MapWriter.Models
+namespace MapWriter.Serialization
 {
     [Serializable]
     public class PathModel

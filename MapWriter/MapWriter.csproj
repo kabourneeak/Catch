@@ -49,12 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Maps\MapOne.cs" />
-    <Compile Include="Models\EmitScriptEntryModel.cs" />
-    <Compile Include="Models\IntExtensions.cs" />
-    <Compile Include="Models\MapModel.cs" />
-    <Compile Include="Models\PathModel.cs" />
-    <Compile Include="Models\PathStepModel.cs" />
-    <Compile Include="Models\TileModel.cs" />
+    <Compile Include="Serialization\EmitScriptEntryModel.cs" />
+    <Compile Include="Serialization\MapModel.cs" />
+    <Compile Include="Serialization\PathModel.cs" />
+    <Compile Include="Serialization\PathStepModel.cs" />
+    <Compile Include="Serialization\TileModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿using MapWriter.Models;
+﻿using MapWriter.Serialization;
 
 namespace MapWriter.Maps
 {
