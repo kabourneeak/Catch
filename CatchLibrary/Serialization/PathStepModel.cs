@@ -21,5 +21,11 @@ namespace CatchLibrary.Serialization
             this.Row = row;
             this.Column = column;
         }
+
+        public PathStepModel(TileModel tileModel)
+        {
+            this.Row = tileModel.Row;
+            this.Column = tileModel.Column;
+        }
     }
 }

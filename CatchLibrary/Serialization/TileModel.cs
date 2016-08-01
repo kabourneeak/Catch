@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using CatchLibrary.HexGrid;
 
 namespace CatchLibrary.Serialization
 {
@@ -22,5 +23,10 @@ namespace CatchLibrary.Serialization
         /// </summary>
         [DataMember]
         public string TowerName { get; set; }
+
+        public static explicit operator HexCoords(TileModel t)
+        {
+            return new HexCoords { Row = t.Row, Column = t.Column, Valid = true };
+        }
     }
 }

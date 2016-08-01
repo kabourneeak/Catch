@@ -47,6 +47,28 @@ namespace CatchLibrary.HexGrid
 
         #endregion
 
+        #region Setters
+
+        public void SetHex(HexCoords hexCoords, T value)
+        {
+            SetHex(hexCoords.Row, hexCoords.Column, value);
+        }
+
+        public void SetHex(int row, int column, T value)
+        {
+            DebugUtils.Assert(row >= 0);
+            DebugUtils.Assert(column >= 0);
+
+            if (GetCoordsAreValid(row, column))
+            {
+                Hexes[GetListOffset(row, column)] = value;
+                return;
+            }
+
+            throw new IndexOutOfRangeException(
+                $"Row/Column ({row},{column}) are invalid for a grid of size ({Rows},{Columns}).");
+        }
+
         /// <summary>
         /// Iterates over the rows and columns of the grid and stores the returned value
         /// from the delegate function at that position.
@@ -66,6 +88,8 @@ namespace CatchLibrary.HexGrid
             }
         }
 
+        #endregion
+
         #region IEnumerable
 
         public bool Contains(T obj) => Hexes.Contains(obj);
@@ -82,25 +106,25 @@ namespace CatchLibrary.HexGrid
 
         #endregion
 
-        #region Hex Getters
+        #region Getters
 
         public T GetHex(HexCoords hexCoords)
         {
             return GetHex(hexCoords.Row, hexCoords.Column);
         }
 
-        public T GetHex(int row, int col)
+        public T GetHex(int row, int column)
         {
             DebugUtils.Assert(row >= 0);
-            DebugUtils.Assert(col >= 0);
+            DebugUtils.Assert(column >= 0);
 
-            if (GetCoordsAreValid(row, col))
+            if (GetCoordsAreValid(row, column))
             {
-                return Hexes[GetListOffset(row, col)];
+                return Hexes[GetListOffset(row, column)];
             }
 
             throw new IndexOutOfRangeException(
-                $"Row/Column ({row},{col}) are invalid for a grid of size ({Rows},{Columns}).");
+                $"Row/Column ({row},{column}) are invalid for a grid of size ({Rows},{Columns}).");
         }
 
         public bool HasNeighbour(HexCoords hexCoords, HexDirection direction)

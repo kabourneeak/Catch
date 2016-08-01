@@ -1,4 +1,5 @@
-﻿using CatchLibrary.Serialization;
+﻿using CatchLibrary.HexGrid;
+using CatchLibrary.Serialization;
 
 namespace MapWriter.Maps
 {
@@ -6,8 +7,9 @@ namespace MapWriter.Maps
     {
         public MapOne()
         {
-            Rows = 20;
-            Columns = 30;
+            Rows = 10;
+            Columns = 19;
+            InitializeHexGrid();
 
             AddTiles();
             AddPaths();
@@ -16,21 +18,63 @@ namespace MapWriter.Maps
 
         private void AddTiles()
         {
-            InitializeTiles("VoidTower");
+            HexGrid.Populate((r, c, v) => new TileModel {Row = r, Column = c, TowerName = "VoidTower"});
+
+            HexGrid.GetHex(4, 5).TowerName = "GunTower";
+            HexGrid.GetHex(5, 5).TowerName = "GunTower";
+            HexGrid.GetHex(4, 4).TowerName = "GunTower";
+            HexGrid.GetHex(6, 5).TowerName = "GunTower";
+            HexGrid.GetHex(5, 6).TowerName = "GunTower";
+
+            HexGrid.GetHex(4, 15).TowerName = "GunTower";
+            HexGrid.GetHex(5, 15).TowerName = "GunTower";
+            HexGrid.GetHex(4, 14).TowerName = "GunTower";
+            HexGrid.GetHex(6, 15).TowerName = "GunTower";
+            HexGrid.GetHex(5, 16).TowerName = "GunTower";
+
+            HexGrid.GetHex(2, 1).TowerName = "GunTower";
         }
 
         private void AddPaths()
         {
-            var path1 = new PathModel();
+            var testPath = new PathModel();
             {
-                path1.PathName = nameof(path1);
+                testPath.PathName = nameof(testPath);
 
-                path1.PathSteps.Add(new PathStepModel(0, 0));
-                path1.PathSteps.Add(new PathStepModel(1, 0));
-                path1.PathSteps.Add(new PathStepModel(2, 0));
-                path1.PathSteps.Add(new PathStepModel(3, 0));
+                var hex = HexGrid.GetHex(0, 0);
+                testPath.PathSteps.Add(new PathStepModel(hex));
 
-                Paths.Add(path1);
+                hex = HexGrid.GetNeighbour((HexCoords) hex, HexDirection.NorthEast);
+                testPath.PathSteps.Add(new PathStepModel(hex));
+
+                hex = HexGrid.GetNeighbour((HexCoords)hex, HexDirection.NorthEast);
+                testPath.PathSteps.Add(new PathStepModel(hex));
+
+                hex = HexGrid.GetNeighbour((HexCoords)hex, HexDirection.North);
+                testPath.PathSteps.Add(new PathStepModel(hex));
+
+                hex = HexGrid.GetNeighbour((HexCoords)hex, HexDirection.North);
+                testPath.PathSteps.Add(new PathStepModel(hex));
+
+                hex = HexGrid.GetNeighbour((HexCoords)hex, HexDirection.NorthEast);
+                testPath.PathSteps.Add(new PathStepModel(hex));
+
+                hex = HexGrid.GetNeighbour((HexCoords)hex, HexDirection.SouthEast);
+                testPath.PathSteps.Add(new PathStepModel(hex));
+
+                hex = HexGrid.GetNeighbour((HexCoords)hex, HexDirection.SouthEast);
+                testPath.PathSteps.Add(new PathStepModel(hex));
+
+                hex = HexGrid.GetNeighbour((HexCoords)hex, HexDirection.NorthEast);
+                testPath.PathSteps.Add(new PathStepModel(hex));
+
+                hex = HexGrid.GetNeighbour((HexCoords)hex, HexDirection.North);
+                testPath.PathSteps.Add(new PathStepModel(hex));
+
+                hex = HexGrid.GetNeighbour((HexCoords)hex, HexDirection.SouthEast);
+                testPath.PathSteps.Add(new PathStepModel(hex));
+
+                Paths.Add(testPath);
             }
         }
 
@@ -41,7 +85,7 @@ namespace MapWriter.Maps
                 BeginTime = 120,
                 Count = 10,
                 DelayTime = 60,
-                PathName = "path1",
+                PathName = "testPath",
                 AgentTypeName = "BlockMob"
             });
         }
