@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Catch.Services;
-using CatchLibrary;
 using CatchLibrary.HexGrid;
 
 namespace Catch.Map
@@ -14,21 +13,14 @@ namespace Catch.Map
     public class Map : IEnumerable<Tile>
     {
         private readonly IConfig _config;
-        private HexGridCollection<Tile> _tiles; 
-        private Dictionary<string, MapPath> _paths;
+        private readonly HexGridCollection<Tile> _tiles; 
+        private readonly Dictionary<string, MapPath> _paths;
         private readonly float _tileRadius;
 
-        public Map(IConfig config)
+        public Map(IConfig config, int rows, int columns)
         {
             _config = config;
-
             _tileRadius = config.GetFloat("TileRadius");
-        }
-
-        public void Initialize(int rows, int columns)
-        {
-            DebugUtils.Assert(rows >= 1);
-            DebugUtils.Assert(columns >= 1);
 
             Rows = rows;
             Columns = columns;
@@ -42,13 +34,11 @@ namespace Catch.Map
 
         #region Hexagonal Grid
 
-        public int Rows { get; private set; }
+        public int Rows { get; }
+        public int Columns { get; }
+        public Vector2 Size { get; }
 
-        public int Columns { get; private set; }
-
-        public Vector2 Size { get; private set; }
-
-        public Tile GetTile(int row, int col) => _tiles.GetHex(row, col);
+        public Tile GetHex(int row, int column) => _tiles.GetHex(row, column);
 
         public Tile GetNeighbour(Tile tile, HexDirection direction) => _tiles.GetNeighbour(tile.Row, tile.Column, direction);
 
@@ -63,7 +53,7 @@ namespace Catch.Map
 
         #region Paths
 
-        public void AddPath(string name, MapPath path) => _paths.Add(name, path);
+        public void AddPath(MapPath path) => _paths.Add(path.Name, path);
 
         public IEnumerable<MapPath> Paths => _paths.Values;
 

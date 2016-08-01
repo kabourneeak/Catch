@@ -6,7 +6,7 @@ using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;
 using Catch.Win2d;
-using CatchLibrary.HexGrid;
+using CatchLibrary.Serialization;
 
 namespace Catch
 {
@@ -63,9 +63,8 @@ namespace Catch
 
             _agents.Clear();
 
-            CreateMap();
-            CreatePaths();
-            CreateTowers();
+            InitializeMap(args.MapModel);
+
             SpawnBlock();
 
             _overlayController = new OverlayController();
@@ -73,6 +72,37 @@ namespace Catch
 
             _fieldController = new FieldController(_agents, _map);
             _fieldController.Initialize(WindowSize);
+        }
+
+        private void InitializeMap(MapModel mapModel)
+        {
+            _map = _provider.CreateMap(mapModel.Rows, mapModel.Columns);
+
+            /*
+             * Process tile models
+             */
+            foreach (var tile in _map)
+            {
+                var tileModel = mapModel.Tiles.GetHex(tile.Row, tile.Column);
+                var tower = _provider.CreateTower(tileModel.TowerName, tile);
+                _agents.Add(tower);
+            }
+
+            /*
+             * Process paths
+             */
+            foreach (var pathModel in mapModel.Paths)
+            {
+                var mapPath = new MapPath();
+                mapPath.Name = pathModel.PathName;
+
+                foreach (var pathStep in pathModel.PathSteps)
+                {
+                    mapPath.Add(_map.GetHex(pathStep.Row, pathStep.Column));
+                }
+
+                _map.AddPath(mapPath);
+            }
         }
 
         #endregion
@@ -152,79 +182,9 @@ namespace Catch
 
         #region Test Environment Setup
 
-        private void CreateMap()
-        {
-            _map = _provider.CreateMap();
-            _map.Initialize(10, 19);
-        }
-
-        private void CreateTowers()
-        {
-            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(4, 5)));
-            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(5, 5)));
-            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(4, 4)));
-            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(6, 5)));
-            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(5, 6)));
-
-            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(4, 15)));
-            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(5, 15)));
-            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(4, 14)));
-            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(6, 15)));
-            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(5, 16)));
-
-            _agents.Add(_provider.CreateTower("GunTower", _map.GetTile(2, 1)));
-
-            // fill the rest of the board
-            foreach (var tile in _map)
-            {
-                if (!tile.HasTower())
-                    _agents.Add(_provider.CreateTower("VoidTower", tile));
-            }
-        }
-
-        private void CreatePaths()
-        {
-            var mapPath = new MapPath();
-
-            var tile = _map.GetTile(0, 0);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, HexDirection.NorthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, HexDirection.NorthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, HexDirection.North);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, HexDirection.North);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, HexDirection.NorthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, HexDirection.SouthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, HexDirection.SouthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, HexDirection.NorthEast);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, HexDirection.North);
-            mapPath.Add(tile);
-
-            tile = _map.GetNeighbour(tile, HexDirection.SouthEast);
-            mapPath.Add(tile);
-
-            _map.AddPath("TestPath", mapPath);
-        }
-
         private void SpawnBlock()
         {
-            var block = _provider.CreateMob("BlockMob", _map.GetPath("TestPath"));
+            var block = _provider.CreateMob("BlockMob", _map.GetPath("testPath"));
             _agents.Add(block);
         }
 

@@ -58,9 +58,9 @@ namespace Catch.Win2d
 
         #region IMapProvider
 
-        public Map.Map CreateMap()
+        public Map.Map CreateMap(int rows, int columns)
         {
-            var map = new Map.Map(_config);
+            var map = new Map.Map(_config, rows, columns);
 
             return map;
         }

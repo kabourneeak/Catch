@@ -1,11 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Numerics;
 using Catch.Graphics;
+using CatchLibrary.Serialization;
+using Newtonsoft.Json;
 
 namespace Catch
 {
     /// <summary>
-    /// Manages the top level state of the overall application, whether it is sitting at the title screen or playing a level
+    /// Manages the top level state of the overall application, whether it is sitting
+    /// at the title screen or playing a level. Bootstraps the game into a running 
+    /// state.
     /// </summary>
     public class MainGameController : IGameController
     {
@@ -33,7 +38,11 @@ namespace Catch
             WindowSize = size;
 
             // Bootstrap initial game state
-            OnGameStateChangeRequest(this, new GameStateArgs(GameState.Playing, null));
+            // TODO don't read a hard-coded file name
+            var filename = "MapOne.json";
+            var mapModel = JsonConvert.DeserializeObject<MapModel>(File.ReadAllText(filename));
+
+            OnGameStateChangeRequest(this, new GameStateArgs(GameState.PlayMap, mapModel));
         }
 
         private void OnGameStateChangeRequest(object sender, GameStateArgs args)
@@ -73,7 +82,7 @@ namespace Catch
             {
                 case GameState.Initializing:
                     return new NilGameController();
-                case GameState.Playing:
+                case GameState.PlayMap:
                     return new LevelController();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);

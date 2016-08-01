@@ -3,6 +3,6 @@
     public enum GameState
     {
         Initializing,
-        Playing
+        PlayMap
     }
 }
