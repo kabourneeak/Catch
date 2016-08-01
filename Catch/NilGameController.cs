@@ -9,7 +9,7 @@ namespace Catch
 
         public event GameStateChangedHandler GameStateChangeRequested;
 
-        public void Initialize(Vector2 size)
+        public void Initialize(Vector2 size, GameStateArgs args)
         {
             // do nothing
         }

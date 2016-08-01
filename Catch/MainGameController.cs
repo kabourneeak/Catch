@@ -13,7 +13,7 @@ namespace Catch
         public Vector2 WindowSize { get; private set; }
         public GameState State { get; set; }
         private GameState AppliedState { get; set; }
-        private GameStateChangeRequestEventArgs RequestedState { get; set; }
+        private GameStateArgs RequestedState { get; set; }
 
         private IGameController CurrentController { get; set; }
 
@@ -28,16 +28,17 @@ namespace Catch
 
         public event GameStateChangedHandler GameStateChangeRequested;
 
-        public void Initialize(Vector2 size)
+        public void Initialize(Vector2 size, GameStateArgs args)
         {
             WindowSize = size;
 
-            OnGameStateChangeRequest(this, new GameStateChangeRequestEventArgs() { State = GameState.Playing });
+            // Bootstrap initial game state
+            OnGameStateChangeRequest(this, new GameStateArgs(GameState.Playing, null));
         }
 
-        private void OnGameStateChangeRequest(object sender, GameStateChangeRequestEventArgs e)
+        private void OnGameStateChangeRequest(object sender, GameStateArgs args)
         {
-            RequestedState = e;
+            RequestedState = args;
         }
 
         private void HandoffController()
@@ -60,7 +61,7 @@ namespace Catch
             requestedController.GameStateChangeRequested += OnGameStateChangeRequest;
 
             // feed initializing events to new controller
-            requestedController.Initialize(WindowSize);
+            requestedController.Initialize(WindowSize, RequestedState);
             _forceCreateResources = true;
 
             CurrentController = requestedController;

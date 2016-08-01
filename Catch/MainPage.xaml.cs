@@ -25,7 +25,7 @@ namespace Catch
             _frameId = 0;
 
             _gameController = new MainGameController();
-            _gameController.Initialize(new Vector2((float)cvs.Size.Width, (float)cvs.Size.Height));
+            _gameController.Initialize(new Vector2((float)cvs.Size.Width, (float)cvs.Size.Height), null);
         }
 
         #region Animation Loop
