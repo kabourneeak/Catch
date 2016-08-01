@@ -1,9 +1,8 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
-namespace MapWriter.Serialization
+namespace CatchLibrary.Serialization
 {
-    [Serializable]
+    [DataContract]
     public class TileModel
     {
         /// <summary>

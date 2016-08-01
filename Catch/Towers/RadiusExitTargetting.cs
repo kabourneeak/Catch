@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Catch.Map;
 using Catch.Mobs;
+using CatchLibrary;
 
 namespace Catch.Towers
 {

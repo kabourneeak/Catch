@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Catch.Base;
-using Catch.Map;
+using CatchLibrary.HexGrid;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace CatchTests

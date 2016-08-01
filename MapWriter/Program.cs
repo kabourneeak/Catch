@@ -1,6 +1,6 @@
 ﻿using System.IO;
+using CatchLibrary.Serialization;
 using MapWriter.Maps;
-using MapWriter.Serialization;
 using Newtonsoft.Json;
 
 namespace MapWriter
@@ -18,7 +18,7 @@ namespace MapWriter
         {
             var filename = map.GetType().Name + ".json";
 
-            using (var fs = File.Open(filename, FileMode.OpenOrCreate))
+            using (var fs = File.Open(filename, FileMode.Create))
             using (var sw = new StreamWriter(fs))
             using (var jw = new JsonTextWriter(sw))
             {

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Catch.Base;
 
-namespace Catch.Map
+namespace CatchLibrary.HexGrid
 {
     /// <summary>
     /// Implements a hexagonal grid. A grid is always a full rectangle -- there 

@@ -1,5 +1,4 @@
-﻿using Catch.Base;
-using Catch.Map;
+﻿using CatchLibrary.HexGrid;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace CatchTests

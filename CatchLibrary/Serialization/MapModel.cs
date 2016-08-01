@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace MapWriter.Serialization
+namespace CatchLibrary.Serialization
 {
-    [Serializable]
+    [DataContract]
     public class MapModel
     {
         [DataMember]

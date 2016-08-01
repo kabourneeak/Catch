@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Catch.Map
+namespace CatchLibrary.HexGrid
 {
     public enum TileDirection
     {

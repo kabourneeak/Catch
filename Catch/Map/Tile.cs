@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Numerics;
-using Catch.Base;
 using Catch.Mobs;
 using Catch.Services;
 using Catch.Towers;
+using CatchLibrary;
+using CatchLibrary.HexGrid;
 
 namespace Catch.Map
 {

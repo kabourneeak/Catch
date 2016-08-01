@@ -6,6 +6,7 @@ using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;
 using Catch.Win2d;
+using CatchLibrary.HexGrid;
 
 namespace Catch
 {

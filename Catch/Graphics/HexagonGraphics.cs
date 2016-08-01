@@ -1,4 +1,5 @@
 using Catch.Base;
+using CatchLibrary.HexGrid;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 

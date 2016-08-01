@@ -101,8 +101,6 @@
     <Compile Include="Graphics\CreateResourcesArgs.cs" />
     <Compile Include="Graphics\DrawArgs.cs" />
     <Compile Include="Graphics\DrawLayer.cs" />
-    <Compile Include="Base\HexCoords.cs" />
-    <Compile Include="Base\HexUtils.cs" />
     <Compile Include="Base\IAgent.cs" />
     <Compile Include="Base\IAgentProvider.cs" />
     <Compile Include="Base\IAgentStats.cs" />
@@ -112,8 +110,6 @@
     <Compile Include="Base\IIndicator.cs" />
     <Compile Include="Base\IMapProvider.cs" />
     <Compile Include="Base\IndicatorCollection.cs" />
-    <Compile Include="Map\HexGridCollection.cs" />
-    <Compile Include="Map\HexGridPopulator.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Map\MapPath.cs" />
     <Compile Include="Mobs\MobBase.cs" />
@@ -123,17 +119,14 @@
     <Compile Include="Graphics\StyleArgs.cs" />
     <Compile Include="Towers\TargettingBase.cs" />
     <Compile Include="Map\Tile.cs" />
-    <Compile Include="Map\TileDirection.cs" />
     <Compile Include="Towers\TowerBase.cs" />
     <Compile Include="CanvasUtils.cs" />
-    <Compile Include="DebugUtils.cs" />
     <Compile Include="EnumUtils.cs" />
     <Compile Include="FieldController.cs" />
     <Compile Include="FloatExtentions.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GameStateChangeRequestEventArgs.cs" />
     <Compile Include="IGameController.cs" />
-    <Compile Include="IntExtensions.cs" />
     <Compile Include="IViewportController.cs" />
     <Compile Include="LevelController.cs" />
     <Compile Include="MainGameController.cs" />
@@ -190,7 +183,12 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CatchLibrary\CatchLibrary.csproj">
+      <Project>{024877f1-94a4-4521-979f-d86ad661b6a6}</Project>
+      <Name>CatchLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

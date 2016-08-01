@@ -126,6 +126,10 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CatchLibrary\CatchLibrary.csproj">
+      <Project>{024877F1-94A4-4521-979F-D86AD661B6A6}</Project>
+      <Name>CatchLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Catch\Catch.csproj">
       <Project>{a19eccd2-6780-4a34-a8ac-05aaccb1f946}</Project>
       <Name>Catch</Name>
