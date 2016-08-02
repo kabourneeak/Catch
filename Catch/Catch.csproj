@@ -98,6 +98,7 @@
     <Compile Include="Base\AgentBase.cs" />
     <Compile Include="Base\AttackModel.cs" />
     <Compile Include="Base\BaseSpecModel.cs" />
+    <Compile Include="ScriptCommand.cs" />
     <Compile Include="Graphics\CreateResourcesArgs.cs" />
     <Compile Include="Graphics\DrawArgs.cs" />
     <Compile Include="Graphics\DrawLayer.cs" />

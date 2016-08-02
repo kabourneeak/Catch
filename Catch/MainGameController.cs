@@ -24,7 +24,9 @@ namespace Catch
 
         public MainGameController()
         {
-            // start up in Initialize state
+            // start up in Initialize state;
+            // this will be replaced by bootstrapping when the canvas controller 
+            // calls our Initialize method
             State = GameState.Initializing;
             CurrentController = new NilGameController();
         }

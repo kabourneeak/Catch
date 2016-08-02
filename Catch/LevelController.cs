@@ -21,6 +21,7 @@ namespace Catch
 
         private FieldController _fieldController;
         private OverlayController _overlayController;
+        private Queue<ScriptCommand> _scriptCommands;
         private readonly Random _rng = new Random();
 
         //
@@ -65,8 +66,6 @@ namespace Catch
 
             InitializeMap(args.MapModel);
 
-            SpawnBlock();
-
             _overlayController = new OverlayController();
             _overlayController.Initialize(WindowSize);
 
@@ -103,6 +102,30 @@ namespace Catch
 
                 _map.AddPath(mapPath);
             }
+
+            /*
+             * Process emit script
+             */
+            var scriptCommandList = new List<ScriptCommand>();
+
+            foreach (var emitScriptEntry in mapModel.EmitScript)
+            {
+                for (var i = 0; i < emitScriptEntry.Count; ++i)
+                {
+                    var emitCommand = new ScriptCommand
+                    {
+                        AgentTypeName = emitScriptEntry.AgentTypeName,
+                        PathName = emitScriptEntry.PathName,
+                        Offset = emitScriptEntry.BeginTime + (i * emitScriptEntry.DelayTime)
+                    };
+
+                    scriptCommandList.Add(emitCommand);
+                }
+            }
+
+            scriptCommandList.Sort((x, y) => x.Offset.CompareTo(y.Offset));
+
+            _scriptCommands = new Queue<ScriptCommand>(scriptCommandList);
         }
 
         #endregion
@@ -131,21 +154,19 @@ namespace Catch
 
         #region IGraphicsComponent Implementation
 
-        private float _spawnTimer = SPAWN_TICKS;
-        private const float SPAWN_TICKS = 360.0f;
+        private float _elapsedTicks = 0.0f;
 
         public void Update(float ticks)
         {
             Score += ScoreIncrement;
 
-            _spawnTimer -= ticks;
-            if (_spawnTimer < 0.0f)
-            {
-                SpawnBlock();
-                _spawnTimer = SPAWN_TICKS;
-            }
+            ProcessScript();
 
             _fieldController.Update(ticks);
+
+            // only account for elapsed ticks after all agents have processed them
+            // this prevent new agents from scripts being double-updated
+            _elapsedTicks += ticks;
 
             _agents.RemoveAll(delegate(IAgent a)
             {
@@ -155,6 +176,21 @@ namespace Catch
             });
 
             _overlayController.Update(ticks);
+        }
+
+        private void ProcessScript()
+        {
+            while (_scriptCommands.Count > 0 && _scriptCommands.Peek().Offset < _elapsedTicks)
+            {
+                var scriptCommand = _scriptCommands.Dequeue();
+
+                var agent = _provider.CreateMob(scriptCommand.AgentTypeName, _map.GetPath(scriptCommand.PathName));
+
+                _agents.Add(agent);
+
+                // perform partial update to recover state from any delay in scripting
+                agent.Update(_elapsedTicks - scriptCommand.Offset);
+            }
         }
 
         public void CreateResources(CreateResourcesArgs createArgs)
@@ -176,16 +212,6 @@ namespace Catch
 
             // the overlay draws second so that it is on top
             _overlayController.Draw(drawArgs, rotation);
-        }
-
-        #endregion
-
-        #region Test Environment Setup
-
-        private void SpawnBlock()
-        {
-            var block = _provider.CreateMob("BlockMob", _map.GetPath("testPath"));
-            _agents.Add(block);
         }
 
         #endregion
