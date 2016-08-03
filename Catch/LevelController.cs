@@ -21,7 +21,6 @@ namespace Catch
 
         private FieldController _fieldController;
         private OverlayController _overlayController;
-        private Queue<ScriptCommand> _scriptCommands;
         private readonly Random _rng = new Random();
 
         //
@@ -38,6 +37,7 @@ namespace Catch
         private readonly IConfig _config;
         private readonly Win2DProvider _provider;
         private readonly List<IAgent> _agents;
+        private readonly Queue<ScriptCommand> _scriptCommands;
         private Map.Map _map;
 
         #region Construction
@@ -47,6 +47,7 @@ namespace Catch
             _config = new CompiledConfig();
             _provider = new Win2DProvider(_config);
             _agents = new List<IAgent>();
+            _scriptCommands = new Queue<ScriptCommand>();
         }
 
         #endregion
@@ -125,7 +126,8 @@ namespace Catch
 
             scriptCommandList.Sort((x, y) => x.Offset.CompareTo(y.Offset));
 
-            _scriptCommands = new Queue<ScriptCommand>(scriptCommandList);
+            _scriptCommands.Clear();
+            scriptCommandList.ForEach(c => _scriptCommands.Enqueue(c));
         }
 
         #endregion
