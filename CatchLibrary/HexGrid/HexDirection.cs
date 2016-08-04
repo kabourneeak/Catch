@@ -24,7 +24,7 @@ namespace CatchLibrary.HexGrid
         
         private const float pi = (float)Math.PI;
 
-        public static IEnumerable<HexDirection> AllTileDirections {get { return _allDirections; } }
+        public static IEnumerable<HexDirection> AllDirections => _allDirections;
 
         public static HexDirection GetRandom()
         {
@@ -58,7 +58,7 @@ namespace CatchLibrary.HexGrid
         }
 
         /// <summary>
-        /// Given a starting and destination tile direction, returns a multiplier you can 
+        /// Given a starting and destination hex direction, returns a multiplier you can 
         /// apply to a radian velocity to rotate in the shortest direction to your target.
         /// </summary>
         /// <param name="from">The direction you are starting from</param>

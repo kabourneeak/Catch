@@ -190,7 +190,7 @@ namespace CatchLibrary.HexGrid
         }
 
         /// <summary>
-        /// Get all immediately neighbouring tiles to the given tile (i.e., radius equals 1)
+        /// Get all immediately neighbouring hexes to the given hex (i.e., radius equals 1)
         /// </summary>
         public List<T> GetNeighbours(HexCoords hexCoords)
         {
@@ -203,7 +203,7 @@ namespace CatchLibrary.HexGrid
         }
 
         /// <summary>
-        /// Get all neighbouring tiles to the given tile within the band defined by fromRadius and toRadius, inclusive.
+        /// Get all neighbouring hexes to the given hex within the band defined by fromRadius and toRadius, inclusive.
         /// </summary>
         public List<T> GetNeighbours(HexCoords hexCoords, int fromRadius, int toRadius)
         {
