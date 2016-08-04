@@ -31,14 +31,12 @@ namespace CatchLibrary.HexGrid
             Rows = rows;
             Columns = columns;
 
-            // TODO set initial capacity
-            Hexes = new List<T>();
+            Hexes = new List<T>(Rows * Columns);
 
             // fill out collection
-            for (var col = 0; col < columns; ++col)
+            for (var row = 0; row < Rows; ++row)
             {
-                // the odd nummbered columns have one fewer row
-                for (var row = 0 + col.Mod(2); row < rows; ++row)
+                for (var col = 0; col < Columns; ++col)
                 {
                     Hexes.Add(null);
                 }
@@ -76,10 +74,9 @@ namespace CatchLibrary.HexGrid
         /// <param name="populator"></param>
         public void Populate(HexGridPopulator<T> populator)
         {
-            for (var column = 0; column < Columns; ++column)
+            for (var row = 0; row < Rows; ++row)
             {
-                // the odd nummbered columns have one fewer row
-                for (var row = 0 + column.Mod(2); row < Rows; ++row)
+                for (var column = 0; column < Columns; ++column)
                 {
                     var offset = GetListOffset(row, column);
                     var curVal = Hexes[offset];
@@ -246,11 +243,11 @@ namespace CatchLibrary.HexGrid
                     coords.Column = col;
                     break;
                 case HexDirection.NorthEast:
-                    coords.Row = row + (1 - col.Mod(2)); // if currently in even column, move up a row
+                    coords.Row = row + (1 - (col & 1)); // if currently in even column, move up a row
                     coords.Column = col + 1;
                     break;
                 case HexDirection.SouthEast:
-                    coords.Row = row - (col.Mod(2)); // if currently in even column, stay in same row
+                    coords.Row = row - (col & 1); // if currently in even column, stay in same row
                     coords.Column = col + 1;
                     break;
                 case HexDirection.South:
@@ -258,11 +255,11 @@ namespace CatchLibrary.HexGrid
                     coords.Column = col;
                     break;
                 case HexDirection.SouthWest:
-                    coords.Row = row - (col.Mod(2)); // if currently in even column, stay in same row
+                    coords.Row = row - (col & 1); // if currently in even column, stay in same row
                     coords.Column = col - 1;
                     break;
                 case HexDirection.NorthWest:
-                    coords.Row = row + (1 - col.Mod(2)); // if currently in even column, move up a row
+                    coords.Row = row + (1 - (col & 1)); // if currently in even column, move up a row
                     coords.Column = col - 1;
                     break;
             }
@@ -274,25 +271,17 @@ namespace CatchLibrary.HexGrid
 
         protected bool GetCoordsAreValid(int row, int col)
         {
-            if (col >= 0 && col < Columns)
-            {
-                if (row >= 0 + col.Mod(2) && row < Rows)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return (col >= 0 && col < Columns && row >= 0 && row < Rows);
         }
 
         protected int GetListOffset(int row, int col)
         {
-            DebugUtils.Assert(row >= 0 + col.Mod(2));
+            DebugUtils.Assert(row >= 0);
             DebugUtils.Assert(col >= 0);
             DebugUtils.Assert(row < Rows);
             DebugUtils.Assert(col < Columns);
 
-            return (col * Rows) - (col / 2) + (row - col.Mod(2));
+            return (col * Rows) + row;
         }
 
         #endregion

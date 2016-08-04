@@ -50,7 +50,7 @@ namespace CatchTests
 
             var hexes = hgc.GetAllHexes();
 
-            Assert.AreEqual(hexes.Count, 3 + 2 + 3);
+            Assert.AreEqual(hexes.Count, 3 * 3);
         }
 
         [TestMethod]
@@ -61,12 +61,14 @@ namespace CatchTests
             Assert.AreEqual(hgc.GetListOffset(0, 0), 0);
             Assert.AreEqual(hgc.GetListOffset(1, 0), 1);
             Assert.AreEqual(hgc.GetListOffset(2, 0), 2);
-            // Assert.AreEqual(map.GetListOffset(0, 1), 3); // invalid coordinate
-            Assert.AreEqual(hgc.GetListOffset(1, 1), 3);
-            Assert.AreEqual(hgc.GetListOffset(2, 1), 4);
-            Assert.AreEqual(hgc.GetListOffset(0, 2), 5);
-            Assert.AreEqual(hgc.GetListOffset(1, 2), 6);
-            Assert.AreEqual(hgc.GetListOffset(2, 2), 7);
+
+            Assert.AreEqual(hgc.GetListOffset(0, 1), 3);
+            Assert.AreEqual(hgc.GetListOffset(1, 1), 4);
+            Assert.AreEqual(hgc.GetListOffset(2, 1), 5);
+
+            Assert.AreEqual(hgc.GetListOffset(0, 2), 6);
+            Assert.AreEqual(hgc.GetListOffset(1, 2), 7);
+            Assert.AreEqual(hgc.GetListOffset(2, 2), 8);
         }
 
         [TestMethod]
@@ -77,24 +79,26 @@ namespace CatchTests
             Assert.IsTrue(hgc.GetCoordsAreValid(0, 0));
             Assert.IsTrue(hgc.GetCoordsAreValid(1, 0));
             Assert.IsTrue(hgc.GetCoordsAreValid(2, 0));
+            Assert.IsTrue(hgc.GetCoordsAreValid(0, 1));
             Assert.IsTrue(hgc.GetCoordsAreValid(1, 1));
             Assert.IsTrue(hgc.GetCoordsAreValid(2, 1));
             Assert.IsTrue(hgc.GetCoordsAreValid(0, 2));
             Assert.IsTrue(hgc.GetCoordsAreValid(1, 2));
             Assert.IsTrue(hgc.GetCoordsAreValid(2, 2));
 
-            // 0 row has no elements in odd columns
-            Assert.IsFalse(hgc.GetCoordsAreValid(0, 1));
-
             Assert.IsFalse(hgc.GetCoordsAreValid(-1, 0));
             Assert.IsFalse(hgc.GetCoordsAreValid(0, -1));
 
-            Assert.IsFalse(hgc.GetCoordsAreValid(3, 0));
-            Assert.IsFalse(hgc.GetCoordsAreValid(3, 2));
-
+            // everything in row 3 is out of bounds
             Assert.IsFalse(hgc.GetCoordsAreValid(3, 0));
             Assert.IsFalse(hgc.GetCoordsAreValid(3, 1));
             Assert.IsFalse(hgc.GetCoordsAreValid(3, 2));
+            Assert.IsFalse(hgc.GetCoordsAreValid(3, 3));
+
+            // everything in column 3 is out of bounds
+            Assert.IsFalse(hgc.GetCoordsAreValid(0, 3));
+            Assert.IsFalse(hgc.GetCoordsAreValid(1, 3));
+            Assert.IsFalse(hgc.GetCoordsAreValid(2, 3));
             Assert.IsFalse(hgc.GetCoordsAreValid(3, 3));
         }
 
@@ -110,13 +114,15 @@ namespace CatchTests
             Assert.AreEqual(allHexes[i++], hgc.GetHex(0, 0));
             Assert.AreEqual(allHexes[i++], hgc.GetHex(1, 0));
             Assert.AreEqual(allHexes[i++], hgc.GetHex(2, 0));
+
+            Assert.AreEqual(allHexes[i++], hgc.GetHex(0, 1));
             Assert.AreEqual(allHexes[i++], hgc.GetHex(1, 1));
             Assert.AreEqual(allHexes[i++], hgc.GetHex(2, 1));
+
             Assert.AreEqual(allHexes[i++], hgc.GetHex(0, 2));
             Assert.AreEqual(allHexes[i++], hgc.GetHex(1, 2));
             Assert.AreEqual(allHexes[i], hgc.GetHex(2, 2));
 
-            Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(0, 1));
             Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(-1, 0));
             Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(0, -1));
             Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(3, 0));
@@ -190,10 +196,11 @@ namespace CatchTests
 
             var neighbours = map.GetNeighbours(corner);
 
-            Assert.AreEqual(2, neighbours.Count);
+            Assert.AreEqual(3, neighbours.Count);
 
             Assert.IsTrue(neighbours.Contains(map.GetHex(1, 0)));
             Assert.IsTrue(neighbours.Contains(map.GetHex(1, 1)));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(0, 1)));
         }
 
         [TestMethod]
