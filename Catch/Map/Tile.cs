@@ -111,7 +111,7 @@ namespace Catch.Map
 
         public static explicit operator HexCoords(Tile t)
         {
-            return new HexCoords { Row = t.Row, Column = t.Column, Valid = true };
+            return new HexCoords {Row = t.Row, Column = t.Column};
         }
     }
 }

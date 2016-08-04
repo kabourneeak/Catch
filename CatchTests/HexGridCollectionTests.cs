@@ -36,7 +36,7 @@ namespace CatchTests
 
         public new bool GetCoordsAreValid(int row, int col)
         {
-            return base.GetCoordsAreValid(row, col);
+            return base.IsInCollection(row, col);
         }
     }
 
@@ -173,7 +173,7 @@ namespace CatchTests
         {
             var map = new HexGridCollectionAdapter(8,8);
 
-            var center = new HexCoords {Row = 4, Column = 3, Valid = true};
+            var center = new HexCoords {Row = 4, Column = 3};
 
             var neighbours = map.GetNeighbours(center);
 
@@ -192,7 +192,7 @@ namespace CatchTests
         {
             var map = new HexGridCollectionAdapter(6, 6);
 
-            var corner = new HexCoords {Row = 0, Column = 0, Valid = true};
+            var corner = new HexCoords {Row = 0, Column = 0};
 
             var neighbours = map.GetNeighbours(corner);
 
@@ -208,7 +208,7 @@ namespace CatchTests
         {
             var map = new HexGridCollectionAdapter(10, 10);
 
-            var center = new HexCoords {Row = 5, Column = 5, Valid = true};
+            var center = new HexCoords {Row = 5, Column = 5};
 
             var neighbours = map.GetNeighbours(center, 2);
 
@@ -236,7 +236,7 @@ namespace CatchTests
         {
             var map = new HexGridCollectionAdapter(1, 1);
 
-            var center = new HexCoords {Row = 0, Column = 0, Valid = true};
+            var center = new HexCoords {Row = 0, Column = 0};
 
             var neighbours = map.GetNeighbours(center);
 

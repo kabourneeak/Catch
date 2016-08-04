@@ -57,14 +57,15 @@ namespace CatchLibrary.HexGrid
             DebugUtils.Assert(row >= 0);
             DebugUtils.Assert(column >= 0);
 
-            if (GetCoordsAreValid(row, column))
+            if (IsInCollection(row, column))
             {
                 Hexes[GetListOffset(row, column)] = value;
-                return;
             }
-
-            throw new IndexOutOfRangeException(
-                $"Row/Column ({row},{column}) are invalid for a grid of size ({Rows},{Columns}).");
+            else
+            {
+                throw new IndexOutOfRangeException(
+                    $"Row/Column ({row},{column}) are invalid for a grid of size ({Rows},{Columns}).");
+            }
         }
 
         /// <summary>
@@ -115,7 +116,7 @@ namespace CatchLibrary.HexGrid
             DebugUtils.Assert(row >= 0);
             DebugUtils.Assert(column >= 0);
 
-            if (GetCoordsAreValid(row, column))
+            if (IsInCollection(row, column))
             {
                 return Hexes[GetListOffset(row, column)];
             }
@@ -126,12 +127,12 @@ namespace CatchLibrary.HexGrid
 
         public bool HasNeighbour(HexCoords hexCoords, HexDirection direction)
         {
-            return GetNeighbourCoords(hexCoords.Row, hexCoords.Column, direction).Valid;
+            return IsInCollection(GetNeighbourCoords(hexCoords.Row, hexCoords.Column, direction));
         }
 
         public bool HasNeighbour(int row, int column, HexDirection direction)
         {
-            return GetNeighbourCoords(row, column, direction).Valid;
+            return IsInCollection(GetNeighbourCoords(row, column, direction));
         }
 
         public T GetNeighbour(HexCoords hexCoords, HexDirection direction)
@@ -141,11 +142,11 @@ namespace CatchLibrary.HexGrid
 
         public T GetNeighbour(int row, int column, HexDirection direction)
         {
-            DebugUtils.Assert(GetCoordsAreValid(row, column));
+            DebugUtils.Assert(IsInCollection(row, column));
 
             var coords = GetNeighbourCoords(row, column, direction);
 
-            return coords.Valid ? GetHex(coords.Row, coords.Column) : null;
+            return IsInCollection(coords) ? GetHex(coords.Row, coords.Column) : null;
         }
 
         private static readonly HexDirection[] clockwiseWalk =
@@ -160,7 +161,7 @@ namespace CatchLibrary.HexGrid
 
         public List<T> GetNeighbours(HexCoords hexCoords, int radius)
         {
-            DebugUtils.Assert(GetCoordsAreValid(hexCoords.Row, hexCoords.Column));
+            DebugUtils.Assert(IsInCollection(hexCoords.Row, hexCoords.Column));
             DebugUtils.Assert(radius >= 1);
 
             var neighbours = new List<T>();
@@ -175,7 +176,7 @@ namespace CatchLibrary.HexGrid
                 for (var i = 0; i < radius; ++i)
                 {
                     hexCoords = GetNeighbourCoords(hexCoords, d);
-                    if (hexCoords.Valid)
+                    if (IsInCollection(hexCoords))
                         neighbours.Add(GetHex(hexCoords));
                 }
             }
@@ -185,7 +186,7 @@ namespace CatchLibrary.HexGrid
 
         public List<T> GetNeighbours(int row, int column, int radius)
         {
-            return GetNeighbours(new HexCoords {Row = row, Column = column, Valid = true}, radius);
+            return GetNeighbours(new HexCoords {Row = row, Column = column}, radius);
         }
 
         /// <summary>
@@ -229,47 +230,38 @@ namespace CatchLibrary.HexGrid
         /// <param name="row">The origin row</param>
         /// <param name="col">The origin column</param>
         /// <param name="direction">The direction of the neighbour</param>
-        /// <param name="rows">The total number of rows in the grid</param>
-        /// <param name="columns">The total number of columns in the grid</param>
         /// <returns>A HexCoords object containing the results</returns>
         protected HexCoords GetNeighbourCoords(int row, int col, HexDirection direction)
         {
-            var coords = new HexCoords {Valid = false};
-
             switch (direction)
             {
                 case HexDirection.North:
-                    coords.Row = row + 1;
-                    coords.Column = col;
-                    break;
+                    return new HexCoords() {Row = row + 1, Column = col};
                 case HexDirection.NorthEast:
-                    coords.Row = row + (1 - (col & 1)); // if currently in even column, move up a row
-                    coords.Column = col + 1;
-                    break;
+                    // if currently in even column, move up a row
+                    return new HexCoords() {Row = row + (1 - (col & 1)), Column = col + 1};
                 case HexDirection.SouthEast:
-                    coords.Row = row - (col & 1); // if currently in even column, stay in same row
-                    coords.Column = col + 1;
-                    break;
+                    // if currently in even column, stay in same row
+                    return new HexCoords() {Row = row - (col & 1), Column = col + 1};
                 case HexDirection.South:
-                    coords.Row = row - 1;
-                    coords.Column = col;
-                    break;
+                    return new HexCoords() {Row = row - 1, Column = col};
                 case HexDirection.SouthWest:
-                    coords.Row = row - (col & 1); // if currently in even column, stay in same row
-                    coords.Column = col - 1;
-                    break;
+                    // if currently in even column, stay in same row
+                    return new HexCoords() { Row = row - (col & 1), Column = col - 1};
                 case HexDirection.NorthWest:
-                    coords.Row = row + (1 - (col & 1)); // if currently in even column, move up a row
-                    coords.Column = col - 1;
-                    break;
+                    // if currently in even column, move up a row
+                    return new HexCoords() {Row = row + (1 - (col & 1)), Column = col - 1};
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction));
             }
-
-            coords.Valid = GetCoordsAreValid(coords.Row, coords.Column);
-
-            return coords;
         }
 
-        protected bool GetCoordsAreValid(int row, int col)
+        protected bool IsInCollection(HexCoords hc)
+        {
+            return IsInCollection(hc.Row, hc.Column);
+        }
+
+        protected bool IsInCollection(int row, int col)
         {
             return (col >= 0 && col < Columns && row >= 0 && row < Rows);
         }
