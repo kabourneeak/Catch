@@ -34,7 +34,7 @@ namespace CatchTests
             return base.GetListOffset(row, col);
         }
 
-        public new bool GetCoordsAreValid(int row, int col)
+        public bool GetCoordsAreValid(int row, int col)
         {
             return base.IsInCollection(row, col);
         }
