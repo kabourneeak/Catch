@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using CatchLibrary.HexGrid;
 
 namespace CatchLibrary.Serialization
 {
@@ -6,26 +7,21 @@ namespace CatchLibrary.Serialization
     public class PathStepModel
     {
         [DataMember]
-        public int Row { get; set; }
-
-        [DataMember]
-        public int Column { get; set; }
+        public HexCoords Coords { get; set; }
 
         public PathStepModel()
         {
             // empty constructor for construction
         }
 
-        public PathStepModel(int row, int column)
+        public PathStepModel(HexCoords hc)
         {
-            this.Row = row;
-            this.Column = column;
+            this.Coords = hc;
         }
 
         public PathStepModel(TileModel tileModel)
         {
-            this.Row = tileModel.Row;
-            this.Column = tileModel.Column;
+            this.Coords = tileModel.Coords;
         }
     }
 }

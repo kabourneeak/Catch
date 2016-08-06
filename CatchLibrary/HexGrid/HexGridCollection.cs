@@ -52,9 +52,10 @@ namespace CatchLibrary.HexGrid
             {
                 for (var column = 0; column < Columns; ++column)
                 {
-                    var offset = GetListOffset(row, column);
+                    var hexCoords = HexCoords.CreateFromOffset(row, column);
+                    var offset = GetListOffset(hexCoords);
                     var curVal = Hexes[offset];
-                    Hexes[offset] = populator(row, column, curVal);
+                    Hexes[offset] = populator(hexCoords, curVal);
                 }
             }
         }

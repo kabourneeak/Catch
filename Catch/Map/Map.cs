@@ -27,7 +27,7 @@ namespace Catch.Map
             Size = new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), (float)(Rows * 2 * HexUtils.GetRadiusHeight(_tileRadius)));
 
             _tiles = new HexGridCollection<Tile>(Rows, Columns);
-            _tiles.Populate((r, c, v) => new Tile(r, c, this, _config));
+            _tiles.Populate((hc, v) => new Tile(hc, this, _config));
 
             _paths = new Dictionary<string, MapPath>();
         }
@@ -38,11 +38,11 @@ namespace Catch.Map
         public int Columns { get; }
         public Vector2 Size { get; }
 
-        public Tile GetHex(int row, int column) => _tiles.GetHex(row, column);
+        public Tile GetHex(HexCoords hc) => _tiles.GetHex(hc);
 
-        public Tile GetNeighbour(Tile tile, HexDirection direction) => _tiles.GetNeighbour(tile.Row, tile.Column, direction);
+        public Tile GetNeighbour(Tile tile, HexDirection direction) => _tiles.GetNeighbour(tile.Coords, direction);
 
-        public List<Tile> GetNeighbours(Tile tile, int radius) => _tiles.GetNeighbours(tile.Row, tile.Column, radius);
+        public List<Tile> GetNeighbours(Tile tile, int radius) => _tiles.GetNeighbours(tile.Coords, radius);
 
         /// <summary>
         /// Get all neighbouring tiles to the given tile within the band defined by fromRadius and toRadius, inclusive.

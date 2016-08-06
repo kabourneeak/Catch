@@ -52,7 +52,7 @@ namespace CatchLibrary.Serialization
             InitializeHexGrid();
             foreach (var tileModel in TileList)
             {
-                Tiles.SetHex(tileModel.Row, tileModel.Column, tileModel);
+                Tiles.SetHex(tileModel.Coords, tileModel);
             }
         }
     }

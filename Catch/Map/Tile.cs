@@ -3,7 +3,6 @@ using System.Numerics;
 using Catch.Mobs;
 using Catch.Services;
 using Catch.Towers;
-using CatchLibrary;
 using CatchLibrary.HexGrid;
 
 namespace Catch.Map
@@ -13,11 +12,10 @@ namespace Catch.Map
         private TowerBase _tower;
         private readonly ISet<MobBase> _mobs;
 
-        public Tile(int row, int col, Catch.Map.Map map, IConfig config)
+        public Tile(HexCoords coords, Catch.Map.Map map, IConfig config)
         {
             Map = map;
-            Row = row;
-            Column = col;
+            Coords = coords;
 
             _mobs = new HashSet<MobBase>();
 
@@ -27,17 +25,15 @@ namespace Catch.Map
             // calculate position
             var radiusH = HexUtils.GetRadiusHeight(radius);
 
-            var x = radius + (col * (radius + radius * HexUtils.COS60));
-            var y = (col % 2 * radiusH) + ((row - col.Mod(2)) * 2 * radiusH) + radiusH;
+            var x = radius + (Coords.Column * (radius + radius * HexUtils.COS60));
+            var y = (Coords.Column % 2 * radiusH) + ((Coords.Row - (Coords.Column & 1)) * 2 * radiusH) + radiusH;
 
             Position = new Vector2(x, y);
         }
 
         public Catch.Map.Map Map { get; protected set; }
 
-        public int Row { get; protected set; }
-
-        public int Column { get; protected set; }
+        public HexCoords Coords { get; protected set; }
 
         public Vector2 Position { get; protected set; }
 
@@ -106,12 +102,12 @@ namespace Catch.Map
 
         public override string ToString()
         {
-            return string.Format("Tile {0},{1}", Row, Column);
+            return $"Tile {Coords}";
         }
 
         public static explicit operator HexCoords(Tile t)
         {
-            return HexCoords.CreateFromOffset(t.Row, t.Column);
+            return t.Coords;
         }
     }
 }

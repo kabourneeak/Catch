@@ -11,7 +11,7 @@ namespace CatchTests
         public HexGridCollectionAdapter(int rows, int columns) : base(rows, columns)
         {
             var i = 0;
-            Populate((r, c, v) => new BigInteger(i++));
+            Populate((hc, v) => new BigInteger(i++));
         }
 
         public List<object> GetAllHexes()

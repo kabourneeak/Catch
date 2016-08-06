@@ -18,7 +18,7 @@ namespace MapWriter.Maps
 
         private void AddTiles()
         {
-            Tiles.Populate((r, c, v) => new TileModel {Row = r, Column = c, TowerName = "VoidTower"});
+            Tiles.Populate((hc, v) => new TileModel {Coords = hc, TowerName = "VoidTower"});
 
             Tiles.GetHex(4, 5).TowerName = "GunTower";
             Tiles.GetHex(5, 5).TowerName = "GunTower";

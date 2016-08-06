@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace CatchLibrary.HexGrid
 {
@@ -44,7 +45,8 @@ namespace CatchLibrary.HexGrid
 
         #region Construction
 
-        private HexCoords(int q, int r)
+        [JsonConstructor]
+        public HexCoords(int q, int r)
         {
             Q = q;
             R = r;
@@ -84,7 +86,7 @@ namespace CatchLibrary.HexGrid
         {
             return object.ReferenceEquals(this, other)
                     || (!object.ReferenceEquals(other, null)
-                        && this.Row == other.Row && this.Column == other.Column);
+                        && this.Q == other.Q && this.R == other.R);
         }
 
         public override int GetHashCode()

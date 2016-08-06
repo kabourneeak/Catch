@@ -83,7 +83,7 @@ namespace Catch
              */
             foreach (var tile in _map)
             {
-                var tileModel = mapModel.Tiles.GetHex(tile.Row, tile.Column);
+                var tileModel = mapModel.Tiles.GetHex(tile.Coords);
                 var tower = _provider.CreateTower(tileModel.TowerName, tile);
                 _agents.Add(tower);
             }
@@ -98,7 +98,7 @@ namespace Catch
 
                 foreach (var pathStep in pathModel.PathSteps)
                 {
-                    mapPath.Add(_map.GetHex(pathStep.Row, pathStep.Column));
+                    mapPath.Add(_map.GetHex(pathStep.Coords));
                 }
 
                 _map.AddPath(mapPath);

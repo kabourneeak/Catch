@@ -10,13 +10,7 @@ namespace CatchLibrary.Serialization
         /// The row coordinate of this tile
         /// </summary>
         [DataMember]
-        public int Row { get; set; }
-
-        /// <summary>
-        /// The column coordinate of this tile
-        /// </summary>
-        [DataMember]
-        public int Column { get; set; }
+        public HexCoords Coords { get; set; }
 
         /// <summary>
         /// The agent to place on this tile
@@ -26,7 +20,7 @@ namespace CatchLibrary.Serialization
 
         public static explicit operator HexCoords(TileModel t)
         {
-            return HexCoords.CreateFromOffset(t.Row, t.Column);
+            return t.Coords;
         }
     }
 }

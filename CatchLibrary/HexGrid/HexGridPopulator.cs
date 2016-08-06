@@ -1,4 +1,4 @@
 namespace CatchLibrary.HexGrid
 {
-    public delegate T HexGridPopulator<T>(int row, int column, T curVal);
+    public delegate T HexGridPopulator<T>(HexCoords hc, T curVal);
 }
