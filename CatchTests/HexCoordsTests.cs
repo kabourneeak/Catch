@@ -10,10 +10,10 @@ namespace CatchTests
         [TestMethod]
         public void TestEquality()
         {
-            var hc1 = new HexCoords() {Row = 0, Column = 0};
-            var hc2 = new HexCoords() {Row = 0, Column = 0};
-            var hc3 = new HexCoords() {Row = 0, Column = 1};
-            var hc4 = new HexCoords() {Row = 1, Column = 0};
+            var hc1 = HexCoords.CreateFromOffset(0, 0);
+            var hc2 = HexCoords.CreateFromOffset(0, 0);
+            var hc3 = HexCoords.CreateFromOffset(0, 1);
+            var hc4 = HexCoords.CreateFromOffset(1, 0);
 
             Assert.AreNotEqual(hc1, null);
             Assert.AreNotEqual(hc1, 5);
@@ -40,7 +40,7 @@ namespace CatchTests
             // prep
             for (var row = 0; row < rows; ++row)
                 for (var col = 0; col < cols; ++col)
-                    list.Add(new HexCoords() {Row = row, Column = col});
+                    list.Add(HexCoords.CreateFromOffset(row, col));
 
             // add
             var addWatch = System.Diagnostics.Stopwatch.StartNew();
@@ -67,6 +67,42 @@ namespace CatchTests
 
             // pass test
             Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void TestAxialOffset()
+        {
+            // origin case
+            var hc1 = HexCoords.CreateFromAxial(0, 0);
+            Assert.AreEqual(0, hc1.Column);
+            Assert.AreEqual(0, hc1.Row);
+
+            // +ve cases
+            var hc2 = HexCoords.CreateFromAxial(1, 1);
+            Assert.AreEqual(1, hc2.Column);
+            Assert.AreEqual(2, hc2.Row);
+
+            var hc3 = HexCoords.CreateFromAxial(2, 1);
+            Assert.AreEqual(2, hc3.Column);
+            Assert.AreEqual(2, hc3.Row);
+
+            var hc4 = HexCoords.CreateFromAxial(1, 2);
+            Assert.AreEqual(1, hc4.Column);
+            Assert.AreEqual(3, hc4.Row);
+
+            // +ve, -ve cases
+            var hc5 = HexCoords.CreateFromAxial(-1, 2);
+            Assert.AreEqual(-1, hc5.Column);
+            Assert.AreEqual(2, hc5.Row);
+
+            var hc6 = HexCoords.CreateFromAxial(3, -1);
+            Assert.AreEqual(3, hc6.Column);
+            Assert.AreEqual(1, hc6.Row);
+
+            // -ve cases
+            var hc7 = HexCoords.CreateFromAxial(-1, -2);
+            Assert.AreEqual(-1, hc7.Column);
+            Assert.AreEqual(-2, hc7.Row);
         }
     }
 }

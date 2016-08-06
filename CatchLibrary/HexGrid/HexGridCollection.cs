@@ -186,7 +186,7 @@ namespace CatchLibrary.HexGrid
 
         public List<T> GetNeighbours(int row, int column, int radius)
         {
-            return GetNeighbours(new HexCoords {Row = row, Column = column}, radius);
+            return GetNeighbours(HexCoords.CreateFromOffset(row, column), radius);
         }
 
         /// <summary>
@@ -236,21 +236,21 @@ namespace CatchLibrary.HexGrid
             switch (direction)
             {
                 case HexDirection.North:
-                    return new HexCoords() {Row = row + 1, Column = col};
+                    return HexCoords.CreateFromOffset(row + 1, col);
                 case HexDirection.NorthEast:
                     // if currently in even column, move up a row
-                    return new HexCoords() {Row = row + (1 - (col & 1)), Column = col + 1};
+                    return HexCoords.CreateFromOffset(row + (1 - (col & 1)), col + 1);
                 case HexDirection.SouthEast:
                     // if currently in even column, stay in same row
-                    return new HexCoords() {Row = row - (col & 1), Column = col + 1};
+                    return HexCoords.CreateFromOffset(row - (col & 1), col + 1);
                 case HexDirection.South:
-                    return new HexCoords() {Row = row - 1, Column = col};
+                    return HexCoords.CreateFromOffset(row - 1, col);
                 case HexDirection.SouthWest:
                     // if currently in even column, stay in same row
-                    return new HexCoords() { Row = row - (col & 1), Column = col - 1};
+                    return HexCoords.CreateFromOffset(row - (col & 1), col - 1);
                 case HexDirection.NorthWest:
                     // if currently in even column, move up a row
-                    return new HexCoords() {Row = row + (1 - (col & 1)), Column = col - 1};
+                    return HexCoords.CreateFromOffset(row + (1 - (col & 1)), col - 1);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(direction));
             }

@@ -26,7 +26,7 @@ namespace CatchLibrary.Serialization
 
         public static explicit operator HexCoords(TileModel t)
         {
-            return new HexCoords {Row = t.Row, Column = t.Column};
+            return HexCoords.CreateFromOffset(t.Row, t.Column);
         }
     }
 }

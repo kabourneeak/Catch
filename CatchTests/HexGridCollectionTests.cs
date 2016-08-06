@@ -105,7 +105,7 @@ namespace CatchTests
         [TestMethod]
         public void TestIndexing()
         {
-            var hgc = new HexGridCollectionAdapter(3,3);
+            var hgc = new HexGridCollectionAdapter(3, 3);
 
             var allHexes = hgc.GetAllHexes();
 
@@ -135,7 +135,7 @@ namespace CatchTests
         {
             var hgc = new HexGridCollectionAdapter(6, 6);
 
-            var coords = new HexCoords() {Row = 4, Column = 3};
+            var coords = HexCoords.CreateFromOffset(4,3);
 
             coords = hgc.GetNeighbourCoords(coords, HexDirection.North);
             Assert.AreEqual(5, coords.Row);
@@ -173,7 +173,7 @@ namespace CatchTests
         {
             var map = new HexGridCollectionAdapter(8,8);
 
-            var center = new HexCoords {Row = 4, Column = 3};
+            var center = HexCoords.CreateFromOffset(4, 3);
 
             var neighbours = map.GetNeighbours(center);
 
@@ -192,7 +192,7 @@ namespace CatchTests
         {
             var map = new HexGridCollectionAdapter(6, 6);
 
-            var corner = new HexCoords {Row = 0, Column = 0};
+            var corner = HexCoords.CreateFromOffset(0, 0);
 
             var neighbours = map.GetNeighbours(corner);
 
@@ -208,7 +208,7 @@ namespace CatchTests
         {
             var map = new HexGridCollectionAdapter(10, 10);
 
-            var center = new HexCoords {Row = 5, Column = 5};
+            var center = HexCoords.CreateFromOffset(5, 5);
 
             var neighbours = map.GetNeighbours(center, 2);
 
@@ -236,7 +236,7 @@ namespace CatchTests
         {
             var map = new HexGridCollectionAdapter(1, 1);
 
-            var center = new HexCoords {Row = 0, Column = 0};
+            var center = HexCoords.CreateFromOffset(0, 0);
 
             var neighbours = map.GetNeighbours(center);
 
