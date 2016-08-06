@@ -17,10 +17,5 @@ namespace CatchLibrary.Serialization
         /// </summary>
         [DataMember]
         public string TowerName { get; set; }
-
-        public static explicit operator HexCoords(TileModel t)
-        {
-            return t.Coords;
-        }
     }
 }

@@ -104,10 +104,5 @@ namespace Catch.Map
         {
             return $"Tile {Coords}";
         }
-
-        public static explicit operator HexCoords(Tile t)
-        {
-            return t.Coords;
-        }
     }
 }

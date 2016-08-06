@@ -44,34 +44,34 @@ namespace MapWriter.Maps
                 var hex = Tiles.GetHex(HexCoords.CreateFromAxial(0, 0));
                 testPath.PathSteps.Add(new PathStepModel(hex));
 
-                hex = Tiles.GetNeighbour((HexCoords) hex, HexDirection.NorthEast);
+                hex = Tiles.GetNeighbour(hex.Coords, HexDirection.NorthEast);
                 testPath.PathSteps.Add(new PathStepModel(hex));
 
-                hex = Tiles.GetNeighbour((HexCoords)hex, HexDirection.NorthEast);
+                hex = Tiles.GetNeighbour(hex.Coords, HexDirection.NorthEast);
                 testPath.PathSteps.Add(new PathStepModel(hex));
 
-                hex = Tiles.GetNeighbour((HexCoords)hex, HexDirection.North);
+                hex = Tiles.GetNeighbour(hex.Coords, HexDirection.North);
                 testPath.PathSteps.Add(new PathStepModel(hex));
 
-                hex = Tiles.GetNeighbour((HexCoords)hex, HexDirection.North);
+                hex = Tiles.GetNeighbour(hex.Coords, HexDirection.North);
                 testPath.PathSteps.Add(new PathStepModel(hex));
 
-                hex = Tiles.GetNeighbour((HexCoords)hex, HexDirection.NorthEast);
+                hex = Tiles.GetNeighbour(hex.Coords, HexDirection.NorthEast);
                 testPath.PathSteps.Add(new PathStepModel(hex));
 
-                hex = Tiles.GetNeighbour((HexCoords)hex, HexDirection.SouthEast);
+                hex = Tiles.GetNeighbour(hex.Coords, HexDirection.SouthEast);
                 testPath.PathSteps.Add(new PathStepModel(hex));
 
-                hex = Tiles.GetNeighbour((HexCoords)hex, HexDirection.SouthEast);
+                hex = Tiles.GetNeighbour(hex.Coords, HexDirection.SouthEast);
                 testPath.PathSteps.Add(new PathStepModel(hex));
 
-                hex = Tiles.GetNeighbour((HexCoords)hex, HexDirection.NorthEast);
+                hex = Tiles.GetNeighbour(hex.Coords, HexDirection.NorthEast);
                 testPath.PathSteps.Add(new PathStepModel(hex));
 
-                hex = Tiles.GetNeighbour((HexCoords)hex, HexDirection.North);
+                hex = Tiles.GetNeighbour(hex.Coords, HexDirection.North);
                 testPath.PathSteps.Add(new PathStepModel(hex));
 
-                hex = Tiles.GetNeighbour((HexCoords)hex, HexDirection.SouthEast);
+                hex = Tiles.GetNeighbour(hex.Coords, HexDirection.SouthEast);
                 testPath.PathSteps.Add(new PathStepModel(hex));
 
                 Paths.Add(testPath);

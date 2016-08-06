@@ -47,7 +47,7 @@ namespace Catch.Map
         /// <summary>
         /// Get all neighbouring tiles to the given tile within the band defined by fromRadius and toRadius, inclusive.
         /// </summary>
-        public List<Tile> GetNeighbours(Tile tile, int fromRadius, int toRadius) => _tiles.GetNeighbours((HexCoords)tile, fromRadius, toRadius);
+        public List<Tile> GetNeighbours(Tile tile, int fromRadius, int toRadius) => _tiles.GetNeighbours(tile.Coords, fromRadius, toRadius);
 
         #endregion
 
