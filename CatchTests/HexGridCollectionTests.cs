@@ -24,14 +24,14 @@ namespace CatchTests
             return base.GetNeighbourCoords(coords, direction);
         }
 
-        public new int GetListOffset(int row, int col)
+        public new int GetListOffset(HexCoords hc)
         {
-            return base.GetListOffset(row, col);
+            return base.GetListOffset(hc);
         }
 
-        public bool GetCoordsAreValid(int row, int col)
+        public new bool IsInCollection(HexCoords hc)
         {
-            return base.IsInCollection(row, col);
+            return base.IsInCollection(hc);
         }
     }
 
@@ -53,17 +53,17 @@ namespace CatchTests
         {
             var hgc = new HexGridCollectionAdapter(3 ,3);
 
-            Assert.AreEqual(hgc.GetListOffset(0, 0), 0);
-            Assert.AreEqual(hgc.GetListOffset(1, 0), 1);
-            Assert.AreEqual(hgc.GetListOffset(2, 0), 2);
+            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(0, 0)), 0);
+            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(1, 0)), 1);
+            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(2, 0)), 2);
 
-            Assert.AreEqual(hgc.GetListOffset(0, 1), 3);
-            Assert.AreEqual(hgc.GetListOffset(1, 1), 4);
-            Assert.AreEqual(hgc.GetListOffset(2, 1), 5);
+            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(0, 1)), 3);
+            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(1, 1)), 4);
+            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(2, 1)), 5);
 
-            Assert.AreEqual(hgc.GetListOffset(0, 2), 6);
-            Assert.AreEqual(hgc.GetListOffset(1, 2), 7);
-            Assert.AreEqual(hgc.GetListOffset(2, 2), 8);
+            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(0, 2)), 6);
+            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(1, 2)), 7);
+            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(2, 2)), 8);
         }
 
         [TestMethod]
@@ -71,30 +71,30 @@ namespace CatchTests
         {
             var hgc = new HexGridCollectionAdapter(3, 3);
 
-            Assert.IsTrue(hgc.GetCoordsAreValid(0, 0));
-            Assert.IsTrue(hgc.GetCoordsAreValid(1, 0));
-            Assert.IsTrue(hgc.GetCoordsAreValid(2, 0));
-            Assert.IsTrue(hgc.GetCoordsAreValid(0, 1));
-            Assert.IsTrue(hgc.GetCoordsAreValid(1, 1));
-            Assert.IsTrue(hgc.GetCoordsAreValid(2, 1));
-            Assert.IsTrue(hgc.GetCoordsAreValid(0, 2));
-            Assert.IsTrue(hgc.GetCoordsAreValid(1, 2));
-            Assert.IsTrue(hgc.GetCoordsAreValid(2, 2));
+            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(0, 0)));
+            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(1, 0)));
+            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(2, 0)));
+            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(0, 1)));
+            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(1, 1)));
+            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(2, 1)));
+            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(0, 2)));
+            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(1, 2)));
+            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(2, 2)));
 
-            Assert.IsFalse(hgc.GetCoordsAreValid(-1, 0));
-            Assert.IsFalse(hgc.GetCoordsAreValid(0, -1));
+            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(-1, 0)));
+            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(0, -1)));
 
             // everything in row 3 is out of bounds
-            Assert.IsFalse(hgc.GetCoordsAreValid(3, 0));
-            Assert.IsFalse(hgc.GetCoordsAreValid(3, 1));
-            Assert.IsFalse(hgc.GetCoordsAreValid(3, 2));
-            Assert.IsFalse(hgc.GetCoordsAreValid(3, 3));
+            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(3, 0)));
+            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(3, 1)));
+            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(3, 2)));
+            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(3, 3)));
 
             // everything in column 3 is out of bounds
-            Assert.IsFalse(hgc.GetCoordsAreValid(0, 3));
-            Assert.IsFalse(hgc.GetCoordsAreValid(1, 3));
-            Assert.IsFalse(hgc.GetCoordsAreValid(2, 3));
-            Assert.IsFalse(hgc.GetCoordsAreValid(3, 3));
+            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(0, 3)));
+            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(1, 3)));
+            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(2, 3)));
+            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(3, 3)));
         }
 
         [TestMethod]
@@ -106,23 +106,23 @@ namespace CatchTests
 
             // this assumes that hexagons are generated column by column
             var i = 0;
-            Assert.AreEqual(allHexes[i++], hgc.GetHex(0, 0));
-            Assert.AreEqual(allHexes[i++], hgc.GetHex(1, 0));
-            Assert.AreEqual(allHexes[i++], hgc.GetHex(2, 0));
+            Assert.AreEqual(allHexes[i++], hgc.GetHex(HexCoords.CreateFromOffset(0, 0)));
+            Assert.AreEqual(allHexes[i++], hgc.GetHex(HexCoords.CreateFromOffset(1, 0)));
+            Assert.AreEqual(allHexes[i++], hgc.GetHex(HexCoords.CreateFromOffset(2, 0)));
 
-            Assert.AreEqual(allHexes[i++], hgc.GetHex(0, 1));
-            Assert.AreEqual(allHexes[i++], hgc.GetHex(1, 1));
-            Assert.AreEqual(allHexes[i++], hgc.GetHex(2, 1));
+            Assert.AreEqual(allHexes[i++], hgc.GetHex(HexCoords.CreateFromOffset(0, 1)));
+            Assert.AreEqual(allHexes[i++], hgc.GetHex(HexCoords.CreateFromOffset(1, 1)));
+            Assert.AreEqual(allHexes[i++], hgc.GetHex(HexCoords.CreateFromOffset(2, 1)));
 
-            Assert.AreEqual(allHexes[i++], hgc.GetHex(0, 2));
-            Assert.AreEqual(allHexes[i++], hgc.GetHex(1, 2));
-            Assert.AreEqual(allHexes[i], hgc.GetHex(2, 2));
+            Assert.AreEqual(allHexes[i++], hgc.GetHex(HexCoords.CreateFromOffset(0, 2)));
+            Assert.AreEqual(allHexes[i++], hgc.GetHex(HexCoords.CreateFromOffset(1, 2)));
+            Assert.AreEqual(allHexes[i], hgc.GetHex(HexCoords.CreateFromOffset(2, 2)));
 
-            Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(-1, 0));
-            Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(0, -1));
-            Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(3, 0));
-            Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(3, 2));
-            Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(0, 3));
+            Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(HexCoords.CreateFromOffset(-1, 0)));
+            Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(HexCoords.CreateFromOffset(0, -1)));
+            Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(HexCoords.CreateFromOffset(3, 0)));
+            Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(HexCoords.CreateFromOffset(3, 2)));
+            Assert.ThrowsException<IndexOutOfRangeException>(() => hgc.GetHex(HexCoords.CreateFromOffset(0, 3)));
         }
 
         [TestMethod]
@@ -174,12 +174,12 @@ namespace CatchTests
 
             Assert.AreEqual(6, neighbours.Count);
 
-            Assert.IsTrue(neighbours.Contains(map.GetHex(5, 3)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(4, 4)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(3, 4)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(3, 3)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(3, 2)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(4, 2)));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(5, 3))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(4, 4))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(3, 4))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(3, 3))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(3, 2))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(4, 2))));
         }
 
         [TestMethod]
@@ -193,9 +193,9 @@ namespace CatchTests
 
             Assert.AreEqual(3, neighbours.Count);
 
-            Assert.IsTrue(neighbours.Contains(map.GetHex(1, 0)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(1, 1)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(0, 1)));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(1, 0))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(1, 1))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(0, 1))));
         }
 
         [TestMethod]
@@ -209,21 +209,21 @@ namespace CatchTests
 
             Assert.AreEqual(12, neighbours.Count);
 
-            Assert.IsTrue(neighbours.Contains(map.GetHex(7, 5)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(6, 6)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(6, 7)));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(7, 5))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(6, 6))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(6, 7))));
 
-            Assert.IsTrue(neighbours.Contains(map.GetHex(5, 7)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(4, 7)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(3, 6)));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(5, 7))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(4, 7))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(3, 6))));
             
-            Assert.IsTrue(neighbours.Contains(map.GetHex(3, 5)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(3, 4)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(4, 3)));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(3, 5))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(3, 4))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(4, 3))));
             
-            Assert.IsTrue(neighbours.Contains(map.GetHex(5, 3)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(6, 3)));
-            Assert.IsTrue(neighbours.Contains(map.GetHex(6, 4)));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(5, 3))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(6, 3))));
+            Assert.IsTrue(neighbours.Contains(map.GetHex(HexCoords.CreateFromOffset(6, 4))));
         }
 
         [TestMethod]
