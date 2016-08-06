@@ -19,8 +19,6 @@ namespace CatchLibrary.HexGrid
         public int Columns { get; }
         public int Count => Hexes.Count;
 
-        protected readonly List<T> Hexes;
-
         #region Construction
 
         public HexGridCollection(int rows, int columns)
@@ -40,31 +38,6 @@ namespace CatchLibrary.HexGrid
                 {
                     Hexes.Add(null);
                 }
-            }
-        }
-
-        #endregion
-
-        #region Setters
-
-        public void SetHex(HexCoords hexCoords, T value)
-        {
-            SetHex(hexCoords.Row, hexCoords.Column, value);
-        }
-
-        public void SetHex(int row, int column, T value)
-        {
-            DebugUtils.Assert(row >= 0);
-            DebugUtils.Assert(column >= 0);
-
-            if (IsInCollection(row, column))
-            {
-                Hexes[GetListOffset(row, column)] = value;
-            }
-            else
-            {
-                throw new IndexOutOfRangeException(
-                    $"Row/Column ({row},{column}) are invalid for a grid of size ({Rows},{Columns}).");
             }
         }
 
@@ -88,27 +61,50 @@ namespace CatchLibrary.HexGrid
 
         #endregion
 
-        #region IEnumerable
+        #region Basic Accessors
 
-        public bool Contains(T obj) => Hexes.Contains(obj);
-
-        public IEnumerator<T> GetEnumerator()
+        public T this[HexCoords hc]
         {
-            return Hexes.GetEnumerator();
+            get { return GetHex(hc); }
+            set { SetHex(hc, value);}
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public void SetHex(HexCoords hc, T value)
         {
-            return GetEnumerator();
+            if (IsInCollection(hc))
+            {
+                Hexes[GetListOffset(hc)] = value;
+            }
+            else
+            {
+                throw new IndexOutOfRangeException($"{hc} are not present in this collection");
+            }
         }
 
-        #endregion
+        public void SetHex(int row, int column, T value)
+        {
+            DebugUtils.Assert(row >= 0);
+            DebugUtils.Assert(column >= 0);
 
-        #region Getters
+            if (IsInCollection(row, column))
+            {
+                Hexes[GetListOffset(row, column)] = value;
+            }
+            else
+            {
+                throw new IndexOutOfRangeException(
+                    $"Row/Column ({row},{column}) are invalid for a grid of size ({Rows},{Columns}).");
+            }
+        }
 
         public T GetHex(HexCoords hexCoords)
         {
-            return GetHex(hexCoords.Row, hexCoords.Column);
+            if (IsInCollection(hexCoords))
+            {
+                return Hexes[GetListOffset(hexCoords)];
+            }
+
+            throw new IndexOutOfRangeException($"{hexCoords} are not present in this collection");
         }
 
         public T GetHex(int row, int column)
@@ -125,26 +121,25 @@ namespace CatchLibrary.HexGrid
                 $"Row/Column ({row},{column}) are invalid for a grid of size ({Rows},{Columns}).");
         }
 
-        public bool HasNeighbour(HexCoords hexCoords, HexDirection direction)
+        #endregion
+
+        #region Neighbour Accessors
+
+        public bool HasNeighbour(HexCoords hc, HexDirection direction)
         {
-            return IsInCollection(GetNeighbourCoords(hexCoords.Row, hexCoords.Column, direction));
+            return IsInCollection(GetNeighbourCoords(hc, direction));
         }
 
-        public bool HasNeighbour(int row, int column, HexDirection direction)
+        public T GetNeighbour(HexCoords hc, HexDirection direction)
         {
-            return IsInCollection(GetNeighbourCoords(row, column, direction));
-        }
+            var neighbourHc = GetNeighbourCoords(hc, direction);
 
-        public T GetNeighbour(HexCoords hexCoords, HexDirection direction)
-        {
-            return GetNeighbour(hexCoords.Row, hexCoords.Column, direction);
+            return IsInCollection(neighbourHc) ? GetHex(neighbourHc) : null;
         }
 
         public T GetNeighbour(int row, int column, HexDirection direction)
         {
-            DebugUtils.Assert(IsInCollection(row, column));
-
-            var coords = GetNeighbourCoords(row, column, direction);
+            var coords = GetNeighbourCoords(HexCoords.CreateFromOffset(row, column), direction);
 
             return IsInCollection(coords) ? GetHex(coords.Row, coords.Column) : null;
         }
@@ -218,41 +213,54 @@ namespace CatchLibrary.HexGrid
             return neighbours;
         }
 
-        protected HexCoords GetNeighbourCoords(HexCoords hexCoords, HexDirection direction)
+        #endregion
+
+        #region IEnumerable
+
+        public bool Contains(T obj) => Hexes.Contains(obj);
+
+        public IEnumerator<T> GetEnumerator()
         {
-            return GetNeighbourCoords(hexCoords.Row, hexCoords.Column, direction);
+            return Hexes.GetEnumerator();
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        #region Storage
+
+        protected readonly List<T> Hexes;
+
         /// <summary>
-        /// Calculates the row and column of the neighbour in the given direction from the
-        /// given coordinates, whether or not those coordinates are valid on this map.
+        /// Calculates the neighbouring coordinates the given direction from the
+        /// given coordinates, whether or not those coordinates are valid in this
+        /// collection.
         /// </summary>
-        /// <param name="row">The origin row</param>
-        /// <param name="col">The origin column</param>
+        /// <param name="hc">The origin coordinates</param>
         /// <param name="direction">The direction of the neighbour</param>
         /// <returns>A HexCoords object containing the results</returns>
-        protected HexCoords GetNeighbourCoords(int row, int col, HexDirection direction)
+        protected HexCoords GetNeighbourCoords(HexCoords hc, HexDirection direction)
         {
             switch (direction)
             {
                 case HexDirection.North:
-                    return HexCoords.CreateFromOffset(row + 1, col);
-                case HexDirection.NorthEast:
-                    // if currently in even column, move up a row
-                    return HexCoords.CreateFromOffset(row + (1 - (col & 1)), col + 1);
-                case HexDirection.SouthEast:
-                    // if currently in even column, stay in same row
-                    return HexCoords.CreateFromOffset(row - (col & 1), col + 1);
-                case HexDirection.South:
-                    return HexCoords.CreateFromOffset(row - 1, col);
-                case HexDirection.SouthWest:
-                    // if currently in even column, stay in same row
-                    return HexCoords.CreateFromOffset(row - (col & 1), col - 1);
+                    return HexCoords.CreateFromAxial(hc.Q, hc.R + 1);
                 case HexDirection.NorthWest:
-                    // if currently in even column, move up a row
-                    return HexCoords.CreateFromOffset(row + (1 - (col & 1)), col - 1);
+                    return HexCoords.CreateFromAxial(hc.Q - 1, hc.R + 1);
+                case HexDirection.SouthWest:
+                    return HexCoords.CreateFromAxial(hc.Q - 1, hc.R);
+                case HexDirection.South:
+                    return HexCoords.CreateFromAxial(hc.Q, hc.R - 1);
+                case HexDirection.SouthEast:
+                    return HexCoords.CreateFromAxial(hc.Q + 1, hc.R - 1);
+                case HexDirection.NorthEast:
+                    return HexCoords.CreateFromAxial(hc.Q + 1, hc.R);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(direction));
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
             }
         }
 
@@ -264,6 +272,11 @@ namespace CatchLibrary.HexGrid
         protected bool IsInCollection(int row, int col)
         {
             return (col >= 0 && col < Columns && row >= 0 && row < Rows);
+        }
+
+        protected int GetListOffset(HexCoords hc)
+        {
+            return GetListOffset(hc.Row, hc.Column);
         }
 
         protected int GetListOffset(int row, int col)

@@ -1,7 +1,9 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace CatchLibrary.HexGrid
 {
+    [DataContract]
     public class HexCoords
     {
         #region Axial Coordinates
@@ -10,9 +12,10 @@ namespace CatchLibrary.HexGrid
          * For flat-topped hexagons, such as ours, the columns Q are vertical,
          * while the rows R have a slanted axis.
          */
-
+        [DataMember]
         public int Q { get; }
 
+        [DataMember]
         public int R { get; }
 
         #endregion
@@ -101,6 +104,8 @@ namespace CatchLibrary.HexGrid
                 return hash;
             }
         }
+
+        public override string ToString() => $"{nameof(HexCoords)} ({Q},{R})";
 
         #endregion
     }

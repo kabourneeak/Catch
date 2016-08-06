@@ -19,11 +19,6 @@ namespace CatchTests
             return Hexes;
         }
 
-        public new HexCoords GetNeighbourCoords(int row, int col, HexDirection direction)
-        {
-            return base.GetNeighbourCoords(row, col, direction);
-        }
-
         public new HexCoords GetNeighbourCoords(HexCoords coords, HexDirection direction)
         {
             return base.GetNeighbourCoords(coords, direction);
