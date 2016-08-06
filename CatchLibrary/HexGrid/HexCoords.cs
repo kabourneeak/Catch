@@ -8,16 +8,16 @@ namespace CatchLibrary.HexGrid
 
         /*
          * For flat-topped hexagons, such as ours, the columns Q are vertical,
-         * while the rows are axial.
+         * while the rows R have a slanted axis.
          */
 
-        public int Q { get; set; }
+        public int Q { get; }
 
-        public int R { get; set; }
+        public int R { get; }
 
         #endregion
 
-        #region Cubic Coordinates
+        #region Cube Coordinates
 
         public int X => Q;
 
@@ -33,47 +33,39 @@ namespace CatchLibrary.HexGrid
          * For flat-topped hexagons, such as ours, the offset column and Q are equal.
          */
 
-        public int Row
-        {
-            get { return R + (Q + (Q & 1)) / 2; }
-            set { R = value - (Q + (Q & 1)) / 2; }
-        }
+        public int Row => R + (Q + (Q & 1)) / 2;
 
-        public int Column
-        {
-            get { return Q; }
-            set { Q = value; }
-        }
+        public int Column => Q;
 
         #endregion
 
         #region Construction
 
-        private HexCoords()
+        private HexCoords(int q, int r)
         {
-            
+            Q = q;
+            R = r;
         }
 
         public static HexCoords CreateFromAxial(int q, int r)
         {
-            var hc = new HexCoords
-            {
-                Q = q,
-                R = r
-            };
-
-            return hc;
+            return new HexCoords(q, r);
         }
 
         public static HexCoords CreateFromOffset(int row, int column)
         {
-            var hc = new HexCoords();
+            var q = column;
+            var r = row - (q + (q & 1)) / 2;
 
-            // order is important, since Row requires Column for its calculation
-            hc.Column = column;
-            hc.Row = row;
+            return new HexCoords(q, r);
+        }
 
-            return hc;
+        public static HexCoords CreateFromCube(int x, int y, int z)
+        {
+            if (x + y + z != 0)
+                throw new ArgumentOutOfRangeException(nameof(y), y, "Cubic coordinates must satisfy x + y + z == 0");
+
+            return new HexCoords(x, z);
         }
 
         #endregion
