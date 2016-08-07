@@ -152,6 +152,12 @@ namespace Catch
             _overlayController.Resize(size);
         }
 
+        public void Hover(Vector2 viewCoords)
+        {
+            _fieldController.Hover(viewCoords);
+            _overlayController.Hover(viewCoords);
+        }
+
         #endregion
 
         #region IGraphicsComponent Implementation

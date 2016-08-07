@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
 using Catch.Base;
 using Catch.Graphics;
@@ -92,7 +93,7 @@ namespace Catch
         {
             var newZoom = Math.Max(0.4f, Math.Min(2.0f, Zoom + zoomDelta));
 
-            var zoomCenter = TranslateToMap(viewCoords);
+            var zoomCenter = TranslateToFieldCoords(viewCoords);
             _pan = Vector2.Add(_pan, zoomCenter);
             _pan = Vector2.Multiply(_pan, Zoom / newZoom);
             _pan = Vector2.Subtract(_pan, zoomCenter);
@@ -105,9 +106,18 @@ namespace Catch
             WindowSize = size;
         }
 
+        public void Hover(Vector2 viewCoords)
+        {
+            var fieldCoords = TranslateToFieldCoords(viewCoords);
+
+            var hoverHex = _map.PointToHexCoords(fieldCoords);
+
+            Debug.WriteLine($"field: {fieldCoords}, hex {hoverHex}");
+        }
+
         #endregion
 
-        public Vector2 TranslateToMap(Vector2 viewCoords)
+        public Vector2 TranslateToFieldCoords(Vector2 viewCoords)
         {
             return Vector2.Transform(viewCoords, _mapTransform);
         }

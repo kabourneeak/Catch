@@ -151,6 +151,17 @@ namespace Catch
         private void OnPointerMoved(object sender, PointerEventArgs args)
         {
             _gestureRecognizer.ProcessMoveEvents(args.GetIntermediatePoints());
+
+            if (_inManipulation)
+            {
+                // do nothing
+            }
+            // TODO else if dragging, or some other action
+            else
+            {
+                _gameController.Hover(args.CurrentPoint.Position.ToVector2());
+            }
+
             args.Handled = true;
         }
 
@@ -185,8 +196,7 @@ namespace Catch
             _gameController.ZoomToPoint(args.Position.ToVector2(), args.Delta.Scale - 1.0f);
         }
 
-        private void gestureRecognizer_ManipulationCompleted(GestureRecognizer sender,
-            ManipulationCompletedEventArgs args)
+        private void gestureRecognizer_ManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
         {
             _inManipulation = false;
         }

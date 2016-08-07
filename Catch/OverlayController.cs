@@ -62,6 +62,11 @@ namespace Catch
             // do nothing
         }
 
+        public void Hover(Vector2 viewCoords)
+        {
+            // TODO
+        }
+
         #endregion
     }
 }

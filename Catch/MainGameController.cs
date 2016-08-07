@@ -155,6 +155,8 @@ namespace Catch
             CurrentController?.Resize(size);
         }
 
+        public void Hover(Vector2 viewCoords) => CurrentController?.Hover(viewCoords);
+
         #endregion
     }
 }

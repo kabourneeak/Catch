@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using Catch.Services;
@@ -48,6 +49,37 @@ namespace Catch.Map
         /// Get all neighbouring tiles to the given tile within the band defined by fromRadius and toRadius, inclusive.
         /// </summary>
         public List<Tile> GetNeighbours(Tile tile, int fromRadius, int toRadius) => _tiles.GetNeighbours(tile.Coords, fromRadius, toRadius);
+
+        #endregion
+
+        #region Point Location
+
+        public HexCoords PointToHexCoords(Vector2 fieldCoords)
+        {
+            var q = fieldCoords.X * 2 / 3 / _tileRadius;
+            var r = (-fieldCoords.X / 3 + HexUtils.SQRT3 / 3 * fieldCoords.Y) / _tileRadius;
+
+            var x = q;
+            var y = -q - r;
+            var z = r;
+
+            var rx = Math.Round(x);
+            var ry = Math.Round(y);
+            var rz = Math.Round(z);
+
+            var xDiff = Math.Abs(rx - x);
+            var yDiff = Math.Abs(ry - y);
+            var zDiff = Math.Abs(rz - z);
+
+            if (xDiff > yDiff && xDiff > zDiff)
+                rx = -ry - rz;
+            else if (yDiff > zDiff)
+                ry = -rx - rz;
+            else
+                rz = -rx - ry;
+
+            return HexCoords.CreateFromCube((int) rx, (int) ry, (int) rz);
+        }
 
         #endregion
 
