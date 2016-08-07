@@ -25,8 +25,8 @@ namespace Catch.Map
             // calculate position
             var radiusH = HexUtils.GetRadiusHeight(radius);
 
-            var x = radius + (Coords.Column * (radius + radius * HexUtils.COS60));
-            var y = (Coords.Column % 2 * radiusH) + ((Coords.Row - (Coords.Column & 1)) * 2 * radiusH) + radiusH;
+            var x = Coords.Column * (radius + radius * HexUtils.COS60);
+            var y = ((Coords.Column & 1) * radiusH) + ((Coords.Row - (Coords.Column & 1)) * 2 * radiusH);
 
             Position = new Vector2(x, y);
         }
