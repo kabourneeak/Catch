@@ -46,7 +46,7 @@ namespace CatchLibrary.HexGrid
         /// from the delegate function at that position.
         /// </summary>
         /// <param name="populator"></param>
-        public void Populate(HexGridPopulator<T> populator)
+        public void Populate(HexCollectionPopulator<T> populator)
         {
             for (var row = 0; row < Rows; ++row)
             {

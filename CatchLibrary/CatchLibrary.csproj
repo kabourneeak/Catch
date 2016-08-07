@@ -42,7 +42,7 @@
     <Compile Include="DebugUtils.cs" />
     <Compile Include="HexGrid\HexCoords.cs" />
     <Compile Include="HexGrid\HexGridCollection.cs" />
-    <Compile Include="HexGrid\HexGridPopulator.cs" />
+    <Compile Include="HexGrid\HexCollectionPopulator.cs" />
     <Compile Include="HexGrid\HexUtils.cs" />
     <Compile Include="HexGrid\HexDirection.cs" />
     <Compile Include="IntExtensions.cs" />
