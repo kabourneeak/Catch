@@ -155,6 +155,12 @@ namespace Catch
         public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers) 
             => CurrentController?.Hover(viewCoords, keyModifiers);
 
+        public void Touch(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+            => CurrentController?.Touch(viewCoords, keyModifiers);
+
+        public void KeyPress(VirtualKey key)
+            => CurrentController?.KeyPress(key);
+
         #endregion
     }
 }

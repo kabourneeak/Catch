@@ -63,6 +63,16 @@ namespace Catch
             // do nothing
         }
 
+        public void Touch(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+        {
+            // do nothing
+        }
+
+        public void KeyPress(VirtualKey key)
+        {
+            // do nothing
+        }
+
         #endregion
     }
 }

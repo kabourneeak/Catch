@@ -115,6 +115,16 @@ namespace Catch
             HoverHexCoords = _map.PointToHexCoords(fieldCoords);
         }
 
+        public void Touch(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+        {
+            // TODO
+        }
+
+        public void KeyPress(VirtualKey key)
+        {
+            // TODO
+        }
+
         #endregion
 
         public Vector2 TranslateToFieldCoords(Vector2 viewCoords)

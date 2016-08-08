@@ -159,6 +159,18 @@ namespace Catch
             _overlayController.Hover(viewCoords, keyModifiers);
         }
 
+        public void Touch(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+        {
+            _fieldController.Touch(viewCoords, keyModifiers);
+            _overlayController.Touch(viewCoords, keyModifiers);
+        }
+
+        public void KeyPress(VirtualKey key)
+        {
+            _fieldController.KeyPress(key);
+            _overlayController.KeyPress(key);
+        }
+
         #endregion
 
         #region IGraphicsComponent Implementation

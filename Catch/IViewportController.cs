@@ -14,7 +14,10 @@ namespace Catch
 
         void Resize(Vector2 size);
 
-        // TODO will need something here for mouse movement and selection which are not pan/zoom events; keyboard too
         void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers);
+
+        void Touch(Vector2 viewCoords, VirtualKeyModifiers keyModifiers);
+        
+        void KeyPress(VirtualKey key);
     }
 }

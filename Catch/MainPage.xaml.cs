@@ -28,6 +28,12 @@ namespace Catch
             _gameController.Initialize(new Vector2((float)cvs.Size.Width, (float)cvs.Size.Height), null);
         }
 
+        private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            // attach keyboard events
+            Window.Current.CoreWindow.KeyDown += KeyDown_UIThread;
+        }
+
         #region Animation Loop
 
         private CoreIndependentInputSource _inputDevice;
@@ -145,6 +151,16 @@ namespace Catch
         private void OnPointerPressed(object sender, PointerEventArgs args)
         {
             _gestureRecognizer.ProcessDownEvent(args.CurrentPoint);
+
+            if (_inManipulation)
+            {
+                // do nothing
+            }
+            else if (args.CurrentPoint.Properties.IsLeftButtonPressed)
+            {
+                _gameController.Touch(args.CurrentPoint.Position.ToVector2(), args.KeyModifiers);
+            }
+
             args.Handled = true;
         }
 
@@ -156,8 +172,7 @@ namespace Catch
             {
                 // do nothing
             }
-            // TODO else if dragging, or some other action
-            else
+            else if (!args.CurrentPoint.Properties.IsLeftButtonPressed)
             {
                 _gameController.Hover(args.CurrentPoint.Position.ToVector2(), args.KeyModifiers);
             }
@@ -199,6 +214,20 @@ namespace Catch
         private void gestureRecognizer_ManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
         {
             _inManipulation = false;
+        }
+
+        #endregion
+
+        #region Keyboard Input
+
+        private void KeyDown_UIThread(CoreWindow sender, KeyEventArgs args)
+        {
+            var key = args.VirtualKey;
+            
+            args.Handled = true;
+
+            // Schedule to run on game loop
+            var action = cvs.RunOnGameLoopThreadAsync(() => _gameController.KeyPress(key));
         }
 
         #endregion
