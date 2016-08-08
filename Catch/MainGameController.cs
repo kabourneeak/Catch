@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Numerics;
+using Windows.System;
 using Catch.Graphics;
 using CatchLibrary.Serialization;
 using Newtonsoft.Json;
@@ -137,15 +138,11 @@ namespace Catch
 
         #region IViewportController Implementation
 
-        public void PanBy(Vector2 panDelta)
-        {
-            CurrentController?.PanBy(panDelta);
-        }
+        public void PanBy(Vector2 panDelta) 
+            => CurrentController?.PanBy(panDelta);
 
-        public void ZoomToPoint(Vector2 viewCoords, float zoomDelta)
-        {
-            CurrentController?.ZoomToPoint(viewCoords, zoomDelta);
-        }
+        public void ZoomToPoint(Vector2 viewCoords, float zoomDelta) 
+            => CurrentController?.ZoomToPoint(viewCoords, zoomDelta);
 
         public void Resize(Vector2 size)
         {
@@ -155,7 +152,8 @@ namespace Catch
             CurrentController?.Resize(size);
         }
 
-        public void Hover(Vector2 viewCoords) => CurrentController?.Hover(viewCoords);
+        public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers) 
+            => CurrentController?.Hover(viewCoords, keyModifiers);
 
         #endregion
     }

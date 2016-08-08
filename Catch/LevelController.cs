@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Windows.System;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.Map;
@@ -152,10 +153,10 @@ namespace Catch
             _overlayController.Resize(size);
         }
 
-        public void Hover(Vector2 viewCoords)
+        public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
         {
-            _fieldController.Hover(viewCoords);
-            _overlayController.Hover(viewCoords);
+            _fieldController.Hover(viewCoords, keyModifiers);
+            _overlayController.Hover(viewCoords, keyModifiers);
         }
 
         #endregion

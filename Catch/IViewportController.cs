@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Windows.System;
 
 namespace Catch
 {
@@ -14,6 +15,6 @@ namespace Catch
         void Resize(Vector2 size);
 
         // TODO will need something here for mouse movement and selection which are not pan/zoom events; keyboard too
-        void Hover(Vector2 viewCoords);
+        void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers);
     }
 }

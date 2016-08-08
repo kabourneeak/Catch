@@ -159,7 +159,7 @@ namespace Catch
             // TODO else if dragging, or some other action
             else
             {
-                _gameController.Hover(args.CurrentPoint.Position.ToVector2());
+                _gameController.Hover(args.CurrentPoint.Position.ToVector2(), args.KeyModifiers);
             }
 
             args.Handled = true;

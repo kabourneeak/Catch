@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Windows.System;
 using Catch.Graphics;
 
 namespace Catch
@@ -57,7 +58,7 @@ namespace Catch
             // do nothing
         }
 
-        public void Hover(Vector2 viewCoords)
+        public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
         {
             // do nothing
         }

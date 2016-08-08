@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Numerics;
+using Windows.System;
 using Catch.Base;
 using Catch.Graphics;
+using CatchLibrary.HexGrid;
 
 namespace Catch
 {
@@ -15,6 +16,7 @@ namespace Catch
         private Vector2 WindowSize { get; set; }
         public float Zoom { get; private set; }
         public Vector2 Pan => _pan;
+        public HexCoords HoverHexCoords { get; private set; }
 
         private Vector2 _pan;
         private Matrix3x2 _mapTransform;
@@ -106,13 +108,11 @@ namespace Catch
             WindowSize = size;
         }
 
-        public void Hover(Vector2 viewCoords)
+        public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
         {
             var fieldCoords = TranslateToFieldCoords(viewCoords);
 
-            var hoverHex = _map.PointToHexCoords(fieldCoords);
-
-            Debug.WriteLine($"field: {fieldCoords}, hex {hoverHex}");
+            HoverHexCoords = _map.PointToHexCoords(fieldCoords);
         }
 
         #endregion
