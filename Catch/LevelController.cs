@@ -16,10 +16,6 @@ namespace Catch
     /// </summary>
     public class LevelController : IGameController
     {
-        private const int StartLives = 3;
-        private const int StartScore = 0;
-        private const int ScoreIncrement = 10;
-
         private FieldController _fieldController;
         private OverlayController _overlayController;
         private readonly Random _rng = new Random();
@@ -29,12 +25,7 @@ namespace Catch
         //
         private Vector2 WindowSize { get; set; }
 
-        //
-        // Game State
-        //
-        private int Score { get; set; }
-        private int Lives { get; set; }
-
+        private readonly PlayerModel _player;
         private readonly IConfig _config;
         private readonly Win2DProvider _provider;
         private readonly List<IAgent> _agents;
@@ -46,6 +37,8 @@ namespace Catch
         public LevelController()
         {
             _config = new CompiledConfig();
+
+            _player = new PlayerModel(_config);
             _provider = new Win2DProvider(_config);
             _agents = new List<IAgent>();
             _scriptCommands = new Queue<ScriptCommand>();
@@ -60,9 +53,6 @@ namespace Catch
         public void Initialize(Vector2 size, GameStateArgs args)
         {
             WindowSize = size;
-
-            Score = StartScore;
-            Lives = StartLives;
 
             _agents.Clear();
 
@@ -179,8 +169,6 @@ namespace Catch
 
         public void Update(float ticks)
         {
-            Score += ScoreIncrement;
-
             ProcessScript();
 
             _fieldController.Update(ticks);
