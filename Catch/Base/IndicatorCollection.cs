@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Catch.Graphics;
 
 namespace Catch.Base
 {
-    public class IndicatorCollection : IEnumerable<IIndicator>, IGraphicsComponent
+    /// <summary>
+    /// Maintains a collcetion of Indicators, which can be acted upon as 
+    /// an indicator itself
+    /// </summary>
+    public class IndicatorCollection : IEnumerable<IIndicator>, IIndicator
     {
-        private readonly SortedSet<IIndicator> _indicators;
+        private readonly List<IIndicator> _indicators;
+        private readonly IndicatorComparer _comparer;
 
         public IndicatorCollection()
         {
-            _indicators = new SortedSet<IIndicator>(IndicatorComparer.GetComparer());
+            _indicators = new List<IIndicator>();
+            _comparer = new IndicatorComparer();
         }
+
+        #region IEnumerable
 
         public IEnumerator<IIndicator> GetEnumerator()
         {
@@ -23,6 +32,10 @@ namespace Catch.Base
         {
             return GetEnumerator();
         }
+
+        #endregion
+
+        #region IIndicator
 
         public void Update(float ticks)
         {
@@ -48,9 +61,22 @@ namespace Catch.Base
                 i.Draw(drawArgs, rotation);
         }
 
+        /// <summary>
+        /// Returns the highest DrawLayer in the collection
+        /// </summary>
+        public DrawLayer Layer => _indicators.Last()?.Layer ?? DrawLayer.Background;
+
+        #endregion
+
         public void Add(IIndicator indicator)
         {
             _indicators.Add(indicator);
+
+            /*
+             * Sort on add; C# will use Insertion Sort for small collections (< 16 items), 
+             * which is efficient when the elements are mostly sorted.
+             */
+            _indicators.Sort(_comparer);
         }
 
         public void AddRange(IEnumerable<IIndicator> collection)
@@ -64,7 +90,7 @@ namespace Catch.Base
             _indicators.Remove(indicator);
         }
 
-        public int Count { get { return _indicators.Count; } }
+        public int Count => _indicators.Count;
 
         public IIndicator HasIndicator(string indicatorType)
         {
@@ -73,18 +99,6 @@ namespace Catch.Base
 
         private class IndicatorComparer : IComparer<IIndicator>
         {
-            private static IndicatorComparer _instance;
-
-            public static IndicatorComparer GetComparer()
-            {
-                return _instance ?? (_instance = new IndicatorComparer());
-            }
-
-            private IndicatorComparer()
-            {
-                
-            }
-
             public int Compare(IIndicator x, IIndicator y)
             {
                 return x.Layer.CompareTo(y.Layer);
