@@ -55,7 +55,7 @@ namespace Catch
 
             InitializeMap(args.MapModel);
 
-            _overlayController = new OverlayController(_ui, _agents, _map);
+            _overlayController = new OverlayController(_config, _ui, _agents, _map);
             _overlayController.Initialize();
 
             _fieldController = new FieldController(_ui, _agents, _map);

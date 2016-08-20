@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Catch.Base;
 using CatchLibrary.HexGrid;
 
 namespace Catch
@@ -12,5 +13,7 @@ namespace Catch
         public Vector2 WindowSize { get; set; }
 
         public HexCoords HoverHexCoords { get; set; }
+
+        public IAgent HoverTower { get; set; }
     }
 }

@@ -3,6 +3,9 @@ using System.Numerics;
 using Windows.System;
 using Catch.Base;
 using Catch.Graphics;
+using Catch.Services;
+using Catch.Towers;
+using CatchLibrary.HexGrid;
 
 namespace Catch
 {
@@ -12,15 +15,19 @@ namespace Catch
     /// </summary>
     public class OverlayController : IGraphicsComponent, IViewportController
     {
+        private readonly IConfig _config;
         private readonly UiStateModel _ui;
         private readonly List<IAgent> _agents;
         private readonly Map.Map _map;
 
-        public OverlayController(UiStateModel ui, List<IAgent> agents, Map.Map map)
+        public OverlayController(IConfig config, UiStateModel ui, List<IAgent> agents, Map.Map map)
         {
+            _config = config;
             _ui = ui;
             _agents = agents;
             _map = map;
+
+            _hoverIndicator = new TowerHoverIndicator(_config);
         }
 
         public void Initialize()
@@ -69,9 +76,32 @@ namespace Catch
             // do nothing
         }
 
+        private HexCoords _lastHover;
+        private readonly TowerHoverIndicator _hoverIndicator;
+
         public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
         {
-            // TODO
+            if (_lastHover != null && _lastHover.Equals(_ui.HoverHexCoords))
+                return;
+
+            // remove previous indicator
+            _ui.HoverTower?.Indicators.Remove(_hoverIndicator);
+
+            if (_map.HasHex(_ui.HoverHexCoords))
+            {
+                // add new indicator
+                var tile = _map.GetHex(_ui.HoverHexCoords);
+                var tower = tile.GetTower();
+                tower?.Indicators.Add(_hoverIndicator);
+
+                _ui.HoverTower = tower;
+                _lastHover = _ui.HoverHexCoords;
+            }
+            else
+            {
+                _ui.HoverTower = null;
+                _lastHover = null;
+            }
         }
 
         public void Touch(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)

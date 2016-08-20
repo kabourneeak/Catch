@@ -92,6 +92,11 @@ namespace CatchLibrary.HexGrid
             throw new IndexOutOfRangeException($"{hc} are not present in this collection");
         }
 
+        public bool HasHex(HexCoords hc)
+        {
+            return IsInCollection(hc);
+        }
+
         #endregion
 
         #region Neighbour Accessors
