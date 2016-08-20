@@ -29,6 +29,8 @@ namespace Catch.Services
             AddFloat("TileRadius", 60.0f);
             AddFloat("TileRadiusInset", 1.5f);
             AddInt("BlockMobSize", 10);
+            AddString("MainGameController.MapsFolder", @"Assets\maps");
+            AddString("MainGameController.InitialMap", @"MapOne.json");
         }
 
         public int GetInt(string key)

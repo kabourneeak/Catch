@@ -1,0 +1,1418 @@
+{
+  "Rows": 10,
+  "Columns": 19,
+  "TileList": [
+    {
+      "Coords": {
+        "Q": 0,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 0,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 0,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 0,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 0,
+        "R": 4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 0,
+        "R": 5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 0,
+        "R": 6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 0,
+        "R": 7
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 0,
+        "R": 8
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 0,
+        "R": 9
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 1,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 1,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 1,
+        "R": 1
+      },
+      "TowerName": "GunTower"
+    },
+    {
+      "Coords": {
+        "Q": 1,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 1,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 1,
+        "R": 4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 1,
+        "R": 5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 1,
+        "R": 6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 1,
+        "R": 7
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 1,
+        "R": 8
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 2,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 2,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 2,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 2,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 2,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 2,
+        "R": 4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 2,
+        "R": 5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 2,
+        "R": 6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 2,
+        "R": 7
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 2,
+        "R": 8
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 3,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 3,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 3,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 3,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 3,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 3,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 3,
+        "R": 4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 3,
+        "R": 5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 3,
+        "R": 6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 3,
+        "R": 7
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 4,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 4,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 4,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 4,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 4,
+        "R": 2
+      },
+      "TowerName": "GunTower"
+    },
+    {
+      "Coords": {
+        "Q": 4,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 4,
+        "R": 4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 4,
+        "R": 5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 4,
+        "R": 6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 4,
+        "R": 7
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 5,
+        "R": -3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 5,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 5,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 5,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 5,
+        "R": 1
+      },
+      "TowerName": "GunTower"
+    },
+    {
+      "Coords": {
+        "Q": 5,
+        "R": 2
+      },
+      "TowerName": "GunTower"
+    },
+    {
+      "Coords": {
+        "Q": 5,
+        "R": 3
+      },
+      "TowerName": "GunTower"
+    },
+    {
+      "Coords": {
+        "Q": 5,
+        "R": 4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 5,
+        "R": 5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 5,
+        "R": 6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 6,
+        "R": -3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 6,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 6,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 6,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 6,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 6,
+        "R": 2
+      },
+      "TowerName": "GunTower"
+    },
+    {
+      "Coords": {
+        "Q": 6,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 6,
+        "R": 4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 6,
+        "R": 5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 6,
+        "R": 6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 7,
+        "R": -4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 7,
+        "R": -3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 7,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 7,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 7,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 7,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 7,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 7,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 7,
+        "R": 4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 7,
+        "R": 5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 8,
+        "R": -4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 8,
+        "R": -3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 8,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 8,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 8,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 8,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 8,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 8,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 8,
+        "R": 4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 8,
+        "R": 5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 9,
+        "R": -5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 9,
+        "R": -4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 9,
+        "R": -3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 9,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 9,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 9,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 9,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 9,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 9,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 9,
+        "R": 4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 10,
+        "R": -5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 10,
+        "R": -4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 10,
+        "R": -3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 10,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 10,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 10,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 10,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 10,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 10,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 10,
+        "R": 4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 11,
+        "R": -6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 11,
+        "R": -5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 11,
+        "R": -4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 11,
+        "R": -3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 11,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 11,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 11,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 11,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 11,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 11,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 12,
+        "R": -6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 12,
+        "R": -5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 12,
+        "R": -4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 12,
+        "R": -3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 12,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 12,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 12,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 12,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 12,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 12,
+        "R": 3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 13,
+        "R": -7
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 13,
+        "R": -6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 13,
+        "R": -5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 13,
+        "R": -4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 13,
+        "R": -3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 13,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 13,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 13,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 13,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 13,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 14,
+        "R": -7
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 14,
+        "R": -6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 14,
+        "R": -5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 14,
+        "R": -4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 14,
+        "R": -3
+      },
+      "TowerName": "GunTower"
+    },
+    {
+      "Coords": {
+        "Q": 14,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 14,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 14,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 14,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 14,
+        "R": 2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 15,
+        "R": -8
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 15,
+        "R": -7
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 15,
+        "R": -6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 15,
+        "R": -5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 15,
+        "R": -4
+      },
+      "TowerName": "GunTower"
+    },
+    {
+      "Coords": {
+        "Q": 15,
+        "R": -3
+      },
+      "TowerName": "GunTower"
+    },
+    {
+      "Coords": {
+        "Q": 15,
+        "R": -2
+      },
+      "TowerName": "GunTower"
+    },
+    {
+      "Coords": {
+        "Q": 15,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 15,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 15,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 16,
+        "R": -8
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 16,
+        "R": -7
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 16,
+        "R": -6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 16,
+        "R": -5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 16,
+        "R": -4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 16,
+        "R": -3
+      },
+      "TowerName": "GunTower"
+    },
+    {
+      "Coords": {
+        "Q": 16,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 16,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 16,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 16,
+        "R": 1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 17,
+        "R": -9
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 17,
+        "R": -8
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 17,
+        "R": -7
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 17,
+        "R": -6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 17,
+        "R": -5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 17,
+        "R": -4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 17,
+        "R": -3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 17,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 17,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 17,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 18,
+        "R": -9
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 18,
+        "R": -8
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 18,
+        "R": -7
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 18,
+        "R": -6
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 18,
+        "R": -5
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 18,
+        "R": -4
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 18,
+        "R": -3
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 18,
+        "R": -2
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 18,
+        "R": -1
+      },
+      "TowerName": "VoidTower"
+    },
+    {
+      "Coords": {
+        "Q": 18,
+        "R": 0
+      },
+      "TowerName": "VoidTower"
+    }
+  ],
+  "EmitScript": [
+    {
+      "BeginTime": 120,
+      "Count": 10,
+      "DelayTime": 60,
+      "PathName": "testPath",
+      "AgentTypeName": "BlockMob"
+    }
+  ],
+  "Paths": [
+    {
+      "PathName": "testPath",
+      "PathSteps": [
+        {
+          "Coords": {
+            "Q": 0,
+            "R": 0
+          }
+        },
+        {
+          "Coords": {
+            "Q": 1,
+            "R": 0
+          }
+        },
+        {
+          "Coords": {
+            "Q": 2,
+            "R": 0
+          }
+        },
+        {
+          "Coords": {
+            "Q": 2,
+            "R": 1
+          }
+        },
+        {
+          "Coords": {
+            "Q": 2,
+            "R": 2
+          }
+        },
+        {
+          "Coords": {
+            "Q": 3,
+            "R": 2
+          }
+        },
+        {
+          "Coords": {
+            "Q": 4,
+            "R": 1
+          }
+        },
+        {
+          "Coords": {
+            "Q": 5,
+            "R": 0
+          }
+        },
+        {
+          "Coords": {
+            "Q": 6,
+            "R": 0
+          }
+        },
+        {
+          "Coords": {
+            "Q": 6,
+            "R": 1
+          }
+        },
+        {
+          "Coords": {
+            "Q": 7,
+            "R": 0
+          }
+        }
+      ]
+    }
+  ]
+}

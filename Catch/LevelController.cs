@@ -34,9 +34,9 @@ namespace Catch
 
         #region Construction
 
-        public LevelController()
+        public LevelController(IConfig config)
         {
-            _config = new CompiledConfig();
+            _config = config;
 
             _player = new PlayerModel(_config);
             _provider = new Win2DProvider(_config);

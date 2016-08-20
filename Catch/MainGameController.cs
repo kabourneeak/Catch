@@ -3,6 +3,7 @@ using System.IO;
 using System.Numerics;
 using Windows.System;
 using Catch.Graphics;
+using Catch.Services;
 using CatchLibrary.Serialization;
 using Newtonsoft.Json;
 
@@ -15,9 +16,13 @@ namespace Catch
     /// </summary>
     public class MainGameController : IGameController
     {
+        private const string CfgMapsFolder = nameof(MainGameController) + ".MapsFolder";
+        private const string CfgInitialMap = nameof(MainGameController) + ".InitialMap";
+
         private bool _forceCreateResources;
-        public Vector2 WindowSize { get; private set; }
-        public GameState State { get; set; }
+        private CompiledConfig Config { get; }
+        private Vector2 WindowSize { get; set; }
+        private GameState State { get; set; }
         private GameState AppliedState { get; set; }
         private GameStateArgs RequestedState { get; set; }
 
@@ -30,6 +35,8 @@ namespace Catch
             // calls our Initialize method
             State = GameState.Initializing;
             CurrentController = new NilGameController();
+
+            Config = new CompiledConfig();
         }
 
         #region IGameController Implementation
@@ -41,9 +48,29 @@ namespace Catch
             WindowSize = size;
 
             // Bootstrap initial game state
-            // TODO don't read a hard-coded file name
-            var filename = "MapOne.json";
-            var mapModel = JsonConvert.DeserializeObject<MapModel>(File.ReadAllText(filename));
+            MapModel mapModel;
+
+            try
+            {
+                var appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+                var mapsFolder =
+                    appInstalledFolder.GetFolderAsync(Config.GetString(CfgMapsFolder))
+                        .GetAwaiter()
+                        .GetResult();
+
+                var initialMapPath = Path.Combine(mapsFolder.Path, Config.GetString(CfgInitialMap));
+                var initialMapData = File.ReadAllText(initialMapPath);
+
+                mapModel = JsonConvert.DeserializeObject<MapModel>(initialMapData);
+            }
+            catch (IOException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new IOException("Could not read initial map", e);
+            }
 
             OnGameStateChangeRequest(this, new GameStateArgs(GameState.PlayMap, mapModel));
         }
@@ -77,6 +104,11 @@ namespace Catch
             _forceCreateResources = true;
 
             CurrentController = requestedController;
+
+            /*
+             * handoff complete
+             */
+            State = RequestedState.State;
         }
 
         private IGameController CreateGameController(GameState state)
@@ -86,7 +118,7 @@ namespace Catch
                 case GameState.Initializing:
                     return new NilGameController();
                 case GameState.PlayMap:
-                    return new LevelController();
+                    return new LevelController(Config);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
