@@ -1,5 +1,7 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Numerics;
 using Windows.System;
+using Catch.Base;
 using Catch.Graphics;
 
 namespace Catch
@@ -10,16 +12,20 @@ namespace Catch
     /// </summary>
     public class OverlayController : IGraphicsComponent, IViewportController
     {
-        private Vector2 WindowSize { get; set; }
+        private readonly UiStateModel _ui;
+        private readonly List<IAgent> _agents;
+        private readonly Map.Map _map;
 
-        public OverlayController()
+        public OverlayController(UiStateModel ui, List<IAgent> agents, Map.Map map)
         {
-
+            _ui = ui;
+            _agents = agents;
+            _map = map;
         }
 
-        public void Initialize(Vector2 size)
+        public void Initialize()
         {
-            WindowSize = size;
+
         }
 
         #region IGraphicsComponent Implementation

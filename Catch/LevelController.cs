@@ -20,13 +20,9 @@ namespace Catch
         private OverlayController _overlayController;
         private readonly Random _rng = new Random();
 
-        //
-        // Game config
-        //
-        private Vector2 WindowSize { get; set; }
-
-        private readonly PlayerModel _player;
         private readonly IConfig _config;
+        private readonly UiStateModel _ui;
+        private readonly PlayerModel _player;
         private readonly Win2DProvider _provider;
         private readonly List<IAgent> _agents;
         private readonly Queue<ScriptCommand> _scriptCommands;
@@ -38,6 +34,7 @@ namespace Catch
         {
             _config = config;
 
+            _ui = new UiStateModel();
             _player = new PlayerModel(_config);
             _provider = new Win2DProvider(_config);
             _agents = new List<IAgent>();
@@ -52,17 +49,17 @@ namespace Catch
 
         public void Initialize(Vector2 size, GameStateArgs args)
         {
-            WindowSize = size;
+            _ui.WindowSize = size;
 
             _agents.Clear();
 
             InitializeMap(args.MapModel);
 
-            _overlayController = new OverlayController();
-            _overlayController.Initialize(WindowSize);
+            _overlayController = new OverlayController(_ui, _agents, _map);
+            _overlayController.Initialize();
 
-            _fieldController = new FieldController(_agents, _map);
-            _fieldController.Initialize(WindowSize);
+            _fieldController = new FieldController(_ui, _agents, _map);
+            _fieldController.Initialize();
         }
 
         private void InitializeMap(MapModel mapModel)
@@ -137,7 +134,7 @@ namespace Catch
 
         public void Resize(Vector2 size)
         {
-            WindowSize = size;
+            _ui.WindowSize = size;
 
             _fieldController.Resize(size);
             _overlayController.Resize(size);

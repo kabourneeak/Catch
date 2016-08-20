@@ -4,7 +4,6 @@ using System.Numerics;
 using Windows.System;
 using Catch.Base;
 using Catch.Graphics;
-using CatchLibrary.HexGrid;
 
 namespace Catch
 {
@@ -13,33 +12,29 @@ namespace Catch
     /// </summary>
     public class FieldController : IGraphicsComponent, IViewportController
     {
-        private Vector2 WindowSize { get; set; }
-        public float Zoom { get; private set; }
-        public Vector2 Pan => _pan;
-        public HexCoords HoverHexCoords { get; private set; }
-
         private Vector2 _pan;
+        private float _zoom;
         private Matrix3x2 _mapTransform;
 
+        private readonly UiStateModel _ui;
         private readonly List<IAgent> _agents;
         private readonly Map.Map _map;
 
-        public FieldController(List<IAgent> agents, Map.Map map)
+        public FieldController(UiStateModel ui, List<IAgent> agents, Map.Map map)
         {
+            _ui = ui;
             _agents = agents;
             _map = map;
 
-            Zoom = 1.0f;
+            _zoom = 1.0f;
             _pan = Vector2.Zero;
         }
 
-        public void Initialize(Vector2 size)
+        public void Initialize()
         {
-            WindowSize = size;
-
-            Zoom = 1.0f;
-            _pan.X = (WindowSize.X - _map.Size.X) / 2.0f;
-            _pan.Y = WindowSize.Y * -1.0f + (WindowSize.Y - _map.Size.Y) / 2.0f;
+            _zoom = 1.0f;
+            _pan.X = (_ui.WindowSize.X - _map.Size.X) / 2.0f;
+            _pan.Y = _ui.WindowSize.Y * -1.0f + (_ui.WindowSize.Y - _map.Size.Y) / 2.0f;
         }
 
         #region IGraphicsComponent Implementation
@@ -66,7 +61,7 @@ namespace Catch
         {
             // apply view matrix
             drawArgs.PushScale(1.0f, -1.0f);
-            drawArgs.PushScale(Zoom);
+            drawArgs.PushScale(_zoom);
             drawArgs.PushTranslation(_pan);
 
             // calculate viewport transform, used for zoom/pan
@@ -88,31 +83,31 @@ namespace Catch
 
         public void PanBy(Vector2 panDelta)
         {
-            _pan = Vector2.Add(_pan, Vector2.Multiply(panDelta, 1.0f / Zoom));
+            _pan = Vector2.Add(_pan, Vector2.Multiply(panDelta, 1.0f / _zoom));
         }
 
         public void ZoomToPoint(Vector2 viewCoords, float zoomDelta)
         {
-            var newZoom = Math.Max(0.4f, Math.Min(2.0f, Zoom + zoomDelta));
+            var newZoom = Math.Max(0.4f, Math.Min(2.0f, _zoom + zoomDelta));
 
             var zoomCenter = TranslateToFieldCoords(viewCoords);
             _pan = Vector2.Add(_pan, zoomCenter);
-            _pan = Vector2.Multiply(_pan, Zoom / newZoom);
+            _pan = Vector2.Multiply(_pan, _zoom / newZoom);
             _pan = Vector2.Subtract(_pan, zoomCenter);
 
-            Zoom = newZoom;
+            _zoom = newZoom;
         }
 
         public void Resize(Vector2 size)
         {
-            WindowSize = size;
+
         }
 
         public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
         {
             var fieldCoords = TranslateToFieldCoords(viewCoords);
 
-            HoverHexCoords = _map.PointToHexCoords(fieldCoords);
+            _ui.HoverHexCoords = _map.PointToHexCoords(fieldCoords);
         }
 
         public void Touch(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)

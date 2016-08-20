@@ -157,6 +157,7 @@
     <Compile Include="Towers\GunTowerBaseModifier.cs" />
     <Compile Include="Towers\NilTower.cs" />
     <Compile Include="Towers\VoidTower.cs" />
+    <Compile Include="UiStateModel.cs" />
     <Compile Include="Win2d\PointerData.cs" />
     <Compile Include="Win2d\Win2dProvider.cs" />
   </ItemGroup>
