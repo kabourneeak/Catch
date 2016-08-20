@@ -6,13 +6,16 @@ namespace Catch.Base
     public class ModifierCollection : IEnumerable<Modifier>
     {
         private readonly IAgent _agent;
-        private readonly SortedSet<Modifier> _modifiers;
+        private readonly List<Modifier> _modifiers;
+        private readonly ModifierComparer _comparer;
         private bool _needsApplyToBase;
 
         public ModifierCollection(IAgent agent)
         {
             _agent = agent;
-            _modifiers = new SortedSet<Modifier>(ModifierComparer.GetComparer());
+
+            _modifiers = new List<Modifier>();
+            _comparer = new ModifierComparer();
         }
 
         public void Update(float ticks)
@@ -23,7 +26,7 @@ namespace Catch.Base
                 _needsApplyToBase = _needsApplyToBase || m.NeedsApplyToBase;
             }
 
-            var numRemoved = _modifiers.RemoveWhere(m => !m.IsActive);
+            var numRemoved = _modifiers.RemoveAll(m => !m.IsActive);
 
             if (numRemoved > 0)
                 _needsApplyToBase = true;
@@ -80,6 +83,8 @@ namespace Catch.Base
             if (apply)
             {
                 _modifiers.Add(modifier);
+                _modifiers.Sort(_comparer);
+
                 _needsApplyToBase = true;
             }
         }
@@ -99,7 +104,9 @@ namespace Catch.Base
             _needsApplyToBase = true;
         }
 
-        public int Count { get { return _modifiers.Count; } }
+        public int Count => _modifiers.Count;
+
+        #region IEnumerable
 
         public IEnumerator<Modifier> GetEnumerator()
         {
@@ -111,20 +118,10 @@ namespace Catch.Base
             return GetEnumerator();
         }
 
+        #endregion
+
         private class ModifierComparer : IComparer<Modifier>
         {
-            private static ModifierComparer _instance;
-
-            public static ModifierComparer GetComparer()
-            {
-                return _instance ?? (_instance = new ModifierComparer());
-            }
-
-            private ModifierComparer()
-            {
-
-            }
-
             public int Compare(Modifier x, Modifier y)
             {
                 return x.Priority.CompareTo(y.Priority);
