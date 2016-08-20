@@ -5,7 +5,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
 {
-    public class HexagonGraphics : IGraphicsComponent, IIndicator
+    public class HexagonGraphics : IGraphicsComponent
     {
         private readonly StyleArgs _style;
         private readonly float _radius;
@@ -17,8 +17,6 @@ namespace Catch.Graphics
             _radius = radius;
             _radiusH = HexUtils.GetRadiusHeight(_radius);
         }
-
-        public DrawLayer Layer { get; set; }
 
         public void Update(float ticks)
         {

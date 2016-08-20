@@ -41,11 +41,7 @@ namespace Catch.Towers
             {
                 _sharedIndicators = new List<IIndicator>();
 
-                var radius = config.GetFloat("TileRadius");
-                var inset = config.GetFloat("TileRadiusInset");
-                var style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.DarkRed, StrokeWidth = 3 };
-
-                _sharedIndicators.Add(new HexagonGraphics(radius - inset, style));
+                _sharedIndicators.Add(new TowerTileIndicator(config, Colors.DarkRed));
             }
 
             return _sharedIndicators;

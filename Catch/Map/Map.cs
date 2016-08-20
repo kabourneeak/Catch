@@ -39,6 +39,8 @@ namespace Catch.Map
         public int Columns { get; }
         public Vector2 Size { get; }
 
+        public bool HasHex(HexCoords hc) => _tiles.HasHex(hc);
+
         public Tile GetHex(HexCoords hc) => _tiles.GetHex(hc);
 
         public Tile GetNeighbour(Tile tile, HexDirection direction) => _tiles.GetNeighbour(tile.Coords, direction);

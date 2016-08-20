@@ -99,6 +99,7 @@
     <Compile Include="Base\AgentBase.cs" />
     <Compile Include="Base\AttackModel.cs" />
     <Compile Include="Base\BaseSpecModel.cs" />
+    <Compile Include="Towers\TowerHoverIndicator.cs" />
     <Compile Include="PlayerModel.cs" />
     <Compile Include="ScriptCommand.cs" />
     <Compile Include="Graphics\CreateResourcesArgs.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Towers\GunTowerBaseIndicator.cs" />
     <Compile Include="Towers\GunTowerBaseModifier.cs" />
     <Compile Include="Towers\NilTower.cs" />
+    <Compile Include="Towers\TowerTileIndicator.cs" />
     <Compile Include="Towers\VoidTower.cs" />
     <Compile Include="UiStateModel.cs" />
     <Compile Include="Win2d\PointerData.cs" />

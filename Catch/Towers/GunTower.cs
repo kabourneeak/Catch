@@ -19,11 +19,7 @@ namespace Catch.Towers
 
             Brain = new GunTowerBaseBehaviour(this, config);
 
-            var radius = config.GetFloat("TileRadius");
-            var inset = config.GetFloat("TileRadiusInset");
-            var style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.DeepSkyBlue, StrokeWidth = 3};
-
-            Indicators.Add(new HexagonGraphics(radius - inset, style));
+            Indicators.Add(new TowerTileIndicator(config, Colors.DeepSkyBlue));
             Indicators.Add(new GunTowerBaseIndicator(config));
         }
 

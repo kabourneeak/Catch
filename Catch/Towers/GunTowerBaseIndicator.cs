@@ -12,7 +12,7 @@ namespace Catch.Towers
     {
         public GunTowerBaseIndicator(IConfig config)
         {
-            Layer = DrawLayer.Tower;
+
         }
 
         public void Update(float ticks)
@@ -73,6 +73,6 @@ namespace Catch.Towers
             drawArgs.Pop();
         }
 
-        public DrawLayer Layer { get; set; }
+        public DrawLayer Layer => DrawLayer.Tower;
     }
 }
