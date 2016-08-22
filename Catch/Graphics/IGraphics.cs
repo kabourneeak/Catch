@@ -1,26 +1,28 @@
 ﻿namespace Catch.Graphics
 {
     /// <summary>
-    /// Just the basic methods for drawing and animation
+    /// An object which can draw itself in Win2D
     /// </summary>
-    public interface IGraphicsComponent
+    public interface IGraphics
     {
         #region Events
 
-        void Update(float ticks);
-
+        /// <summary>
+        /// When called, an IGraphics should create and cache any resources, e.g., 
+        /// with Win2D CanvasCachedGeometry
+        /// </summary>
         void CreateResources(CreateResourcesArgs createArgs);
 
         /// <summary>
-        /// When called, an IGraphicsComponent should free any caches resources. The object may be called
+        /// When called, an IGraphics should free any cached resources. The object may be called
         /// upon later to CreateResources.
         /// </summary>
         void DestroyResources();
 
         /// <summary>
-        /// Has the IGraphicsComponent draw itself.
+        /// Has the IGraphics draw itself.
         /// 
-        /// Regarding the rotation parameter, it is up to the IGraphicsComponent to decide if it will use 
+        /// Regarding the rotation parameter, it is up to the IGraphics to decide if it will use 
         /// this value. Non-optional rotation can be enforced by pushing a rotation transformation to the
         /// DrawArgs before calling Draw.
         /// </summary>

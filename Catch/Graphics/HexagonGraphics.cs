@@ -1,11 +1,10 @@
-using Catch.Base;
 using CatchLibrary.HexGrid;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
 {
-    public class HexagonGraphics : IGraphicsComponent
+    public class HexagonGraphics : IGraphics
     {
         private readonly StyleArgs _style;
         private readonly float _radius;
@@ -16,11 +15,6 @@ namespace Catch.Graphics
             _style = style;
             _radius = radius;
             _radiusH = HexUtils.GetRadiusHeight(_radius);
-        }
-
-        public void Update(float ticks)
-        {
-            // do nothing
         }
 
         private int _createFrameId = -1;

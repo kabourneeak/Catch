@@ -3,7 +3,7 @@ using Catch.Graphics;
 
 namespace Catch.Base
 {
-    public interface IGameObject : IGraphicsComponent
+    public interface IGameObject : IGraphics, IUpdatable
     {
         string DisplayName { get; }
 

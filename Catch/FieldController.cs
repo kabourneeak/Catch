@@ -10,7 +10,7 @@ namespace Catch
     /// <summary>
     /// Handles drawing the field of play, i.e., the map and the agents running around on it.
     /// </summary>
-    public class FieldController : IGraphicsComponent, IViewportController
+    public class FieldController : IGraphics, IViewportController
     {
         private Vector2 _pan;
         private float _zoom;

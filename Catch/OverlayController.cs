@@ -13,7 +13,7 @@ namespace Catch
     /// Handles drawing and event handling for the player control overlay, i.e., the buttons
     /// and things the user will interact with
     /// </summary>
-    public class OverlayController : IGraphicsComponent, IViewportController
+    public class OverlayController : IGraphics, IViewportController
     {
         private readonly IConfig _config;
         private readonly UiStateModel _ui;
