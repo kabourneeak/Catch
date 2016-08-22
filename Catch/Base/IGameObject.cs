@@ -14,7 +14,5 @@ namespace Catch.Base
         Vector2 Position { get; set; }
 
         float Rotation { get; set; }
-
-        DrawLayer Layer { get; }
     }
 }

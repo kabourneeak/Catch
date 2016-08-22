@@ -31,7 +31,6 @@ namespace Catch.Base
         public string DisplayStatus { get; protected set; }
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
-        public DrawLayer Layer { get; protected set; }
 
         public virtual void Update(float ticks)
         {

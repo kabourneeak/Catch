@@ -1,5 +1,4 @@
 ﻿using Catch.Base;
-using Catch.Graphics;
 using Catch.Map;
 
 namespace Catch.Towers
@@ -17,7 +16,6 @@ namespace Catch.Towers
         {
             Tile = tile;
             Position = tile.Position;
-            Layer = DrawLayer.Tower;
 
             // site into tile
             tile.AddTower(this);

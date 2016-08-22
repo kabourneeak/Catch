@@ -39,9 +39,10 @@ namespace Catch.Towers
         {
             if (_sharedIndicators == null)
             {
-                _sharedIndicators = new List<IIndicator>();
-
-                _sharedIndicators.Add(new TowerTileIndicator(config, Colors.DarkRed));
+                _sharedIndicators = new List<IIndicator>
+                {
+                    new TowerTileIndicator(config, Colors.DarkRed)
+                };
             }
 
             return _sharedIndicators;

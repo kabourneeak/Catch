@@ -13,8 +13,6 @@ namespace Catch.Towers
         {
             _config = config;
 
-            Layer = DrawLayer.Tower;
-
             Modifiers.Add(new GunTowerBaseModifier(this));
 
             Brain = new GunTowerBaseBehaviour(this, config);
