@@ -1,22 +1,17 @@
 ﻿using Windows.UI;
 using Catch.Base;
-using Catch.Map;
 using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.Graphics
 {
     public class LabelIndicator : IIndicator
     {
-        private readonly Tile _tile;
-        public string Label { get; set; }
-        public Color Colour { get; set; }
+        private string Label { get; }
+        private Color Colour { get; }
 
-        public LabelIndicator(Tile tile, string label)
+        public LabelIndicator(string label)
         {
-            _tile = tile;
             Label = label;
-
-            Layer = DrawLayer.Ui;
             Colour = Colors.OrangeRed;
         }
 
@@ -67,6 +62,6 @@ namespace Catch.Graphics
             drawArgs.Pop();
         }
 
-        public DrawLayer Layer { get; set; }
+        public DrawLayer Layer => DrawLayer.Ui;
     }
 }

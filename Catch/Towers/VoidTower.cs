@@ -17,7 +17,9 @@ namespace Catch.Towers
         {
             Brain = GetSharedBrain();
             Indicators.AddRange(GetSharedIndicators(config));
-            Indicators.Add(new LabelIndicator(tile, string.Format("{0},{1}", tile.Coords.Q, tile.Coords.R)));
+
+            var label = string.Format("{0},{1}", tile.Coords.Q, tile.Coords.R);
+            Indicators.Add(new LabelIndicator(label));
         }
 
         public override string GetAgentType()
