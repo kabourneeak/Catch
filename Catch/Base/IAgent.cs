@@ -14,11 +14,11 @@ namespace Catch.Base
         /// Once set to false, the object will be removed from the game on
         /// the next update cycle.
         /// </summary>
-        bool IsActive { get; set; }
+        bool IsActive { get; }
 
-        Tile Tile { get; set; }
+        Tile Tile { get; }
 
-        bool IsTargetable { get; set; }
+        bool IsTargetable { get; }
 
         ModifierCollection Modifiers { get; }
 
@@ -27,12 +27,6 @@ namespace Catch.Base
         BaseSpecModel BaseSpecs { get; }
 
         IAgentStats Stats { get; }
-
-        #endregion
-
-        #region Actions
-
-        void PerformAttack(IAgent target);
 
         #endregion
 

@@ -16,6 +16,7 @@ namespace Catch.Base
             Modifiers = new ModifierCollection(this);
             IsActive = true;
             BaseSpecs = new BaseSpecModel();
+            Stats = new AgentStatsModel();
         }
 
         #region AgentBase Implementation
@@ -71,15 +72,10 @@ namespace Catch.Base
         public bool IsActive { get; set; }
         public Tile Tile { get; set; }
         public bool IsTargetable { get; set; }
-        public ModifierCollection Modifiers { get; protected set; }
-        public IndicatorCollection Indicators { get; protected set; }
-        public BaseSpecModel BaseSpecs { get; protected set; }
-        public IAgentStats Stats { get; protected set; }
-
-        public void PerformAttack(IAgent target)
-        {
-            throw new System.NotImplementedException();
-        }
+        public ModifierCollection Modifiers { get; }
+        public IndicatorCollection Indicators { get; }
+        public BaseSpecModel BaseSpecs { get; }
+        public IAgentStats Stats { get; }
 
         public virtual void OnRemove()
         {

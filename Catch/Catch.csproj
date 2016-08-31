@@ -97,6 +97,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Base\AgentBase.cs" />
+    <Compile Include="Base\AgentStatsModel.cs" />
     <Compile Include="Base\AttackModel.cs" />
     <Compile Include="Base\BaseSpecModel.cs" />
     <Compile Include="Base\IUpdatable.cs" />
