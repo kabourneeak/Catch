@@ -13,7 +13,7 @@ namespace Catch.Graphics
 
     public class StyleArgs
     {
-        private static readonly CanvasStrokeStyle _baseStrokeStyle = new CanvasStrokeStyle();
+        private static readonly CanvasStrokeStyle BaseStrokeStyle = new CanvasStrokeStyle();
         private CanvasStrokeStyle _strokeStyle;
 
         public Color Color { get; set; }
@@ -23,7 +23,7 @@ namespace Catch.Graphics
 
         public CanvasStrokeStyle StrokeStyle
         {
-            get { return _strokeStyle ?? _baseStrokeStyle; }
+            get { return _strokeStyle ?? BaseStrokeStyle; }
             set { _strokeStyle = value; }
         }
 
@@ -62,7 +62,12 @@ namespace Catch.Graphics
 
         private ICanvasBrush CreateSolidBrush(ICanvasResourceCreator resourceCreator)
         {
-            return new CanvasSolidColorBrush(resourceCreator, Color);
+            var brush = new CanvasSolidColorBrush(resourceCreator, Color)
+            {
+                Opacity = BrushOpacity
+            };
+
+            return brush;
         }
 
         private ICanvasBrush CreateLinearGradientBrush(ICanvasResourceCreator resourceCreator)
