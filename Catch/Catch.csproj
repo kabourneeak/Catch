@@ -100,6 +100,7 @@
     <Compile Include="Base\AttackModel.cs" />
     <Compile Include="Base\BaseSpecModel.cs" />
     <Compile Include="Base\IUpdatable.cs" />
+    <Compile Include="LevelUi\StatusBar.cs" />
     <Compile Include="Towers\TowerHoverIndicator.cs" />
     <Compile Include="PlayerModel.cs" />
     <Compile Include="ScriptCommand.cs" />

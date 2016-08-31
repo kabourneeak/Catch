@@ -3,6 +3,7 @@ using System.Numerics;
 using Windows.System;
 using Catch.Base;
 using Catch.Graphics;
+using Catch.LevelUi;
 using Catch.Services;
 using Catch.Towers;
 using CatchLibrary.HexGrid;
@@ -13,7 +14,7 @@ namespace Catch
     /// Handles drawing and event handling for the player control overlay, i.e., the buttons
     /// and things the user will interact with
     /// </summary>
-    public class OverlayController : IGraphics, IViewportController
+    public class OverlayController : IGraphics, IViewportController, IUpdatable
     {
         private readonly IConfig _config;
         private readonly UiStateModel _ui;
@@ -27,6 +28,8 @@ namespace Catch
             _agents = agents;
             _map = map;
 
+            // create UI elements
+            _statusBar = new StatusBar(_ui, _config);
             _hoverIndicator = new TowerHoverIndicator(_config);
         }
 
@@ -35,26 +38,30 @@ namespace Catch
 
         }
 
-        #region IGraphicsComponent Implementation
+        #region IUpdatable Implementation
 
         public void Update(float ticks)
         {
-
+            
         }
+
+        #endregion
+
+        #region IGraphicsComponent Implementation
 
         public void CreateResources(CreateResourcesArgs createArgs)
         {
-
+            _statusBar.CreateResources(createArgs);
         }
 
         public void DestroyResources()
         {
-
+            _statusBar.DestroyResources();
         }
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {
-
+            _statusBar.Draw(drawArgs, rotation);
         }
 
         #endregion
@@ -77,6 +84,7 @@ namespace Catch
         }
 
         private HexCoords _lastHover;
+        private readonly StatusBar _statusBar;
         private readonly TowerHoverIndicator _hoverIndicator;
 
         public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)

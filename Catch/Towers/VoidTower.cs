@@ -20,6 +20,10 @@ namespace Catch.Towers
 
             var label = string.Format("{0},{1}", tile.Coords.Q, tile.Coords.R);
             Indicators.Add(new LabelIndicator(label));
+
+            DisplayName = "Empty Socket";
+            DisplayStatus = string.Empty;
+            DisplayInfo = string.Empty;
         }
 
         public override string GetAgentType()

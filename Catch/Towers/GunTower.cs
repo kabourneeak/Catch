@@ -19,6 +19,10 @@ namespace Catch.Towers
 
             Indicators.Add(new TowerTileIndicator(config, Colors.DeepSkyBlue));
             Indicators.Add(new GunTowerBaseIndicator(config));
+
+            DisplayName = "Gun Tower";
+            DisplayStatus = string.Empty;
+            DisplayInfo = string.Empty;
         }
 
         #region IGameObject Implementation
