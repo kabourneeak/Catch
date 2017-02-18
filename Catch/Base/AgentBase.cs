@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Numerics;
 using Catch.Graphics;
 using Catch.Map;
 
@@ -14,9 +15,11 @@ namespace Catch.Base
             Position = new Vector2(0.0f);
             Indicators = new IndicatorCollection();
             Modifiers = new ModifierCollection(this);
-            IsActive = true;
+            Commands = new CommandCollection();
             BaseSpecs = new BaseSpecModel();
             Stats = new AgentStatsModel();
+
+            IsActive = true;
         }
 
         #region AgentBase Implementation
@@ -35,9 +38,10 @@ namespace Catch.Base
 
         public virtual void Update(float ticks)
         {
+            Indicators.Update(ticks);
             Modifiers.Update(ticks);
             Brain.Update(ticks);
-            Indicators.Update(ticks);
+            Commands.Update(ticks);
         }
 
         public virtual void CreateResources(CreateResourcesArgs createArgs)
@@ -74,6 +78,7 @@ namespace Catch.Base
         public bool IsTargetable { get; set; }
         public ModifierCollection Modifiers { get; }
         public IndicatorCollection Indicators { get; }
+        public CommandCollection Commands { get; }
         public BaseSpecModel BaseSpecs { get; }
         public IAgentStats Stats { get; }
 

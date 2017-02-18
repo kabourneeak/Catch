@@ -1,4 +1,5 @@
-﻿using Catch.Map;
+﻿using System.Collections.Generic;
+using Catch.Map;
 
 namespace Catch.Base
 {
@@ -25,6 +26,8 @@ namespace Catch.Base
         IndicatorCollection Indicators { get; }
 
         BaseSpecModel BaseSpecs { get; }
+
+        CommandCollection Commands { get; }
 
         IAgentStats Stats { get; }
 

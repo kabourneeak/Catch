@@ -97,11 +97,15 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Base\AgentBase.cs" />
+    <Compile Include="Base\CommandCollection.cs" />
+    <Compile Include="Base\IAgentCommand.cs" />
+    <Compile Include="Base\AgentCommandType.cs" />
     <Compile Include="Base\AgentStatsModel.cs" />
     <Compile Include="Base\AttackModel.cs" />
     <Compile Include="Base\BaseSpecModel.cs" />
     <Compile Include="Base\IUpdatable.cs" />
     <Compile Include="LevelUi\StatusBar.cs" />
+    <Compile Include="Towers\BuyTowerCommand.cs" />
     <Compile Include="Towers\TowerHoverIndicator.cs" />
     <Compile Include="PlayerModel.cs" />
     <Compile Include="ScriptCommand.cs" />
