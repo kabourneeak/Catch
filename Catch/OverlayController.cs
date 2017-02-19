@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
-using Windows.System;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.LevelUi;
@@ -68,12 +67,12 @@ namespace Catch
 
         #region IViewportController Implementation
 
-        public void PanBy(Vector2 panDelta)
+        public void PanBy(PanByEventArgs eventArgs)
         {
             // do nothing
         }
 
-        public void ZoomToPoint(Vector2 viewCoords, float zoomDelta)
+        public void ZoomToPoint(ZoomToPointEventArgs eventArgs)
         {
             // do nothing
         }
@@ -87,7 +86,7 @@ namespace Catch
         private readonly StatusBar _statusBar;
         private readonly TowerHoverIndicator _hoverIndicator;
 
-        public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+        public void Hover(HoverEventArgs eventArgs)
         {
             if (_lastHover != null && _lastHover.Equals(_ui.HoverHexCoords))
                 return;
@@ -112,12 +111,12 @@ namespace Catch
             }
         }
 
-        public void Touch(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+        public void Touch(TouchEventArgs eventArgs)
         {
             // TODO
         }
 
-        public void KeyPress(VirtualKey key)
+        public void KeyPress(KeyPressEventArgs eventArgs)
         {
             // TODO
         }

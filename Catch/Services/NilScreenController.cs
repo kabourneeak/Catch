@@ -1,19 +1,22 @@
 ﻿using System.Numerics;
-using Windows.System;
 using Catch.Graphics;
 
-namespace Catch
+namespace Catch.Services
 {
-    public class NilGameController : IGameController
+    public class NilScreenController : IScreenController
     {
-        #region IGameController Implementation
-
-        public event GameStateChangedHandler GameStateChangeRequested;
+        #region IScreenController Implementation
 
         public void Initialize(Vector2 size, GameStateArgs args)
         {
             // do nothing
         }
+
+        public bool AllowParentUpdate() => false;
+
+        public bool AllowParentDraw() => false;
+
+        public bool AllowParentInput() => false;
 
         #endregion
 
@@ -43,12 +46,12 @@ namespace Catch
 
         #region IViewportController Implementation
 
-        public void PanBy(Vector2 panDelta)
+        public void PanBy(PanByEventArgs eventArgs)
         {
             // do nothing
         }
 
-        public void ZoomToPoint(Vector2 viewCoords, float zoomDelta)
+        public void ZoomToPoint(ZoomToPointEventArgs eventArgs)
         {
             // do nothing
         }
@@ -58,17 +61,17 @@ namespace Catch
             // do nothing
         }
 
-        public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+        public void Hover(HoverEventArgs eventArgs)
         {
             // do nothing
         }
 
-        public void Touch(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+        public void Touch(TouchEventArgs eventArgs)
         {
             // do nothing
         }
 
-        public void KeyPress(VirtualKey key)
+        public void KeyPress(KeyPressEventArgs eventArgs)
         {
             // do nothing
         }

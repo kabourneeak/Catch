@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Windows.System;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.Map;
@@ -14,7 +13,7 @@ namespace Catch
     /// <summary>
     /// Controls the execution of a level, executing instructions from a map definition
     /// </summary>
-    public class LevelController : IGameController
+    public class LevelController : IScreenController
     {
         private FieldController _fieldController;
         private OverlayController _overlayController;
@@ -43,9 +42,7 @@ namespace Catch
 
         #endregion
 
-        #region IGameController Implementation
-
-        public event GameStateChangedHandler GameStateChangeRequested;
+        #region IScreenController Implementation
 
         public void Initialize(Vector2 size, GameStateArgs args)
         {
@@ -61,6 +58,12 @@ namespace Catch
             _fieldController = new FieldController(_ui, _agents, _map);
             _fieldController.Initialize();
         }
+
+        public bool AllowParentUpdate() => false;
+
+        public bool AllowParentDraw() => false;
+
+        public bool AllowParentInput() => false;
 
         private void InitializeMap(MapModel mapModel)
         {
@@ -122,14 +125,14 @@ namespace Catch
 
         #region IViewportController Implementation
 
-        public void PanBy(Vector2 panDelta)
+        public void PanBy(PanByEventArgs eventArgs)
         {
-            _fieldController.PanBy(panDelta);
+            _fieldController.PanBy(eventArgs);
         }
 
-        public void ZoomToPoint(Vector2 viewCoords, float zoomDelta)
+        public void ZoomToPoint(ZoomToPointEventArgs eventArgs)
         {
-            _fieldController.ZoomToPoint(viewCoords, zoomDelta);
+            _fieldController.ZoomToPoint(eventArgs);
         }
 
         public void Resize(Vector2 size)
@@ -140,22 +143,28 @@ namespace Catch
             _overlayController.Resize(size);
         }
 
-        public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+        public void Hover(HoverEventArgs eventArgs)
         {
-            _fieldController.Hover(viewCoords, keyModifiers);
-            _overlayController.Hover(viewCoords, keyModifiers);
+            _overlayController.Hover(eventArgs);
+
+            if (!eventArgs.Handled)
+                _fieldController.Hover(eventArgs);
         }
 
-        public void Touch(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+        public void Touch(TouchEventArgs eventArgs)
         {
-            _fieldController.Touch(viewCoords, keyModifiers);
-            _overlayController.Touch(viewCoords, keyModifiers);
+            _overlayController.Touch(eventArgs);
+
+            if (!eventArgs.Handled)
+                _fieldController.Touch(eventArgs);
         }
 
-        public void KeyPress(VirtualKey key)
+        public void KeyPress(KeyPressEventArgs eventArgs)
         {
-            _fieldController.KeyPress(key);
-            _overlayController.KeyPress(key);
+            _overlayController.KeyPress(eventArgs);
+
+            if (!eventArgs.Handled)
+                _fieldController.KeyPress(eventArgs);
         }
 
         #endregion

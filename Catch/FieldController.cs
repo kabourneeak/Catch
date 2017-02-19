@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Windows.System;
 using Catch.Base;
 using Catch.Graphics;
+using Catch.Services;
 
 namespace Catch
 {
@@ -81,16 +81,16 @@ namespace Catch
 
         #region IViewportController Implementation
 
-        public void PanBy(Vector2 panDelta)
+        public void PanBy(PanByEventArgs eventArgs)
         {
-            _pan = Vector2.Add(_pan, Vector2.Multiply(panDelta, 1.0f / _zoom));
+            _pan = Vector2.Add(_pan, Vector2.Multiply(eventArgs.PanDelta, 1.0f / _zoom));
         }
 
-        public void ZoomToPoint(Vector2 viewCoords, float zoomDelta)
+        public void ZoomToPoint(ZoomToPointEventArgs eventArgs)
         {
-            var newZoom = Math.Max(0.4f, Math.Min(2.0f, _zoom + zoomDelta));
+            var newZoom = Math.Max(0.4f, Math.Min(2.0f, _zoom + eventArgs.ZoomDelta));
 
-            var zoomCenter = TranslateToFieldCoords(viewCoords);
+            var zoomCenter = TranslateToFieldCoords(eventArgs.ViewCoords);
             _pan = Vector2.Add(_pan, zoomCenter);
             _pan = Vector2.Multiply(_pan, _zoom / newZoom);
             _pan = Vector2.Subtract(_pan, zoomCenter);
@@ -103,19 +103,19 @@ namespace Catch
 
         }
 
-        public void Hover(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+        public void Hover(HoverEventArgs eventArgs)
         {
-            var fieldCoords = TranslateToFieldCoords(viewCoords);
+            var fieldCoords = TranslateToFieldCoords(eventArgs.ViewCoords);
 
             _ui.HoverHexCoords = _map.PointToHexCoords(fieldCoords);
         }
 
-        public void Touch(Vector2 viewCoords, VirtualKeyModifiers keyModifiers)
+        public void Touch(TouchEventArgs eventArgs)
         {
             // TODO
         }
 
-        public void KeyPress(VirtualKey key)
+        public void KeyPress(KeyPressEventArgs eventArgs)
         {
             // TODO
         }

@@ -4,6 +4,7 @@ using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Catch.Graphics;
+using Catch.Services;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
@@ -14,7 +15,7 @@ namespace Catch
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private readonly MainGameController _gameController;
+        private readonly DelegatingScreenManager _gameManager;
         private int _frameId;
         private const float TicksPerSecond = 60.0f;
 
@@ -24,8 +25,8 @@ namespace Catch
 
             _frameId = 0;
 
-            _gameController = new MainGameController();
-            _gameController.Initialize(new Vector2((float)cvs.Size.Width, (float)cvs.Size.Height), null);
+            _gameManager = new DelegatingScreenManager();
+            _gameManager.Initialize(new Vector2((float)cvs.Size.Width, (float)cvs.Size.Height), null);
         }
 
         private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
@@ -88,7 +89,7 @@ namespace Catch
             var resourceCreator = sender.Device;
             var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, true);
 
-            _gameController.CreateResources(createArgs);
+            _gameManager.CreateResources(createArgs);
         }
 
         private void OnUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
@@ -99,7 +100,7 @@ namespace Catch
             var elapsedMs = args.Timing.ElapsedTime.Milliseconds;
             var elapsedTicks = TicksPerSecond * elapsedMs / 1000.0f;
 
-            _gameController.Update(elapsedTicks);
+            _gameManager.Update(elapsedTicks);
         }
 
         private void OnDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
@@ -111,13 +112,13 @@ namespace Catch
             var resourceCreator = sender.Device;
             var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, false);
 
-            _gameController.CreateResources(createArgs);
+            _gameManager.CreateResources(createArgs);
 
             // send draw
             var ds = args.DrawingSession;
             var drawArgs = new DrawArgs(ds, ds.Transform, _frameId);
 
-            _gameController.Draw(drawArgs, 0.0f);
+            _gameManager.Draw(drawArgs, 0.0f);
         }
 
         #endregion
@@ -139,7 +140,7 @@ namespace Catch
         {
             var cvsSize = cvs.Size;
 
-            _gameController.Resize(new Vector2((float)cvsSize.Width, (float)cvsSize.Height));
+            _gameManager.Resize(new Vector2((float)cvsSize.Width, (float)cvsSize.Height));
         }
 
         #endregion
@@ -158,7 +159,7 @@ namespace Catch
             }
             else if (args.CurrentPoint.Properties.IsLeftButtonPressed)
             {
-                _gameController.Touch(args.CurrentPoint.Position.ToVector2(), args.KeyModifiers);
+                _gameManager.Touch(new TouchEventArgs(args.CurrentPoint.Position.ToVector2(), args.KeyModifiers));
             }
 
             args.Handled = true;
@@ -174,7 +175,7 @@ namespace Catch
             }
             else if (!args.CurrentPoint.Properties.IsLeftButtonPressed)
             {
-                _gameController.Hover(args.CurrentPoint.Position.ToVector2(), args.KeyModifiers);
+                _gameManager.Hover(new HoverEventArgs(args.CurrentPoint.Position.ToVector2(), args.KeyModifiers));
             }
 
             args.Handled = true;
@@ -192,7 +193,7 @@ namespace Catch
             var wheelTicks = args.CurrentPoint.Properties.MouseWheelDelta;
             wheelTicks = wheelTicks / 120;
 
-            _gameController.ZoomToPoint(coords, wheelTicks * 0.1f);
+            _gameManager.ZoomToPoint(new ZoomToPointEventArgs(coords, wheelTicks * 0.1f));
         }
 
         private void gestureRecognizer_ManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)
@@ -206,9 +207,9 @@ namespace Catch
 
             screenDelta.X = (float) args.Delta.Translation.X;
             screenDelta.Y = (float) args.Delta.Translation.Y * -1.0f;
-            _gameController.PanBy(screenDelta);
+            _gameManager.PanBy(new PanByEventArgs(screenDelta));
 
-            _gameController.ZoomToPoint(args.Position.ToVector2(), args.Delta.Scale - 1.0f);
+            _gameManager.ZoomToPoint(new ZoomToPointEventArgs(args.Position.ToVector2(), args.Delta.Scale - 1.0f));
         }
 
         private void gestureRecognizer_ManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
@@ -227,7 +228,7 @@ namespace Catch
             args.Handled = true;
 
             // Schedule to run on game loop
-            var action = cvs.RunOnGameLoopThreadAsync(() => _gameController.KeyPress(key));
+            var action = cvs.RunOnGameLoopThreadAsync(() => _gameManager.KeyPress(new KeyPressEventArgs(key)));
         }
 
         #endregion

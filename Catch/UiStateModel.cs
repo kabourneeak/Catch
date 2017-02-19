@@ -15,5 +15,11 @@ namespace Catch
         public HexCoords HoverHexCoords { get; set; }
 
         public IAgent HoverTower { get; set; }
+
+        public UiStateModel()
+        {
+            WindowSize = Vector2.Zero;
+            HoverHexCoords = HexCoords.CreateFromOffset(-1, -1);
+        }
     }
 }
