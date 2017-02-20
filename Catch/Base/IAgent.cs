@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Catch.Map;
+﻿using Catch.Map;
 
 namespace Catch.Base
 {

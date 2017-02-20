@@ -11,17 +11,17 @@ namespace CatchLibrary.Serialization
 
         public PathStepModel()
         {
-            // empty constructor for construction
+            // empty constructor
         }
 
         public PathStepModel(HexCoords hc)
         {
-            this.Coords = hc;
+            Coords = hc;
         }
 
         public PathStepModel(TileModel tileModel)
         {
-            this.Coords = tileModel.Coords;
+            Coords = tileModel.Coords;
         }
     }
 }

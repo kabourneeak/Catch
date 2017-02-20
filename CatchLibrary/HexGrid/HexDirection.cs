@@ -20,15 +20,15 @@ namespace CatchLibrary.HexGrid
         private static readonly List<HexDirection> _allDirections = new List<HexDirection>() {HexDirection.North, 
             HexDirection.NorthWest, HexDirection.SouthWest, HexDirection.South, HexDirection.SouthEast, HexDirection.NorthEast};
 
-        private const int numDirections = 6;
+        private const int NumDirections = 6;
         
-        private const float pi = (float)Math.PI;
+        private const float Pi = (float)Math.PI;
 
         public static IEnumerable<HexDirection> AllDirections => _allDirections;
 
         public static HexDirection GetRandom()
         {
-            return _allDirections[_rng.Next(numDirections)];
+            return _allDirections[_rng.Next(NumDirections)];
         }
 
         public static float CenterRadians(this HexDirection hexDirection)
@@ -36,17 +36,17 @@ namespace CatchLibrary.HexGrid
             switch (hexDirection)
             {
                 case HexDirection.North:
-                    return 3 * pi / 6;
+                    return 3 * Pi / 6;
                 case HexDirection.NorthWest:
-                    return 5 * pi / 6;
+                    return 5 * Pi / 6;
                 case HexDirection.SouthWest:
-                    return 7 * pi / 6;
+                    return 7 * Pi / 6;
                 case HexDirection.South:
-                    return 9 * pi / 6;
+                    return 9 * Pi / 6;
                 case HexDirection.SouthEast:
-                    return 11 * pi / 6;
+                    return 11 * Pi / 6;
                 case HexDirection.NorthEast:
-                    return 1 * pi / 6;
+                    return 1 * Pi / 6;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

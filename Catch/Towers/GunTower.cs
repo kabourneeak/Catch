@@ -1,5 +1,4 @@
 ﻿using Windows.UI;
-using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;
 

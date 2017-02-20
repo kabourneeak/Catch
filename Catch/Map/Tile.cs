@@ -12,7 +12,7 @@ namespace Catch.Map
         private TowerBase _tower;
         private readonly ISet<MobBase> _mobs;
 
-        public Tile(HexCoords coords, Catch.Map.Map map, IConfig config)
+        public Tile(HexCoords coords, Map map, IConfig config)
         {
             Map = map;
             Coords = coords;
@@ -31,7 +31,7 @@ namespace Catch.Map
             Position = new Vector2(x, y);
         }
 
-        public Catch.Map.Map Map { get; protected set; }
+        public Map Map { get; protected set; }
 
         public HexCoords Coords { get; protected set; }
 

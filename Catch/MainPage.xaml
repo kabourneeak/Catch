@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Loaded="MainPage_OnLoaded">
 
-    <Canvas x:Name="layout" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="Canvas_SizeChanged">
-        <canvas:CanvasAnimatedControl x:Name="cvs" ClearColor="Black" Update="OnUpdate" Draw="OnDraw" CreateResources="OnCreateResources" SizeChanged="cvs_SizeChanged" GameLoopStarting="OnGameLoopStarting" GameLoopStopped="OnGameLoopStopped" />
+    <Canvas x:Name="Layout" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="Canvas_SizeChanged">
+        <canvas:CanvasAnimatedControl x:Name="Cvs" ClearColor="Black" Update="OnUpdate" Draw="OnDraw" CreateResources="OnCreateResources" SizeChanged="cvs_SizeChanged" GameLoopStarting="OnGameLoopStarting" GameLoopStopped="OnGameLoopStopped" />
     </Canvas>
 </Page>

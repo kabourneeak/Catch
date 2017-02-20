@@ -59,11 +59,11 @@ namespace Catch
             _fieldController.Initialize();
         }
 
-        public bool AllowParentUpdate() => false;
+        public bool AllowPredecessorUpdate() => false;
 
-        public bool AllowParentDraw() => false;
+        public bool AllowPredecessorDraw() => false;
 
-        public bool AllowParentInput() => false;
+        public bool AllowPredecessorInput() => false;
 
         private void InitializeMap(MapModel mapModel)
         {
@@ -180,7 +180,7 @@ namespace Catch
             _fieldController.Update(ticks);
 
             // only account for elapsed ticks after all agents have processed them
-            // this prevent new agents from scripts being double-updated
+            // this prevents new agents (those just emitted) from being double-updated
             _elapsedTicks += ticks;
 
             _agents.RemoveAll(delegate(IAgent a)

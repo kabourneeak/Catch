@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.Foundation;
+﻿using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
 using Catch.Graphics;

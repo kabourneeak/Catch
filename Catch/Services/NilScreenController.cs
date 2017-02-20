@@ -12,11 +12,11 @@ namespace Catch.Services
             // do nothing
         }
 
-        public bool AllowParentUpdate() => false;
+        public bool AllowPredecessorUpdate() => false;
 
-        public bool AllowParentDraw() => false;
+        public bool AllowPredecessorDraw() => false;
 
-        public bool AllowParentInput() => false;
+        public bool AllowPredecessorInput() => false;
 
         #endregion
 

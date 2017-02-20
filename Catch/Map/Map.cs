@@ -25,7 +25,7 @@ namespace Catch.Map
 
             Rows = rows;
             Columns = columns;
-            Size = new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), (float)(Rows * 2 * HexUtils.GetRadiusHeight(_tileRadius)));
+            Size = new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), Rows * 2 * HexUtils.GetRadiusHeight(_tileRadius));
 
             _tiles = new HexGridCollection<Tile>(Rows, Columns);
             _tiles.Populate((hc, v) => new Tile(hc, this, _config));

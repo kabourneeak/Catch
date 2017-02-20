@@ -26,7 +26,7 @@ namespace Catch
             _frameId = 0;
 
             _gameManager = new DelegatingScreenManager();
-            _gameManager.Initialize(new Vector2((float)cvs.Size.Width, (float)cvs.Size.Height), null);
+            _gameManager.Initialize(new Vector2((float)Cvs.Size.Width, (float)Cvs.Size.Height), null);
         }
 
         private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
@@ -61,7 +61,7 @@ namespace Catch
             _gestureRecognizer.AutoProcessInertia = false;
 
             _inputDevice =
-                cvs.CreateCoreIndependentInputSource(CoreInputDeviceTypes.Mouse | CoreInputDeviceTypes.Touch |
+                Cvs.CreateCoreIndependentInputSource(CoreInputDeviceTypes.Mouse | CoreInputDeviceTypes.Touch |
                                                      CoreInputDeviceTypes.Pen);
 
             _inputDevice.PointerPressed += OnPointerPressed;
@@ -132,13 +132,13 @@ namespace Catch
             //
 
             // animated area
-            cvs.Height = args.NewSize.Height;
-            cvs.Width = args.NewSize.Width;
+            Cvs.Height = args.NewSize.Height;
+            Cvs.Width = args.NewSize.Width;
         }
 
         private void cvs_SizeChanged(object sender, SizeChangedEventArgs args)
         {
-            var cvsSize = cvs.Size;
+            var cvsSize = Cvs.Size;
 
             _gameManager.Resize(new Vector2((float)cvsSize.Width, (float)cvsSize.Height));
         }
@@ -228,7 +228,7 @@ namespace Catch
             args.Handled = true;
 
             // Schedule to run on game loop
-            var action = cvs.RunOnGameLoopThreadAsync(() => _gameManager.KeyPress(new KeyPressEventArgs(key)));
+            var action = Cvs.RunOnGameLoopThreadAsync(() => _gameManager.KeyPress(new KeyPressEventArgs(key)));
         }
 
         #endregion

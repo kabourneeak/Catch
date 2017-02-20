@@ -146,11 +146,11 @@ namespace Catch.Services
             RequestScreen(new GameStateArgs(GameState.PlayMap, mapModel));
         }
 
-        public bool AllowParentUpdate() => false;
+        public bool AllowPredecessorUpdate() => false;
 
-        public bool AllowParentDraw() => false;
+        public bool AllowPredecessorDraw() => false;
 
-        public bool AllowParentInput() => false;
+        public bool AllowPredecessorInput() => false;
 
         #endregion
 
@@ -172,7 +172,7 @@ namespace Catch.Services
             {
                 screen.Update(ticks);
 
-                if (!screen.AllowParentUpdate())
+                if (!screen.AllowPredecessorUpdate())
                     break;
             }
         }
@@ -204,7 +204,7 @@ namespace Catch.Services
             int deepestScreen;
 
             for (deepestScreen = CurrentScreens.Count - 1; deepestScreen >= 0; --deepestScreen)
-                if (!CurrentScreens[deepestScreen].AllowParentDraw())
+                if (!CurrentScreens[deepestScreen].AllowPredecessorDraw())
                     break;
 
             for (var screen = deepestScreen; screen < CurrentScreens.Count; ++screen)
@@ -255,7 +255,7 @@ namespace Catch.Services
             {
                 inputAction(screen);
 
-                if (!screen.AllowParentInput() || eventArgs.Handled)
+                if (!screen.AllowPredecessorInput() || eventArgs.Handled)
                     break;
             }
         }

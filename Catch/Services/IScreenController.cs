@@ -8,10 +8,10 @@ namespace Catch.Services
     {
         void Initialize(Vector2 size, GameStateArgs args);
 
-        bool AllowParentUpdate();
+        bool AllowPredecessorUpdate();
 
-        bool AllowParentDraw();
+        bool AllowPredecessorDraw();
 
-        bool AllowParentInput();
+        bool AllowPredecessorInput();
     }
 }

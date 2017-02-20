@@ -139,9 +139,9 @@
     <Compile Include="Map\Tile.cs" />
     <Compile Include="Towers\TowerBase.cs" />
     <Compile Include="CanvasUtils.cs" />
-    <Compile Include="EnumUtils.cs" />
+    <Compile Include="Services\EnumUtils.cs" />
     <Compile Include="FieldController.cs" />
-    <Compile Include="FloatExtentions.cs" />
+    <Compile Include="Services\FloatExtensions.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GameStateArgs.cs" />
     <Compile Include="Services\IScreenController.cs" />
@@ -161,11 +161,11 @@
     <Compile Include="Services\NilScreenController.cs" />
     <Compile Include="OverlayController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RectExtensions.cs" />
+    <Compile Include="Services\RectExtensions.cs" />
     <Compile Include="Services\CompiledConfig.cs" />
     <Compile Include="Services\EmptyConfig.cs" />
     <Compile Include="Services\IConfig.cs" />
-    <Compile Include="TaskExtensions.cs" />
+    <Compile Include="Services\TaskExtensions.cs" />
     <Compile Include="Towers\GunTower.cs" />
     <Compile Include="Towers\GunTowerBaseBehaviour.cs" />
     <Compile Include="Towers\GunTowerBaseIndicator.cs" />

@@ -3,12 +3,11 @@ using Windows.Foundation;
 
 namespace Catch.Win2d
 {
-    class PointerData : IEquatable<PointerData>
+    public class PointerData : IEquatable<PointerData>
     {
-        public uint PointerId { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
-
+        public uint PointerId { get; protected set; }
+        public float X { get; protected set; }
+        public float Y { get; protected set; }
 
         public PointerData(uint id, Point wfPoint)
         {
@@ -17,7 +16,7 @@ namespace Catch.Win2d
             Y = (float) wfPoint.Y;
         }
 
-        public void update(Point wfPoint) {
+        public void Update(Point wfPoint) {
             X = (float)wfPoint.X;
             Y = (float)wfPoint.Y;
         }
@@ -29,7 +28,7 @@ namespace Catch.Win2d
                 return false;
             }
 
-            return (PointerId == o.PointerId && X == o.X && Y == o.Y);
+            return PointerId == o.PointerId && X.Equals(o.X) && Y.Equals(o.Y);
         }
 
         // override object.Equals
@@ -40,9 +39,9 @@ namespace Catch.Win2d
                 return false;
             }
 
-            PointerData o = (PointerData)obj;
+            var o = (PointerData)obj;
 
-            return (PointerId == o.PointerId && X == o.X && Y == o.Y);
+            return PointerId == o.PointerId && X.Equals(o.X) && Y.Equals(o.Y);
         }
 
         // override object.GetHashCode
@@ -53,7 +52,7 @@ namespace Catch.Win2d
 
         public override string ToString()
         {
-            return String.Format("{0}:({1},{2})", PointerId, X, Y);
+            return string.Format("{0}:({1},{2})", PointerId, X, Y);
         }
     }
 }
