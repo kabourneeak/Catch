@@ -86,6 +86,8 @@ namespace Catch.Base
         public virtual void OnRemove()
         {
             Brain.OnRemove();
+
+            IsActive = false;
         }
 
         public virtual void OnHit(AttackModel incomingAttack)

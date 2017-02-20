@@ -1,4 +1,5 @@
-﻿using Windows.Foundation;
+﻿using System.Text;
+using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
 using Catch.Graphics;
@@ -94,7 +95,23 @@ namespace Catch.LevelUi
         {
             if (_level.Ui.HoverTower != null)
             {
-                return $"{_level.Ui.HoverTower.DisplayName}: {_level.Ui.HoverTower.DisplayStatus}";
+                var sb = new StringBuilder();
+                var tower = _level.Ui.HoverTower;
+                sb.Append(tower.DisplayName);
+                sb.Append(": ");
+                sb.Append(tower.DisplayStatus);
+
+                var cmdIndex = 0;
+
+                foreach (var cmd in tower.Commands)
+                {
+                    sb.Append("(");
+                    sb.Append(cmdIndex + 1);
+                    sb.Append(")");
+                    sb.Append(cmd.DisplayName);
+                }
+
+                return sb.ToString();
             }
 
             // if nothing hovered, show level info, player status?

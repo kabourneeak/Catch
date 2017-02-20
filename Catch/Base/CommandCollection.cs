@@ -48,5 +48,10 @@ namespace Catch.Base
             foreach (var item in collection)
                 _commands.Add(item);
         }
+
+        public IAgentCommand GetCommand(int index)
+        {
+            return index < _commands.Count ? _commands[index] : null;
+        }
     }
 }

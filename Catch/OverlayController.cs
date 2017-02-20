@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
+using Windows.System;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.LevelUi;
@@ -79,13 +81,19 @@ namespace Catch
         }
 
         private HexCoords _lastHover;
+        private TowerBase _lastHoverTower;
         private readonly StatusBar _statusBar;
         private readonly TowerHoverIndicator _hoverIndicator;
 
         public void Hover(HoverEventArgs eventArgs)
         {
             if (_lastHover != null && _lastHover.Equals(_level.Ui.HoverHexCoords))
-                return;
+            {
+                if (_lastHoverTower == _level.Ui.HoverTower)
+                {
+                    return;
+                }
+            }
 
             // remove previous indicator
             _level.Ui.HoverTower?.Indicators.Remove(_hoverIndicator);
@@ -99,11 +107,13 @@ namespace Catch
 
                 _level.Ui.HoverTower = tower;
                 _lastHover = _level.Ui.HoverHexCoords;
+                _lastHoverTower = tower;
             }
             else
             {
                 _level.Ui.HoverTower = null;
                 _lastHover = null;
+                _lastHoverTower = null;
             }
         }
 
@@ -114,9 +124,40 @@ namespace Catch
 
         public void KeyPress(KeyPressEventArgs eventArgs)
         {
-            // TODO
+            if (eventArgs.Key >= VirtualKey.Number1 && eventArgs.Key <= VirtualKey.Number9)
+            {
+                var cmdIndex = eventArgs.Key - VirtualKey.Number1;
+                StartAgentCommand(cmdIndex);
+            }
         }
 
         #endregion
+
+        private void StartAgentCommand(int index)
+        {
+            var tower = _level.Ui.HoverTower;
+
+            if (tower == null)
+                return;
+
+            var cmd = tower.Commands.GetCommand(index);
+
+            switch (cmd.CommandType)
+            {
+                case AgentCommandType.Action:
+                    cmd.Execute();
+                    break;
+                case AgentCommandType.Confirm:
+                    throw new NotImplementedException();
+                case AgentCommandType.List:
+                    throw new NotImplementedException();
+                case AgentCommandType.SelectTower:
+                    throw new NotImplementedException();
+                case AgentCommandType.SelectMob:
+                    throw new NotImplementedException();
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 }

@@ -179,10 +179,12 @@ namespace Catch
             // this prevents new agents (those just emitted) from being double-updated
             _elapsedTicks += ticks;
 
-            _level.Agents.RemoveAll(delegate(IAgent a)
+            _level.Agents.RemoveAll(agent =>
             {
-                if (a.IsActive) return false;
-                a.DestroyResources();
+                if (agent.IsActive)
+                    return false;
+
+                agent.DestroyResources();
                 return true;
             });
 
