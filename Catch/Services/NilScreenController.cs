@@ -3,11 +3,15 @@ using Catch.Graphics;
 
 namespace Catch.Services
 {
+    /// <summary>
+    /// An empty IScreenController that an IScreenManager can call
+    /// when no other controller is available
+    /// </summary>
     public class NilScreenController : IScreenController
     {
         #region IScreenController Implementation
 
-        public void Initialize(Vector2 size, GameStateArgs args)
+        public void Initialize(Vector2 size)
         {
             // do nothing
         }

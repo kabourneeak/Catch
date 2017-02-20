@@ -6,7 +6,7 @@
     /// </summary>
     public interface IScreenManager
     {
-        void RequestScreen(GameStateArgs args);
+        void RequestScreen(IScreenController screen);
 
         void CloseScreen(IScreenController screen);
     }

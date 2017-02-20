@@ -15,7 +15,9 @@ namespace Catch
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private readonly DelegatingScreenManager _gameManager;
+        private readonly DelegatingScreenManager _screenManager;
+        private readonly Bootstrapper _bootstrapper;
+
         private int _frameId;
         private const float TicksPerSecond = 60.0f;
 
@@ -25,14 +27,20 @@ namespace Catch
 
             _frameId = 0;
 
-            _gameManager = new DelegatingScreenManager();
-            _gameManager.Initialize(new Vector2((float)Cvs.Size.Width, (float)Cvs.Size.Height), null);
+            // initialize the screen, so that higher level code can use it
+            _screenManager = new DelegatingScreenManager();
+            _screenManager.Initialize(new Vector2((float)Cvs.Size.Width, (float)Cvs.Size.Height));
+
+            _bootstrapper = new Bootstrapper();
         }
 
         private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
         {
             // attach keyboard events
             Window.Current.CoreWindow.KeyDown += KeyDown_UIThread;
+
+            // begin the game
+            _bootstrapper.BeginGame(_screenManager);
         }
 
         #region Animation Loop
@@ -60,9 +68,10 @@ namespace Catch
             _gestureRecognizer.InertiaTranslationDeceleration = -5.0f;
             _gestureRecognizer.AutoProcessInertia = false;
 
-            _inputDevice =
-                Cvs.CreateCoreIndependentInputSource(CoreInputDeviceTypes.Mouse | CoreInputDeviceTypes.Touch |
-                                                     CoreInputDeviceTypes.Pen);
+            _inputDevice = Cvs.CreateCoreIndependentInputSource(
+                CoreInputDeviceTypes.Mouse 
+                | CoreInputDeviceTypes.Touch 
+                | CoreInputDeviceTypes.Pen);
 
             _inputDevice.PointerPressed += OnPointerPressed;
             _inputDevice.PointerReleased += OnPointerReleased;
@@ -89,7 +98,7 @@ namespace Catch
             var resourceCreator = sender.Device;
             var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, true);
 
-            _gameManager.CreateResources(createArgs);
+            _screenManager.CreateResources(createArgs);
         }
 
         private void OnUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
@@ -100,7 +109,7 @@ namespace Catch
             var elapsedMs = args.Timing.ElapsedTime.Milliseconds;
             var elapsedTicks = TicksPerSecond * elapsedMs / 1000.0f;
 
-            _gameManager.Update(elapsedTicks);
+            _screenManager.Update(elapsedTicks);
         }
 
         private void OnDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
@@ -112,13 +121,13 @@ namespace Catch
             var resourceCreator = sender.Device;
             var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, false);
 
-            _gameManager.CreateResources(createArgs);
+            _screenManager.CreateResources(createArgs);
 
             // send draw
             var ds = args.DrawingSession;
             var drawArgs = new DrawArgs(ds, ds.Transform, _frameId);
 
-            _gameManager.Draw(drawArgs, 0.0f);
+            _screenManager.Draw(drawArgs, 0.0f);
         }
 
         #endregion
@@ -140,7 +149,7 @@ namespace Catch
         {
             var cvsSize = Cvs.Size;
 
-            _gameManager.Resize(new Vector2((float)cvsSize.Width, (float)cvsSize.Height));
+            _screenManager.Resize(new Vector2((float)cvsSize.Width, (float)cvsSize.Height));
         }
 
         #endregion
@@ -159,7 +168,7 @@ namespace Catch
             }
             else if (args.CurrentPoint.Properties.IsLeftButtonPressed)
             {
-                _gameManager.Touch(new TouchEventArgs(args.CurrentPoint.Position.ToVector2(), args.KeyModifiers));
+                _screenManager.Touch(new TouchEventArgs(args.CurrentPoint.Position.ToVector2(), args.KeyModifiers));
             }
 
             args.Handled = true;
@@ -175,7 +184,7 @@ namespace Catch
             }
             else if (!args.CurrentPoint.Properties.IsLeftButtonPressed)
             {
-                _gameManager.Hover(new HoverEventArgs(args.CurrentPoint.Position.ToVector2(), args.KeyModifiers));
+                _screenManager.Hover(new HoverEventArgs(args.CurrentPoint.Position.ToVector2(), args.KeyModifiers));
             }
 
             args.Handled = true;
@@ -193,7 +202,7 @@ namespace Catch
             var wheelTicks = args.CurrentPoint.Properties.MouseWheelDelta;
             wheelTicks = wheelTicks / 120;
 
-            _gameManager.ZoomToPoint(new ZoomToPointEventArgs(coords, wheelTicks * 0.1f));
+            _screenManager.ZoomToPoint(new ZoomToPointEventArgs(coords, wheelTicks * 0.1f));
         }
 
         private void gestureRecognizer_ManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)
@@ -207,9 +216,9 @@ namespace Catch
 
             screenDelta.X = (float) args.Delta.Translation.X;
             screenDelta.Y = (float) args.Delta.Translation.Y * -1.0f;
-            _gameManager.PanBy(new PanByEventArgs(screenDelta));
+            _screenManager.PanBy(new PanByEventArgs(screenDelta));
 
-            _gameManager.ZoomToPoint(new ZoomToPointEventArgs(args.Position.ToVector2(), args.Delta.Scale - 1.0f));
+            _screenManager.ZoomToPoint(new ZoomToPointEventArgs(args.Position.ToVector2(), args.Delta.Scale - 1.0f));
         }
 
         private void gestureRecognizer_ManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
@@ -228,7 +237,7 @@ namespace Catch
             args.Handled = true;
 
             // Schedule to run on game loop
-            var action = Cvs.RunOnGameLoopThreadAsync(() => _gameManager.KeyPress(new KeyPressEventArgs(key)));
+            var action = Cvs.RunOnGameLoopThreadAsync(() => _screenManager.KeyPress(new KeyPressEventArgs(key)));
         }
 
         #endregion

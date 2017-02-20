@@ -6,7 +6,7 @@ namespace Catch.Services
 {
     public interface IScreenController : IViewportController, IGraphics, IUpdatable
     {
-        void Initialize(Vector2 size, GameStateArgs args);
+        void Initialize(Vector2 size);
 
         bool AllowPredecessorUpdate();
 

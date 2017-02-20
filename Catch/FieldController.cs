@@ -115,7 +115,8 @@ namespace Catch
 
         public void KeyPress(KeyPressEventArgs eventArgs)
         {
-            // TODO
+            // do nothing
+            // the overlay is responsible for handling key presses
         }
 
         #endregion

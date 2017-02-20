@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Numerics;
 using Catch.Graphics;
-using CatchLibrary.Serialization;
-using Newtonsoft.Json;
 
 namespace Catch.Services
 {
@@ -15,44 +12,29 @@ namespace Catch.Services
     /// 
     /// Also, through its IScreenController interface, delegates device events as 
     /// needed to active screens. 
-    /// 
-    /// Also, Bootstraps the game into a running state.
     /// </summary>
     public class DelegatingScreenManager : IScreenManager, IScreenController
     {
-        private const string CfgMapsFolder = nameof(DelegatingScreenManager) + ".MapsFolder";
-        private const string CfgInitialMap = nameof(DelegatingScreenManager) + ".InitialMap";
-
         private bool _forceCreateResources;
-        private CompiledConfig Config { get; }
         private Vector2 WindowSize { get; set; }
-        private GameState State { get; set; }
-        private GameState AppliedState { get; set; }
-        private GameStateArgs RequestedState { get; set; }
+        private IScreenController RequestedScreen { get; set; }
 
         private List<IScreenController> CurrentScreens { get; set; }
 
         public DelegatingScreenManager()
         {
-            // start up in Initialize state;
-            // this will be replaced by bootstrapping when the canvas controller 
-            // calls our Initialize method
-            State = GameState.Initializing;
-
             CurrentScreens = new List<IScreenController>
             {
                 new NilScreenController()
             };
-
-            Config = new CompiledConfig();
         }
 
         #region IScreenManager Implementation
 
-        public void RequestScreen(GameStateArgs args)
+        public void RequestScreen(IScreenController screen)
         {
             // store request, it will be processed on next loop
-            RequestedState = args;
+            RequestedScreen = screen;
         }
 
         public void CloseScreen(IScreenController screen)
@@ -64,86 +46,13 @@ namespace Catch.Services
             CurrentScreens.Remove(screen);
         }
 
-        private void HandoffController()
-        {
-            /*
-             * TODO Rewrite the HandoffController concept
-             * 
-             * This code is held over from when we had individual State controllers, instead
-             * of a stack of screens that co-exist.
-             * 
-             * RequestScreen(), GameStateArgs, GameState should all be revisited.
-             */
-
-            // there is only one controller per state, so if the state is the same, don't do anything
-            if (State == RequestedState.State)
-                return;
-
-            /*
-             * create new controller
-             */
-
-            var requestedController = CreateScreenController(RequestedState.State);
-
-            // feed initializing events to new controller
-            requestedController.Initialize(WindowSize, RequestedState);
-            _forceCreateResources = true;
-
-            CurrentScreens.Add(requestedController);
-
-            /*
-             * handoff complete
-             */
-            State = RequestedState.State;
-        }
-
-        private IScreenController CreateScreenController(GameState state)
-        {
-            switch (state)
-            {
-                case GameState.Initializing:
-                    return new NilScreenController();
-                case GameState.PlayMap:
-                    return new LevelController(Config);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
-            }
-        }
-
         #endregion
 
         #region IScreenController Implementation
 
-        public void Initialize(Vector2 size, GameStateArgs args)
+        public void Initialize(Vector2 size)
         {
             WindowSize = size;
-
-            // Bootstrap initial game state
-            MapModel mapModel;
-
-            try
-            {
-                var appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-                var mapsFolder =
-                    appInstalledFolder.GetFolderAsync(Config.GetString(CfgMapsFolder))
-                        .GetAwaiter()
-                        .GetResult();
-
-                var initialMapPath = Path.Combine(mapsFolder.Path, Config.GetString(CfgInitialMap));
-                var initialMapData = File.ReadAllText(initialMapPath);
-
-                mapModel = JsonConvert.DeserializeObject<MapModel>(initialMapData);
-            }
-            catch (IOException)
-            {
-                throw;
-            }
-            catch (Exception e)
-            {
-                throw new IOException("Could not read initial map", e);
-            }
-
-            RequestScreen(new GameStateArgs(GameState.PlayMap, mapModel));
         }
 
         public bool AllowPredecessorUpdate() => false;
@@ -158,15 +67,16 @@ namespace Catch.Services
 
         public void Update(float ticks)
         {
-            if (RequestedState != null)
+            if (RequestedScreen != null)
             {
-                HandoffController();
-                RequestedState = null;
-            }
+                // feed initializing events to new screen controller
+                RequestedScreen.Initialize(WindowSize);
+                _forceCreateResources = true;
 
-            // AppliedState is only updated here, and is meant to keep Update, CreateResources, 
-            // and Draw working on a consistent value
-            AppliedState = State;
+                CurrentScreens.Add(RequestedScreen);
+
+                RequestedScreen = null;
+            }
 
             foreach (var screen in CurrentScreens.ReverseIterator())
             {

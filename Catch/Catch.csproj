@@ -104,6 +104,7 @@
     <Compile Include="Base\AttackModel.cs" />
     <Compile Include="Base\BaseSpecModel.cs" />
     <Compile Include="Base\IUpdatable.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="ILevelStateModel.cs" />
     <Compile Include="LevelState.cs" />
     <Compile Include="Services\EventArgsBase.cs" />
@@ -144,8 +145,6 @@
     <Compile Include="Services\EnumUtils.cs" />
     <Compile Include="FieldController.cs" />
     <Compile Include="Services\FloatExtensions.cs" />
-    <Compile Include="GameState.cs" />
-    <Compile Include="GameStateArgs.cs" />
     <Compile Include="Services\IScreenController.cs" />
     <Compile Include="Services\IViewportController.cs" />
     <Compile Include="LevelController.cs" />

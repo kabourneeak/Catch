@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Catch.Base;
 using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;
@@ -23,52 +22,32 @@ namespace Catch
         private readonly LevelState _level;
         private readonly Win2DProvider _provider;
         private readonly Queue<ScriptCommand> _scriptCommands;
-        private Map.Map _map;
 
         #region Construction
 
-        public LevelController(IConfig config)
+        public LevelController(IConfig config, MapModel mapModel)
         {
             _config = config;
 
-            _level = new LevelState(config);
-
             _provider = new Win2DProvider(_config);
-            _scriptCommands = new Queue<ScriptCommand>();
-        }
 
-        #endregion
+            var map = _provider.CreateMap(mapModel.Rows, mapModel.Columns);
 
-        #region IScreenController Implementation
+            _level = new LevelState(config, map);
 
-        public void Initialize(Vector2 size, GameStateArgs args)
-        {
-            _level.Ui.WindowSize = size;
-
-            InitializeMap(args.MapModel);
+            InitializeMap(mapModel, map);
+            _scriptCommands = InitializeEmitScript(mapModel);
 
             _overlayController = new OverlayController(_level, _level.Agents);
-            _overlayController.Initialize();
-
             _fieldController = new FieldController(_level, _level.Agents);
-            _fieldController.Initialize();
         }
 
-        public bool AllowPredecessorUpdate() => false;
-
-        public bool AllowPredecessorDraw() => false;
-
-        public bool AllowPredecessorInput() => false;
-
-        private void InitializeMap(MapModel mapModel)
+        private void InitializeMap(MapModel mapModel, Map.Map map)
         {
-            _map = _provider.CreateMap(mapModel.Rows, mapModel.Columns);
-            _level.Map = _map;
-
             /*
              * Process tile models
              */
-            foreach (var tile in _map)
+            foreach (var tile in map)
             {
                 var tileModel = mapModel.Tiles.GetHex(tile.Coords);
                 var tower = _provider.CreateTower(tileModel.TowerName, tile, _level);
@@ -85,12 +64,15 @@ namespace Catch
 
                 foreach (var pathStep in pathModel.PathSteps)
                 {
-                    mapPath.Add(_map.GetHex(pathStep.Coords));
+                    mapPath.Add(map.GetHex(pathStep.Coords));
                 }
 
-                _map.AddPath(mapPath);
+                map.AddPath(mapPath);
             }
+        }
 
+        private Queue<ScriptCommand> InitializeEmitScript(MapModel mapModel)
+        {
             /*
              * Process emit script
              */
@@ -113,9 +95,29 @@ namespace Catch
 
             scriptCommandList.Sort((x, y) => x.Offset.CompareTo(y.Offset));
 
-            _scriptCommands.Clear();
-            scriptCommandList.ForEach(c => _scriptCommands.Enqueue(c));
+            var queue = new Queue<ScriptCommand>(scriptCommandList);
+
+            return queue;
         }
+
+        #endregion
+
+        #region IScreenController Implementation
+
+        public void Initialize(Vector2 size)
+        {
+            _level.Ui.WindowSize = size;
+
+            _overlayController.Initialize();
+
+            _fieldController.Initialize();
+        }
+
+        public bool AllowPredecessorUpdate() => false;
+
+        public bool AllowPredecessorDraw() => false;
+
+        public bool AllowPredecessorInput() => false;
 
         #endregion
 
@@ -197,7 +199,7 @@ namespace Catch
             {
                 var scriptCommand = _scriptCommands.Dequeue();
 
-                var agent = _provider.CreateMob(scriptCommand.AgentTypeName, _map.GetPath(scriptCommand.PathName), _level);
+                var agent = _provider.CreateMob(scriptCommand.AgentTypeName, _level.Map.GetPath(scriptCommand.PathName), _level);
 
                 _level.Agents.Add(agent);
 

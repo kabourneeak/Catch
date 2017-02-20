@@ -12,9 +12,7 @@ namespace Catch
     {
         public IConfig Config { get; }
 
-        public Map.Map Map { get;
-            // TODO get rid of this setter
-            set; }
+        public Map.Map Map { get; }
 
         public UiStateModel Ui { get; }
 
@@ -22,10 +20,10 @@ namespace Catch
 
         public List<IAgent> Agents { get; }
 
-        public LevelState(IConfig config)
+        public LevelState(IConfig config, Map.Map map)
         {
             Config = config;
-
+            Map = map;
             Agents = new List<IAgent>();
             Player = new PlayerModel(config);
             Ui = new UiStateModel();
