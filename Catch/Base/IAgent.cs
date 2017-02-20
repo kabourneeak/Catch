@@ -16,6 +16,8 @@ namespace Catch.Base
         /// </summary>
         bool IsActive { get; }
 
+        ILevelStateModel Level { get; }
+
         Tile Tile { get; }
 
         bool IsTargetable { get; }

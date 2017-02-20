@@ -1,19 +1,16 @@
 ﻿using Catch.Base;
-using Catch.Services;
 
 namespace Catch.Towers
 {
     public class BuyTowerCommand : IAgentCommand
     {
         private readonly IAgent _agent;
-        private readonly PlayerModel _player;
-        private readonly IConfig _config;
+        private readonly ILevelStateModel _level;
 
-        public BuyTowerCommand(IAgent agent, PlayerModel player, IConfig config)
+        public BuyTowerCommand(IAgent agent, ILevelStateModel level)
         {
             _agent = agent;
-            _player = player;
-            _config = config;
+            _level = level;
         }
 
         public void Update(float ticks)
@@ -33,7 +30,7 @@ namespace Catch.Towers
 
             tile.RemoveTower((TowerBase)_agent);
 
-            var tower = new GunTower(tile, _config);
+            var tower = new GunTower(tile, _level);
 
             tile.AddTower(tower);
 

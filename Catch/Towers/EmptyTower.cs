@@ -12,13 +12,15 @@ namespace Catch.Towers
     /// </summary>
     public class EmptyTower : TowerBase
     {
-        public EmptyTower(Tile tile, IConfig config) : base(tile)
+        public EmptyTower(Tile tile, ILevelStateModel level) : base(tile, level)
         {
             Brain = GetSharedBrain();
-            Indicators.AddRange(GetSharedIndicators(config));
+            Indicators.AddRange(GetSharedIndicators(Level.Config));
 
             var label = string.Format("{0},{1}", tile.Coords.Q, tile.Coords.R);
             Indicators.Add(new LabelIndicator(label));
+
+            Commands.Add(new BuyTowerCommand(this, Level));
 
             DisplayName = "Empty Socket";
             DisplayStatus = string.Empty;

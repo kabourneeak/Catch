@@ -12,7 +12,7 @@ namespace Catch.Towers
     /// </summary>
     public abstract class TowerBase : AgentBase
     {
-        protected TowerBase(Tile tile)
+        protected TowerBase(Tile tile, ILevelStateModel level) : base(level)
         {
             Tile = tile;
             Position = tile.Position;

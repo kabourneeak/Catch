@@ -1,23 +1,18 @@
 ﻿using Windows.UI;
 using Catch.Map;
-using Catch.Services;
 
 namespace Catch.Towers
 {
     public class GunTower : TowerBase
     {
-        private readonly IConfig _config;
-
-        public GunTower(Tile tile, IConfig config) : base(tile)
+        public GunTower(Tile tile, ILevelStateModel level) : base(tile, level)
         {
-            _config = config;
-
             Modifiers.Add(new GunTowerBaseModifier(this));
 
-            Brain = new GunTowerBaseBehaviour(this, config);
+            Brain = new GunTowerBaseBehaviour(this, Level.Config);
 
-            Indicators.Add(new TowerTileIndicator(config, Colors.DeepSkyBlue));
-            Indicators.Add(new GunTowerBaseIndicator(config));
+            Indicators.Add(new TowerTileIndicator(Level.Config, Colors.DeepSkyBlue));
+            Indicators.Add(new GunTowerBaseIndicator(Level.Config));
 
             DisplayName = "Gun Tower";
             DisplayStatus = string.Empty;

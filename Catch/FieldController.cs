@@ -16,15 +16,13 @@ namespace Catch
         private float _zoom;
         private Matrix3x2 _mapTransform;
 
-        private readonly UiStateModel _ui;
+        private readonly ILevelStateModel _level;
         private readonly List<IAgent> _agents;
-        private readonly Map.Map _map;
 
-        public FieldController(UiStateModel ui, List<IAgent> agents, Map.Map map)
+        public FieldController(ILevelStateModel level, List<IAgent> agents)
         {
-            _ui = ui;
+            _level = level;
             _agents = agents;
-            _map = map;
 
             _zoom = 1.0f;
             _pan = Vector2.Zero;
@@ -33,8 +31,8 @@ namespace Catch
         public void Initialize()
         {
             _zoom = 1.0f;
-            _pan.X = (_ui.WindowSize.X - _map.Size.X) / 2.0f;
-            _pan.Y = _ui.WindowSize.Y * -1.0f + (_ui.WindowSize.Y - _map.Size.Y) / 2.0f;
+            _pan.X = (_level.Ui.WindowSize.X - _level.Map.Size.X) / 2.0f;
+            _pan.Y = _level.Ui.WindowSize.Y * -1.0f + (_level.Ui.WindowSize.Y - _level.Map.Size.Y) / 2.0f;
         }
 
         #region IGraphicsComponent Implementation
@@ -107,7 +105,7 @@ namespace Catch
         {
             var fieldCoords = TranslateToFieldCoords(eventArgs.ViewCoords);
 
-            _ui.HoverHexCoords = _map.PointToHexCoords(fieldCoords);
+            _level.Ui.HoverHexCoords = _level.Map.PointToHexCoords(fieldCoords);
         }
 
         public void Touch(TouchEventArgs eventArgs)

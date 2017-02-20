@@ -15,21 +15,17 @@ namespace Catch
     /// </summary>
     public class OverlayController : IGraphics, IViewportController, IUpdatable
     {
-        private readonly IConfig _config;
-        private readonly UiStateModel _ui;
+        private readonly ILevelStateModel _level;
         private readonly List<IAgent> _agents;
-        private readonly Map.Map _map;
 
-        public OverlayController(IConfig config, UiStateModel ui, List<IAgent> agents, Map.Map map)
+        public OverlayController(ILevelStateModel level, List<IAgent> agents)
         {
-            _config = config;
-            _ui = ui;
+            _level = level;
             _agents = agents;
-            _map = map;
 
             // create UI elements
-            _statusBar = new StatusBar(_ui, _config);
-            _hoverIndicator = new TowerHoverIndicator(_config);
+            _statusBar = new StatusBar(_level);
+            _hoverIndicator = new TowerHoverIndicator(_level.Config);
         }
 
         public void Initialize()
@@ -88,25 +84,25 @@ namespace Catch
 
         public void Hover(HoverEventArgs eventArgs)
         {
-            if (_lastHover != null && _lastHover.Equals(_ui.HoverHexCoords))
+            if (_lastHover != null && _lastHover.Equals(_level.Ui.HoverHexCoords))
                 return;
 
             // remove previous indicator
-            _ui.HoverTower?.Indicators.Remove(_hoverIndicator);
+            _level.Ui.HoverTower?.Indicators.Remove(_hoverIndicator);
 
-            if (_map.HasHex(_ui.HoverHexCoords))
+            if (_level.Map.HasHex(_level.Ui.HoverHexCoords))
             {
                 // add new indicator
-                var tile = _map.GetHex(_ui.HoverHexCoords);
+                var tile = _level.Map.GetHex(_level.Ui.HoverHexCoords);
                 var tower = tile.GetTower();
                 tower?.Indicators.Add(_hoverIndicator);
 
-                _ui.HoverTower = tower;
-                _lastHover = _ui.HoverHexCoords;
+                _level.Ui.HoverTower = tower;
+                _lastHover = _level.Ui.HoverHexCoords;
             }
             else
             {
-                _ui.HoverTower = null;
+                _level.Ui.HoverTower = null;
                 _lastHover = null;
             }
         }

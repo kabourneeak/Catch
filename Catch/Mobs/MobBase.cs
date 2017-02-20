@@ -4,7 +4,7 @@ namespace Catch.Mobs
 {
     public abstract class MobBase : AgentBase
     {
-        protected MobBase()
+        protected MobBase(ILevelStateModel level) : base(level)
         {
             IsTargetable = true;
         }

@@ -9,8 +9,9 @@ namespace Catch.Base
     /// </summary>
     public abstract class AgentBase : IAgent
     {
-        protected AgentBase()
+        protected AgentBase(ILevelStateModel level)
         {
+            Level = level;
             Position = new Vector2(0.0f);
             Indicators = new IndicatorCollection();
             Modifiers = new ModifierCollection(this);
@@ -71,6 +72,7 @@ namespace Catch.Base
         #region IAgent Implementation
 
         public abstract string GetAgentType();
+        public ILevelStateModel Level { get; }
 
         public bool IsActive { get; set; }
         public Tile Tile { get; set; }

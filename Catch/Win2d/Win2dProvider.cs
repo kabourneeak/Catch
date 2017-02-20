@@ -18,27 +18,27 @@ namespace Catch.Win2d
 
         #region IAgentProvider implementation
 
-        public TowerBase CreateTower(string name, Tile tile)
+        public TowerBase CreateTower(string name, Tile tile, ILevelStateModel level)
         {
             switch (name)
             {
                 case nameof(GunTower):
-                    return new GunTower(tile, _config);
+                    return new GunTower(tile, level);
                 case nameof(EmptyTower):
-                    return new EmptyTower(tile, _config);
+                    return new EmptyTower(tile, level);
                 default:
                     throw new ArgumentException("I don't know how to construct that Tower");
             }
         }
 
-        public MobBase CreateMob(string name, MapPath mapPath)
+        public MobBase CreateMob(string name, MapPath mapPath, ILevelStateModel level)
         {
             switch (name)
             {
                 case nameof(BlockMob):
-                    return new BlockMob(mapPath, _config);
+                    return new BlockMob(mapPath, level);
                 default:
-                    throw new ArgumentException("I don't know how to construct that PathAgent");
+                    throw new ArgumentException("I don't know how to construct that Mob");
             }
         }
 

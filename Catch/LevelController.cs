@@ -20,8 +20,7 @@ namespace Catch
         private readonly Random _rng = new Random();
 
         private readonly IConfig _config;
-        private readonly UiStateModel _ui;
-        private readonly PlayerModel _player;
+        private readonly LevelState _level;
         private readonly Win2DProvider _provider;
         private readonly List<IAgent> _agents;
         private readonly Queue<ScriptCommand> _scriptCommands;
@@ -33,8 +32,8 @@ namespace Catch
         {
             _config = config;
 
-            _ui = new UiStateModel();
-            _player = new PlayerModel(_config);
+            _level = new LevelState(config);
+
             _provider = new Win2DProvider(_config);
             _agents = new List<IAgent>();
             _scriptCommands = new Queue<ScriptCommand>();
@@ -46,16 +45,16 @@ namespace Catch
 
         public void Initialize(Vector2 size, GameStateArgs args)
         {
-            _ui.WindowSize = size;
+            _level.Ui.WindowSize = size;
 
             _agents.Clear();
 
             InitializeMap(args.MapModel);
 
-            _overlayController = new OverlayController(_config, _ui, _agents, _map);
+            _overlayController = new OverlayController(_level, _agents);
             _overlayController.Initialize();
 
-            _fieldController = new FieldController(_ui, _agents, _map);
+            _fieldController = new FieldController(_level, _agents);
             _fieldController.Initialize();
         }
 
@@ -68,6 +67,7 @@ namespace Catch
         private void InitializeMap(MapModel mapModel)
         {
             _map = _provider.CreateMap(mapModel.Rows, mapModel.Columns);
+            _level.Map = _map;
 
             /*
              * Process tile models
@@ -75,7 +75,7 @@ namespace Catch
             foreach (var tile in _map)
             {
                 var tileModel = mapModel.Tiles.GetHex(tile.Coords);
-                var tower = _provider.CreateTower(tileModel.TowerName, tile);
+                var tower = _provider.CreateTower(tileModel.TowerName, tile, _level);
                 _agents.Add(tower);
             }
 
@@ -137,7 +137,7 @@ namespace Catch
 
         public void Resize(Vector2 size)
         {
-            _ui.WindowSize = size;
+            _level.Ui.WindowSize = size;
 
             _fieldController.Resize(size);
             _overlayController.Resize(size);
@@ -199,7 +199,7 @@ namespace Catch
             {
                 var scriptCommand = _scriptCommands.Dequeue();
 
-                var agent = _provider.CreateMob(scriptCommand.AgentTypeName, _map.GetPath(scriptCommand.PathName));
+                var agent = _provider.CreateMob(scriptCommand.AgentTypeName, _map.GetPath(scriptCommand.PathName), _level);
 
                 _agents.Add(agent);
 

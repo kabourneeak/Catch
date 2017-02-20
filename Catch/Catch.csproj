@@ -104,6 +104,8 @@
     <Compile Include="Base\AttackModel.cs" />
     <Compile Include="Base\BaseSpecModel.cs" />
     <Compile Include="Base\IUpdatable.cs" />
+    <Compile Include="ILevelStateModel.cs" />
+    <Compile Include="LevelState.cs" />
     <Compile Include="Services\EventArgsBase.cs" />
     <Compile Include="Services\HoverEventArgs.cs" />
     <Compile Include="Services\KeyPressEventArgs.cs" />

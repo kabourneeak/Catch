@@ -2,7 +2,6 @@
 using Windows.UI;
 using Windows.UI.Text;
 using Catch.Graphics;
-using Catch.Services;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Text;
 
@@ -10,18 +9,16 @@ namespace Catch.LevelUi
 {
     public class StatusBar : IGraphics
     {
-        private UiStateModel Ui { get; }
-        private IConfig Config { get; }
+        private readonly ILevelStateModel _level;
 
         private readonly int _barHeight;
         private readonly StyleArgs _bgStyle;
         private readonly StyleArgs _fgStyle;
         private readonly CanvasTextFormat _fgTextFormat;
 
-        public StatusBar(UiStateModel ui, IConfig config)
+        public StatusBar(ILevelStateModel level)
         {
-            Ui = ui;
-            Config = config;
+            _level = level;
 
             // copy down config
             _barHeight = 26;
@@ -83,10 +80,10 @@ namespace Catch.LevelUi
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {
-            drawArgs.PushTranslation(0, Ui.WindowSize.Y - _barHeight);
+            drawArgs.PushTranslation(0, _level.Ui.WindowSize.Y - _barHeight);
 
-            drawArgs.Ds.FillRectangle(new Rect(0,0, Ui.WindowSize.X, _barHeight), _bgBrush);
-            drawArgs.Ds.DrawText(GetStatusText(), new Rect(0, 0, Ui.WindowSize.X, _barHeight), _fgBrush, _fgTextFormat);
+            drawArgs.Ds.FillRectangle(new Rect(0,0, _level.Ui.WindowSize.X, _barHeight), _bgBrush);
+            drawArgs.Ds.DrawText(GetStatusText(), new Rect(0, 0, _level.Ui.WindowSize.X, _barHeight), _fgBrush, _fgTextFormat);
 
             drawArgs.Pop();
         }
@@ -95,9 +92,9 @@ namespace Catch.LevelUi
 
         private string GetStatusText()
         {
-            if (Ui.HoverTower != null)
+            if (_level.Ui.HoverTower != null)
             {
-                return $"{Ui.HoverTower.DisplayName}: {Ui.HoverTower.DisplayStatus}";
+                return $"{_level.Ui.HoverTower.DisplayName}: {_level.Ui.HoverTower.DisplayStatus}";
             }
 
             // if nothing hovered, show level info, player status?
