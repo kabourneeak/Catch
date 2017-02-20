@@ -22,7 +22,6 @@ namespace Catch
         private readonly IConfig _config;
         private readonly LevelState _level;
         private readonly Win2DProvider _provider;
-        private readonly List<IAgent> _agents;
         private readonly Queue<ScriptCommand> _scriptCommands;
         private Map.Map _map;
 
@@ -35,7 +34,6 @@ namespace Catch
             _level = new LevelState(config);
 
             _provider = new Win2DProvider(_config);
-            _agents = new List<IAgent>();
             _scriptCommands = new Queue<ScriptCommand>();
         }
 
@@ -47,14 +45,12 @@ namespace Catch
         {
             _level.Ui.WindowSize = size;
 
-            _agents.Clear();
-
             InitializeMap(args.MapModel);
 
-            _overlayController = new OverlayController(_level, _agents);
+            _overlayController = new OverlayController(_level, _level.Agents);
             _overlayController.Initialize();
 
-            _fieldController = new FieldController(_level, _agents);
+            _fieldController = new FieldController(_level, _level.Agents);
             _fieldController.Initialize();
         }
 
@@ -76,7 +72,7 @@ namespace Catch
             {
                 var tileModel = mapModel.Tiles.GetHex(tile.Coords);
                 var tower = _provider.CreateTower(tileModel.TowerName, tile, _level);
-                _agents.Add(tower);
+                _level.AddAgent(tower);
             }
 
             /*
@@ -183,7 +179,7 @@ namespace Catch
             // this prevents new agents (those just emitted) from being double-updated
             _elapsedTicks += ticks;
 
-            _agents.RemoveAll(delegate(IAgent a)
+            _level.Agents.RemoveAll(delegate(IAgent a)
             {
                 if (a.IsActive) return false;
                 a.DestroyResources();
@@ -201,7 +197,7 @@ namespace Catch
 
                 var agent = _provider.CreateMob(scriptCommand.AgentTypeName, _map.GetPath(scriptCommand.PathName), _level);
 
-                _agents.Add(agent);
+                _level.Agents.Add(agent);
 
                 // perform partial update to recover state from any delay in scripting
                 agent.Update(_elapsedTicks - scriptCommand.Offset);
