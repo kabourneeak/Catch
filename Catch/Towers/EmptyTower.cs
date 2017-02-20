@@ -8,12 +8,11 @@ using Catch.Services;
 namespace Catch.Towers
 {
     /// <summary>
-    /// This tower has no behaviour nor interactions, but draws a background hexagon. This tower
-    /// gives visual definition to a map, and may be part of a MapPath.
+    /// This tower is empty, but provides Commands for placing new towers.
     /// </summary>
-    public class VoidTower : TowerBase
+    public class EmptyTower : TowerBase
     {
-        public VoidTower(Tile tile, IConfig config) : base(tile)
+        public EmptyTower(Tile tile, IConfig config) : base(tile)
         {
             Brain = GetSharedBrain();
             Indicators.AddRange(GetSharedIndicators(config));
@@ -28,7 +27,7 @@ namespace Catch.Towers
 
         public override string GetAgentType()
         {
-            return nameof(VoidTower);
+            return nameof(EmptyTower);
         }
 
         #region Shared Resources

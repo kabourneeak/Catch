@@ -24,10 +24,8 @@ namespace Catch.Win2d
             {
                 case nameof(GunTower):
                     return new GunTower(tile, _config);
-                case nameof(VoidTower):
-                    return new VoidTower(tile, _config);
-                case nameof(NilTower):
-                    return new NilTower(tile);
+                case nameof(EmptyTower):
+                    return new EmptyTower(tile, _config);
                 default:
                     throw new ArgumentException("I don't know how to construct that Tower");
             }
