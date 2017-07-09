@@ -7,7 +7,7 @@ namespace Catch.Mobs
 {
     public class BlockMob : MobBase
     {
-        public BlockMob(BlockMobSharedResources resources, MapPath mapPath, ILevelStateModel level) : base(level)
+        public BlockMob(BlockMobSharedResources resources, MapPath mapPath, ILevelStateModel level) : base(nameof(BlockMob), level)
         {
             // This class can be massively generalized!  e.g., take in a config object and a mob name, and then fill out
             // all of the other details like health, speed, attack, defense, mod loadout, from config.
@@ -19,7 +19,5 @@ namespace Catch.Mobs
 
             Indicators.AddRange(resources.Indicators);
         }
-
-        public override string GetAgentType() => nameof(BlockMob);
     }
 }

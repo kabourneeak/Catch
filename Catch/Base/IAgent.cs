@@ -6,10 +6,9 @@ namespace Catch.Base
 {
     public interface IAgent : IUpdatable, IDrawable
     {
-        // Identification
-        string GetAgentType();
-
         #region Properties
+
+        string AgentType { get; }
 
         string DisplayName { get; }
 
@@ -27,8 +26,6 @@ namespace Catch.Base
         /// the next update cycle.
         /// </summary>
         bool IsActive { get; }
-
-        ILevelStateModel Level { get; }
 
         Tile Tile { get; }
 

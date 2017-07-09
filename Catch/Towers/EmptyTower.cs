@@ -7,7 +7,7 @@ namespace Catch.Towers
     /// </summary>
     public class EmptyTower : TowerBase
     {
-        public EmptyTower(EmptyTowerSharedResources resources, Tile tile, ILevelStateModel level) : base(tile, level)
+        public EmptyTower(EmptyTowerSharedResources resources, Tile tile, ILevelStateModel level) : base(nameof(EmptyTower), tile, level)
         {
             Brain = resources.Brain;
             Indicators.AddRange(resources.Indicators);
@@ -22,7 +22,5 @@ namespace Catch.Towers
             DisplayStatus = string.Empty;
             DisplayInfo = string.Empty;
         }
-
-        public override string GetAgentType() => nameof(EmptyTower);
     }
 }
