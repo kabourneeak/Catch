@@ -6,7 +6,7 @@ using CatchLibrary.HexGrid;
 namespace CatchLibrary.Serialization
 {
     [DataContract]
-    public class MapModel
+    public class MapSerializationModel
     {
         [DataMember]
         public int Rows { get; set; }

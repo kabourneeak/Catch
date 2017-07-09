@@ -48,7 +48,7 @@
     <Compile Include="IntExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\EmitScriptEntryModel.cs" />
-    <Compile Include="Serialization\MapModel.cs" />
+    <Compile Include="Serialization\MapSerializationModel.cs" />
     <Compile Include="Serialization\PathModel.cs" />
     <Compile Include="Serialization\PathStepModel.cs" />
     <Compile Include="Serialization\TileModel.cs" />

@@ -13,7 +13,7 @@ namespace Catch.Map
         private ITileAgent _tileAgent;
         private readonly ISet<MobBase> _mobs;
 
-        public Tile(HexCoords coords, Map map, IConfig config)
+        public Tile(HexCoords coords, MapModel map, IConfig config)
         {
             Map = map;
             Coords = coords;
@@ -32,7 +32,7 @@ namespace Catch.Map
             Position = new Vector2(x, y);
         }
 
-        public Map Map { get; }
+        public MapModel Map { get; }
 
         public HexCoords Coords { get; }
 

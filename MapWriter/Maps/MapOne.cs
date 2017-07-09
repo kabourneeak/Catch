@@ -3,7 +3,7 @@ using CatchLibrary.Serialization;
 
 namespace MapWriter.Maps
 {
-    public class MapOne : MapModel
+    public class MapOne : MapSerializationModel
     {
         public MapOne()
         {

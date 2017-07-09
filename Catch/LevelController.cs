@@ -26,32 +26,32 @@ namespace Catch
 
         #region Construction
 
-        public LevelController(IConfig config, MapModel mapModel)
+        public LevelController(IConfig config, MapSerializationModel mapSerializationModel)
         {
             _config = config;
 
             _agentProvider = new BuiltinAgentProvider(_config);
             _mapProvider = new BuiltinMapProvider(_config);
 
-            var map = _mapProvider.CreateMap(mapModel.Rows, mapModel.Columns);
+            var map = _mapProvider.CreateMap(mapSerializationModel.Rows, mapSerializationModel.Columns);
 
             _level = new LevelState(config, map);
 
-            InitializeMap(mapModel, map);
-            _scriptCommands = InitializeEmitScript(mapModel);
+            InitializeMap(mapSerializationModel, map);
+            _scriptCommands = InitializeEmitScript(mapSerializationModel);
 
             _overlayController = new OverlayController(_level, _level.Agents);
             _fieldController = new FieldController(_level, _level.Agents);
         }
 
-        private void InitializeMap(MapModel mapModel, Map.Map map)
+        private void InitializeMap(MapSerializationModel mapSerializationModel, MapModel map)
         {
             /*
              * Process tile models
              */
             foreach (var tile in map)
             {
-                var tileModel = mapModel.Tiles.GetHex(tile.Coords);
+                var tileModel = mapSerializationModel.Tiles.GetHex(tile.Coords);
                 var towerArgs = new CreateAgentArgs()
                 {
                     Tile = tile,
@@ -65,7 +65,7 @@ namespace Catch
             /*
              * Process paths
              */
-            foreach (var pathModel in mapModel.Paths)
+            foreach (var pathModel in mapSerializationModel.Paths)
             {
                 var mapPath = new MapPath();
                 mapPath.Name = pathModel.PathName;
@@ -79,14 +79,14 @@ namespace Catch
             }
         }
 
-        private Queue<ScriptCommand> InitializeEmitScript(MapModel mapModel)
+        private Queue<ScriptCommand> InitializeEmitScript(MapSerializationModel mapSerializationModel)
         {
             /*
              * Process emit script
              */
             var scriptCommandList = new List<ScriptCommand>();
 
-            foreach (var emitScriptEntry in mapModel.EmitScript)
+            foreach (var emitScriptEntry in mapSerializationModel.EmitScript)
             {
                 for (var i = 0; i < emitScriptEntry.Count; ++i)
                 {

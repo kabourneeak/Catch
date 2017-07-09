@@ -14,7 +14,7 @@ namespace MapWriter
             // etc
         }
 
-        private static void SaveMap(MapModel map)
+        private static void SaveMap(MapSerializationModel map)
         {
             var filename = map.GetType().Name + ".json";
 
@@ -30,7 +30,7 @@ namespace MapWriter
             }
 
             // test deserialization
-            var mapModel = JsonConvert.DeserializeObject<MapModel>(File.ReadAllText(filename));
+            var mapModel = JsonConvert.DeserializeObject<MapSerializationModel>(File.ReadAllText(filename));
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Catch.Towers
             RankNeighbours(neighbours, center.Map);
         }
 
-        private void RankNeighbours(List<Tile> neighbours, Map.Map map)
+        private void RankNeighbours(List<Tile> neighbours, MapModel map)
         {
             foreach (var tile in neighbours)
             {
@@ -37,7 +37,7 @@ namespace Catch.Towers
             _ranked.Sort(RadiusExitTargettingComparer.GetComparer());
         }
 
-        private int CalcExitScore(Tile tile, Map.Map map)
+        private int CalcExitScore(Tile tile, MapModel map)
         {
             var bestScore = Int32.MaxValue;
 

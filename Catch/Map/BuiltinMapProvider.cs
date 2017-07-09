@@ -11,9 +11,9 @@ namespace Catch.Map
             _config = config;
         }
 
-        public Map CreateMap(int rows, int columns)
+        public MapModel CreateMap(int rows, int columns)
         {
-            var map = new Map(_config, rows, columns);
+            var map = new MapModel(_config, rows, columns);
 
             return map;
         }

@@ -2,6 +2,6 @@
 {
     public interface IMapProvider
     {
-        Catch.Map.Map CreateMap(int rows, int columns);
+        MapModel CreateMap(int rows, int columns);
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
 {
-    public class HexagonGraphics : IGraphicsResource
+    public class HexagonGraphics : IGraphicsResource, IDrawable
     {
         private readonly StyleArgs _style;
         private readonly float _radius;

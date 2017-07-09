@@ -11,14 +11,14 @@ namespace Catch.Map
     /// Implements a "living" map or field of play, which has tiles, towers, 
     /// paths.
     /// </summary>
-    public class Map : IEnumerable<Tile>
+    public class MapModel : IEnumerable<Tile>
     {
         private readonly IConfig _config;
         private readonly HexGridCollection<Tile> _tiles; 
         private readonly Dictionary<string, MapPath> _paths;
         private readonly float _tileRadius;
 
-        public Map(IConfig config, int rows, int columns)
+        public MapModel(IConfig config, int rows, int columns)
         {
             _config = config;
             _tileRadius = config.GetFloat("TileRadius");

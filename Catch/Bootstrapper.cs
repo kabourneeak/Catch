@@ -30,7 +30,7 @@ namespace Catch
             screenManager.RequestScreen(levelController);
         }
 
-        private MapModel LoadMapModel(string mapFolder, string mapName)
+        private MapSerializationModel LoadMapModel(string mapFolder, string mapName)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace Catch
                 var initialMapPath = Path.Combine(mapsFolder.Path, mapName);
                 var initialMapData = File.ReadAllText(initialMapPath);
 
-                var mapModel = JsonConvert.DeserializeObject<MapModel>(initialMapData);
+                var mapModel = JsonConvert.DeserializeObject<MapSerializationModel>(initialMapData);
 
                 return mapModel;
             }

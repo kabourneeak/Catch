@@ -1,4 +1,5 @@
 ﻿using Catch.Base;
+using Catch.Map;
 using Catch.Services;
 
 namespace Catch
@@ -14,7 +15,7 @@ namespace Catch
     {
         IConfig Config { get; }
 
-        Map.Map Map { get; }
+        MapModel Map { get; }
 
         UiStateModel Ui { get; }
 

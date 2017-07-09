@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Catch.Base;
+using Catch.Map;
 using Catch.Services;
 
 namespace Catch
@@ -12,7 +13,7 @@ namespace Catch
     {
         public IConfig Config { get; }
 
-        public Map.Map Map { get; }
+        public MapModel Map { get; }
 
         public UiStateModel Ui { get; }
 
@@ -20,7 +21,7 @@ namespace Catch
 
         public List<IAgent> Agents { get; }
 
-        public LevelState(IConfig config, Map.Map map)
+        public LevelState(IConfig config, MapModel map)
         {
             Config = config;
             Map = map;

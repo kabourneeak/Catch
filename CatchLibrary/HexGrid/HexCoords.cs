@@ -84,9 +84,9 @@ namespace CatchLibrary.HexGrid
 
         public bool Equals(HexCoords other)
         {
-            return object.ReferenceEquals(this, other)
-                    || (!object.ReferenceEquals(other, null)
-                        && this.Q == other.Q && this.R == other.R);
+            return ReferenceEquals(this, other)
+                    || (!ReferenceEquals(other, null)
+                        && Q == other.Q && R == other.R);
         }
 
         public override int GetHashCode()
