@@ -8,7 +8,7 @@ using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.LevelUi
 {
-    public class StatusBar : IGraphics
+    public class StatusBar : IGraphicsResource
     {
         private readonly ILevelStateModel _level;
 
@@ -51,18 +51,18 @@ namespace Catch.LevelUi
         private ICanvasBrush _bgBrush;
         private ICanvasBrush _fgBrush;
 
-        public void CreateResources(CreateResourcesArgs createArgs)
+        public void CreateResources(CreateResourcesArgs args)
         {
-            if (!(createArgs.IsMandatory || _bgBrush == null))
+            if (!(args.IsMandatory || _bgBrush == null))
                 return;
 
-            if (_createFrameId == createArgs.FrameId)
+            if (_createFrameId == args.FrameId)
                 return;
 
             DestroyResources();
 
-            _bgBrush = _bgStyle.CreateBrush(createArgs);
-            _fgBrush = _fgStyle.CreateBrush(createArgs);
+            _bgBrush = _bgStyle.CreateBrush(args);
+            _fgBrush = _fgStyle.CreateBrush(args);
         }
 
         public void DestroyResources()

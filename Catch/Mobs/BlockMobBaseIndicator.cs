@@ -27,24 +27,24 @@ namespace Catch.Mobs
         private CanvasCachedGeometry _geo;
         private ICanvasBrush _brush;
 
-        public void CreateResources(CreateResourcesArgs createArgs)
+        public void CreateResources(CreateResourcesArgs args)
         {
-            if (!(createArgs.IsMandatory || _geo == null))
+            if (!(args.IsMandatory || _geo == null))
                 return;
 
-            if (_createFrameId == createArgs.FrameId)
+            if (_createFrameId == args.FrameId)
                 return;
 
             DestroyResources();
 
-            _createFrameId = createArgs.FrameId;
+            _createFrameId = args.FrameId;
             
             // define brush
-            _brush = _style.CreateBrush(createArgs);
+            _brush = _style.CreateBrush(args);
 
             // create and cache
             var offset = _blockSize / 2.0f;
-            var geo = CanvasGeometry.CreateRectangle(createArgs.ResourceCreator, -offset, -offset, _blockSize, _blockSize);
+            var geo = CanvasGeometry.CreateRectangle(args.ResourceCreator, -offset, -offset, _blockSize, _blockSize);
 
             _geo = CanvasCachedGeometry.CreateStroke(geo, _style.StrokeWidth, _style.StrokeStyle);
         }

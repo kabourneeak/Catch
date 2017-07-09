@@ -4,7 +4,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
 {
-    public class HexagonGraphics : IGraphics
+    public class HexagonGraphics : IGraphicsResource
     {
         private readonly StyleArgs _style;
         private readonly float _radius;
@@ -21,24 +21,24 @@ namespace Catch.Graphics
         private CanvasCachedGeometry _geo;
         private ICanvasBrush _brush;
 
-        public void CreateResources(CreateResourcesArgs createArgs)
+        public void CreateResources(CreateResourcesArgs args)
         {
-            if (!(createArgs.IsMandatory || _geo == null))
+            if (!(args.IsMandatory || _geo == null))
                 return;
 
-            if (_createFrameId == createArgs.FrameId)
+            if (_createFrameId == args.FrameId)
                 return;
 
             DestroyResources();
 
-            _createFrameId = createArgs.FrameId;
+            _createFrameId = args.FrameId;
 
             // define brush
-            _brush = _style.CreateBrush(createArgs);
+            _brush = _style.CreateBrush(args);
             _brush.Opacity = _style.BrushOpacity;
 
             // define path
-            var pb = new CanvasPathBuilder(createArgs.ResourceCreator);
+            var pb = new CanvasPathBuilder(args.ResourceCreator);
 
             pb.BeginFigure(-1 * _radius * HexUtils.COS60, _radiusH);
             pb.AddLine(_radius * HexUtils.COS60, _radiusH);

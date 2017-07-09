@@ -1,17 +1,22 @@
-﻿using Catch.Map;
-using Catch.Mobs;
-using Catch.Towers;
+﻿using System;
+using Catch.Graphics;
 
 namespace Catch.Base
 {
-    public interface IAgentProvider
+    public interface IAgentProvider : IGraphicsResource
     {
-        TowerBase CreateTower(string name, Tile tile, ILevelStateModel level);
+        IAgent CreateAgent(string name, CreateAgentArgs args);
 
-        MobBase CreateMob(string name, MapPath mapPath, ILevelStateModel level);
+        event EventHandler<AgentCreatedEventArgs> AgentCreated;
+    }
 
-        Modifier CreateModifier(string name);
+    public class AgentCreatedEventArgs : EventArgs
+    {
+        public IAgent Agent { get; }
 
-        IIndicator CreateIndicator(string name);
+        public AgentCreatedEventArgs(IAgent agent)
+        {
+            Agent = agent;
+        }
     }
 }

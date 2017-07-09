@@ -24,28 +24,28 @@ namespace Catch.Towers
         private CanvasCachedGeometry _geo;
         private ICanvasBrush _brush;
 
-        public void CreateResources(CreateResourcesArgs createArgs)
+        public void CreateResources(CreateResourcesArgs args)
         {
-            if (!(createArgs.IsMandatory || _geo == null))
+            if (!(args.IsMandatory || _geo == null))
                 return;
 
-            if (_createFrameId == createArgs.FrameId)
+            if (_createFrameId == args.FrameId)
                 return;
 
             DestroyResources();
 
-            _createFrameId = createArgs.FrameId;
+            _createFrameId = args.FrameId;
 
             // define style
             var strokeStyle = new CanvasStrokeStyle() { };
             var strokeWidth = 4;
 
             // define brush
-            _brush = new CanvasSolidColorBrush(createArgs.ResourceCreator, Colors.RoyalBlue);
+            _brush = new CanvasSolidColorBrush(args.ResourceCreator, Colors.RoyalBlue);
 
             // create geometry
-            var body = CanvasGeometry.CreateCircle(createArgs.ResourceCreator, new Vector2(0.0f), 24);
-            var cannon = CanvasGeometry.CreateRectangle(createArgs.ResourceCreator, 23, -3, 10, 6);
+            var body = CanvasGeometry.CreateCircle(args.ResourceCreator, new Vector2(0.0f), 24);
+            var cannon = CanvasGeometry.CreateRectangle(args.ResourceCreator, 23, -3, 10, 6);
 
             var comb = body.CombineWith(cannon, Matrix3x2.Identity, CanvasGeometryCombine.Union);
 

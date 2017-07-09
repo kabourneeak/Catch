@@ -23,7 +23,7 @@ namespace Catch.Towers
             // do nothing
         }
 
-        public void CreateResources(CreateResourcesArgs createArgs) => _graphics.CreateResources(createArgs);
+        public void CreateResources(CreateResourcesArgs args) => _graphics.CreateResources(args);
 
         public void DestroyResources() => _graphics.DestroyResources();
 

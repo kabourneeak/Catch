@@ -19,7 +19,7 @@ namespace Catch.Services
         private Vector2 WindowSize { get; set; }
         private IScreenController RequestedScreen { get; set; }
 
-        private List<IScreenController> CurrentScreens { get; set; }
+        private List<IScreenController> CurrentScreens { get; }
 
         public DelegatingScreenManager()
         {
@@ -63,7 +63,7 @@ namespace Catch.Services
 
         #endregion
 
-        #region IGraphicsComponent Implementation
+        #region IUpdatable Implementation
 
         public void Update(float ticks)
         {
@@ -87,19 +87,23 @@ namespace Catch.Services
             }
         }
 
-        public void CreateResources(CreateResourcesArgs createArgs)
+        #endregion
+
+        #region IGraphicsComponent Implementation
+
+        public void CreateResources(CreateResourcesArgs args)
         {
             // CreateResources must be mandatory when there is a controller change, as the new controller
             // will not have received an "organic" CreateResources from the Win2d device.
             if (_forceCreateResources)
             {
-                createArgs.SetMandatory();
+                args.SetMandatory();
                 _forceCreateResources = false;
             }
 
             // CreateResources is delegated to all active screens
             foreach (var screenController in CurrentScreens)
-                screenController.CreateResources(createArgs);
+                screenController.CreateResources(args);
         }
 
         public void DestroyResources()
@@ -108,6 +112,10 @@ namespace Catch.Services
             foreach (var screenController in CurrentScreens)
                 screenController.DestroyResources();
         }
+
+        #endregion
+
+        #region IDrawable Implementation
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {

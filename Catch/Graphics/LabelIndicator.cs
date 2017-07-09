@@ -23,17 +23,17 @@ namespace Catch.Graphics
         private int _createFrameId = -1;
         private CanvasTextLayout _label;
         
-        public void CreateResources(CreateResourcesArgs createArgs)
+        public void CreateResources(CreateResourcesArgs args)
         {
-            if (!(createArgs.IsMandatory || _label == null))
+            if (!(args.IsMandatory || _label == null))
                 return;
 
-            if (_createFrameId == createArgs.FrameId)
+            if (_createFrameId == args.FrameId)
                 return;
 
             DestroyResources();
 
-            _createFrameId = createArgs.FrameId;
+            _createFrameId = args.FrameId;
 
             var format = new CanvasTextFormat()
             {
@@ -41,7 +41,7 @@ namespace Catch.Graphics
                 HorizontalAlignment = CanvasHorizontalAlignment.Center
             };
 
-            _label = new CanvasTextLayout(createArgs.ResourceCreator, Label, format, 100, 100);
+            _label = new CanvasTextLayout(args.ResourceCreator, Label, format, 100, 100);
         }
 
         public void DestroyResources()

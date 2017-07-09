@@ -31,7 +31,7 @@ namespace Catch.Services
             // do nothing
         }
 
-        public void CreateResources(CreateResourcesArgs createArgs)
+        public void CreateResources(CreateResourcesArgs args)
         {
             // do nothing
         }

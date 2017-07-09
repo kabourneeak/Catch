@@ -44,16 +44,6 @@ namespace Catch.Base
             Commands.Update(ticks);
         }
 
-        public virtual void CreateResources(CreateResourcesArgs createArgs)
-        {
-            Indicators.CreateResources(createArgs);
-        }
-
-        public virtual void DestroyResources()
-        {
-            Indicators.DestroyResources();
-        }
-
         public virtual void Draw(DrawArgs drawArgs, float rotation)
         {
             if (Indicators.Count == 0)

@@ -1,24 +1,10 @@
-﻿namespace Catch.Graphics
+namespace Catch.Graphics
 {
     /// <summary>
     /// An object which can draw itself in Win2D
     /// </summary>
-    public interface IGraphics
+    public interface IDrawable
     {
-        #region Events
-
-        /// <summary>
-        /// When called, an IGraphics should create and cache any resources, e.g., 
-        /// with Win2D CanvasCachedGeometry
-        /// </summary>
-        void CreateResources(CreateResourcesArgs createArgs);
-
-        /// <summary>
-        /// When called, an IGraphics should free any cached resources. The object may be called
-        /// upon later to CreateResources.
-        /// </summary>
-        void DestroyResources();
-
         /// <summary>
         /// Has the IGraphics draw itself.
         /// 
@@ -29,7 +15,5 @@
         /// <param name="drawArgs">The DrawArgs to draw against, which includes the output device</param>
         /// <param name="rotation">A hint from the caller as to the orientation of what is being drawn.</param>
         void Draw(DrawArgs drawArgs, float rotation);
-
-        #endregion
     }
 }

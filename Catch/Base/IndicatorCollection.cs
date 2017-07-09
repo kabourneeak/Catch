@@ -43,10 +43,10 @@ namespace Catch.Base
                 i.Update(ticks);
         }
 
-        public void CreateResources(CreateResourcesArgs createArgs)
+        public void CreateResources(CreateResourcesArgs args)
         {
             foreach (var i in _indicators)
-                i.CreateResources(createArgs);
+                i.CreateResources(args);
         }
 
         public void DestroyResources()

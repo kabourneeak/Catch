@@ -1,13 +1,25 @@
-﻿using Catch.Map;
+﻿using System.Numerics;
+using Catch.Graphics;
+using Catch.Map;
 
 namespace Catch.Base
 {
-    public interface IAgent : IGameObject
+    public interface IAgent : IUpdatable, IDrawable
     {
         // Identification
         string GetAgentType();
-        
+
         #region Properties
+
+        string DisplayName { get; }
+
+        string DisplayInfo { get; }
+
+        string DisplayStatus { get; }
+
+        Vector2 Position { get; set; }
+
+        float Rotation { get; set; }
 
         /// <summary>
         /// Indicates whether the GameObject is participating in the game.  

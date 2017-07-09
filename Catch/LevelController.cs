@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Catch.Base;
 using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;
-using Catch.Win2d;
 using CatchLibrary.Serialization;
 
 namespace Catch
@@ -14,13 +14,14 @@ namespace Catch
     /// </summary>
     public class LevelController : IScreenController
     {
-        private FieldController _fieldController;
-        private OverlayController _overlayController;
+        private readonly FieldController _fieldController;
+        private readonly OverlayController _overlayController;
         private readonly Random _rng = new Random();
 
         private readonly IConfig _config;
         private readonly LevelState _level;
-        private readonly Win2DProvider _provider;
+        private readonly IAgentProvider _agentProvider;
+        private readonly IMapProvider _mapProvider;
         private readonly Queue<ScriptCommand> _scriptCommands;
 
         #region Construction
@@ -29,9 +30,10 @@ namespace Catch
         {
             _config = config;
 
-            _provider = new Win2DProvider(_config);
+            _agentProvider = new BuiltinAgentProvider(_config);
+            _mapProvider = new BuiltinMapProvider(_config);
 
-            var map = _provider.CreateMap(mapModel.Rows, mapModel.Columns);
+            var map = _mapProvider.CreateMap(mapModel.Rows, mapModel.Columns);
 
             _level = new LevelState(config, map);
 
@@ -50,7 +52,13 @@ namespace Catch
             foreach (var tile in map)
             {
                 var tileModel = mapModel.Tiles.GetHex(tile.Coords);
-                var tower = _provider.CreateTower(tileModel.TowerName, tile, _level);
+                var towerArgs = new CreateAgentArgs()
+                {
+                    Tile = tile,
+                    StateModel = _level
+                };
+
+                var tower = _agentProvider.CreateAgent(tileModel.TowerName, towerArgs);
                 _level.AddAgent(tower);
             }
 
@@ -167,7 +175,7 @@ namespace Catch
 
         #endregion
 
-        #region IGraphicsComponent Implementation
+        #region IUpdatable Implementation
 
         private float _elapsedTicks = 0.0f;
 
@@ -186,7 +194,7 @@ namespace Catch
                 if (agent.IsActive)
                     return false;
 
-                agent.DestroyResources();
+                //agent.DestroyResources();
                 return true;
             });
 
@@ -199,7 +207,13 @@ namespace Catch
             {
                 var scriptCommand = _scriptCommands.Dequeue();
 
-                var agent = _provider.CreateMob(scriptCommand.AgentTypeName, _level.Map.GetPath(scriptCommand.PathName), _level);
+                var agentArgs = new CreateAgentArgs()
+                {
+                    Path = _level.Map.GetPath(scriptCommand.PathName),
+                    StateModel = _level
+                };
+
+                var agent = _agentProvider.CreateAgent(scriptCommand.AgentTypeName, agentArgs);
 
                 _level.Agents.Add(agent);
 
@@ -208,17 +222,25 @@ namespace Catch
             }
         }
 
-        public void CreateResources(CreateResourcesArgs createArgs)
+        #endregion
+
+        #region IGraphicsComponent Implementation
+
+        public void CreateResources(CreateResourcesArgs args)
         {
-            _fieldController.CreateResources(createArgs);
-            _overlayController.CreateResources(createArgs);
+            _agentProvider.CreateResources(args);
+            _overlayController.CreateResources(args);
         }
 
         public void DestroyResources()
         {
-            _fieldController.DestroyResources();
+            _agentProvider.DestroyResources();
             _overlayController.DestroyResources();
         }
+
+        #endregion
+
+        #region IDrawable Implementation
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {

@@ -6,11 +6,13 @@ namespace Catch.Towers
     {
         private readonly IAgent _agent;
         private readonly ILevelStateModel _level;
+        private readonly IAgentProvider _agentProvider;
 
-        public BuyTowerCommand(IAgent agent, ILevelStateModel level)
+        public BuyTowerCommand(IAgent agent, ILevelStateModel level, IAgentProvider agentProvider)
         {
             _agent = agent;
             _level = level;
+            _agentProvider = agentProvider;
         }
 
         public void Update(float ticks)
@@ -31,9 +33,15 @@ namespace Catch.Towers
 
             tile.RemoveTower((TowerBase)_agent);
 
-            var tower = new GunTower(tile, _level);
+            var towerArgs = new CreateAgentArgs()
+            {
+                StateModel = _level,
+                Tile = tile
+            };
 
-            tile.AddTower(tower);
+            var tower = _agentProvider.CreateAgent(nameof(GunTower), towerArgs);
+
+            tile.AddTower((ITileAgent)tower);
 
             // existing tower must go
             _agent.OnRemove();

@@ -4,7 +4,7 @@ using Catch.Graphics;
 
 namespace Catch.Services
 {
-    public interface IScreenController : IViewportController, IGraphics, IUpdatable
+    public interface IScreenController : IViewportController, IGraphicsResource, IUpdatable, IDrawable
     {
         void Initialize(Vector2 size);
 

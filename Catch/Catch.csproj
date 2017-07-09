@@ -11,8 +11,8 @@
     <AssemblyName>Catch</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -98,15 +98,24 @@
     </Compile>
     <Compile Include="Base\AgentBase.cs" />
     <Compile Include="Base\CommandCollection.cs" />
+    <Compile Include="Base\CreateAgentArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
     <Compile Include="Base\AgentCommandType.cs" />
     <Compile Include="Base\AgentStatsModel.cs" />
     <Compile Include="Base\AttackModel.cs" />
     <Compile Include="Base\BaseSpecModel.cs" />
+    <Compile Include="Base\IAgentFactory.cs" />
+    <Compile Include="Base\ITileAgent.cs" />
     <Compile Include="Base\IUpdatable.cs" />
+    <Compile Include="Base\BuiltinAgentProvider.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Graphics\IDrawable.cs" />
     <Compile Include="ILevelStateModel.cs" />
     <Compile Include="LevelState.cs" />
+    <Compile Include="Map\BuiltinMapProvider.cs" />
+    <Compile Include="Map\IMapProvider.cs" />
+    <Compile Include="Mobs\BlockMobFactory.cs" />
+    <Compile Include="Mobs\BlockMobSharedResources.cs" />
     <Compile Include="Services\EventArgsBase.cs" />
     <Compile Include="Services\HoverEventArgs.cs" />
     <Compile Include="Services\KeyPressEventArgs.cs" />
@@ -116,6 +125,10 @@
     <Compile Include="Services\IScreenManager.cs" />
     <Compile Include="Services\TouchEventArgs.cs" />
     <Compile Include="Towers\BuyTowerCommand.cs" />
+    <Compile Include="Towers\EmptyTowerFactory.cs" />
+    <Compile Include="Towers\EmptyTowerSharedResources.cs" />
+    <Compile Include="Towers\GunTowerFactory.cs" />
+    <Compile Include="Towers\GunTowerSharedResources.cs" />
     <Compile Include="Towers\TowerHoverIndicator.cs" />
     <Compile Include="PlayerModel.cs" />
     <Compile Include="ScriptCommand.cs" />
@@ -126,10 +139,8 @@
     <Compile Include="Base\IAgentProvider.cs" />
     <Compile Include="Base\IAgentStats.cs" />
     <Compile Include="Base\IBehaviourComponent.cs" />
-    <Compile Include="Base\IGameObject.cs" />
-    <Compile Include="Graphics\IGraphics.cs" />
+    <Compile Include="Graphics\IGraphicsResource.cs" />
     <Compile Include="Base\IIndicator.cs" />
-    <Compile Include="Base\IMapProvider.cs" />
     <Compile Include="Base\IndicatorCollection.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Map\MapPath.cs" />
@@ -175,7 +186,6 @@
     <Compile Include="Towers\EmptyTower.cs" />
     <Compile Include="UiStateModel.cs" />
     <Compile Include="Win2d\PointerData.cs" />
-    <Compile Include="Win2d\Win2dProvider.cs" />
     <Compile Include="Services\ZoomToPointEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>

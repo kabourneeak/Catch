@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace Catch
 {
     /// <summary>
-    /// Takes a running, but empty environment, and gets the game started
+    /// Takes a running, but empty, environment and gets the game started
     /// </summary>
     public class Bootstrapper
     {
@@ -34,8 +34,6 @@ namespace Catch
         {
             try
             {
-                MapModel mapModel;
-
                 var appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
                 var mapsFolder =
                     appInstalledFolder.GetFolderAsync(mapFolder)
@@ -45,7 +43,7 @@ namespace Catch
                 var initialMapPath = Path.Combine(mapsFolder.Path, mapName);
                 var initialMapData = File.ReadAllText(initialMapPath);
 
-                mapModel = JsonConvert.DeserializeObject<MapModel>(initialMapData);
+                var mapModel = JsonConvert.DeserializeObject<MapModel>(initialMapData);
 
                 return mapModel;
             }

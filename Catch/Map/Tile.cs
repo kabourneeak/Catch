@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Numerics;
+using Catch.Base;
 using Catch.Mobs;
 using Catch.Services;
 using Catch.Towers;
@@ -9,7 +10,7 @@ namespace Catch.Map
 {
     public class Tile
     {
-        private TowerBase _tower;
+        private ITileAgent _tileAgent;
         private readonly ISet<MobBase> _mobs;
 
         public Tile(HexCoords coords, Map map, IConfig config)
@@ -31,46 +32,46 @@ namespace Catch.Map
             Position = new Vector2(x, y);
         }
 
-        public Map Map { get; protected set; }
+        public Map Map { get; }
 
-        public HexCoords Coords { get; protected set; }
+        public HexCoords Coords { get; }
 
-        public Vector2 Position { get; protected set; }
+        public Vector2 Position { get; }
 
         #region Tower Management
 
-        public TowerBase GetTower()
+        public ITileAgent GetTower()
         {
-            return _tower;
+            return _tileAgent;
         }
 
         public bool HasTower()
         {
-            return _tower != null;
+            return _tileAgent != null;
         }
 
         public bool RemoveTower(TowerBase tower)
         {
-            if (_tower == tower)
+            if (_tileAgent == tower)
             {
-                _tower = null;
+                _tileAgent = null;
                 return true;
             }
 
             return false;
         }
 
-        public bool AddTower(TowerBase tower)
+        public bool AddTower(ITileAgent tileAgent)
         {
-            if (_tower == tower)
+            if (_tileAgent == tileAgent)
                 return false;
 
-            if (_tower != null)
+            if (_tileAgent != null)
             {
                 // TODO send OnRemove event
             }
 
-            _tower = tower;
+            _tileAgent = tileAgent;
 
             return true;
         }
@@ -94,9 +95,9 @@ namespace Catch.Map
             return _mobs.Remove(mob);
         }
 
-        public int MobCount {get { return _mobs.Count; }}
+        public int MobCount => _mobs.Count;
 
-        public IEnumerable<MobBase> Mobs { get { return _mobs; } }
+        public IEnumerable<MobBase> Mobs => _mobs;
 
         #endregion
 

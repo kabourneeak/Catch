@@ -10,7 +10,7 @@ namespace Catch
     /// <summary>
     /// Handles drawing the field of play, i.e., the map and the agents running around on it.
     /// </summary>
-    public class FieldController : IGraphics, IViewportController
+    public class FieldController : IViewportController
     {
         private Vector2 _pan;
         private float _zoom;
@@ -35,7 +35,7 @@ namespace Catch
             _pan.Y = _level.Ui.WindowSize.Y * -1.0f + (_level.Ui.WindowSize.Y - _level.Map.Size.Y) / 2.0f;
         }
 
-        #region IGraphicsComponent Implementation
+        #region IUpdatable Implementation
 
         public void Update(float ticks)
         {
@@ -43,17 +43,9 @@ namespace Catch
                 agent.Update(ticks);
         }
 
-        public void CreateResources(CreateResourcesArgs createArgs)
-        {
-            foreach (var agent in _agents)
-                agent.CreateResources(createArgs);
-        }
+        #endregion
 
-        public void DestroyResources()
-        {
-            foreach (var agent in _agents)
-                agent.DestroyResources();
-        }
+        #region IDrawable Implementation
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {

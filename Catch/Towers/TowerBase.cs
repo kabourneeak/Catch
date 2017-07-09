@@ -10,7 +10,7 @@ namespace Catch.Towers
     /// and pops a translation to Draw.DrawArgs for the center point of the tower, so that all Indicators can 
     /// draw relatively.
     /// </summary>
-    public abstract class TowerBase : AgentBase
+    public abstract class TowerBase : AgentBase, ITileAgent
     {
         protected TowerBase(Tile tile, ILevelStateModel level) : base(level)
         {
