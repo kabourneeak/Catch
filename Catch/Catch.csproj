@@ -152,7 +152,6 @@
     <Compile Include="Towers\TargettingBase.cs" />
     <Compile Include="Map\Tile.cs" />
     <Compile Include="Towers\TowerBase.cs" />
-    <Compile Include="CanvasUtils.cs" />
     <Compile Include="Services\EnumUtils.cs" />
     <Compile Include="FieldController.cs" />
     <Compile Include="Services\FloatExtensions.cs" />
@@ -185,7 +184,6 @@
     <Compile Include="Towers\TowerTileIndicator.cs" />
     <Compile Include="Towers\EmptyTower.cs" />
     <Compile Include="UiStateModel.cs" />
-    <Compile Include="Win2d\PointerData.cs" />
     <Compile Include="Services\ZoomToPointEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
