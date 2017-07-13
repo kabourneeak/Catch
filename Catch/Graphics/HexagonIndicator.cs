@@ -1,25 +1,28 @@
+using Catch.Base;
 using CatchLibrary.HexGrid;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
 {
-    public class HexagonGraphics : IGraphicsResource, IDrawable
+    public class HexagonIndicator : IIndicator
     {
-        private readonly StyleArgs _style;
-        private readonly float _radius;
-        private readonly float _radiusH;
+        public StyleArgs Style { get; protected set; }
+        public float Radius { get; protected set; }
 
-        public HexagonGraphics(float radius, StyleArgs style)
+        public HexagonIndicator()
         {
-            _style = style;
-            _radius = radius;
-            _radiusH = HexUtils.GetRadiusHeight(_radius);
+
         }
 
         private int _createFrameId = -1;
         private CanvasCachedGeometry _geo;
         private ICanvasBrush _brush;
+
+        public void Update(float ticks)
+        {
+            // do nothing
+        }
 
         public void CreateResources(CreateResourcesArgs args)
         {
@@ -34,24 +37,25 @@ namespace Catch.Graphics
             _createFrameId = args.FrameId;
 
             // define brush
-            _brush = _style.CreateBrush(args);
-            _brush.Opacity = _style.BrushOpacity;
+            _brush = Style.CreateBrush(args);
+            _brush.Opacity = Style.BrushOpacity;
 
             // define path
             var pb = new CanvasPathBuilder(args.ResourceCreator);
+            var radiusH = HexUtils.GetRadiusHeight(Radius);
 
-            pb.BeginFigure(-1 * _radius * HexUtils.COS60, _radiusH);
-            pb.AddLine(_radius * HexUtils.COS60, _radiusH);
-            pb.AddLine(_radius, 0);
-            pb.AddLine(_radius * HexUtils.COS60, -1 * _radiusH);
-            pb.AddLine(-1 * _radius * HexUtils.COS60, -1 * _radiusH);
-            pb.AddLine(-1 * _radius, 0);
+            pb.BeginFigure(-1 * Radius * HexUtils.COS60, radiusH);
+            pb.AddLine(Radius * HexUtils.COS60, radiusH);
+            pb.AddLine(Radius, 0);
+            pb.AddLine(Radius * HexUtils.COS60, -1 * radiusH);
+            pb.AddLine(-1 * Radius * HexUtils.COS60, -1 * radiusH);
+            pb.AddLine(-1 * Radius, 0);
             pb.EndFigure(CanvasFigureLoop.Closed);
 
             // create and cache
             var geo = CanvasGeometry.CreatePath(pb);
 
-            _geo = CanvasCachedGeometry.CreateStroke(geo, _style.StrokeWidth, _style.StrokeStyle);
+            _geo = CanvasCachedGeometry.CreateStroke(geo, Style.StrokeWidth, Style.StrokeStyle);
         }
 
         public void DestroyResources()
@@ -64,6 +68,8 @@ namespace Catch.Graphics
 
             _createFrameId = -1;
         }
+
+        public DrawLayer Layer { get; protected set; }
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {

@@ -165,7 +165,7 @@
     <Compile Include="Mobs\BlockMob.cs" />
     <Compile Include="Mobs\BlockMobBaseIndicator.cs" />
     <Compile Include="Base\NilBehaviour.cs" />
-    <Compile Include="Graphics\HexagonGraphics.cs" />
+    <Compile Include="Graphics\HexagonIndicator.cs" />
     <Compile Include="Graphics\LabelIndicator.cs" />
     <Compile Include="Mobs\PathMobBehaviour.cs" />
     <Compile Include="Towers\RadiusExitTargetting.cs" />
