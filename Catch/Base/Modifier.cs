@@ -6,7 +6,7 @@
 
         public float Intensity { get; set; }
 
-        public float Duration { get; set; }
+        public float Expiry { get; set; }
 
         #endregion
 
@@ -19,7 +19,7 @@
             IsActive = true;
 
             Intensity = 1.0f;
-            Duration = -1.0f;
+            Expiry = -1.0f;
         }
 
         public bool IsActive { get; protected set; }

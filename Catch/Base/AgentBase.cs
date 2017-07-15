@@ -17,7 +17,6 @@ namespace Catch.Base
             Modifiers = new ModifierCollection(this);
             Commands = new CommandCollection();
             BaseSpecs = new BaseSpecModel();
-            Stats = new AgentStatsModel();
 
             IsActive = true;
         }
@@ -69,7 +68,6 @@ namespace Catch.Base
         public IndicatorCollection Indicators { get; }
         public CommandCollection Commands { get; }
         public BaseSpecModel BaseSpecs { get; }
-        public IAgentStats Stats { get; }
 
         public virtual void OnRemove()
         {

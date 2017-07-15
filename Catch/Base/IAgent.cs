@@ -39,8 +39,6 @@ namespace Catch.Base
 
         CommandCollection Commands { get; }
 
-        IAgentStats Stats { get; }
-
         #endregion
 
         #region Events

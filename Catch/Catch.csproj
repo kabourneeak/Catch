@@ -101,7 +101,6 @@
     <Compile Include="Base\CreateAgentArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
     <Compile Include="Base\AgentCommandType.cs" />
-    <Compile Include="Base\AgentStatsModel.cs" />
     <Compile Include="Base\AttackModel.cs" />
     <Compile Include="Base\BaseSpecModel.cs" />
     <Compile Include="Base\IAgentFactory.cs" />
@@ -137,7 +136,6 @@
     <Compile Include="Graphics\DrawLayer.cs" />
     <Compile Include="Base\IAgent.cs" />
     <Compile Include="Base\IAgentProvider.cs" />
-    <Compile Include="Base\IAgentStats.cs" />
     <Compile Include="Base\IBehaviourComponent.cs" />
     <Compile Include="Graphics\IGraphicsResource.cs" />
     <Compile Include="Base\IIndicator.cs" />
