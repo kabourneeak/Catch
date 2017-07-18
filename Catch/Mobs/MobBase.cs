@@ -6,7 +6,7 @@ namespace Catch.Mobs
     {
         protected MobBase(string agentName, ILevelStateModel level) : base(agentName, level)
         {
-            IsTargetable = true;
+
         }
 
         #region Mob Specific

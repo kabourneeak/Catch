@@ -102,7 +102,6 @@ namespace Catch.Mobs
         public void OnRemove()
         {
             _state = PathMobBehaviourStates.Removed;
-            _mob.IsTargetable = false;
             _mob.IsActive = false;
             _mob.Tile.RemoveMob(_mob);
         }

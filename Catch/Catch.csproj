@@ -102,7 +102,7 @@
     <Compile Include="Base\IAgentCommand.cs" />
     <Compile Include="Base\AgentCommandType.cs" />
     <Compile Include="Base\AttackModel.cs" />
-    <Compile Include="Base\BaseSpecModel.cs" />
+    <Compile Include="Base\StatModel.cs" />
     <Compile Include="Base\IAgentFactory.cs" />
     <Compile Include="Base\ITileAgent.cs" />
     <Compile Include="Base\IUpdatable.cs" />

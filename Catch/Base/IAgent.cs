@@ -18,8 +18,6 @@ namespace Catch.Base
 
         Vector2 Position { get; set; }
 
-        float Rotation { get; set; }
-
         /// <summary>
         /// Indicates whether the GameObject is participating in the game.  
         /// Once set to false, the object will be removed from the game on
@@ -29,13 +27,11 @@ namespace Catch.Base
 
         Tile Tile { get; }
 
-        bool IsTargetable { get; }
-
         ModifierCollection Modifiers { get; }
 
         IndicatorCollection Indicators { get; }
 
-        BaseSpecModel BaseSpecs { get; }
+        StatModel Stats { get; }
 
         CommandCollection Commands { get; }
 

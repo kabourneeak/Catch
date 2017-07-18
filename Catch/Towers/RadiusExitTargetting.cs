@@ -80,11 +80,12 @@ namespace Catch.Towers
         {
             MobBase best = null;
 
+            // TODO filter by team?
             foreach (var mob in tile.Mobs)
             {
                 if (best == null)
                     best = mob;
-                else if (best.TileProgress < mob.TileProgress && mob.IsTargetable)
+                else if (best.TileProgress < mob.TileProgress)
                     best = mob;
             }
 

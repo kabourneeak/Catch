@@ -61,7 +61,7 @@ namespace Catch.Base
 
         private void ApplyToBase()
         {
-            _agent.BaseSpecs.Reset();
+            _agent.Stats.Reset();
 
             foreach (var m in _modifiers)
             {

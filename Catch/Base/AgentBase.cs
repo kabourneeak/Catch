@@ -16,7 +16,7 @@ namespace Catch.Base
             Indicators = new IndicatorCollection();
             Modifiers = new ModifierCollection(this);
             Commands = new CommandCollection();
-            BaseSpecs = new BaseSpecModel();
+            Stats = new StatModel();
 
             IsActive = true;
         }
@@ -33,7 +33,6 @@ namespace Catch.Base
         public string DisplayInfo { get; protected set; }
         public string DisplayStatus { get; protected set; }
         public Vector2 Position { get; set; }
-        public float Rotation { get; set; }
 
         public virtual void Update(float ticks)
         {
@@ -50,8 +49,7 @@ namespace Catch.Base
 
             drawArgs.PushTranslation(Position);
 
-            // ignore the rotation parameter, and replace by our Rotation
-            Indicators.Draw(drawArgs, Rotation);
+            Indicators.Draw(drawArgs, rotation);
 
             drawArgs.Pop();
         }
@@ -63,11 +61,10 @@ namespace Catch.Base
         public string AgentType { get; }
         public bool IsActive { get; set; }
         public Tile Tile { get; set; }
-        public bool IsTargetable { get; set; }
         public ModifierCollection Modifiers { get; }
         public IndicatorCollection Indicators { get; }
         public CommandCollection Commands { get; }
-        public BaseSpecModel BaseSpecs { get; }
+        public StatModel Stats { get; }
 
         public virtual void OnRemove()
         {

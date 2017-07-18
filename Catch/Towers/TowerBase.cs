@@ -1,4 +1,5 @@
 ﻿using Catch.Base;
+using Catch.Graphics;
 using Catch.Map;
 
 namespace Catch.Towers
@@ -12,6 +13,8 @@ namespace Catch.Towers
     /// </summary>
     public abstract class TowerBase : AgentBase, ITileAgent
     {
+        public float Rotation { get; set; }
+
         protected TowerBase(string agentType, Tile tile, ILevelStateModel level) : base(agentType, level)
         {
             Tile = tile;
@@ -19,6 +22,19 @@ namespace Catch.Towers
 
             // site into tile
             tile.AddTower(this);
+        }
+
+        public override void Draw(DrawArgs drawArgs, float rotation)
+        {
+            if (Indicators.Count == 0)
+                return;
+
+            drawArgs.PushTranslation(Position);
+
+            // ignore the rotation parameter, and replace by our Rotation
+            Indicators.Draw(drawArgs, Rotation);
+
+            drawArgs.Pop();
         }
     }
 }

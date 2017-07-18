@@ -13,11 +13,11 @@ namespace Catch.Towers
 
         public override void ApplyToBase()
         {
-            var bs = Agent.BaseSpecs;
+            var stats = Agent.Stats;
 
-            bs.MaxHealth = 100;
-            bs.Health = 100;
-            bs.Level = 1;
+            stats.MaxHealth = 100;
+            stats.Health = 100;
+            stats.Level = 1;
 
             NeedsApplyToBase = false;
         }
@@ -25,7 +25,7 @@ namespace Catch.Towers
         public override bool ApplyToAttack(AttackModel outgoingAttack)
         {
             // This is a base modifier, so we override any existing value
-            outgoingAttack.Damage = (int) (BaseDamage * Intensity * Agent.BaseSpecs.Level);
+            outgoingAttack.Damage = (int) (BaseDamage * Intensity * Agent.Stats.Level);
 
             return true;
         }

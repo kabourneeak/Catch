@@ -85,7 +85,7 @@ namespace Catch.Towers
         private void UpdateOnTarget(float ticks)
         {
             // check if mob has become untargetable
-            if (!_targetMob.IsTargetable || _targetMob.Tile != _targetTile)
+            if (!_targetMob.IsActive || _targetMob.Tile != _targetTile)
             {
                 _state = TowerBehaviourState.Targetting;
                 return;
@@ -109,7 +109,6 @@ namespace Catch.Towers
         public void OnRemove()
         {
             _state = TowerBehaviourState.Removed;
-            _tower.IsTargetable = false;
             _tower.IsActive = false;
             _tower.Tile.RemoveTower(_tower);
         }

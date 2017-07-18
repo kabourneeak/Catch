@@ -4,6 +4,9 @@
     {
         #region Properties
 
+        /// <summary>
+        /// The internal multiplier for the intensity of this mod 
+        /// </summary>
         public float Intensity { get; set; }
 
         public float Expiry { get; set; }
