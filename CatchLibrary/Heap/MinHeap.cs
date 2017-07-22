@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CatchLibrary.Heap
 {
+    /// <summary>
+    /// A basic array-backed min heap, which grows as needed when items are added
+    /// </summary>
+    /// <typeparam name="TP">The type for the priorities</typeparam>
+    /// <typeparam name="TV">The type for the values</typeparam>
     public class MinHeap<TP, TV> where TP : IComparable
     {
         private const int DefaultHeapSize = 16;
@@ -22,10 +22,17 @@ namespace CatchLibrary.Heap
             _count = 0;
         }
 
+        public int Count => _count;
+
+        public bool IsEmpty => _count == 0;
+
+        /// <summary>
+        /// Add an item to the queue with the given priority
+        /// </summary>
         public void Add(TP priority, TV value)
         {
             if (_count == _heapPriorities.Length)
-                Double();
+                GrowHeap();
 
             // add new value to end heap
             var cur = _count;
@@ -53,6 +60,54 @@ namespace CatchLibrary.Heap
             _count += 1;
         }
 
+        /// <summary>
+        /// Examine the next item on the queue (the item with minimum priority) without removing it
+        /// </summary>
+        /// <returns>The next item in the queue</returns>
+        public TV Peek()
+        {
+            if (_count == 0)
+                throw new IndexOutOfRangeException();
+
+            return _heapValues[0];
+        }
+
+        /// <summary>
+        /// Dequeue the next item on the queue (the item with minimum priority)
+        /// </summary>        
+        /// <param name="priority">The priority the removed item had on the queue</param>
+        /// <returns>The next item on the queue</returns>
+        public TV Extract(out TP priority)
+        {
+            if (_count == 0)
+                throw new IndexOutOfRangeException();
+
+            // extract top of heap, and replace with last element
+            var val = _heapValues[0];
+            priority = _heapPriorities[0];
+            _count -= 1;
+            Swap(0, _count);
+
+            // fixup heap property from root
+            BubbleDown(0);
+
+            return val;
+        }
+
+        /// <summary>
+        /// Increases the priority of the next item on the heap, the general use of which is to
+        /// reschedule it for later in the queue.
+        /// </summary>
+        /// <param name="newPriority"></param>
+        public void Increase(TP newPriority)
+        {
+            if (_count == 0)
+                throw new IndexOutOfRangeException();
+
+            _heapPriorities[0] = newPriority;
+            BubbleDown(0);
+        }
+
         private int ParentIndex(int childIndex) => (childIndex + 1) / 2 - 1;
 
         private int LeftChildIndex(int parentIndex) => (parentIndex + 1) * 2 - 1;
@@ -70,59 +125,32 @@ namespace CatchLibrary.Heap
             _heapValues[parent] = tv;
         }
 
-        public int Count() => _count;
-
-        public bool IsEmpty() => _count == 0;
-
-        public TV Extract(out TP priority)
+        private void BubbleDown(int index)
         {
-            if (_count == 0)
-                throw new IndexOutOfRangeException();
-
-            // extract top of heap, and replace with last element
-            var val = _heapValues[0];
-            priority = _heapPriorities[0];
-            var cur = _count--;  // post-decrement
-            Swap(0, cur);
-
-            // fixup heap property
             while (true)
             {
-                var left = LeftChildIndex(cur);
-                var right = RightChildIndex(cur);
-                var smallest = cur;
+                var left = LeftChildIndex(index);
+                var right = RightChildIndex(index);
+                var smallest = index;
 
                 if (left < _count && _heapPriorities[left].CompareTo(_heapPriorities[smallest]) < 0)
                     smallest = left;
                 if (right < _count && _heapPriorities[right].CompareTo(_heapPriorities[smallest]) < 0)
                     smallest = right;
 
-                if (smallest != cur)
-                    Swap(cur, smallest);
+                if (smallest != index)
+                {
+                    Swap(index, smallest);
+                    index = smallest;
+                }
                 else
+                {
                     break;
+                }
             }
-            
-            return val;
         }
 
-        public TV Peek()
-        {
-            if (_count == 0)
-                throw new IndexOutOfRangeException();
-
-            return _heapValues[0];
-        }
-
-        public TP PeekPriority()
-        {
-            if (_count == 0)
-                throw new IndexOutOfRangeException();
-
-            return _heapPriorities[0];
-        }
-
-        private void Double()
+        private void GrowHeap()
         {
             var newHeapPriorities = new TP[_heapPriorities.Length * 2];
             var newHeapValues = new TV[_heapValues.Length * 2];
