@@ -6,18 +6,13 @@ namespace Catch.Towers
     {
         private readonly IAgent _agent;
         private readonly ILevelStateModel _level;
-        private readonly IAgentProvider _agentProvider;
+        private readonly ISimulationManager _simulationManager;
 
-        public BuyTowerCommand(IAgent agent, ILevelStateModel level, IAgentProvider agentProvider)
+        public BuyTowerCommand(IAgent agent, ILevelStateModel level, ISimulationManager simulationManager)
         {
             _agent = agent;
             _level = level;
-            _agentProvider = agentProvider;
-        }
-
-        public void Update(float ticks)
-        {
-            // do nothing
+            _simulationManager = simulationManager;
         }
 
         public string DisplayName => "Buy Gun Tower";
@@ -31,23 +26,20 @@ namespace Catch.Towers
         {
             var tile = _agent.Tile;
 
-            tile.RemoveTower((TowerBase)_agent);
+            // remove current tower
+            _simulationManager.Remove(_agent);
 
+            // create new tower
             var towerArgs = new CreateAgentArgs()
             {
-                StateModel = _level,
                 Tile = tile
             };
 
-            var tower = _agentProvider.CreateAgent(nameof(GunTower), towerArgs);
+            var tower = _simulationManager.CreateTileAgent(nameof(GunTower), towerArgs);
 
-            tile.AddTower((ITileAgent)tower);
+            tile.TileAgent = tower;
 
-            // existing tower must go
-            _agent.OnRemove();
-
-            // new tower needs to be added to list of agents so that it is treated as part of the game
-            _level.AddAgent(tower);
+            _simulationManager.Register(tower);
 
             // clear UI selections after command execution
             _level.Ui.Deselect();

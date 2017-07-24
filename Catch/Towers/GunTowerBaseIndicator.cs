@@ -8,16 +8,11 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Towers
 {
-    public class GunTowerBaseIndicator : IIndicator
+    public class GunTowerBaseIndicator : IIndicator, IGraphicsResource
     {
         public GunTowerBaseIndicator(IConfig config)
         {
 
-        }
-
-        public void Update(float ticks)
-        {
-            // do nothing
         }
 
         private int _createFrameId = -1;

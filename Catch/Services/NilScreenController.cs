@@ -22,14 +22,14 @@ namespace Catch.Services
 
         public bool AllowPredecessorInput() => false;
 
-        #endregion
-
-        #region IGraphicsComponent Implementation
-
-        public void Update(float ticks)
+        public void Update(float deviceTicks)
         {
             // do nothing
         }
+
+        #endregion
+
+        #region IGraphicsResource Implementation
 
         public void CreateResources(CreateResourcesArgs args)
         {
@@ -40,6 +40,10 @@ namespace Catch.Services
         {
             // do nothing
         }
+
+        #endregion
+
+        #region IDrawable Implementation
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {

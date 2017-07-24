@@ -10,9 +10,8 @@ namespace Catch.Base
     /// Indicators should expect to be drawn relative to their parent object. The parent object
     /// is responsible for setting draw transformations appropriately in DrawArgs.
     /// </summary>
-    public interface IIndicator : IGraphicsResource, IUpdatable, IDrawable
+    public interface IIndicator : IDrawable
     {
-        // Properties
         DrawLayer Layer { get; }
     }
 }

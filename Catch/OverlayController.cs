@@ -15,7 +15,7 @@ namespace Catch
     /// Handles drawing and event handling for the player control overlay, i.e., the buttons
     /// and things the user will interact with
     /// </summary>
-    public class OverlayController : IGraphicsResource, IViewportController, IUpdatable
+    public class OverlayController : IGraphicsResource, IViewportController
     {
         private readonly ILevelStateModel _level;
         private readonly List<IAgent> _agents;
@@ -35,16 +35,12 @@ namespace Catch
 
         }
 
-        #region IUpdatable Implementation
-
-        public void Update(float ticks)
+        public void Update(float deviceTicks)
         {
             
         }
 
-        #endregion
-
-        #region IGraphicsComponent Implementation
+        #region IGraphicsResource Implementation
 
         public void CreateResources(CreateResourcesArgs args)
         {
@@ -57,6 +53,10 @@ namespace Catch
             _statusBar.DestroyResources();
             _hoverIndicator.DestroyResources();
         }
+
+        #endregion
+
+        #region IDrawable Implementation
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {
@@ -104,7 +104,7 @@ namespace Catch
             {
                 // add new indicator
                 var tile = _level.Map.GetHex(_level.Ui.HoverHexCoords);
-                var tower = tile.GetTower();
+                var tower = tile.TileAgent;
                 tower?.Indicators.Add(_hoverIndicator);
 
                 _level.Ui.HoverTower = tower;

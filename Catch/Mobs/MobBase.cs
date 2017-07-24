@@ -4,7 +4,7 @@ namespace Catch.Mobs
 {
     public abstract class MobBase : AgentBase
     {
-        protected MobBase(string agentName, ILevelStateModel level) : base(agentName, level)
+        protected MobBase(string agentName) : base(agentName)
         {
 
         }

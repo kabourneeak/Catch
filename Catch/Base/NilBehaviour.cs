@@ -2,11 +2,12 @@
 {
     public class NilBehaviour : IBehaviourComponent
     {
-        public void Update(float ticks)
+        public float Update(IUpdateEventArgs e)
         {
-            // do nothing
+            // indicate that we don't require any more updates
+            return 0.0f;
         }
-
+     
         public void OnRemove()
         {
             // do nothing

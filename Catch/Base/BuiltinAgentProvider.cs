@@ -13,11 +13,13 @@ namespace Catch.Base
     public class BuiltinAgentProvider : IAgentProvider
     {
         private readonly IConfig _config;
+        private readonly ISimulationManager _simulationManager;
         private readonly Dictionary<string, IAgentFactory> _agentFactories;
 
-        public BuiltinAgentProvider(IConfig config)
+        public BuiltinAgentProvider(IConfig config, ISimulationManager simulationManager)
         {
             _config = config;
+            _simulationManager = simulationManager;
 
             // find IAgentFactories
             _agentFactories = LoadAgentFactories();
@@ -32,13 +34,8 @@ namespace Catch.Base
 
             var agent = factory.CreateAgent(args);
 
-            // TODO defer this event until after the agent has been returned?
-            AgentCreated?.Invoke(this, new AgentCreatedEventArgs(agent));
-
             return agent;
         }
-
-        public event EventHandler<AgentCreatedEventArgs> AgentCreated;
 
         public void CreateResources(CreateResourcesArgs args)
         {
@@ -80,9 +77,9 @@ namespace Catch.Base
                     {
                         ctorArgs.Add(_config);
                     }
-                    else if (ctorArg.ParameterType == typeof(IAgentProvider))
+                    else if (ctorArg.ParameterType == typeof(ISimulationManager))
                     {
-                        ctorArgs.Add(this);
+                        ctorArgs.Add(_simulationManager);
                     }
                     else
                     {

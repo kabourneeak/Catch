@@ -20,7 +20,5 @@ namespace Catch
         UiStateModel Ui { get; }
 
         PlayerModel Player { get; }
-
-        void AddAgent(IAgent agent);
     }
 }

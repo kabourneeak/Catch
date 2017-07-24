@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Catch.Base
 {
-    public class CommandCollection : ICollection<IAgentCommand>, IUpdatable
+    public class CommandCollection : ICollection<IAgentCommand>
     {
         private readonly List<IAgentCommand> _commands;
 
@@ -11,15 +11,6 @@ namespace Catch.Base
         {
             _commands = new List<IAgentCommand>();
         }
-
-        #region IUpdatable implementation
-
-        public void Update(float ticks)
-        {
-            _commands.ForEach(c => c.Update(ticks));
-        }
-
-        #endregion
 
         #region ICollection implementation
 

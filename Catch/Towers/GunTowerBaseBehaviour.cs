@@ -26,25 +26,27 @@ namespace Catch.Towers
         private float _targetDirection = 0.0f;
         private float _currentDirection = 0.0f;
 
-        public void Update(float ticks)
+        public float Update(IUpdateEventArgs e)
         {
             switch (_state)
             {
                 case TowerBehaviourState.Targetting:
-                    UpdateTargetting(ticks);
+                    UpdateTargetting(e.Ticks);
                     break;
                 case TowerBehaviourState.Aiming:
-                    UpdateAiming(ticks);
+                    UpdateAiming(e.Ticks);
                     break;
                 case TowerBehaviourState.OnTarget:
-                    UpdateOnTarget(ticks);
+                    UpdateOnTarget(e.Ticks);
                     break;
                 case TowerBehaviourState.Removed:
                     // do nothing
-                    break;
+                    return 0.0f;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            return 1.0f;
         }
 
         private MobBase _targetMob;
@@ -110,7 +112,6 @@ namespace Catch.Towers
         {
             _state = TowerBehaviourState.Removed;
             _tower.IsActive = false;
-            _tower.Tile.RemoveTower(_tower);
         }
 
         public void OnHit(AttackModel incomingAttack)

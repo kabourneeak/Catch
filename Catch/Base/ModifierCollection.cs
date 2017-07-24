@@ -22,7 +22,7 @@ namespace Catch.Base
         {
             foreach (var m in _modifiers)
             {
-                m.Update(ticks);
+                //m.Update(ticks);
                 _needsApplyToBase = _needsApplyToBase || m.NeedsApplyToBase;
             }
 

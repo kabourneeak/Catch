@@ -31,28 +31,26 @@ namespace Catch.Mobs
             _mob.Tile.AddMob(_mob);
         }
 
-        public void Update(float ticks)
+        public float Update(IUpdateEventArgs e)
         {
             switch (_state)
             {
                 case PathMobBehaviourStates.Advancing:
-                    UpdateAdvancing(ticks);
-                    break;
+                    return UpdateAdvancing(e);
                 case PathMobBehaviourStates.EndOfPath:
-                    UpdateEndOfPath(ticks);
-                    break;
+                    return UpdateEndOfPath(e);
                 case PathMobBehaviourStates.Removed:
                     // do nothing
-                    break;
+                    return 0.0f;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void UpdateAdvancing(float ticks)
+        private float UpdateAdvancing(IUpdateEventArgs e)
         {
             // advance through tile
-            _mob.TileProgress += _velocity * ticks;
+            _mob.TileProgress += _velocity * e.Ticks;
 
             // advance to next tile, if necessary
             while (_mob.TileProgress > 1 && _pathIndex < (_mapPath.Count - 1))
@@ -73,11 +71,15 @@ namespace Catch.Mobs
 
             // calculate Position
             UpdatePosition();
+
+            return 1.0f;
         }
 
-        private void UpdateEndOfPath(float ticks)
+        private float UpdateEndOfPath(IUpdateEventArgs e)
         {
             OnRemove();
+
+            return 0.0f;
         }
 
         private void UpdatePosition()

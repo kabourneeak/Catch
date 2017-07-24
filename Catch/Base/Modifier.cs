@@ -35,11 +35,6 @@
 
         #region Behaviour
 
-        public virtual void Update(float ticks)
-        {
-            // do nothing
-        }
-
         /// <summary>
         /// Adjust the specs of the associated Agent. NeedsApplyToBase must return false after this is called.
         /// </summary>

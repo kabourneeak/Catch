@@ -1,6 +1,6 @@
 ﻿namespace Catch.Base
 {
-    public interface IAgentCommand : IUpdatable
+    public interface IAgentCommand
     {
         /// <summary>
         /// The short, player-friendly name for the command. e.g., "Upgrade".

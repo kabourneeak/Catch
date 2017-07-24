@@ -1,9 +1,7 @@
 ﻿namespace Catch.Base
 {
-    public interface IBehaviourComponent
+    public interface IBehaviourComponent : IUpdatable
     {
-        void Update(float ticks);
-
         void OnRemove();
 
         void OnHit(AttackModel incomingAttack);

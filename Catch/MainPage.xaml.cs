@@ -107,9 +107,9 @@ namespace Catch
                 _gestureRecognizer?.ProcessInertia();
 
             var elapsedMs = args.Timing.ElapsedTime.Milliseconds;
-            var elapsedTicks = TicksPerSecond * elapsedMs / 1000.0f;
+            var elapsedDeviceTicks = TicksPerSecond * elapsedMs / 1000.0f;
 
-            _screenManager.Update(elapsedTicks);
+            _screenManager.Update(elapsedDeviceTicks);
         }
 
         private void OnDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)

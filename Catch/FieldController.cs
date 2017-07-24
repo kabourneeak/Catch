@@ -35,15 +35,10 @@ namespace Catch
             _pan.Y = _level.Ui.WindowSize.Y * -1.0f + (_level.Ui.WindowSize.Y - _level.Map.Size.Y) / 2.0f;
         }
 
-        #region IUpdatable Implementation
-
-        public void Update(float ticks)
+        public void Update(float deviceTicks)
         {
-            foreach (var agent in _agents)
-                agent.Update(ticks);
+            // do nothing
         }
-
-        #endregion
 
         #region IDrawable Implementation
 

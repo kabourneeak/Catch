@@ -7,10 +7,13 @@ namespace Catch.Towers
 {
     public class GunTowerSharedResources : IGraphicsResource
     {
+        public IConfig Config { get; }
+
         public IndicatorCollection Indicators { get; }
 
         public GunTowerSharedResources(IConfig config)
         {
+            Config = config;
             Indicators = new IndicatorCollection();
 
             Indicators.Add(new TowerTileIndicator(config, Colors.DeepSkyBlue));

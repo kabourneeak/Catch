@@ -5,7 +5,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
 {
-    public class HexagonIndicator : IIndicator
+    public class HexagonIndicator : IIndicator, IGraphicsResource
     {
         public StyleArgs Style { get; protected set; }
         public float Radius { get; protected set; }
@@ -18,11 +18,6 @@ namespace Catch.Graphics
         private int _createFrameId = -1;
         private CanvasCachedGeometry _geo;
         private ICanvasBrush _brush;
-
-        public void Update(float ticks)
-        {
-            // do nothing
-        }
 
         public void CreateResources(CreateResourcesArgs args)
         {

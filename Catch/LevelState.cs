@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Catch.Base;
-using Catch.Map;
+﻿using Catch.Map;
 using Catch.Services;
 
 namespace Catch
@@ -19,17 +17,12 @@ namespace Catch
 
         public PlayerModel Player { get; }
 
-        public List<IAgent> Agents { get; }
-
         public LevelState(IConfig config, MapModel map)
         {
             Config = config;
             Map = map;
-            Agents = new List<IAgent>();
             Player = new PlayerModel(config);
             Ui = new UiStateModel();
         }
-
-        public void AddAgent(IAgent agent) => Agents.Add(agent);
     }
 }

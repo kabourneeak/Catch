@@ -7,10 +7,22 @@
     public interface IUpdatable
     {
         /// <summary>
-        /// Called during the game loop for updatable objects to advance their simulation
-        /// e.g., move, target, attack, animate, etc.
+        /// Called when it is the IUpdatable object's turn to update
         /// </summary>
-        /// <param name="ticks">The elapsed simulation time since the last Update</param>
-        void Update(float ticks);
+        /// <param name="e">The elapsed simulation time since the last Update</param>
+        /// <returns>The number of ticks the IUpdatable would like to be called again. Use zero or less to be deregistered</returns>
+        float Update(IUpdateEventArgs e);
+    }
+
+    public interface IUpdateEventArgs
+    {
+        /// <summary>
+        /// The elapsed ticks since this IUpdateable object was last called
+        /// </summary>
+        float Ticks { get; }
+
+        ISimulationManager Manager { get; }
+
+        ILevelStateModel State { get; }
     }
 }

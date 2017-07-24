@@ -72,6 +72,15 @@ namespace CatchLibrary.Heap
             return _heapValues[0];
         }
 
+        /// <returns>The priority of the next item on the queue</returns>
+        public TP PeekPriority()
+        {
+            if (_count == 0)
+                throw new IndexOutOfRangeException();
+
+            return _heapPriorities[0];
+        }
+
         /// <summary>
         /// Dequeue the next item on the queue (the item with minimum priority)
         /// </summary>        

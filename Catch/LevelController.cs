@@ -12,36 +12,43 @@ namespace Catch
     /// <summary>
     /// Controls the execution of a level, executing instructions from a map definition
     /// </summary>
-    public class LevelController : IScreenController
+    public class LevelController : IScreenController, ISimulationManager
     {
         private readonly FieldController _fieldController;
         private readonly OverlayController _overlayController;
         private readonly Random _rng = new Random();
 
-        private readonly IConfig _config;
         private readonly LevelState _level;
         private readonly IAgentProvider _agentProvider;
-        private readonly IMapProvider _mapProvider;
-        private readonly Queue<ScriptCommand> _scriptCommands;
+        private readonly List<IAgent> _agents;
+        private readonly UpdateController _updatables;
+        private readonly List<IDrawable> _drawables;
 
         #region Construction
 
         public LevelController(IConfig config, MapSerializationModel mapSerializationModel)
         {
-            _config = config;
+            /*
+             * Bootstrap simulation
+             */
 
-            _agentProvider = new BuiltinAgentProvider(_config);
-            _mapProvider = new BuiltinMapProvider(_config);
+            var mapProvider = new BuiltinMapProvider(config);
 
-            var map = _mapProvider.CreateMap(mapSerializationModel.Rows, mapSerializationModel.Columns);
+            var map = mapProvider.CreateMap(mapSerializationModel.Rows, mapSerializationModel.Columns);
 
             _level = new LevelState(config, map);
 
-            InitializeMap(mapSerializationModel, map);
-            _scriptCommands = InitializeEmitScript(mapSerializationModel);
+            _agents = new List<IAgent>();
+            _updatables = new UpdateController(this, _level);
+            _drawables = new List<IDrawable>();
 
-            _overlayController = new OverlayController(_level, _level.Agents);
-            _fieldController = new FieldController(_level, _level.Agents);
+            _agentProvider = new BuiltinAgentProvider(config, this);
+
+            InitializeMap(mapSerializationModel, map);
+            InitializeEmitScript(mapSerializationModel);
+
+            _overlayController = new OverlayController(_level, _agents);
+            _fieldController = new FieldController(_level, _agents);
         }
 
         private void InitializeMap(MapSerializationModel mapSerializationModel, MapModel map)
@@ -55,11 +62,10 @@ namespace Catch
                 var towerArgs = new CreateAgentArgs()
                 {
                     Tile = tile,
-                    StateModel = _level
                 };
 
-                var tower = _agentProvider.CreateAgent(tileModel.TowerName, towerArgs);
-                _level.AddAgent(tower);
+                var tower = CreateTileAgent(tileModel.TowerName, towerArgs);
+                this.Register(tower);
             }
 
             /*
@@ -79,33 +85,26 @@ namespace Catch
             }
         }
 
-        private Queue<ScriptCommand> InitializeEmitScript(MapSerializationModel mapSerializationModel)
+        private void InitializeEmitScript(MapSerializationModel mapSerializationModel)
         {
             /*
              * Process emit script
              */
-            var scriptCommandList = new List<ScriptCommand>();
-
             foreach (var emitScriptEntry in mapSerializationModel.EmitScript)
             {
                 for (var i = 0; i < emitScriptEntry.Count; ++i)
                 {
-                    var emitCommand = new ScriptCommand
+                    var agentArgs = new CreateAgentArgs()
                     {
-                        AgentTypeName = emitScriptEntry.AgentTypeName,
-                        PathName = emitScriptEntry.PathName,
-                        Offset = emitScriptEntry.BeginTime + (i * emitScriptEntry.DelayTime)
+                        Path = _level.Map.GetPath(emitScriptEntry.PathName),
                     };
 
-                    scriptCommandList.Add(emitCommand);
+                    var offset = emitScriptEntry.BeginTime + (i * emitScriptEntry.DelayTime);
+                    var task = new SpawnAgentTask(offset, emitScriptEntry.AgentTypeName, agentArgs);
+
+                    this.Register(task);
                 }
             }
-
-            scriptCommandList.Sort((x, y) => x.Offset.CompareTo(y.Offset));
-
-            var queue = new Queue<ScriptCommand>(scriptCommandList);
-
-            return queue;
         }
 
         #endregion
@@ -126,6 +125,30 @@ namespace Catch
         public bool AllowPredecessorDraw() => false;
 
         public bool AllowPredecessorInput() => false;
+
+        private float _elapsedDeviceTicks = 0.0f;
+
+        public void Update(float deviceTicks)
+        {
+            _elapsedDeviceTicks += deviceTicks;
+
+            _updatables.Update(deviceTicks);
+            _fieldController.Update(deviceTicks);
+
+            // only account for elapsed ticks after all agents have processed them
+            // this prevents new agents (those just emitted) from being double-updated
+
+            _agents.RemoveAll(agent =>
+            {
+                if (agent.IsActive)
+                    return false;
+
+                //agent.DestroyResources();
+                return true;
+            });
+
+            _overlayController.Update(deviceTicks);
+        }
 
         #endregion
 
@@ -175,56 +198,7 @@ namespace Catch
 
         #endregion
 
-        #region IUpdatable Implementation
-
-        private float _elapsedTicks = 0.0f;
-
-        public void Update(float ticks)
-        {
-            ProcessScript();
-
-            _fieldController.Update(ticks);
-
-            // only account for elapsed ticks after all agents have processed them
-            // this prevents new agents (those just emitted) from being double-updated
-            _elapsedTicks += ticks;
-
-            _level.Agents.RemoveAll(agent =>
-            {
-                if (agent.IsActive)
-                    return false;
-
-                //agent.DestroyResources();
-                return true;
-            });
-
-            _overlayController.Update(ticks);
-        }
-
-        private void ProcessScript()
-        {
-            while (_scriptCommands.Count > 0 && _scriptCommands.Peek().Offset < _elapsedTicks)
-            {
-                var scriptCommand = _scriptCommands.Dequeue();
-
-                var agentArgs = new CreateAgentArgs()
-                {
-                    Path = _level.Map.GetPath(scriptCommand.PathName),
-                    StateModel = _level
-                };
-
-                var agent = _agentProvider.CreateAgent(scriptCommand.AgentTypeName, agentArgs);
-
-                _level.Agents.Add(agent);
-
-                // perform partial update to recover state from any delay in scripting
-                agent.Update(_elapsedTicks - scriptCommand.Offset);
-            }
-        }
-
-        #endregion
-
-        #region IGraphicsComponent Implementation
+        #region IGraphicsResource Implementation
 
         public void CreateResources(CreateResourcesArgs args)
         {
@@ -244,11 +218,55 @@ namespace Catch
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {
-            // the FieldController draws the agents, so they are sited onto the map
+            // the FieldController draws the field of play; the map, the agents, all the action
             _fieldController.Draw(drawArgs, rotation);
 
             // the overlay draws second so that it is on top
             _overlayController.Draw(drawArgs, rotation);
+        }
+
+        #endregion
+
+        #region ISimulationManager Implementation
+
+        public void Register(IAgent agent)
+        {
+            this._agents.Add(agent);
+
+            if (agent is IUpdatable)
+            {
+                this._updatables.Register((IUpdatable) agent);
+            }
+
+            if (agent is IDrawable)
+            {
+                this._drawables.Add((IDrawable) agent);
+            }
+        }
+
+        public void Register(IUpdatable updatable)
+        {
+            this._updatables.Register(updatable);
+        }
+
+        public IAgent CreateAgent(string agentName, CreateAgentArgs createArgs)
+        {
+            return _agentProvider.CreateAgent(agentName, createArgs);
+        }
+
+        public ITileAgent CreateTileAgent(string agentName, CreateAgentArgs createArgs)
+        {
+            return (ITileAgent) _agentProvider.CreateAgent(agentName, createArgs);
+        }
+
+        public void Remove(IAgent agent)
+        {
+            agent.OnRemove();
+
+            _agents.Remove(agent);
+            _drawables.Remove(agent);
+
+            // TODO remove from map / tile
         }
 
         #endregion

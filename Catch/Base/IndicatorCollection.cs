@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Catch.Graphics;
@@ -7,10 +6,10 @@ using Catch.Graphics;
 namespace Catch.Base
 {
     /// <summary>
-    /// Maintains a collcetion of Indicators, which can be acted upon as 
+    /// Maintains a collection of Indicators, and which can be acted upon as 
     /// an indicator itself
     /// </summary>
-    public class IndicatorCollection : IEnumerable<IIndicator>, IIndicator
+    public class IndicatorCollection : IEnumerable<IIndicator>, IIndicator, IGraphicsResource
     {
         private readonly List<IIndicator> _indicators;
         private readonly IndicatorComparer _comparer;
@@ -23,37 +22,13 @@ namespace Catch.Base
 
         #region IEnumerable
 
-        public IEnumerator<IIndicator> GetEnumerator()
-        {
-            return _indicators.GetEnumerator();
-        }
+        public IEnumerator<IIndicator> GetEnumerator() => _indicators.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
 
         #region IIndicator
-
-        public void Update(float ticks)
-        {
-            foreach (var i in _indicators)
-                i.Update(ticks);
-        }
-
-        public void CreateResources(CreateResourcesArgs args)
-        {
-            foreach (var i in _indicators)
-                i.CreateResources(args);
-        }
-
-        public void DestroyResources()
-        {
-            foreach (var i in _indicators)
-                i.DestroyResources();
-        }
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {
@@ -64,7 +39,25 @@ namespace Catch.Base
         /// <summary>
         /// Returns the highest DrawLayer in the collection
         /// </summary>
-        public DrawLayer Layer => _indicators.Last()?.Layer ?? DrawLayer.Background;
+        public DrawLayer Layer => _indicators.LastOrDefault()?.Layer ?? DrawLayer.Background;
+
+        #endregion
+
+        #region IGraphicsResource
+
+        public void CreateResources(CreateResourcesArgs args)
+        {
+            foreach (var indicator in _indicators)
+                if (indicator is IGraphicsResource gr)
+                    gr.CreateResources(args);
+        }
+
+        public void DestroyResources()
+        {
+            foreach (var indicator in _indicators)
+                if (indicator is IGraphicsResource gr)
+                    gr.DestroyResources();
+        }
 
         #endregion
 
@@ -91,11 +84,6 @@ namespace Catch.Base
         }
 
         public int Count => _indicators.Count;
-
-        public IIndicator HasIndicator(string indicatorType)
-        {
-            throw new NotImplementedException();
-        }
 
         private class IndicatorComparer : IComparer<IIndicator>
         {

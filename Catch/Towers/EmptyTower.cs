@@ -7,7 +7,7 @@ namespace Catch.Towers
     /// </summary>
     public class EmptyTower : TowerBase
     {
-        public EmptyTower(EmptyTowerSharedResources resources, Tile tile, ILevelStateModel level) : base(nameof(EmptyTower), tile, level)
+        public EmptyTower(EmptyTowerSharedResources resources, Tile tile) : base(nameof(EmptyTower), tile)
         {
             Brain = resources.Brain;
             Indicators.AddRange(resources.Indicators);

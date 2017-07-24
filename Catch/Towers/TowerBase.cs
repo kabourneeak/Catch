@@ -15,13 +15,14 @@ namespace Catch.Towers
     {
         public float Rotation { get; set; }
 
-        protected TowerBase(string agentType, Tile tile, ILevelStateModel level) : base(agentType, level)
+        protected TowerBase(string agentType, Tile tile) : base(agentType)
         {
             Tile = tile;
             Position = tile.Position;
 
             // site into tile
-            tile.AddTower(this);
+            // TODO don't do this at construction
+            tile.TileAgent = this;
         }
 
         public override void Draw(DrawArgs drawArgs, float rotation)

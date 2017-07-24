@@ -9,7 +9,7 @@ namespace Catch.Base
     /// </summary>
     public abstract class AgentBase : IAgent
     {
-        protected AgentBase(string agentType, ILevelStateModel level)
+        protected AgentBase(string agentType)
         {
             AgentType = agentType;
             Position = new Vector2(0.0f);
@@ -34,14 +34,6 @@ namespace Catch.Base
         public string DisplayStatus { get; protected set; }
         public Vector2 Position { get; set; }
 
-        public virtual void Update(float ticks)
-        {
-            Indicators.Update(ticks);
-            Modifiers.Update(ticks);
-            Brain.Update(ticks);
-            Commands.Update(ticks);
-        }
-
         public virtual void Draw(DrawArgs drawArgs, float rotation)
         {
             if (Indicators.Count == 0)
@@ -65,6 +57,8 @@ namespace Catch.Base
         public IndicatorCollection Indicators { get; }
         public CommandCollection Commands { get; }
         public StatModel Stats { get; }
+
+        public virtual float Update(IUpdateEventArgs e) => Brain.Update(e);
 
         public virtual void OnRemove()
         {

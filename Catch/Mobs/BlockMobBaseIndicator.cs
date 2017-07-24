@@ -5,7 +5,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Mobs
 {
-    public class BlockMobBaseIndicator : IIndicator
+    public class BlockMobBaseIndicator : IIndicator, IGraphicsResource
     {
         private readonly int _blockSize;
         private readonly StyleArgs _style;
@@ -16,11 +16,6 @@ namespace Catch.Mobs
             _style = styleArgs;
 
             Layer = DrawLayer.Mob;
-        }
-
-        public void Update(float ticks)
-        {
-            // do nothing
         }
 
         private int _createFrameId = -1;
@@ -65,6 +60,6 @@ namespace Catch.Mobs
             drawArgs.Ds.DrawCachedGeometry(_geo, _brush);
         }
 
-        public DrawLayer Layer { get; set; }
+        public DrawLayer Layer { get; }
     }
 }

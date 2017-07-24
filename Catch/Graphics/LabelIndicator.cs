@@ -4,7 +4,7 @@ using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.Graphics
 {
-    public class LabelIndicator : IIndicator
+    public class LabelIndicator : IIndicator, IGraphicsResource
     {
         private string Label { get; }
         private Color Colour { get; }
@@ -13,11 +13,6 @@ namespace Catch.Graphics
         {
             Label = label;
             Colour = Colors.OrangeRed;
-        }
-
-        public void Update(float ticks)
-        {
-            // do nothing
         }
 
         private int _createFrameId = -1;

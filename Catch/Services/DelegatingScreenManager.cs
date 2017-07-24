@@ -61,11 +61,7 @@ namespace Catch.Services
 
         public bool AllowPredecessorInput() => false;
 
-        #endregion
-
-        #region IUpdatable Implementation
-
-        public void Update(float ticks)
+        public void Update(float deviceTicks)
         {
             if (RequestedScreen != null)
             {
@@ -80,7 +76,7 @@ namespace Catch.Services
 
             foreach (var screen in CurrentScreens.ReverseIterator())
             {
-                screen.Update(ticks);
+                screen.Update(deviceTicks);
 
                 if (!screen.AllowPredecessorUpdate())
                     break;

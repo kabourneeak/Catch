@@ -17,7 +17,7 @@ namespace Catch.Towers
 
         public IAgent CreateAgent(CreateAgentArgs args)
         {
-            return new EmptyTower(_resources, args.Tile, args.StateModel);
+            return new EmptyTower(_resources, args.Tile);
         }
 
         public void CreateResources(CreateResourcesArgs args)

@@ -97,11 +97,15 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Base\AgentBase.cs" />
+    <Compile Include="Base\CommandTask.cs" />
     <Compile Include="Base\CommandCollection.cs" />
     <Compile Include="Base\CreateAgentArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
     <Compile Include="Base\AgentCommandType.cs" />
     <Compile Include="Base\AttackModel.cs" />
+    <Compile Include="Base\ISimulationManager.cs" />
+    <Compile Include="Base\ScheduledOneTimeTask.cs" />
+    <Compile Include="Base\SpawnAgentTask.cs" />
     <Compile Include="Base\StatModel.cs" />
     <Compile Include="Base\IAgentFactory.cs" />
     <Compile Include="Base\ITileAgent.cs" />
@@ -130,7 +134,6 @@
     <Compile Include="Towers\GunTowerSharedResources.cs" />
     <Compile Include="Towers\TowerHoverIndicator.cs" />
     <Compile Include="PlayerModel.cs" />
-    <Compile Include="ScriptCommand.cs" />
     <Compile Include="Graphics\CreateResourcesArgs.cs" />
     <Compile Include="Graphics\DrawArgs.cs" />
     <Compile Include="Graphics\DrawLayer.cs" />
@@ -183,6 +186,7 @@
     <Compile Include="Towers\EmptyTower.cs" />
     <Compile Include="UiStateModel.cs" />
     <Compile Include="Services\ZoomToPointEventArgs.cs" />
+    <Compile Include="UpdateController.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

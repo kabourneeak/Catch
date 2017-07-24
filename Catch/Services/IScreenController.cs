@@ -1,10 +1,9 @@
 ﻿using System.Numerics;
-using Catch.Base;
 using Catch.Graphics;
 
 namespace Catch.Services
 {
-    public interface IScreenController : IViewportController, IGraphicsResource, IUpdatable, IDrawable
+    public interface IScreenController : IViewportController, IGraphicsResource, IDrawable
     {
         void Initialize(Vector2 size);
 
@@ -13,5 +12,7 @@ namespace Catch.Services
         bool AllowPredecessorDraw();
 
         bool AllowPredecessorInput();
+
+        void Update(float deviceTicks);
     }
 }

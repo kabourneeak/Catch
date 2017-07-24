@@ -3,14 +3,12 @@ using System.Numerics;
 using Catch.Base;
 using Catch.Mobs;
 using Catch.Services;
-using Catch.Towers;
 using CatchLibrary.HexGrid;
 
 namespace Catch.Map
 {
     public class Tile
     {
-        private ITileAgent _tileAgent;
         private readonly ISet<MobBase> _mobs;
 
         public Tile(HexCoords coords, MapModel map, IConfig config)
@@ -38,62 +36,15 @@ namespace Catch.Map
 
         public Vector2 Position { get; }
 
-        #region Tower Management
-
-        public ITileAgent GetTower()
-        {
-            return _tileAgent;
-        }
-
-        public bool HasTower()
-        {
-            return _tileAgent != null;
-        }
-
-        public bool RemoveTower(TowerBase tower)
-        {
-            if (_tileAgent == tower)
-            {
-                _tileAgent = null;
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool AddTower(ITileAgent tileAgent)
-        {
-            if (_tileAgent == tileAgent)
-                return false;
-
-            if (_tileAgent != null)
-            {
-                // TODO send OnRemove event
-            }
-
-            _tileAgent = tileAgent;
-
-            return true;
-        }
-
-        #endregion
+        public ITileAgent TileAgent { get; set; }
 
         #region Mob Management 
 
-        public bool AddMob(MobBase mob)
-        {
-            return _mobs.Add(mob);
-        }
+        public bool AddMob(MobBase mob) => _mobs.Add(mob);
 
-        public bool ContainsMob(MobBase mob)
-        {
-            return _mobs.Contains(mob);
-        }
+        public bool ContainsMob(MobBase mob) => _mobs.Contains(mob);
 
-        public bool RemoveMob(MobBase mob)
-        {
-            return _mobs.Remove(mob);
-        }
+        public bool RemoveMob(MobBase mob) => _mobs.Remove(mob);
 
         public int MobCount => _mobs.Count;
 
@@ -101,9 +52,6 @@ namespace Catch.Map
 
         #endregion
 
-        public override string ToString()
-        {
-            return $"Tile {Coords}";
-        }
+        public override string ToString() => string.Format(nameof(Tile) + " %s", Coords);
     }
 }
