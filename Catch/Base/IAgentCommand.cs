@@ -41,6 +41,28 @@
         /// <summary>
         /// Execute the command.
         /// </summary>
-        void Execute();
+        void Execute(IExecuteEventArgs e);
+    }
+
+    public interface IExecuteEventArgs
+    {
+        ILevelStateModel LevelState { get; }
+
+        ISimulationManager Manager { get; }
+
+        IAgent SelectedAgent { get; }
+
+        ITileAgent SelectedTileAgent { get; }
+    }
+
+    public class ExecuteEventArgs : IExecuteEventArgs
+    {
+        public ILevelStateModel LevelState { set; get; }
+
+        public ISimulationManager Manager { set; get; }
+
+        public IAgent SelectedAgent { set; get; }
+
+        public ITileAgent SelectedTileAgent { set; get; }
     }
 }

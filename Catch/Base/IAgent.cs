@@ -47,10 +47,7 @@ namespace Catch.Base
         #region Events
 
         /// <summary>
-        /// Called when the Agent is being removed from the game due to some external reason
-        /// (e.g., a tower is sold). Agents must set IsActive to false when this is called.
-        /// 
-        /// When an agent sets IsActive to false of its own accord, this method is not called.
+        /// Called when the Agent is being removed from the simulation by the simulation manager
         /// </summary>
         void OnRemove();
 

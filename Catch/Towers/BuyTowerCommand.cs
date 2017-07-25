@@ -5,14 +5,10 @@ namespace Catch.Towers
     public class BuyTowerCommand : IAgentCommand
     {
         private readonly IAgent _agent;
-        private readonly ILevelStateModel _level;
-        private readonly ISimulationManager _simulationManager;
 
-        public BuyTowerCommand(IAgent agent, ILevelStateModel level, ISimulationManager simulationManager)
+        public BuyTowerCommand(IAgent agent)
         {
             _agent = agent;
-            _level = level;
-            _simulationManager = simulationManager;
         }
 
         public string DisplayName => "Buy Gun Tower";
@@ -22,12 +18,12 @@ namespace Catch.Towers
         public float Progress => 1.0f;
         public AgentCommandType CommandType => AgentCommandType.Action;
 
-        public void Execute()
+        public void Execute(IExecuteEventArgs e)
         {
             var tile = _agent.Tile;
 
             // remove current tower
-            _simulationManager.Remove(_agent);
+            e.Manager.Remove(_agent);
 
             // create new tower
             var towerArgs = new CreateAgentArgs()
@@ -35,14 +31,12 @@ namespace Catch.Towers
                 Tile = tile
             };
 
-            var tower = _simulationManager.CreateTileAgent(nameof(GunTower), towerArgs);
+            var tower = e.Manager.CreateTileAgent(nameof(GunTower), towerArgs);
 
-            tile.TileAgent = tower;
-
-            _simulationManager.Register(tower);
+            e.Manager.Register(tower);
 
             // clear UI selections after command execution
-            _level.Ui.Deselect();
+            e.LevelState.Ui.Deselect();
         }
     }
 }

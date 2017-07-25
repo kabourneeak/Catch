@@ -19,11 +19,17 @@ namespace Catch
     {
         private readonly ILevelStateModel _level;
         private readonly List<IAgent> _agents;
+        private readonly ExecuteEventArgs _executeEventArgs;
 
-        public OverlayController(ILevelStateModel level, List<IAgent> agents)
+        public OverlayController(ISimulationManager manager, ILevelStateModel level, List<IAgent> agents)
         {
             _level = level;
             _agents = agents;
+            _executeEventArgs = new ExecuteEventArgs()
+            {
+                Manager = manager,
+                LevelState = level                
+            };
 
             // create UI elements
             _statusBar = new StatusBar(_level);
@@ -150,7 +156,9 @@ namespace Catch
             switch (cmd.CommandType)
             {
                 case AgentCommandType.Action:
-                    cmd.Execute();
+                    _executeEventArgs.SelectedAgent = null;
+                    _executeEventArgs.SelectedTileAgent = null;
+                    cmd.Execute(_executeEventArgs);
                     break;
                 case AgentCommandType.Confirm:
                     throw new NotImplementedException();

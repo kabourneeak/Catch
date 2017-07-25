@@ -47,7 +47,7 @@ namespace Catch
             InitializeMap(mapSerializationModel, map);
             InitializeEmitScript(mapSerializationModel);
 
-            _overlayController = new OverlayController(_level, _agents);
+            _overlayController = new OverlayController(this, _level, _agents);
             _fieldController = new FieldController(_level, _drawables);
         }
 
