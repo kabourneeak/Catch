@@ -97,6 +97,10 @@ namespace CatchLibrary.Heap
             _count -= 1;
             Swap(0, _count);
 
+            // release references on extracted item
+            _heapPriorities[_count] = default(TP);
+            _heapValues[_count] = default(TV);
+
             // fixup heap property from root
             BubbleDown(0);
 
