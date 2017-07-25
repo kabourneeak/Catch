@@ -17,12 +17,12 @@ namespace Catch
         private Matrix3x2 _mapTransform;
 
         private readonly ILevelStateModel _level;
-        private readonly List<IAgent> _agents;
+        private readonly List<IDrawable> _drawables;
 
-        public FieldController(ILevelStateModel level, List<IAgent> agents)
+        public FieldController(ILevelStateModel level, List<IDrawable> drawables)
         {
             _level = level;
-            _agents = agents;
+            _drawables = drawables;
 
             _zoom = 1.0f;
             _pan = Vector2.Zero;
@@ -53,7 +53,7 @@ namespace Catch
             Matrix3x2.Invert(drawArgs.CurrentTransform, out _mapTransform);
 
             // have agents draw themselves
-            foreach (var agent in _agents)
+            foreach (var agent in _drawables)
                 agent.Draw(drawArgs, 0.0f);
 
             // restore view matrix

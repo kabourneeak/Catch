@@ -19,10 +19,6 @@ namespace Catch.Towers
         {
             Tile = tile;
             Position = tile.Position;
-
-            // site into tile
-            // TODO don't do this at construction
-            tile.TileAgent = this;
         }
 
         public override void Draw(DrawArgs drawArgs, float rotation)

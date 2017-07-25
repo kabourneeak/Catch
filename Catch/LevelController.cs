@@ -48,7 +48,7 @@ namespace Catch
             InitializeEmitScript(mapSerializationModel);
 
             _overlayController = new OverlayController(_level, _agents);
-            _fieldController = new FieldController(_level, _agents);
+            _fieldController = new FieldController(_level, _drawables);
         }
 
         private void InitializeMap(MapSerializationModel mapSerializationModel, MapModel map)
@@ -231,17 +231,28 @@ namespace Catch
 
         public void Register(IAgent agent)
         {
+            if (agent == null)
+                throw new ArgumentNullException(nameof(agent));
+
             this._agents.Add(agent);
+            this._updatables.Register(agent);
 
-            if (agent is IUpdatable)
+            if (agent is IDrawable drawable)
             {
-                this._updatables.Register((IUpdatable) agent);
+                this._drawables.Add(drawable);
             }
 
-            if (agent is IDrawable)
+            if (agent.Tile != null)
             {
-                this._drawables.Add((IDrawable) agent);
+                if (agent is ITileAgent tileAgent)
+                {
+                    if (agent.Tile.TileAgent != null)
+                        throw new ArgumentException("Tile already occupied", nameof(agent));
+
+                    agent.Tile.TileAgent = tileAgent;
+                }
             }
+
         }
 
         public void Register(IUpdatable updatable)
@@ -264,9 +275,17 @@ namespace Catch
             agent.OnRemove();
 
             _agents.Remove(agent);
-            _drawables.Remove(agent);
 
-            // TODO remove from map / tile
+            if (agent is IDrawable drawable)
+            _drawables.Remove(drawable);
+
+            if (agent.Tile != null)
+            {
+                if (agent is ITileAgent && object.ReferenceEquals(agent.Tile.TileAgent, agent))
+                    agent.Tile.TileAgent = null;
+                else
+                    agent.Tile.RemoveMob(agent);
+            }
         }
 
         #endregion
