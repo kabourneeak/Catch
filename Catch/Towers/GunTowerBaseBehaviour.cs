@@ -49,7 +49,7 @@ namespace Catch.Towers
             return 1.0f;
         }
 
-        private MobBase _targetMob;
+        private IAgent _targetMob;
         private Tile _targetTile;
 
         private void UpdateTargetting(float ticks)

@@ -1,10 +1,9 @@
 ﻿using System.Numerics;
-using Catch.Graphics;
 using Catch.Map;
 
 namespace Catch.Base
 {
-    public interface IAgent : IUpdatable, IDrawable
+    public interface IAgent : IUpdatable
     {
         #region Properties
 
@@ -26,6 +25,14 @@ namespace Catch.Base
         bool IsActive { get; }
 
         Tile Tile { get; }
+
+        /// <summary>
+        /// Regardless of how an agent makes its way through a tile, it spends 
+        /// some amount of time in there. Considering the entrance and exit 
+        /// times, the agent is some proportion of its way through the tile
+        /// from 0.0 to 1.0.
+        /// </summary>
+        float TileProgress { get; }
 
         ModifierCollection Modifiers { get; }
 

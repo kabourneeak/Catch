@@ -1,11 +1,9 @@
-using Windows.UI;
-using Catch.Graphics;
+using Catch.Base;
 using Catch.Map;
-using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Mobs
 {
-    public class BlockMob : MobBase
+    public class BlockMob : AgentBase
     {
         public BlockMob(BlockMobSharedResources resources, MapPath mapPath) : base(nameof(BlockMob))
         {

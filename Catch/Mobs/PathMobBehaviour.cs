@@ -12,13 +12,13 @@ namespace Catch.Mobs
             Advancing, EndOfPath, Removed
         }
 
-        private readonly MobBase _mob;
+        private readonly AgentBase _mob;
         private readonly MapPath _mapPath;
         private PathMobBehaviourStates _state;
         private int _pathIndex;
         private float _velocity;
 
-        public PathMobBehaviour(MobBase mob, MapPath mapPath, float velocity)
+        public PathMobBehaviour(AgentBase mob, MapPath mapPath, float velocity)
         {
             _mob = mob;
             _mapPath = mapPath;
@@ -105,7 +105,6 @@ namespace Catch.Mobs
         {
             _state = PathMobBehaviourStates.Removed;
             _mob.IsActive = false;
-            _mob.Tile.RemoveMob(_mob);
         }
 
         public void OnHit(AttackModel incomingAttack)

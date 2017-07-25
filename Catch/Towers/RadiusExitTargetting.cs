@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Catch.Base;
 using Catch.Map;
-using Catch.Mobs;
 using CatchLibrary;
 
 namespace Catch.Towers
@@ -71,14 +71,14 @@ namespace Catch.Towers
             return tile;
         }
 
-        public override MobBase GetBestTargetMob()
+        public override IAgent GetBestTargetMob()
         {
             return GetBestTargetMob(GetBestTargetTile());
         }
 
-        public override MobBase GetBestTargetMob(Tile tile)
+        public override IAgent GetBestTargetMob(Tile tile)
         {
-            MobBase best = null;
+            IAgent best = null;
 
             // TODO filter by team?
             foreach (var mob in tile.Mobs)

@@ -7,7 +7,7 @@ namespace Catch.Base
     /// <summary>
     /// Instantiates all of the underlying objects required for a basic Agent.
     /// </summary>
-    public abstract class AgentBase : IAgent
+    public abstract class AgentBase : IAgent, IDrawable
     {
         protected AgentBase(string agentType)
         {
@@ -53,6 +53,7 @@ namespace Catch.Base
         public string AgentType { get; }
         public bool IsActive { get; set; }
         public Tile Tile { get; set; }
+        public float TileProgress { get; set; }
         public ModifierCollection Modifiers { get; }
         public IndicatorCollection Indicators { get; }
         public CommandCollection Commands { get; }

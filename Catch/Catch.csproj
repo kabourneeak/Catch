@@ -145,7 +145,6 @@
     <Compile Include="Base\IndicatorCollection.cs" />
     <Compile Include="Map\MapModel.cs" />
     <Compile Include="Map\MapPath.cs" />
-    <Compile Include="Mobs\MobBase.cs" />
     <Compile Include="Base\Modifier.cs" />
     <Compile Include="Base\ModifierCollection.cs" />
     <Compile Include="Base\ModifierPriority.cs" />
