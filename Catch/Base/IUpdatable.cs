@@ -23,6 +23,6 @@
 
         ISimulationManager Manager { get; }
 
-        ILevelStateModel State { get; }
+        ISimulationState Sim { get; }
     }
 }

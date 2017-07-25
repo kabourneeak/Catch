@@ -16,18 +16,12 @@ namespace Catch
 
         public IAgent HoverTower { get; set; }
 
+        public IAgent FocusedAgent { get; set; }
+
         public UiStateModel()
         {
             WindowSize = Vector2.Zero;
             HoverHexCoords = HexCoords.CreateFromOffset(-1, -1);
-        }
-
-        /// <summary>
-        /// Deselect everything
-        /// </summary>
-        public void Deselect()
-        {
-            HoverTower = null;
         }
     }
 }

@@ -16,10 +16,10 @@ namespace Catch
         private float _zoom;
         private Matrix3x2 _mapTransform;
 
-        private readonly ILevelStateModel _level;
+        private readonly LevelStateModel _level;
         private readonly List<IDrawable> _drawables;
 
-        public FieldController(ILevelStateModel level, List<IDrawable> drawables)
+        public FieldController(LevelStateModel level, List<IDrawable> drawables)
         {
             _level = level;
             _drawables = drawables;

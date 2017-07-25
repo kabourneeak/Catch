@@ -13,13 +13,11 @@ namespace Catch.Base
     public class BuiltinAgentProvider : IAgentProvider
     {
         private readonly IConfig _config;
-        private readonly ISimulationManager _simulationManager;
         private readonly Dictionary<string, IAgentFactory> _agentFactories;
 
-        public BuiltinAgentProvider(IConfig config, ISimulationManager simulationManager)
+        public BuiltinAgentProvider(IConfig config)
         {
             _config = config;
-            _simulationManager = simulationManager;
 
             // find IAgentFactories
             _agentFactories = LoadAgentFactories();
@@ -76,10 +74,6 @@ namespace Catch.Base
                     if (ctorArg.ParameterType == typeof(IConfig))
                     {
                         ctorArgs.Add(_config);
-                    }
-                    else if (ctorArg.ParameterType == typeof(ISimulationManager))
-                    {
-                        ctorArgs.Add(_simulationManager);
                     }
                     else
                     {

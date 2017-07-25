@@ -104,6 +104,7 @@
     <Compile Include="Base\AgentCommandType.cs" />
     <Compile Include="Base\AttackModel.cs" />
     <Compile Include="Base\ISimulationManager.cs" />
+    <Compile Include="Base\ISimulationState.cs" />
     <Compile Include="Base\ScheduledOneTimeTask.cs" />
     <Compile Include="Base\SpawnAgentTask.cs" />
     <Compile Include="Base\StatModel.cs" />
@@ -113,8 +114,7 @@
     <Compile Include="Base\BuiltinAgentProvider.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Graphics\IDrawable.cs" />
-    <Compile Include="ILevelStateModel.cs" />
-    <Compile Include="LevelState.cs" />
+    <Compile Include="LevelStateModel.cs" />
     <Compile Include="Map\BuiltinMapProvider.cs" />
     <Compile Include="Map\IMapProvider.cs" />
     <Compile Include="Mobs\BlockMobFactory.cs" />
@@ -127,13 +127,14 @@
     <Compile Include="Services\PanByEventArgs.cs" />
     <Compile Include="Services\IScreenManager.cs" />
     <Compile Include="Services\TouchEventArgs.cs" />
+    <Compile Include="SimulationStateModel.cs" />
     <Compile Include="Towers\BuyTowerCommand.cs" />
     <Compile Include="Towers\EmptyTowerFactory.cs" />
     <Compile Include="Towers\EmptyTowerSharedResources.cs" />
     <Compile Include="Towers\GunTowerFactory.cs" />
     <Compile Include="Towers\GunTowerSharedResources.cs" />
     <Compile Include="Towers\TowerHoverIndicator.cs" />
-    <Compile Include="PlayerModel.cs" />
+    <Compile Include="Base\PlayerModel.cs" />
     <Compile Include="Graphics\CreateResourcesArgs.cs" />
     <Compile Include="Graphics\DrawArgs.cs" />
     <Compile Include="Graphics\DrawLayer.cs" />

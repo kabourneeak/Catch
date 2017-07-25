@@ -1,7 +1,10 @@
-﻿using System.Text;
+﻿using System;
+using System.Linq;
+using System.Text;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
+using Catch.Base;
 using Catch.Graphics;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Text;
@@ -10,16 +13,16 @@ namespace Catch.LevelUi
 {
     public class StatusBar : IGraphicsResource
     {
-        private readonly ILevelStateModel _level;
+        private readonly UiStateModel _uiState;
 
         private readonly int _barHeight;
         private readonly StyleArgs _bgStyle;
         private readonly StyleArgs _fgStyle;
         private readonly CanvasTextFormat _fgTextFormat;
 
-        public StatusBar(ILevelStateModel level)
+        public StatusBar(UiStateModel uiState)
         {
-            _level = level;
+            _uiState = uiState;
 
             // copy down config
             _barHeight = 26;
@@ -45,7 +48,7 @@ namespace Catch.LevelUi
             };
         }
 
-        #region IGraphics implementation
+        #region IGraphicsResource implementation
 
         private int _createFrameId = -1;
         private ICanvasBrush _bgBrush;
@@ -81,10 +84,10 @@ namespace Catch.LevelUi
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {
-            drawArgs.PushTranslation(0, _level.Ui.WindowSize.Y - _barHeight);
+            drawArgs.PushTranslation(0, _uiState.WindowSize.Y - _barHeight);
 
-            drawArgs.Ds.FillRectangle(new Rect(0,0, _level.Ui.WindowSize.X, _barHeight), _bgBrush);
-            drawArgs.Ds.DrawText(GetStatusText(), new Rect(0, 0, _level.Ui.WindowSize.X, _barHeight), _fgBrush, _fgTextFormat);
+            drawArgs.Ds.FillRectangle(new Rect(0,0, _uiState.WindowSize.X, _barHeight), _bgBrush);
+            drawArgs.Ds.DrawText(GetStatusText(), new Rect(0, 0, _uiState.WindowSize.X, _barHeight), _fgBrush, _fgTextFormat);
 
             drawArgs.Pop();
         }
@@ -93,28 +96,25 @@ namespace Catch.LevelUi
 
         private string GetStatusText()
         {
-            if (_level.Ui.HoverTower != null)
+            if (_uiState.FocusedAgent is ITileAgent tileAgent)
             {
                 var sb = new StringBuilder();
-                var tower = _level.Ui.HoverTower;
-                sb.Append(tower.DisplayName);
+                sb.Append(tileAgent.DisplayName);
                 sb.Append(": ");
-                sb.Append(tower.DisplayStatus);
+                sb.Append(tileAgent.DisplayStatus);
 
                 var cmdIndex = 0;
 
-                foreach (var cmd in tower.Commands)
+                foreach (var cmd in tileAgent.Commands.Where(c => c.IsVisible))
                 {
                     sb.Append("(");
-                    sb.Append(cmdIndex + 1);
+                    sb.Append(++cmdIndex);
                     sb.Append(")");
                     sb.Append(cmd.DisplayName);
                 }
 
                 return sb.ToString();
             }
-
-            // if nothing hovered, show level info, player status?
 
             return string.Empty;
         }

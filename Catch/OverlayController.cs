@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Windows.System;
 using Catch.Base;
@@ -17,22 +17,29 @@ namespace Catch
     /// </summary>
     public class OverlayController : IGraphicsResource, IViewportController
     {
-        private readonly ILevelStateModel _level;
-        private readonly List<IAgent> _agents;
+        private readonly LevelStateModel _level;
+        private readonly UiStateModel _uiState;
         private readonly ExecuteEventArgs _executeEventArgs;
+        private readonly UpdateReadinessEventArgs _updateReadinessEventArgs;
 
-        public OverlayController(ISimulationManager manager, ILevelStateModel level, List<IAgent> agents)
+        public OverlayController(LevelStateModel level, ISimulationManager manager, ISimulationState sim)
         {
             _level = level;
-            _agents = agents;
+            _uiState = level.Ui;
+
             _executeEventArgs = new ExecuteEventArgs()
             {
                 Manager = manager,
-                LevelState = level                
+                Sim = sim
+            };
+
+            _updateReadinessEventArgs = new UpdateReadinessEventArgs
+            {
+                Sim = sim
             };
 
             // create UI elements
-            _statusBar = new StatusBar(_level);
+            _statusBar = new StatusBar(_uiState);
             _hoverIndicator = new TowerHoverIndicator(_level.Config);
         }
 
@@ -43,7 +50,16 @@ namespace Catch
 
         public void Update(float deviceTicks)
         {
-            
+            // copy the focused agent for the duration of this Update/Draw cycle
+            _uiState.FocusedAgent = _lastHoverTower;
+
+            if (_uiState.FocusedAgent == null)
+                return;
+
+            foreach (var cmd in _uiState.FocusedAgent.Commands)
+            {
+                cmd.UpdateReadiness(_updateReadinessEventArgs);
+            }
         }
 
         #region IGraphicsResource Implementation
@@ -95,31 +111,31 @@ namespace Catch
 
         public void Hover(HoverEventArgs eventArgs)
         {
-            if (_lastHover != null && _lastHover.Equals(_level.Ui.HoverHexCoords))
+            if (_lastHover != null && _lastHover.Equals(_uiState.HoverHexCoords))
             {
-                if (_lastHoverTower == _level.Ui.HoverTower)
+                if (_lastHoverTower == _uiState.HoverTower)
                 {
                     return;
                 }
             }
 
             // remove previous indicator
-            _level.Ui.HoverTower?.Indicators.Remove(_hoverIndicator);
+            _uiState.HoverTower?.Indicators.Remove(_hoverIndicator);
 
-            if (_level.Map.HasHex(_level.Ui.HoverHexCoords))
+            if (_level.Map.HasHex(_uiState.HoverHexCoords))
             {
                 // add new indicator
-                var tile = _level.Map.GetHex(_level.Ui.HoverHexCoords);
+                var tile = _level.Map.GetHex(_uiState.HoverHexCoords);
                 var tower = tile.TileAgent;
                 tower?.Indicators.Add(_hoverIndicator);
 
-                _level.Ui.HoverTower = tower;
-                _lastHover = _level.Ui.HoverHexCoords;
+                _uiState.HoverTower = tower;
+                _lastHover = _uiState.HoverHexCoords;
                 _lastHoverTower = tower;
             }
             else
             {
-                _level.Ui.HoverTower = null;
+                _uiState.HoverTower = null;
                 _lastHover = null;
                 _lastHoverTower = null;
             }
@@ -143,14 +159,18 @@ namespace Catch
 
         private void StartAgentCommand(int index)
         {
-            var tower = _level.Ui.HoverTower;
-
-            if (tower == null)
+            if (_uiState.FocusedAgent == null)
                 return;
 
-            var cmd = tower.Commands.GetCommand(index);
+            var cmds = _uiState.FocusedAgent.Commands.Where(c => c.IsVisible).ToArray();
+            if (index >= cmds.Length)
+                return;
 
+            var cmd = cmds[index];
             if (cmd == null)
+                return;
+
+            if (!cmd.IsReady)
                 return;
 
             switch (cmd.CommandType)

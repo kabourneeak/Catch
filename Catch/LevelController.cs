@@ -18,7 +18,8 @@ namespace Catch
         private readonly OverlayController _overlayController;
         private readonly Random _rng = new Random();
 
-        private readonly LevelState _level;
+        private readonly LevelStateModel _level;
+        private readonly SimulationStateModel _sim;
         private readonly IAgentProvider _agentProvider;
         private readonly List<IAgent> _agents;
         private readonly UpdateController _updatables;
@@ -36,18 +37,19 @@ namespace Catch
 
             var map = mapProvider.CreateMap(mapSerializationModel.Rows, mapSerializationModel.Columns);
 
-            _level = new LevelState(config, map);
+            _level = new LevelStateModel(config, map);
+            _sim = new SimulationStateModel();
 
             _agents = new List<IAgent>();
-            _updatables = new UpdateController(this, _level);
+            _updatables = new UpdateController(this, _sim);
             _drawables = new List<IDrawable>();
 
-            _agentProvider = new BuiltinAgentProvider(config, this);
+            _agentProvider = new BuiltinAgentProvider(config);
 
             InitializeMap(mapSerializationModel, map);
             InitializeEmitScript(mapSerializationModel);
 
-            _overlayController = new OverlayController(this, _level, _agents);
+            _overlayController = new OverlayController(_level, this, _sim);
             _fieldController = new FieldController(_level, _drawables);
         }
 
@@ -87,9 +89,6 @@ namespace Catch
 
         private void InitializeEmitScript(MapSerializationModel mapSerializationModel)
         {
-            /*
-             * Process emit script
-             */
             foreach (var emitScriptEntry in mapSerializationModel.EmitScript)
             {
                 for (var i = 0; i < emitScriptEntry.Count; ++i)
@@ -143,7 +142,6 @@ namespace Catch
                 if (agent.IsActive)
                     return false;
 
-                //agent.DestroyResources();
                 return true;
             });
 
@@ -252,7 +250,6 @@ namespace Catch
                     agent.Tile.TileAgent = tileAgent;
                 }
             }
-
         }
 
         public void Register(IUpdatable updatable)
@@ -291,4 +288,3 @@ namespace Catch
         #endregion
     }
 }
-

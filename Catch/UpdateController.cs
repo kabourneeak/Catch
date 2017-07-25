@@ -18,10 +18,10 @@ namespace Catch
         public event EventHandler<IUpdatable> OnRegistered;
         public event EventHandler<IUpdatable> OnDeregistered;
 
-        public UpdateController(ISimulationManager simulationManager, ILevelStateModel levelState)
+        public UpdateController(ISimulationManager simulationManager, ISimulationState simState)
         {
             _queue = new MinHeap<float, SchedulerEntry>();
-            _updateEventArgs = new UpdateEventArgs(simulationManager, levelState);
+            _updateEventArgs = new UpdateEventArgs(simulationManager, simState);
         }
 
         public void Update(float deviceTicks)
@@ -70,12 +70,12 @@ namespace Catch
 
         public ISimulationManager Manager { get; }
 
-        public ILevelStateModel State { get; }
+        public ISimulationState Sim { get; }
 
-        public UpdateEventArgs(ISimulationManager simulationManager, ILevelStateModel levelState)
+        public UpdateEventArgs(ISimulationManager simulationManager, ISimulationState sim)
         {
             Manager = simulationManager;
-            State = levelState;
+            Sim = sim;
         }
     }
 

@@ -19,17 +19,18 @@
         bool IsVisible { get; }
 
         /// <summary>
-        /// Indicates whether this command is ready to execute.
+        /// Indicates whether this command is ready to execute. You may assume that <see cref="IsVisible"/> is true 
+        /// and <see cref="Progress"/> is 1.0 if this is true, but this can be false even if those other conditions
+        /// are met.
         /// </summary>
-        bool IsAvailable { get; }
+        bool IsReady { get; }
 
         /// <summary>
         /// A value from 0.0 to 1.0 indicating something about the command's availability. 
         /// e.g., how long until the command becomes available again, or how much ammo is
         /// remaining.  
         /// 
-        /// This value should be set to 1.0 when there is nothing interesting
-        /// to show the player.
+        /// This value should be set to 1.0 when <see cref="IsReady"/> is true
         /// </summary>
         float Progress { get; }
 
@@ -39,14 +40,26 @@
         AgentCommandType CommandType { get; }
 
         /// <summary>
+        /// Update the readiness state of the command, and set the properties <see cref="IsVisible"/>, 
+        /// <see cref="IsReady"/>, and <see cref="Progress"/>.
+        /// </summary>
+        /// <returns>The value of <see cref="IsReady"/> at the conclusion of the update</returns>
+        bool UpdateReadiness(IUpdateReadinessEventArgs e);
+
+        /// <summary>
         /// Execute the command.
         /// </summary>
         void Execute(IExecuteEventArgs e);
     }
 
+    public interface IUpdateReadinessEventArgs
+    {
+        ISimulationState Sim { get; }
+    }
+
     public interface IExecuteEventArgs
     {
-        ILevelStateModel LevelState { get; }
+        ISimulationState Sim { get; }
 
         ISimulationManager Manager { get; }
 
@@ -55,14 +68,19 @@
         ITileAgent SelectedTileAgent { get; }
     }
 
+    public class UpdateReadinessEventArgs : IUpdateReadinessEventArgs
+    {
+        public ISimulationState Sim { get; set; }
+    }
+
     public class ExecuteEventArgs : IExecuteEventArgs
     {
-        public ILevelStateModel LevelState { set; get; }
+        public ISimulationState Sim { get; set; }
 
-        public ISimulationManager Manager { set; get; }
+        public ISimulationManager Manager { get; set; }
 
-        public IAgent SelectedAgent { set; get; }
+        public IAgent SelectedAgent { get; set; }
 
-        public ITileAgent SelectedTileAgent { set; get; }
+        public ITileAgent SelectedTileAgent { get; set; }
     }
 }

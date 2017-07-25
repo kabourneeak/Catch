@@ -14,9 +14,15 @@ namespace Catch.Towers
         public string DisplayName => "Buy Gun Tower";
         public string DisplayDesc => "Places a gun tower here";
         public bool IsVisible => true;
-        public bool IsAvailable => true;
+        public bool IsReady => true;
         public float Progress => 1.0f;
         public AgentCommandType CommandType => AgentCommandType.Action;
+
+        public bool UpdateReadiness(IUpdateReadinessEventArgs e)
+        {
+            // nothing to check
+            return IsReady;
+        }
 
         public void Execute(IExecuteEventArgs e)
         {
@@ -34,9 +40,6 @@ namespace Catch.Towers
             var tower = e.Manager.CreateTileAgent(nameof(GunTower), towerArgs);
 
             e.Manager.Register(tower);
-
-            // clear UI selections after command execution
-            e.LevelState.Ui.Deselect();
         }
     }
 }

@@ -3,11 +3,11 @@ using Catch.Services;
 
 namespace Catch
 {
-
     /// <summary>
-    /// Implementation of ILevelStateModel for LevelController
+    /// The state of the <see cref="LevelController"/>, which is shared with its subsidiary
+    /// controllers.
     /// </summary>
-    public class LevelState : ILevelStateModel
+    public class LevelStateModel
     {
         public IConfig Config { get; }
 
@@ -15,13 +15,10 @@ namespace Catch
 
         public UiStateModel Ui { get; }
 
-        public PlayerModel Player { get; }
-
-        public LevelState(IConfig config, MapModel map)
+        public LevelStateModel(IConfig config, MapModel map)
         {
             Config = config;
             Map = map;
-            Player = new PlayerModel(config);
             Ui = new UiStateModel();
         }
     }
