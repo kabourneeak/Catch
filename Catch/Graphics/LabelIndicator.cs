@@ -58,5 +58,7 @@ namespace Catch.Graphics
         }
 
         public DrawLayer Layer => DrawLayer.Ui;
+
+        public DrawLevelOfDetail LevelOfDetail => DrawLevelOfDetail.NormalHigh;
     }
 }

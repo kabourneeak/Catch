@@ -69,5 +69,8 @@ namespace Catch.Towers
         }
 
         public DrawLayer Layer => DrawLayer.Tower;
+
+        public DrawLevelOfDetail LevelOfDetail => DrawLevelOfDetail.NormalHigh;
+
     }
 }

@@ -113,6 +113,7 @@
     <Compile Include="Base\IUpdatable.cs" />
     <Compile Include="Base\BuiltinAgentProvider.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Graphics\DrawLevelOfDetail.cs" />
     <Compile Include="Graphics\IDrawable.cs" />
     <Compile Include="LevelStateModel.cs" />
     <Compile Include="Map\BuiltinMapProvider.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Towers\EmptyTowerSharedResources.cs" />
     <Compile Include="Towers\GunTowerFactory.cs" />
     <Compile Include="Towers\GunTowerSharedResources.cs" />
+    <Compile Include="Towers\GunTowerStrategicIndicator.cs" />
     <Compile Include="Towers\TowerHoverIndicator.cs" />
     <Compile Include="Base\PlayerModel.cs" />
     <Compile Include="Graphics\CreateResourcesArgs.cs" />

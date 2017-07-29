@@ -13,5 +13,10 @@ namespace Catch.Base
     public interface IIndicator : IDrawable
     {
         DrawLayer Layer { get; }
+
+        /// <summary>
+        /// Only draw this indicator if the requested LOD is included in this value
+        /// </summary>
+        DrawLevelOfDetail LevelOfDetail { get; }
     }
 }

@@ -23,8 +23,8 @@ namespace Catch.Graphics
 
         public CanvasStrokeStyle StrokeStyle
         {
-            get { return _strokeStyle ?? BaseStrokeStyle; }
-            set { _strokeStyle = value; }
+            get => _strokeStyle ?? BaseStrokeStyle;
+            set => _strokeStyle = value;
         }
 
         /// <summary>

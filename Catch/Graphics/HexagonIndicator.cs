@@ -9,6 +9,7 @@ namespace Catch.Graphics
     {
         public StyleArgs Style { get; protected set; }
         public float Radius { get; protected set; }
+        public bool Filled { get; protected set; }
 
         public HexagonIndicator()
         {
@@ -50,7 +51,10 @@ namespace Catch.Graphics
             // create and cache
             var geo = CanvasGeometry.CreatePath(pb);
 
-            _geo = CanvasCachedGeometry.CreateStroke(geo, Style.StrokeWidth, Style.StrokeStyle);
+            if (Filled)
+                _geo = CanvasCachedGeometry.CreateFill(geo);
+            else
+                _geo = CanvasCachedGeometry.CreateStroke(geo, Style.StrokeWidth, Style.StrokeStyle);
         }
 
         public void DestroyResources()
@@ -65,6 +69,8 @@ namespace Catch.Graphics
         }
 
         public DrawLayer Layer { get; protected set; }
+
+        public DrawLevelOfDetail LevelOfDetail { get; protected set; } = DrawLevelOfDetail.All;
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {

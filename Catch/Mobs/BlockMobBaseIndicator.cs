@@ -61,5 +61,7 @@ namespace Catch.Mobs
         }
 
         public DrawLayer Layer { get; }
+
+        public DrawLevelOfDetail LevelOfDetail => DrawLevelOfDetail.NormalHigh;
     }
 }

@@ -13,6 +13,7 @@ namespace Catch.Graphics
         {
             Ds = ds;
             FrameId = frameId;
+            LevelOfDetail = DrawLevelOfDetail.Normal;
 
             _transforms = new Stack<Matrix3x2>();
             _transforms.Push(baseTransform);
@@ -21,6 +22,8 @@ namespace Catch.Graphics
         }
 
         public int FrameId { get; private set; }
+
+        public DrawLevelOfDetail LevelOfDetail { get; set; }
 
         public CanvasDrawingSession Ds { get; private set; }
 
