@@ -18,18 +18,18 @@ namespace Catch.Towers
         public float Progress => 1.0f;
         public AgentCommandType CommandType => AgentCommandType.Action;
 
-        public bool UpdateReadiness(IUpdateReadinessEventArgs e)
+        public bool UpdateReadiness(IUpdateReadinessEventArgs args)
         {
             // nothing to check
             return IsReady;
         }
 
-        public void Execute(IExecuteEventArgs e)
+        public void Execute(IExecuteEventArgs args)
         {
             var tile = _agent.Tile;
 
             // remove current tower
-            e.Manager.Remove(_agent);
+            args.Manager.Remove(_agent);
 
             // create new tower
             var towerArgs = new CreateAgentArgs()
@@ -37,9 +37,9 @@ namespace Catch.Towers
                 Tile = tile
             };
 
-            var tower = e.Manager.CreateTileAgent(nameof(GunTower), towerArgs);
+            var tower = args.Manager.CreateTileAgent(nameof(GunTower), towerArgs);
 
-            e.Manager.Register(tower);
+            args.Manager.Register(tower);
         }
     }
 }

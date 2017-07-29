@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Catch.Base;
 using Catch.Graphics;
 using Catch.Services;
 
@@ -48,6 +47,9 @@ namespace Catch
             drawArgs.PushScale(1.0f, -1.0f);
             drawArgs.PushScale(_zoom);
             drawArgs.PushTranslation(_pan);
+
+            // apply level of detail
+            drawArgs.LevelOfDetail = _zoom > 0.5 ? DrawLevelOfDetail.Normal : DrawLevelOfDetail.Low;
 
             // calculate viewport transform, used for zoom/pan
             Matrix3x2.Invert(drawArgs.CurrentTransform, out _mapTransform);

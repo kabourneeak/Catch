@@ -44,12 +44,12 @@
         /// <see cref="IsReady"/>, and <see cref="Progress"/>.
         /// </summary>
         /// <returns>The value of <see cref="IsReady"/> at the conclusion of the update</returns>
-        bool UpdateReadiness(IUpdateReadinessEventArgs e);
+        bool UpdateReadiness(IUpdateReadinessEventArgs args);
 
         /// <summary>
         /// Execute the command.
         /// </summary>
-        void Execute(IExecuteEventArgs e);
+        void Execute(IExecuteEventArgs args);
     }
 
     public interface IUpdateReadinessEventArgs

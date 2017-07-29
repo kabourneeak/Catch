@@ -5,7 +5,8 @@ namespace Catch
 {
     /// <summary>
     /// The state of the <see cref="LevelController"/>, which is shared with its subsidiary
-    /// controllers.
+    /// controllers. Generally, this represents the state of a level which is "outside" of
+    /// the simulation, see <see cref="SimulationStateModel"/> for part which is "inside".
     /// </summary>
     public class LevelStateModel
     {
