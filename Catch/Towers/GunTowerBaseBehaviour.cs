@@ -1,7 +1,5 @@
 using System;
 using Catch.Base;
-using Catch.Map;
-using Catch.Mobs;
 using Catch.Services;
 
 namespace Catch.Towers
@@ -10,13 +8,12 @@ namespace Catch.Towers
     {
         private TowerBehaviourState _state;
         private readonly GunTower _tower;
-        private readonly TargettingBase _targetting;
+        private TargettingBase _targetting;
 
         public GunTowerBaseBehaviour(GunTower tower, IConfig config)
         {
             _tower = tower;
-            _targetting = new RadiusExitTargetting(tower.Tile, 1, 1);
-            _state = TowerBehaviourState.Targetting;
+            _state = TowerBehaviourState.Init;
         }
 
         private const float RotationRate = (float)(2 * Math.PI / 60);
@@ -26,18 +23,21 @@ namespace Catch.Towers
         private float _targetDirection = 0.0f;
         private float _currentDirection = 0.0f;
 
-        public float Update(IUpdateEventArgs e)
+        public float Update(IUpdateEventArgs args)
         {
             switch (_state)
             {
+                case TowerBehaviourState.Init:
+                    UpdateInit(args);
+                    break;
                 case TowerBehaviourState.Targetting:
-                    UpdateTargetting(e.Ticks);
+                    UpdateTargetting(args.Ticks);
                     break;
                 case TowerBehaviourState.Aiming:
-                    UpdateAiming(e.Ticks);
+                    UpdateAiming(args.Ticks);
                     break;
                 case TowerBehaviourState.OnTarget:
-                    UpdateOnTarget(e.Ticks);
+                    UpdateOnTarget(args.Ticks);
                     break;
                 case TowerBehaviourState.Removed:
                     // do nothing
@@ -50,7 +50,17 @@ namespace Catch.Towers
         }
 
         private IAgent _targetMob;
-        private Tile _targetTile;
+        private IMapTile _targetTile;
+
+        private void UpdateInit(IUpdateEventArgs args)
+        {
+            var targetting = new RadiusExitTargetting();
+            targetting.Initialize(args.Sim.Map, _tower.Tile, 1, 1);
+
+            _targetting = targetting;
+
+            _state = TowerBehaviourState.Targetting;
+        }
 
         private void UpdateTargetting(float ticks)
         {
@@ -122,6 +132,6 @@ namespace Catch.Towers
 
     public enum TowerBehaviourState
     {
-        Targetting, Aiming, OnTarget, Removed
+        Init, Targetting, Aiming, OnTarget, Removed
     }
 }

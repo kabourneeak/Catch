@@ -11,11 +11,11 @@
             _createArgs = createArgs;
         }
 
-        protected override void OnElapsed(IUpdateEventArgs e)
+        protected override void OnElapsed(IUpdateEventArgs args)
         {
-            var agent = e.Manager.CreateAgent(_agentName, _createArgs);
+            var agent = args.Manager.CreateAgent(_agentName, _createArgs);
 
-            e.Manager.Register(agent);
+            args.Manager.Register(agent);
         }
     }
 }

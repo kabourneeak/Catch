@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Catch.Base;
 using Catch.Services;
 using CatchLibrary.HexGrid;
 
@@ -11,11 +11,11 @@ namespace Catch.Map
     /// Implements a "living" map or field of play, which has tiles, towers, 
     /// paths.
     /// </summary>
-    public class MapModel : IEnumerable<Tile>
+    public class MapModel : IMap
     {
         private readonly IConfig _config;
-        private readonly HexGridCollection<Tile> _tiles; 
-        private readonly Dictionary<string, MapPath> _paths;
+        private readonly HexGridCollection<MapTileModel> _tiles; 
+        private readonly Dictionary<string, MapPathModel> _paths;
         private readonly float _tileRadius;
 
         public MapModel(IConfig config, int rows, int columns)
@@ -27,30 +27,37 @@ namespace Catch.Map
             Columns = columns;
             Size = new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), Rows * 2 * HexUtils.GetRadiusHeight(_tileRadius));
 
-            _tiles = new HexGridCollection<Tile>(Rows, Columns);
-            _tiles.Populate((hc, v) => new Tile(hc, this, _config));
+            _tiles = new HexGridCollection<MapTileModel>(Rows, Columns);
+            _tiles.Populate((hc, v) => new MapTileModel(hc, _config));
 
-            _paths = new Dictionary<string, MapPath>();
+            _paths = new Dictionary<string, MapPathModel>();
         }
 
-        #region Hexagonal Grid
+        #region IMap Implementation
 
         public int Rows { get; }
         public int Columns { get; }
         public Vector2 Size { get; }
 
+        public IEnumerable<IMapTile> Tiles => _tiles;
+
         public bool HasHex(HexCoords hc) => _tiles.HasHex(hc);
 
-        public Tile GetHex(HexCoords hc) => _tiles.GetHex(hc);
+        public IMapTile GetTile(HexCoords hc) => _tiles.GetHex(hc);
 
-        public Tile GetNeighbour(Tile tile, HexDirection direction) => _tiles.GetNeighbour(tile.Coords, direction);
+        public IMapTile GetNeighbour(IMapTile tile, HexDirection direction) => _tiles.GetNeighbour(tile.Coords, direction);
 
-        public List<Tile> GetNeighbours(Tile tile, int radius) => _tiles.GetNeighbours(tile.Coords, radius);
+        public IEnumerable<IMapTile> GetNeighbours(IMapTile tile, int radius) => _tiles.GetNeighbours(tile.Coords, radius);
 
-        /// <summary>
-        /// Get all neighbouring tiles to the given tile within the band defined by fromRadius and toRadius, inclusive.
-        /// </summary>
-        public List<Tile> GetNeighbours(Tile tile, int fromRadius, int toRadius) => _tiles.GetNeighbours(tile.Coords, fromRadius, toRadius);
+        public IEnumerable<IMapTile> GetNeighbours(IMapTile tile, int fromRadius, int toRadius) => _tiles.GetNeighbours(tile.Coords, fromRadius, toRadius);
+
+        #endregion
+
+        #region Paths
+
+        public IEnumerable<IMapPath> Paths => _paths.Values;
+
+        public IMapPath GetPath(string pathName) => _paths.ContainsKey(pathName) ? _paths[pathName] : null;
 
         #endregion
 
@@ -80,29 +87,20 @@ namespace Catch.Map
             else
                 rz = -rx - ry;
 
-            return HexCoords.CreateFromCube((int) rx, (int) ry, (int) rz);
+            return HexCoords.CreateFromCube((int)rx, (int)ry, (int)rz);
         }
 
         #endregion
 
-        #region Paths
+        #region Management
 
-        public void AddPath(MapPath path) => _paths.Add(path.Name, path);
+        public void AddPath(MapPathModel pathModel) => _paths.Add(pathModel.Name, pathModel);
 
-        public IEnumerable<MapPath> Paths => _paths.Values;
+        public IEnumerable<MapTileModel> TileModels => _tiles;
 
-        public MapPath GetPath(string pathName)
-        {
-            return _paths.ContainsKey(pathName) ? _paths[pathName] : null;
-        }
+        public MapTileModel GetTileModel(IMapTile tile) => _tiles.GetHex(tile.Coords);
 
-        #endregion
-
-        #region IEnumerable
-
-        public IEnumerator<Tile> GetEnumerator() => _tiles.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => _tiles.GetEnumerator();
+        public MapTileModel GetTileModel(HexCoords hc) => _tiles.GetHex(hc);
 
         #endregion
     }

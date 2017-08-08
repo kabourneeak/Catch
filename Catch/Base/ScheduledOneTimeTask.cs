@@ -14,18 +14,18 @@
             _offsetTicks = offsetTicks;
         }
 
-        public float Update(IUpdateEventArgs e)
+        public float Update(IUpdateEventArgs args)
         {
-            _elapsedTicks += e.Ticks;
+            _elapsedTicks += args.Ticks;
 
             // reschedule if schedule not elapsed
             if (_elapsedTicks < _offsetTicks)
                 return _offsetTicks - _elapsedTicks;
 
-            OnElapsed(e);
+            OnElapsed(args);
             return 0.0f;
         }
 
-        protected abstract void OnElapsed(IUpdateEventArgs e);
+        protected abstract void OnElapsed(IUpdateEventArgs args);
     }
 }

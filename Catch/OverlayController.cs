@@ -125,7 +125,7 @@ namespace Catch
             if (_level.Map.HasHex(_uiState.HoverHexCoords))
             {
                 // add new indicator
-                var tile = _level.Map.GetHex(_uiState.HoverHexCoords);
+                var tile = _level.Map.GetTileModel(_uiState.HoverHexCoords);
                 var tower = tile.TileAgent;
                 tower?.Indicators.Add(_hoverIndicator);
 

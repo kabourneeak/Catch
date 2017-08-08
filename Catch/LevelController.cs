@@ -38,7 +38,7 @@ namespace Catch
             var map = mapProvider.CreateMap(mapSerializationModel.Rows, mapSerializationModel.Columns);
 
             _level = new LevelStateModel(config, map);
-            _sim = new SimulationStateModel();
+            _sim = new SimulationStateModel(config, map);
 
             _agents = new List<IAgent>();
             _updatables = new UpdateController(this, _sim);
@@ -58,7 +58,7 @@ namespace Catch
             /*
              * Process tile models
              */
-            foreach (var tile in map)
+            foreach (var tile in map.TileModels)
             {
                 var tileModel = mapSerializationModel.Tiles.GetHex(tile.Coords);
                 var towerArgs = new CreateAgentArgs()
@@ -75,12 +75,12 @@ namespace Catch
              */
             foreach (var pathModel in mapSerializationModel.Paths)
             {
-                var mapPath = new MapPath();
+                var mapPath = new MapPathModel();
                 mapPath.Name = pathModel.PathName;
 
                 foreach (var pathStep in pathModel.PathSteps)
                 {
-                    mapPath.Add(map.GetHex(pathStep.Coords));
+                    mapPath.Add(map.GetTileModel(pathStep.Coords));
                 }
 
                 map.AddPath(mapPath);
@@ -115,7 +115,6 @@ namespace Catch
             _level.Ui.WindowSize = size;
 
             _overlayController.Initialize();
-
             _fieldController.Initialize();
         }
 
@@ -236,20 +235,9 @@ namespace Catch
             this._updatables.Register(agent);
 
             if (agent is IDrawable drawable)
-            {
                 this._drawables.Add(drawable);
-            }
 
-            if (agent.Tile != null)
-            {
-                if (agent is ITileAgent tileAgent)
-                {
-                    if (agent.Tile.TileAgent != null)
-                        throw new ArgumentException("Tile already occupied", nameof(agent));
-
-                    agent.Tile.TileAgent = tileAgent;
-                }
-            }
+            RegisterToTile(agent, agent.Tile);
         }
 
         public void Register(IUpdatable updatable)
@@ -271,18 +259,63 @@ namespace Catch
         {
             agent.OnRemove();
 
+            UnregisterFromTile(agent);
+
             _agents.Remove(agent);
 
             if (agent is IDrawable drawable)
-            _drawables.Remove(drawable);
+                _drawables.Remove(drawable);
+        }
 
-            if (agent.Tile != null)
+        public IMapTile Move(IAgent agent, IMapTile tile)
+        {
+            UnregisterFromTile(agent);
+            return RegisterToTile(agent, tile);
+        }
+
+        private IMapTile RegisterToTile(IAgent agent, IMapTile tile)
+        {
+            if (tile == null)
             {
-                if (agent is ITileAgent && object.ReferenceEquals(agent.Tile.TileAgent, agent))
-                    agent.Tile.TileAgent = null;
-                else
-                    agent.Tile.RemoveMob(agent);
+                // TODO add to non-tile associated collections ?
+
+                return null;
             }
+            else
+            {
+                var tileModel = _level.Map.GetTileModel(tile);
+                
+                if (agent is ITileAgent tileAgent)
+                {
+                    if (tileModel.TileAgent != null)
+                        throw new ArgumentException("Tile already occupied", nameof(tile));
+
+                    tileModel.TileAgent = tileAgent;
+                }
+
+                var wasAdded = tileModel.AddAgent(agent);
+
+                if (!wasAdded)
+                    throw new ArgumentException("Attempted to register agent to tile which already contained it", nameof(agent));
+
+                return tileModel;
+            }
+        }
+
+        private void UnregisterFromTile(IAgent agent)
+        {
+            if (agent.Tile == null)
+                return;
+
+            var tileModel = _level.Map.GetTileModel(agent.Tile);
+
+            if (agent is ITileAgent && object.ReferenceEquals(agent.Tile.TileAgent, agent))
+                tileModel.TileAgent = null;
+
+            var wasRemoved = tileModel.RemoveAgent(agent);
+
+            if (!wasRemoved)
+                throw new ArgumentException("Attempted to unregister agent from Tile which did not contain it", nameof(agent));
         }
 
         #endregion

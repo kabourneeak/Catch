@@ -1,4 +1,5 @@
-﻿using Catch.Map;
+﻿using Catch.Base;
+using Catch.Map;
 
 namespace Catch.Towers
 {
@@ -7,7 +8,7 @@ namespace Catch.Towers
     /// </summary>
     public class EmptyTower : TowerBase
     {
-        public EmptyTower(EmptyTowerSharedResources resources, Tile tile) : base(nameof(EmptyTower), tile)
+        public EmptyTower(EmptyTowerSharedResources resources, IMapTile tile) : base(nameof(EmptyTower), tile)
         {
             Brain = resources.Brain;
             Indicators.AddRange(resources.Indicators);

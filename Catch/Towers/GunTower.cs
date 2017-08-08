@@ -1,12 +1,10 @@
 ﻿using Catch.Base;
-using Catch.Map;
-using Catch.Services;
 
 namespace Catch.Towers
 {
     public class GunTower : TowerBase, ITileAgent
     {
-        public GunTower(GunTowerSharedResources resources, Tile tile) : base(nameof(GunTower), tile)
+        public GunTower(GunTowerSharedResources resources, IMapTile tile) : base(nameof(GunTower), tile)
         {
             Modifiers.Add(new GunTowerBaseModifier(this));
 

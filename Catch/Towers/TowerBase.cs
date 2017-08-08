@@ -1,6 +1,5 @@
 ﻿using Catch.Base;
 using Catch.Graphics;
-using Catch.Map;
 
 namespace Catch.Towers
 {
@@ -15,7 +14,7 @@ namespace Catch.Towers
     {
         public float Rotation { get; set; }
 
-        protected TowerBase(string agentType, Tile tile) : base(agentType)
+        protected TowerBase(string agentType, IMapTile tile) : base(agentType)
         {
             Tile = tile;
             Position = tile.Position;

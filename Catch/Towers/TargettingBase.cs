@@ -1,18 +1,16 @@
 ﻿using System;
 using Catch.Base;
-using Catch.Map;
-using Catch.Mobs;
 using Catch.Services;
 
 namespace Catch.Towers
 {
     public abstract class TargettingBase
     {
-        public abstract Tile GetBestTargetTile();
+        public abstract IMapTile GetBestTargetTile();
 
         public abstract IAgent GetBestTargetMob();
 
-        public abstract IAgent GetBestTargetMob(Tile tile);
+        public abstract IAgent GetBestTargetMob(IMapTile tile);
 
         public static float ShortestRotationDirection(float fromRadians, float toRadians)
         {

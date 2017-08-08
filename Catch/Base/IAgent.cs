@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Catch.Map;
 
 namespace Catch.Base
 {
@@ -15,6 +14,9 @@ namespace Catch.Base
 
         string DisplayStatus { get; }
 
+        /// <summary>
+        /// The world coordinates of the center of the agent
+        /// </summary>
         Vector2 Position { get; set; }
 
         /// <summary>
@@ -24,7 +26,7 @@ namespace Catch.Base
         /// </summary>
         bool IsActive { get; }
 
-        Tile Tile { get; }
+        IMapTile Tile { get; }
 
         /// <summary>
         /// Regardless of how an agent makes its way through a tile, it spends 

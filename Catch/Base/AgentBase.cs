@@ -52,14 +52,14 @@ namespace Catch.Base
 
         public string AgentType { get; }
         public bool IsActive { get; set; }
-        public Tile Tile { get; set; }
+        public IMapTile Tile { get; set; }
         public float TileProgress { get; set; }
         public ModifierCollection Modifiers { get; }
         public IndicatorCollection Indicators { get; }
         public CommandCollection Commands { get; }
         public StatModel Stats { get; }
 
-        public virtual float Update(IUpdateEventArgs e) => Brain.Update(e);
+        public virtual float Update(IUpdateEventArgs args) => Brain.Update(args);
 
         public virtual void OnRemove()
         {

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using Catch.Map;
-using Catch.Services;
+﻿using Catch.Services;
 
 namespace Catch.Base
 {
@@ -12,8 +10,8 @@ namespace Catch.Base
     {
         IConfig Config { get; }
 
-        PlayerModel Player { get; }
+        IMap Map { get; }
 
-        MapModel Map { get; }
+        PlayerModel Player { get; }
     }
 }

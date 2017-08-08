@@ -13,18 +13,22 @@ namespace Catch
     {
         private Vector2 _pan;
         private float _zoom;
+        private Vector2 _bottomLeftViewLimit;
+        private Vector2 _topRightViewLimit;
         private Matrix3x2 _mapTransform;
 
         private readonly LevelStateModel _level;
         private readonly List<IDrawable> _drawables;
+        private readonly float _tileRadius;
 
         public FieldController(LevelStateModel level, List<IDrawable> drawables)
         {
             _level = level;
             _drawables = drawables;
+            _tileRadius = level.Config.GetFloat("TileRadius");
 
-            _zoom = 1.0f;
             _pan = Vector2.Zero;
+            _zoom = 1.0f;
         }
 
         public void Initialize()
@@ -32,6 +36,9 @@ namespace Catch
             _zoom = 1.0f;
             _pan.X = (_level.Ui.WindowSize.X - _level.Map.Size.X) / 2.0f;
             _pan.Y = _level.Ui.WindowSize.Y * -1.0f + (_level.Ui.WindowSize.Y - _level.Map.Size.Y) / 2.0f;
+
+            _bottomLeftViewLimit = new Vector2(_tileRadius / 2 * -1);
+            _topRightViewLimit = Vector2.Add(_level.Ui.WindowSize, new Vector2(_tileRadius / 2));
         }
 
         public void Update(float deviceTicks)
@@ -54,9 +61,15 @@ namespace Catch
             // calculate viewport transform, used for zoom/pan
             Matrix3x2.Invert(drawArgs.CurrentTransform, out _mapTransform);
 
+            // calculate visible field coords
+            var bottomLeftFieldCoords = TranslateToFieldCoords(_bottomLeftViewLimit);
+            var topRightFieldCoords = TranslateToFieldCoords(_topRightViewLimit);
+
             // have agents draw themselves
-            foreach (var agent in _drawables)
-                agent.Draw(drawArgs, 0.0f);
+            foreach (var tile in _level.Map.TileModels)
+                if (bottomLeftFieldCoords.X <= tile.Position.X && topRightFieldCoords.X >= tile.Position.X)
+                    foreach (var drawable in tile.Drawables)
+                        drawable.Draw(drawArgs, 0.0f);
 
             // restore view matrix
             drawArgs.Pop();
@@ -87,7 +100,8 @@ namespace Catch
 
         public void Resize(Vector2 size)
         {
-
+            _bottomLeftViewLimit = new Vector2(_tileRadius / 2 * -1);
+            _topRightViewLimit = Vector2.Add(size, new Vector2(_tileRadius / 2));
         }
 
         public void Hover(HoverEventArgs eventArgs)
@@ -110,7 +124,7 @@ namespace Catch
 
         #endregion
 
-        public Vector2 TranslateToFieldCoords(Vector2 viewCoords)
+        private Vector2 TranslateToFieldCoords(Vector2 viewCoords)
         {
             return Vector2.Transform(viewCoords, _mapTransform);
         }

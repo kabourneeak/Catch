@@ -12,13 +12,13 @@
             
         }
 
-        public float Update(IUpdateEventArgs e)
+        public float Update(IUpdateEventArgs args)
         {
-            OnElapsed(e);
+            OnElapsed(args);
 
             return 0.0f;
         }
 
-        protected abstract void OnElapsed(IUpdateEventArgs e);
+        protected abstract void OnElapsed(IUpdateEventArgs args);
     }
 }

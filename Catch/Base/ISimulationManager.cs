@@ -14,5 +14,7 @@
         ITileAgent CreateTileAgent(string agentName, CreateAgentArgs createArgs);
 
         void Remove(IAgent agent);
+
+        IMapTile Move(IAgent agent, IMapTile tile);
     }
 }

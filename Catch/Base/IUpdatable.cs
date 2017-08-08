@@ -9,9 +9,9 @@
         /// <summary>
         /// Called when it is the IUpdatable object's turn to update
         /// </summary>
-        /// <param name="e">The elapsed simulation time since the last Update</param>
+        /// <param name="args">The elapsed simulation time since the last Update</param>
         /// <returns>The number of ticks the IUpdatable would like to be called again. Use zero or less to be deregistered</returns>
-        float Update(IUpdateEventArgs e);
+        float Update(IUpdateEventArgs args);
     }
 
     public interface IUpdateEventArgs
