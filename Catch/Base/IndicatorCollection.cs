@@ -33,7 +33,7 @@ namespace Catch.Base
         public void Draw(DrawArgs drawArgs, float rotation)
         {
             foreach (var i in _indicators)
-                if (i.LevelOfDetail.HasFlag(drawArgs.LevelOfDetail))
+                if (i.Layer == drawArgs.Layer && i.LevelOfDetail.HasFlag(drawArgs.LevelOfDetail))
                     i.Draw(drawArgs, rotation);
         }
 

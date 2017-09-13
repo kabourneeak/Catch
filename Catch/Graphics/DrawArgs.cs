@@ -21,14 +21,20 @@ namespace Catch.Graphics
             Ds.Transform = CurrentTransform;
         }
 
-        public int FrameId { get; private set; }
+        public int FrameId { get; }
+
+        /// <summary>
+        /// The layer which should be drawn. Complex Drawables with elements on different layers should
+        /// draw only the components of the specified layer
+        /// </summary>
+        public DrawLayer Layer { get; set; }
 
         public DrawLevelOfDetail LevelOfDetail { get; set; }
 
-        public CanvasDrawingSession Ds { get; private set; }
+        public CanvasDrawingSession Ds { get; }
 
-        public Matrix3x2 CurrentTransform { get { return _transforms.Peek(); } }
-        
+        public Matrix3x2 CurrentTransform => _transforms.Peek();
+
         public Matrix3x2 PushTranslation(float x, float y)
         {
             return Push(Matrix3x2.CreateTranslation(x, y));

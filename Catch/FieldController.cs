@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Catch.Graphics;
 using Catch.Services;
@@ -11,6 +12,8 @@ namespace Catch
     /// </summary>
     public class FieldController : IViewportController
     {
+        private static readonly DrawLayer[] DrawLayers = EnumUtils.GetEnumAsList<DrawLayer>().ToArray();
+
         private Vector2 _pan;
         private float _zoom;
         private Vector2 _bottomLeftViewLimit;
@@ -65,11 +68,22 @@ namespace Catch
             var bottomLeftFieldCoords = TranslateToFieldCoords(_bottomLeftViewLimit);
             var topRightFieldCoords = TranslateToFieldCoords(_topRightViewLimit);
 
-            // have agents draw themselves
-            foreach (var tile in _level.Map.TileModels)
-                if (bottomLeftFieldCoords.X <= tile.Position.X && topRightFieldCoords.X >= tile.Position.X)
-                    foreach (var drawable in tile.Drawables)
-                        drawable.Draw(drawArgs, 0.0f);
+            // find agents which are currently on screen
+            var culledDrawables = _level.Map.TileModels
+                .Where(tm => bottomLeftFieldCoords.X <= tm.Position.X && topRightFieldCoords.X >= tm.Position.X)
+                .SelectMany(tm => tm.Drawables)
+                .ToArray();
+
+            // have agents draw themselves layer by layer
+            foreach (var drawLayer in DrawLayers)
+            {
+                drawArgs.Layer = drawLayer;
+
+                for (var i = 0; i < culledDrawables.Length; ++i)
+                {
+                    culledDrawables[i].Draw(drawArgs, 0.0f);
+                }
+            }
 
             // restore view matrix
             drawArgs.Pop();

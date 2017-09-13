@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace CatchLibrary
 {
-    public class DebugUtils
+    public static class DebugUtils
     {
         [Conditional("DEBUG")]
         public static void Assert(bool condition)

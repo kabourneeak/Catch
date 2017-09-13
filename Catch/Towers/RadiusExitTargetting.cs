@@ -64,7 +64,7 @@ namespace Catch.Towers
             {
                 tile = tuple.Item2;
 
-                // BUG this is counting the TileAgent
+                // TODO this is counting the TileAgent
                 if (tile.AgentCount > 0)
                     break;
             }
