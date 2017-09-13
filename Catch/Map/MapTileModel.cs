@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Catch.Base;
-using Catch.Graphics;
 using Catch.Services;
 using CatchLibrary.HexGrid;
 
@@ -10,14 +9,12 @@ namespace Catch.Map
     public class MapTileModel : IMapTile
     {
         private readonly ISet<IAgent> _agents;
-        private readonly ISet<IDrawable> _drawables;
 
         public MapTileModel(HexCoords coords, IConfig config)
         {
             Coords = coords;
 
             _agents = new HashSet<IAgent>();
-            _drawables = new HashSet<IDrawable>();
 
             // copy down config
             var radius = config.GetFloat("TileRadius");
@@ -39,29 +36,13 @@ namespace Catch.Map
 
         public ITileAgent TileAgent { get; set; }
 
-        public bool AddAgent(IAgent agent)
-        {
-            var added = _agents.Add(agent);
-            if (agent is IDrawable drawable)
-                _drawables.Add(drawable);
+        public bool AddAgent(IAgent agent) => _agents.Add(agent);
 
-            return added;
-        }
-
-        public bool RemoveAgent(IAgent agent)
-        {
-            var removed = _agents.Remove(agent);
-            if (agent is IDrawable drawable)
-                _drawables.Remove(drawable);
-
-            return removed;
-        }
+        public bool RemoveAgent(IAgent agent) => _agents.Remove(agent);
 
         public int AgentCount => _agents.Count;
 
         public IEnumerable<IAgent> Agents => _agents;
-
-        public IEnumerable<IDrawable> Drawables => _drawables;
 
         #endregion
 

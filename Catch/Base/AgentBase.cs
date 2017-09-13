@@ -7,7 +7,7 @@ namespace Catch.Base
     /// <summary>
     /// Instantiates all of the underlying objects required for a basic Agent.
     /// </summary>
-    public abstract class AgentBase : IAgent, IDrawable
+    public abstract class AgentBase : IAgent
     {
         protected AgentBase(string agentType)
         {

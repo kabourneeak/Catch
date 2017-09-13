@@ -9,12 +9,15 @@ namespace Catch
 
         public IMap Map { get; }
 
+        public IMapTile OffMap { get; }
+
         public PlayerModel Player { get; }
 
-        public SimulationStateModel(IConfig config, IMap map)
+        public SimulationStateModel(IConfig config, IMap map, IMapTile offMapTile)
         {
             Map = map;
             Config = config;
+            OffMap = offMapTile;
             Player = new PlayerModel();
         }
     }

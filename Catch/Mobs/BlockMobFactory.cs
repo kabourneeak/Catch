@@ -16,7 +16,11 @@ namespace Catch.Mobs
 
         public IAgent CreateAgent(CreateAgentArgs args)
         {
-            return new BlockMob(_resources, args.Path);
+            var agent = new BlockMob(_resources, args.Path);
+            agent.Tile = args.Tile;
+            agent.Stats.Team = args.Team;
+
+            return agent;
         }
 
         public void CreateResources(CreateResourcesArgs args)

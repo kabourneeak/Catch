@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Catch.Graphics;
@@ -21,13 +20,11 @@ namespace Catch
         private Matrix3x2 _mapTransform;
 
         private readonly LevelStateModel _level;
-        private readonly List<IDrawable> _drawables;
         private readonly float _tileRadius;
 
-        public FieldController(LevelStateModel level, List<IDrawable> drawables)
+        public FieldController(LevelStateModel level)
         {
             _level = level;
-            _drawables = drawables;
             _tileRadius = level.Config.GetFloat("TileRadius");
 
             _pan = Vector2.Zero;
@@ -69,9 +66,9 @@ namespace Catch
             var topRightFieldCoords = TranslateToFieldCoords(_topRightViewLimit);
 
             // find agents which are currently on screen
-            var culledDrawables = _level.Map.TileModels
+            var culledAgents = _level.Map.TileModels
                 .Where(tm => bottomLeftFieldCoords.X <= tm.Position.X && topRightFieldCoords.X >= tm.Position.X)
-                .SelectMany(tm => tm.Drawables)
+                .SelectMany(tm => tm.Agents)
                 .ToArray();
 
             // have agents draw themselves layer by layer
@@ -79,9 +76,9 @@ namespace Catch
             {
                 drawArgs.Layer = drawLayer;
 
-                for (var i = 0; i < culledDrawables.Length; ++i)
+                for (var i = 0; i < culledAgents.Length; ++i)
                 {
-                    culledDrawables[i].Draw(drawArgs, 0.0f);
+                    culledAgents[i].Draw(drawArgs, 0.0f);
                 }
             }
 

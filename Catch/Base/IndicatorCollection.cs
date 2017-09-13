@@ -17,6 +17,8 @@ namespace Catch.Base
         public IndicatorCollection()
         {
             _indicators = new List<IIndicator>();
+
+            // TODO now that we draw by layer, do we need to bother sorting this?
             _comparer = new IndicatorComparer();
         }
 

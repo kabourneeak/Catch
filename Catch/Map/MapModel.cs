@@ -37,6 +37,8 @@ namespace Catch.Map
 
         public int Rows { get; }
         public int Columns { get; }
+
+        // TODO move to UI controller somewhere
         public Vector2 Size { get; }
 
         public IEnumerable<IMapTile> Tiles => _tiles;

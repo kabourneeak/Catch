@@ -1,8 +1,10 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
+using Catch.Graphics;
 
 namespace Catch.Base
 {
-    public interface IAgent : IUpdatable
+    public interface IAgent : IUpdatable, IDrawable
     {
         #region Properties
 
@@ -24,6 +26,7 @@ namespace Catch.Base
         /// Once set to false, the object will be removed from the game on
         /// the next update cycle.
         /// </summary>
+        [Obsolete]
         bool IsActive { get; }
 
         IMapTile Tile { get; }

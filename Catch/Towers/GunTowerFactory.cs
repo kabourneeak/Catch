@@ -17,7 +17,10 @@ namespace Catch.Towers
 
         public IAgent CreateAgent(CreateAgentArgs args)
         {
-            return new GunTower(_resources, args.Tile);
+            var agent = new GunTower(_resources, args.Tile);
+            agent.Stats.Team = args.Team;
+
+            return agent;
         }
 
         public void CreateResources(CreateResourcesArgs args)

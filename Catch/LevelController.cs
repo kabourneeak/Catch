@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
 using Catch.Base;
 using Catch.Graphics;
@@ -14,6 +13,7 @@ namespace Catch
     /// </summary>
     public class LevelController : IScreenController, ISimulationManager
     {
+        private readonly UpdateController _updateController;
         private readonly FieldController _fieldController;
         private readonly OverlayController _overlayController;
         private readonly Random _rng = new Random();
@@ -21,9 +21,6 @@ namespace Catch
         private readonly LevelStateModel _level;
         private readonly SimulationStateModel _sim;
         private readonly IAgentProvider _agentProvider;
-        private readonly List<IAgent> _agents;
-        private readonly UpdateController _updatables;
-        private readonly List<IDrawable> _drawables;
 
         #region Construction
 
@@ -38,11 +35,9 @@ namespace Catch
             var map = mapProvider.CreateMap(mapSerializationModel.Rows, mapSerializationModel.Columns);
 
             _level = new LevelStateModel(config, map);
-            _sim = new SimulationStateModel(config, map);
+            _sim = new SimulationStateModel(config, _level.Map, _level.OffMap);
 
-            _agents = new List<IAgent>();
-            _updatables = new UpdateController(this, _sim);
-            _drawables = new List<IDrawable>();
+            _updateController = new UpdateController(this, _sim);
 
             _agentProvider = new BuiltinAgentProvider(config);
 
@@ -50,7 +45,7 @@ namespace Catch
             InitializeEmitScript(mapSerializationModel);
 
             _overlayController = new OverlayController(_level, this, _sim);
-            _fieldController = new FieldController(_level, _drawables);
+            _fieldController = new FieldController(_level);
         }
 
         private void InitializeMap(MapSerializationModel mapSerializationModel, MapModel map)
@@ -96,6 +91,7 @@ namespace Catch
                     var agentArgs = new CreateAgentArgs()
                     {
                         Path = _level.Map.GetPath(emitScriptEntry.PathName),
+                        Tile = _level.OffMap
                     };
 
                     var offset = emitScriptEntry.BeginTime + (i * emitScriptEntry.DelayTime);
@@ -130,20 +126,8 @@ namespace Catch
         {
             _elapsedDeviceTicks += deviceTicks;
 
-            _updatables.Update(deviceTicks);
+            _updateController.Update(deviceTicks);
             _fieldController.Update(deviceTicks);
-
-            // only account for elapsed ticks after all agents have processed them
-            // this prevents new agents (those just emitted) from being double-updated
-
-            _agents.RemoveAll(agent =>
-            {
-                if (agent.IsActive)
-                    return false;
-
-                return true;
-            });
-
             _overlayController.Update(deviceTicks);
         }
 
@@ -231,18 +215,17 @@ namespace Catch
             if (agent == null)
                 throw new ArgumentNullException(nameof(agent));
 
-            this._agents.Add(agent);
-            this._updatables.Register(agent);
-
-            if (agent is IDrawable drawable)
-                this._drawables.Add(drawable);
+            this._updateController.Register(agent);
 
             RegisterToTile(agent, agent.Tile);
         }
 
         public void Register(IUpdatable updatable)
         {
-            this._updatables.Register(updatable);
+            if (updatable == null)
+                throw new ArgumentNullException(nameof(updatable));
+
+            this._updateController.Register(updatable);
         }
 
         public IAgent CreateAgent(string agentName, CreateAgentArgs createArgs)
@@ -260,11 +243,6 @@ namespace Catch
             agent.OnRemove();
 
             UnregisterFromTile(agent);
-
-            _agents.Remove(agent);
-
-            if (agent is IDrawable drawable)
-                _drawables.Remove(drawable);
         }
 
         public IMapTile Move(IAgent agent, IMapTile tile)
@@ -275,11 +253,22 @@ namespace Catch
 
         private IMapTile RegisterToTile(IAgent agent, IMapTile tile)
         {
+            if (agent == null)
+                throw new ArgumentNullException(nameof(agent));
             if (tile == null)
-            {
-                // TODO add to non-tile associated collections ?
+                throw new ArgumentNullException(nameof(tile));
 
-                return null;
+            if (object.ReferenceEquals(tile, _level.OffMap))
+            {
+                // for the off map tile, we don't care about whether the agent is a tile agent, 
+                // nor whether we have more than one tile agent
+
+                var wasAdded = _level.OffMap.AddAgent(agent);
+
+                if (!wasAdded)
+                    throw new ArgumentException("Attempted to register agent off map, which already contained it", nameof(agent));
+
+                return _level.OffMap;
             }
             else
             {
@@ -288,7 +277,7 @@ namespace Catch
                 if (agent is ITileAgent tileAgent)
                 {
                     if (tileModel.TileAgent != null)
-                        throw new ArgumentException("Tile already occupied", nameof(tile));
+                        throw new ArgumentException("Attempted to register agent to tile which already has a TileAgent", nameof(tile));
 
                     tileModel.TileAgent = tileAgent;
                 }
@@ -305,12 +294,21 @@ namespace Catch
         private void UnregisterFromTile(IAgent agent)
         {
             if (agent.Tile == null)
-                return;
+                throw new ArgumentNullException(nameof(agent), "Agent tile was set to null");
 
-            var tileModel = _level.Map.GetTileModel(agent.Tile);
+            MapTileModel tileModel;
 
-            if (agent is ITileAgent && object.ReferenceEquals(agent.Tile.TileAgent, agent))
-                tileModel.TileAgent = null;
+            if (object.ReferenceEquals(agent.Tile, _level.OffMap))
+            {
+                tileModel = _level.OffMap;
+            }
+            else
+            {
+                tileModel = _level.Map.GetTileModel(agent.Tile);
+
+                if (agent is ITileAgent && object.ReferenceEquals(agent.Tile.TileAgent, agent))
+                    tileModel.TileAgent = null;
+            }
 
             var wasRemoved = tileModel.RemoveAgent(agent);
 

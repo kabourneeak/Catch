@@ -1,5 +1,6 @@
 ﻿using Catch.Map;
 using Catch.Services;
+using CatchLibrary.HexGrid;
 
 namespace Catch
 {
@@ -14,12 +15,15 @@ namespace Catch
 
         public MapModel Map { get; }
 
+        public MapTileModel OffMap { get; }
+
         public UiStateModel Ui { get; }
 
         public LevelStateModel(IConfig config, MapModel map)
         {
             Config = config;
             Map = map;
+            OffMap = new MapTileModel(HexCoords.CreateFromOffset(-100, -100), config);
             Ui = new UiStateModel();
         }
     }
