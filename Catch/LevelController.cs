@@ -273,7 +273,12 @@ namespace Catch
             else
             {
                 var tileModel = _level.Map.GetTileModel(tile);
-                
+
+                var wasAdded = tileModel.AddAgent(agent);
+
+                if (!wasAdded)
+                    throw new ArgumentException("Attempted to register agent to tile which already contained it", nameof(agent));
+
                 if (agent is ITileAgent tileAgent)
                 {
                     if (tileModel.TileAgent != null)
@@ -281,11 +286,6 @@ namespace Catch
 
                     tileModel.TileAgent = tileAgent;
                 }
-
-                var wasAdded = tileModel.AddAgent(agent);
-
-                if (!wasAdded)
-                    throw new ArgumentException("Attempted to register agent to tile which already contained it", nameof(agent));
 
                 return tileModel;
             }
