@@ -6,21 +6,23 @@ namespace Catch.Towers
 {
     public class GunTowerBaseBehaviour : IBehaviourComponent
     {
-        private TowerBehaviourState _state;
+        private const float DefaultGameSpeed = 60.0f;
         private readonly GunTower _tower;
+        private TowerBehaviourState _state;
         private TargettingBase _targetting;
 
         public GunTowerBaseBehaviour(GunTower tower, IConfig config)
         {
             _tower = tower;
             _state = TowerBehaviourState.Init;
+
+            // TODO get default game speed from config and use for scheduling
         }
 
         private const float RotationRate = (float)(2 * Math.PI / 60);
         private const float Twopi = (float) Math.PI * 2;
 
         private float _rotationVel;
-        private float _targetDirection = 0.0f;
         private float _currentDirection = 0.0f;
 
         public float Update(IUpdateEventArgs args)
@@ -30,14 +32,15 @@ namespace Catch.Towers
                 case TowerBehaviourState.Init:
                     UpdateInit(args);
                     break;
-                case TowerBehaviourState.Targetting:
-                    UpdateTargetting(args.Ticks);
+                case TowerBehaviourState.Searching:
+                    // TODO search less often
+                    UpdateSearching();
                     break;
                 case TowerBehaviourState.Aiming:
                     UpdateAiming(args.Ticks);
                     break;
                 case TowerBehaviourState.OnTarget:
-                    UpdateOnTarget(args.Ticks);
+                    UpdateOnTarget();
                     break;
                 case TowerBehaviourState.Removed:
                     // do nothing
@@ -46,7 +49,7 @@ namespace Catch.Towers
                     throw new ArgumentOutOfRangeException();
             }
 
-            return 1.0f;
+            return DefaultGameSpeed / 60;
         }
 
         private IAgent _targetMob;
@@ -54,68 +57,91 @@ namespace Catch.Towers
 
         private void UpdateInit(IUpdateEventArgs args)
         {
-            var targetting = new RadiusExitTargetting();
-            targetting.Initialize(args.Sim.Map, _tower.Tile, 1, 1);
-
-            _targetting = targetting;
-
-            _state = TowerBehaviourState.Targetting;
+            _targetting = new RadiusExitTargetting(args.Sim.Map, _tower.Tile, 1, 1);
+            _state = TowerBehaviourState.Searching;
         }
 
-        private void UpdateTargetting(float ticks)
+        private void UpdateSearching()
         {
-            _targetMob = _targetting.GetBestTargetMob();
+            // see if anything has changed in our targetting range
+            if (_targetting.GetAgentVersionDelta() == 0)
+                return;
 
-            if (_targetMob != null)
+            // if so, select a target
+            _targetTile = _targetting.GetBestTargetTile();
+            _targetMob = _targetting.GetBestTargetMob(_targetTile);
+
+            if (_targetMob == null)
             {
-                _targetTile = _targetMob.Tile;
-
-                // determine rotation speed and direction
-                CalcTargetDirection();
-                _rotationVel = RotationRate * TargettingBase.ShortestRotationDirection(_currentDirection, _targetDirection);
-
+                // no target found, continue searching    
+            }
+            else
+            {
+                // target found; start aiming
                 _state = TowerBehaviourState.Aiming;
             }
         }
 
         private void UpdateAiming(float ticks)
         {
-            // find rotation angle from us to target tile
-            CalcTargetDirection();
+            // find rotation angle from us to target
+            var targetDirection = CalcTargetDirection();
+
+            // update our direction according to our rotation rate
+            _rotationVel = RotationRate * TargettingBase.ShortestRotationDirection(_currentDirection, targetDirection);
             _currentDirection = _currentDirection.Wrap(_rotationVel * ticks, 0.0f, Twopi);
 
-            // see if we've arrived
-            if (Math.Abs(_currentDirection.Wrap(-_targetDirection, 0.0f, Twopi)) <= RotationRate * ticks * 1.5f)
+            // see if we've arrived nearly enough, and snap
+            if (Math.Abs(_currentDirection.Wrap(-targetDirection, 0.0f, Twopi)) <= RotationRate * ticks)
             {
-                _currentDirection = _targetDirection;
+                _currentDirection = targetDirection;
                 _state = TowerBehaviourState.OnTarget;
             }
 
             _tower.Rotation = _currentDirection;
         }
 
-        private void UpdateOnTarget(float ticks)
+        private void UpdateOnTarget()
         {
-            // check if mob has become untargetable
-            if (!_targetMob.IsActive || _targetMob.Tile != _targetTile)
+            // check if a better target has appeared
+            if (_targetting.GetAgentVersionDelta() > 0)
             {
-                _state = TowerBehaviourState.Targetting;
-                return;
+                var potentialTile = _targetting.GetBestTargetTile();
+                var potentialMob = _targetting.GetBestTargetMob(potentialTile);
+
+                if (ReferenceEquals(potentialMob, _targetMob))
+                {
+                    // stay on target
+                }
+                else if (potentialMob == null)
+                {
+                    // no targets available
+                    _state = TowerBehaviourState.Searching;
+                    return;
+                }
+                else
+                {
+                    // a better target has appeared
+                    _targetTile = potentialTile;
+                    _targetMob = potentialMob;
+
+                    _state = TowerBehaviourState.Aiming;
+                    return;
+                }
             }
             
-            // follow the target
-            CalcTargetDirection();
-            _currentDirection = _targetDirection;
+            // continue to point at the target
+            _currentDirection = CalcTargetDirection();
             _tower.Rotation = _currentDirection;
 
             // TODO fire at enemy
         }
 
-        private void CalcTargetDirection()
+        private float CalcTargetDirection()
         {
             var a = _tower.Position;
             var b = _targetMob.Position;
-            _targetDirection = (float) Math.Atan2(b.Y - a.Y, b.X - a.X);
+            return (float) Math.Atan2(b.Y - a.Y, b.X - a.X);
         }
 
         public void OnRemove()
@@ -132,6 +158,6 @@ namespace Catch.Towers
 
     public enum TowerBehaviourState
     {
-        Init, Targetting, Aiming, OnTarget, Removed
+        Init, Searching, Aiming, OnTarget, Removed
     }
 }

@@ -88,6 +88,6 @@ namespace Catch.Map
 
         #endregion
 
-        public override string ToString() => string.Format(nameof(MapTileModel) + " %s", Coords);
+        public override string ToString() => $"{nameof(MapTileModel)} {Coords}";
     }
 }

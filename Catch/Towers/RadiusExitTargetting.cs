@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Catch.Base;
-using CatchLibrary;
 
 namespace Catch.Towers
 {
@@ -12,31 +11,37 @@ namespace Catch.Towers
     /// </summary>
     public class RadiusExitTargetting : TargettingBase
     {
-        private readonly List<Tuple<int, IMapTile>> _ranked;
+        private static readonly IComparer<Tuple<int, IMapTile>> RankComparer =
+            Comparer<Tuple<int, IMapTile>>.Create((t1, t2) => t1.Item1.CompareTo(t2.Item1));
 
-        public RadiusExitTargetting()
+        private readonly IMapTile[] _ranked;
+        private readonly int[] _agentVersions;
+        private readonly int[] _tileAgentVersions;
+
+        public RadiusExitTargetting(IMap map, IMapTile center, int fromRadius, int toRadius)
         {
-            _ranked = new List<Tuple<int, IMapTile>>();
-        }
-
-        public void Initialize(IMap map, IMapTile center, int fromRadius, int toRadius)
-        {
-            _ranked.Clear();
-
             var neighbours = map.GetNeighbours(center, fromRadius, toRadius);
 
-            RankNeighbours(neighbours, map);
+            var ranked = RankNeighbours(neighbours, map);
+
+            _ranked = ranked.Select(t => t.Item2).ToArray();
+            _agentVersions = _ranked.Select(t => t.AgentVersion).ToArray();
+            _tileAgentVersions = _ranked.Select(t => t.TileAgentVersion).ToArray();
         }
 
-        private void RankNeighbours(IEnumerable<IMapTile> neighbours, IMap map)
+        private IEnumerable<Tuple<int, IMapTile>> RankNeighbours(IEnumerable<IMapTile> neighbours, IMap map)
         {
+            var ranked = new List<Tuple<int, IMapTile>>();
+
             foreach (var tile in neighbours)
             {
                 var score = CalcExitScore(tile, map);
-                _ranked.Add(new Tuple<int, IMapTile>(score, tile));
+                ranked.Add(new Tuple<int, IMapTile>(score, tile));
             }
 
-            _ranked.Sort(RadiusExitTargettingComparer.GetComparer());
+            ranked.Sort(RankComparer);
+
+            return ranked;
         }
 
         private int CalcExitScore(IMapTile tile, IMap map)
@@ -58,22 +63,16 @@ namespace Catch.Towers
 
         public override IMapTile GetBestTargetTile()
         {
-            IMapTile tile = null;
-
-            foreach (var tuple in _ranked)
+            foreach (var tile in _ranked)
             {
-                tile = tuple.Item2;
-
-                // TODO this is counting the TileAgent
-                if (tile.AgentCount > 0)
-                    break;
+                if (tile.Agents.Any(a => !(a is ITileAgent)))
+                    return tile;
             }
 
-            DebugUtils.Assert(tile != null);
-
-            return tile;
+            return _ranked.First();
         }
 
+        [Obsolete]
         public override IAgent GetBestTargetMob()
         {
             return GetBestTargetMob(GetBestTargetTile());
@@ -95,24 +94,32 @@ namespace Catch.Towers
             return best;
         }
 
-        private class RadiusExitTargettingComparer : IComparer<Tuple<int, IMapTile>>
+        public override int GetAgentVersionDelta()
         {
-            private static RadiusExitTargettingComparer _instance;
+            var delta = 0;
 
-            public static RadiusExitTargettingComparer GetComparer()
+            for (var i = 0; i < _ranked.Length; ++i)
             {
-                return _instance ?? (_instance = new RadiusExitTargettingComparer());
+                var curVersion = _ranked[i].AgentVersion;
+                delta += curVersion - _agentVersions[i];
+                _agentVersions[i] = curVersion;
             }
 
-            private RadiusExitTargettingComparer()
-            {
+            return delta;
+        }
 
+        public override int GetTileAgentVersionDelta()
+        {
+            var delta = 0;
+
+            for (var i = 0; i < _ranked.Length; ++i)
+            {
+                var curVersion = _ranked[i].TileAgentVersion;
+                delta += curVersion - _tileAgentVersions[i];
+                _tileAgentVersions[i] = curVersion;
             }
 
-            public int Compare(Tuple<int, IMapTile> x, Tuple<int, IMapTile> y)
-            {
-                return x.Item1.CompareTo(y.Item1);
-            }
+            return delta;
         }
     }
 }

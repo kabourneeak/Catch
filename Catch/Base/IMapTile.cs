@@ -15,7 +15,7 @@ namespace Catch.Base
         HexCoords Coords { get; }
 
         /// <summary>
-        /// The world-based center coordinates of the tile
+        /// The world coordinates of the center of the tile
         /// </summary>
         Vector2 Position { get; }
 

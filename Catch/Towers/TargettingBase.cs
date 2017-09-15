@@ -8,9 +8,18 @@ namespace Catch.Towers
     {
         public abstract IMapTile GetBestTargetTile();
 
+        [Obsolete]
         public abstract IAgent GetBestTargetMob();
 
         public abstract IAgent GetBestTargetMob(IMapTile tile);
+
+        /// <returns>The sum of the changes in AgentVersion over all tiles in the targetting 
+        /// range since the last call to this method</returns>
+        public abstract int GetAgentVersionDelta();
+
+        /// <returns>The sum of the changes in TileAgentVersion over all tiles in the targetting
+        /// range since the last call to this method</returns>
+        public abstract int GetTileAgentVersionDelta();
 
         public static float ShortestRotationDirection(float fromRadians, float toRadians)
         {
@@ -18,9 +27,9 @@ namespace Catch.Towers
             const float clockwise = -1.0f;
             const float anticlockwise = 1.0f;
 
-            var clockwiseDist = fromRadians.Wrap(-toRadians, 0, 2*pi);
+            var clockwiseDist = fromRadians.Wrap(-toRadians, 0.0f, 2.0f * pi);
 
-            return clockwiseDist < pi ? clockwise : anticlockwise;
+            return clockwiseDist <= pi ? clockwise : anticlockwise;
         }
     }
 }
