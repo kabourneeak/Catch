@@ -11,15 +11,14 @@ namespace Catch.Base
     /// </summary>
     public class IndicatorCollection : IEnumerable<IIndicator>, IIndicator, IGraphicsResource
     {
+        private static readonly IComparer<IIndicator> IndicatorComparer =
+            Comparer<IIndicator>.Create((x, y) => x.Layer.CompareTo(y.Layer));
+
         private readonly List<IIndicator> _indicators;
-        private readonly IndicatorComparer _comparer;
 
         public IndicatorCollection()
         {
             _indicators = new List<IIndicator>();
-
-            // TODO now that we draw by layer, do we need to bother sorting this?
-            _comparer = new IndicatorComparer();
         }
 
         #region IEnumerable
@@ -74,7 +73,11 @@ namespace Catch.Base
              * Sort on add; C# will use Insertion Sort for small collections (< 16 items), 
              * which is efficient when the elements are mostly sorted.
              */
-            _indicators.Sort(_comparer);
+
+            // TODO now that we draw by layer, do we need to bother sorting this?
+            // stored in a dictionary keyed by layer might be better
+
+            _indicators.Sort(IndicatorComparer);
         }
 
         public void AddRange(IEnumerable<IIndicator> collection)
@@ -89,13 +92,5 @@ namespace Catch.Base
         }
 
         public int Count => _indicators.Count;
-
-        private class IndicatorComparer : IComparer<IIndicator>
-        {
-            public int Compare(IIndicator x, IIndicator y)
-            {
-                return x.Layer.CompareTo(y.Layer);
-            }
-        }
     }
 }

@@ -1,6 +1,7 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Numerics;
 using Catch.Graphics;
-using Catch.Map;
+using Catch.Services;
 
 namespace Catch.Base
 {
@@ -9,13 +10,25 @@ namespace Catch.Base
     /// </summary>
     public abstract class AgentBase : IAgent
     {
+        private static readonly IComparer<IStatModifier<StatModel>> StatModelComparer =
+            Comparer<IStatModifier<StatModel>>.Create((x, y) => x.Priority.CompareTo(y.Priority));
+
+        private static readonly IComparer<IStatModifier<AttackModel>> AttackModelComparer =
+            Comparer<IStatModifier<AttackModel>>.Create((x, y) => x.Priority.CompareTo(y.Priority));
+
         protected AgentBase(string agentType)
         {
             AgentType = agentType;
             Position = new Vector2(0.0f);
             Indicators = new IndicatorCollection();
-            Modifiers = new ModifierCollection(this);
-            Commands = new CommandCollection();
+            BaseModifiers =
+                new VersionedCollection<IStatModifier<StatModel>>(
+                    new SimpleSortedList<IStatModifier<StatModel>>(StatModelComparer));
+            AttackModifiers =
+                new VersionedCollection<IStatModifier<AttackModel>>(
+                    new SimpleSortedList<IStatModifier<AttackModel>>(AttackModelComparer));
+            Labels = new VersionedCollection<ILabel>(new HashSet<ILabel>());
+            Commands = new VersionedCollection<IAgentCommand>(new HashSet<IAgentCommand>());
             Stats = new StatModel();
 
             IsActive = true;
@@ -54,9 +67,11 @@ namespace Catch.Base
         public bool IsActive { get; set; }
         public IMapTile Tile { get; set; }
         public float TileProgress { get; set; }
-        public ModifierCollection Modifiers { get; }
+        public IVersionedCollection<IStatModifier<StatModel>> BaseModifiers { get; }
+        public IVersionedCollection<IStatModifier<AttackModel>> AttackModifiers { get; }
+        public IVersionedCollection<ILabel> Labels { get; }
         public IndicatorCollection Indicators { get; }
-        public CommandCollection Commands { get; }
+        public IVersionedCollection<IAgentCommand> Commands { get; }
         public StatModel Stats { get; }
 
         public virtual float Update(IUpdateEventArgs args) => Brain.Update(args);

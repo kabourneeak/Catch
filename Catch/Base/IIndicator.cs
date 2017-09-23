@@ -12,6 +12,9 @@ namespace Catch.Base
     /// </summary>
     public interface IIndicator : IDrawable
     {
+        /// <summary>
+        /// Only draw this indicator if the requested Layer matches
+        /// </summary>
         DrawLayer Layer { get; }
 
         /// <summary>

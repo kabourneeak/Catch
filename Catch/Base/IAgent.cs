@@ -39,13 +39,17 @@ namespace Catch.Base
         /// </summary>
         float TileProgress { get; }
 
-        ModifierCollection Modifiers { get; }
+        IVersionedCollection<IStatModifier<StatModel>> BaseModifiers { get; }
+
+        IVersionedCollection<IStatModifier<AttackModel>> AttackModifiers { get; }
+
+        IVersionedCollection<ILabel> Labels { get; }
 
         IndicatorCollection Indicators { get; }
 
         StatModel Stats { get; }
 
-        CommandCollection Commands { get; }
+        IVersionedCollection<IAgentCommand> Commands { get; }
 
         #endregion
 

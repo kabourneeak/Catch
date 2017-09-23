@@ -6,7 +6,9 @@ namespace Catch.Towers
     {
         public GunTower(GunTowerSharedResources resources, IMapTile tile) : base(nameof(GunTower), tile)
         {
-            Modifiers.Add(new GunTowerBaseModifier(this));
+            // TODO how much of this can we push to the factory?
+
+            BaseModifiers.Add(new GunTowerBaseModifier());
 
             Brain = new GunTowerBaseBehaviour(this, resources.Config);
 
