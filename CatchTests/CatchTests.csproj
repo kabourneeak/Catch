@@ -129,7 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CatchLibrary\CatchLibrary.csproj">
-      <Project>{024877F1-94A4-4521-979F-D86AD661B6A6}</Project>
+      <Project>{7dbdb455-6544-46e4-a3cd-61bc976fc078}</Project>
       <Name>CatchLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\Catch\Catch.csproj">

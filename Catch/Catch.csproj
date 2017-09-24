@@ -225,11 +225,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CatchLibrary\CatchLibrary.csproj">
-      <Project>{024877f1-94a4-4521-979f-d86ad661b6a6}</Project>
+      <Project>{7dbdb455-6544-46e4-a3cd-61bc976fc078}</Project>
       <Name>CatchLibrary</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
