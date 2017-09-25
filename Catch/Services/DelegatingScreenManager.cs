@@ -21,6 +21,8 @@ namespace Catch.Services
 
         private List<IScreenController> CurrentScreens { get; }
 
+        private IScreenController[] _reverseScreens;
+
         public DelegatingScreenManager()
         {
             CurrentScreens = new List<IScreenController>
@@ -44,6 +46,8 @@ namespace Catch.Services
 
             screen.DestroyResources();
             CurrentScreens.Remove(screen);
+
+            _reverseScreens = CurrentScreens.ReverseIterator().ToArray();
         }
 
         #endregion
@@ -70,11 +74,12 @@ namespace Catch.Services
                 _forceCreateResources = true;
 
                 CurrentScreens.Add(RequestedScreen);
+                _reverseScreens = CurrentScreens.ReverseIterator().ToArray();
 
                 RequestedScreen = null;
             }
 
-            foreach (var screen in CurrentScreens.ReverseIterator())
+            foreach (var screen in _reverseScreens)
             {
                 screen.Update(deviceTicks);
 
@@ -165,7 +170,7 @@ namespace Catch.Services
 
         private void DelegateInputEvent(Action<IScreenController> inputAction, EventArgsBase eventArgs)
         {
-            foreach (var screen in CurrentScreens.ReverseIterator())
+            foreach (var screen in _reverseScreens)
             {
                 inputAction(screen);
 

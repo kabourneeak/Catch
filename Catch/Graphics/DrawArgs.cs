@@ -8,17 +8,18 @@ namespace Catch.Graphics
     public class DrawArgs
     {
         private readonly Stack<Matrix3x2> _transforms;
+        private readonly CanvasDrawingSession _ds;
+        private bool _transformChanged;
 
         public DrawArgs(CanvasDrawingSession ds, Matrix3x2 baseTransform, int frameId)
         {
-            Ds = ds;
+            _ds = ds;
             FrameId = frameId;
             LevelOfDetail = DrawLevelOfDetail.Normal;
 
             _transforms = new Stack<Matrix3x2>();
             _transforms.Push(baseTransform);
-
-            Ds.Transform = CurrentTransform;
+            _transformChanged = true;
         }
 
         public int FrameId { get; }
@@ -31,62 +32,50 @@ namespace Catch.Graphics
 
         public DrawLevelOfDetail LevelOfDetail { get; set; }
 
-        public CanvasDrawingSession Ds { get; }
+        public CanvasDrawingSession Ds
+        {
+            get
+            {
+                if (_transformChanged)
+                {
+                    // Setting the transform is expensive, so only do it if
+                    // it might actually be used
+                    _ds.Transform = CurrentTransform;
+                    _transformChanged = false;
+                }
+
+                return _ds;
+            }
+        }
 
         public Matrix3x2 CurrentTransform => _transforms.Peek();
 
-        public Matrix3x2 PushTranslation(float x, float y)
-        {
-            return Push(Matrix3x2.CreateTranslation(x, y));
-        }
+        public void PushTranslation(float x, float y) => Push(Matrix3x2.CreateTranslation(x, y));
 
-        public Matrix3x2 PushTranslation(Vector2 offset)
-        {
-            return Push(Matrix3x2.CreateTranslation(offset));
-        }
+        public void PushTranslation(Vector2 offset) => Push(Matrix3x2.CreateTranslation(offset));
 
-        public Matrix3x2 PushRotation(float radians)
-        {
-            return Push(Matrix3x2.CreateRotation(radians));
-        }
+        public void PushRotation(float radians) => Push(Matrix3x2.CreateRotation(radians));
 
-        public Matrix3x2 PushRotation(float radians, Vector2 center)
-        {
-            return Push(Matrix3x2.CreateRotation(radians, center));
-        }
+        public void PushRotation(float radians, Vector2 center) => Push(Matrix3x2.CreateRotation(radians, center));
 
-        public Matrix3x2 PushScale(float xyScale)
-        {
-            return PushScale(xyScale, xyScale);
-        }
+        public void PushScale(float xyScale) => PushScale(xyScale, xyScale);
 
-        public Matrix3x2 PushScale(float xScale, float yScale)
-        {
-            return Push(Matrix3x2.CreateScale(xScale, yScale));
-        }
+        public void PushScale(float xScale, float yScale) => Push(Matrix3x2.CreateScale(xScale, yScale));
 
-        public Matrix3x2 Push(Matrix3x2 relativeTransform)
+        public void Push(Matrix3x2 relativeTransform)
         {
             var newTransform = Matrix3x2.Multiply(relativeTransform, CurrentTransform);
             _transforms.Push(newTransform);
-
-            Ds.Transform = CurrentTransform;
-
-            return newTransform;
+            _transformChanged = true;
         }
 
-        public Matrix3x2 Pop()
+        public void Pop()
         {
-            if (_transforms.Count > 1)
-            {
-                var oldTop = _transforms.Pop();
+            if (_transforms.Count == 0)
+                throw new InvalidOperationException("You cannot pop the base Transform.");
 
-                Ds.Transform = CurrentTransform;
-
-                return oldTop;
-            }
-
-            throw new InvalidOperationException("You cannot pop the base Transform.");
+            _transforms.Pop();
+            _transformChanged = true;
         }
     }
 }
