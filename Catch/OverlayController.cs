@@ -22,7 +22,7 @@ namespace Catch
         private readonly ExecuteEventArgs _executeEventArgs;
         private readonly UpdateReadinessEventArgs _updateReadinessEventArgs;
 
-        public OverlayController(LevelStateModel level, ISimulationManager manager, ISimulationState sim)
+        public OverlayController(LevelStateModel level, ISimulationManager manager, ISimulationState sim, ILabelProvider labelProvider)
         {
             _level = level;
             _uiState = level.Ui;
@@ -30,12 +30,14 @@ namespace Catch
             _executeEventArgs = new ExecuteEventArgs()
             {
                 Manager = manager,
-                Sim = sim
+                Sim = sim,
+                LabelProvider = labelProvider
             };
 
             _updateReadinessEventArgs = new UpdateReadinessEventArgs
             {
-                Sim = sim
+                Sim = sim,
+                LabelProvider = labelProvider
             };
 
             // create UI elements

@@ -34,17 +34,18 @@ namespace Catch
 
             var map = mapProvider.CreateMap(mapSerializationModel.Rows, mapSerializationModel.Columns);
 
+            var labelProvider = new LabelProvider();
             _level = new LevelStateModel(config, map);
             _sim = new SimulationStateModel(config, _level.Map, _level.OffMap);
 
-            _updateController = new UpdateController(this, _sim);
+            _updateController = new UpdateController(this, _sim, labelProvider);
 
-            _agentProvider = new BuiltinAgentProvider(config);
+            _agentProvider = new BuiltinAgentProvider(config, labelProvider);
 
             InitializeMap(mapSerializationModel, map);
             InitializeEmitScript(mapSerializationModel);
 
-            _overlayController = new OverlayController(_level, this, _sim);
+            _overlayController = new OverlayController(_level, this, _sim, labelProvider);
             _fieldController = new FieldController(_level);
         }
 

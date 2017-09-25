@@ -51,36 +51,4 @@
         /// </summary>
         void Execute(IExecuteEventArgs args);
     }
-
-    public interface IUpdateReadinessEventArgs
-    {
-        ISimulationState Sim { get; }
-    }
-
-    public interface IExecuteEventArgs
-    {
-        ISimulationState Sim { get; }
-
-        ISimulationManager Manager { get; }
-
-        IAgent SelectedAgent { get; }
-
-        ITileAgent SelectedTileAgent { get; }
-    }
-
-    public class UpdateReadinessEventArgs : IUpdateReadinessEventArgs
-    {
-        public ISimulationState Sim { get; set; }
-    }
-
-    public class ExecuteEventArgs : IExecuteEventArgs
-    {
-        public ISimulationState Sim { get; set; }
-
-        public ISimulationManager Manager { get; set; }
-
-        public IAgent SelectedAgent { get; set; }
-
-        public ITileAgent SelectedTileAgent { get; set; }
-    }
 }

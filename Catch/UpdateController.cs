@@ -18,10 +18,10 @@ namespace Catch
         public event EventHandler<IUpdatable> OnRegistered;
         public event EventHandler<IUpdatable> OnDeregistered;
 
-        public UpdateController(ISimulationManager simulationManager, ISimulationState simState)
+        public UpdateController(ISimulationManager simulationManager, ISimulationState simState, ILabelProvider labelProvider)
         {
             _queue = new MinHeap<float, SchedulerEntry>();
-            _updateEventArgs = new UpdateEventArgs(simulationManager, simState);
+            _updateEventArgs = new UpdateEventArgs(simulationManager, simState, labelProvider);
         }
 
         public void Update(float deviceTicks)
@@ -64,21 +64,6 @@ namespace Catch
         }
     }
 
-    internal class UpdateEventArgs : IUpdateEventArgs
-    {
-        public float Ticks { get; set; }
-
-        public ISimulationManager Manager { get; }
-
-        public ISimulationState Sim { get; }
-
-        public UpdateEventArgs(ISimulationManager simulationManager, ISimulationState sim)
-        {
-            Manager = simulationManager;
-            Sim = sim;
-        }
-    }
-
     internal class SchedulerEntry
     {
         public float EnqueueTicks;
@@ -94,5 +79,4 @@ namespace Catch
             this.Task = task;
         }
     }
-
 }

@@ -16,10 +16,10 @@ namespace Catch.Base
         private readonly ILabelProvider _labelProvider;
         private readonly Dictionary<string, IAgentFactory> _agentFactories;
 
-        public BuiltinAgentProvider(IConfig config)
+        public BuiltinAgentProvider(IConfig config, ILabelProvider labelProvider)
         {
             _config = config;
-            _labelProvider = new LabelProvider();
+            _labelProvider = labelProvider;
 
             // find IAgentFactories
             _agentFactories = LoadAgentFactories();

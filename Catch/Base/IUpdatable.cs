@@ -13,16 +13,4 @@
         /// <returns>The number of ticks the IUpdatable would like to be called again. Use zero or less to be deregistered</returns>
         float Update(IUpdateEventArgs args);
     }
-
-    public interface IUpdateEventArgs
-    {
-        /// <summary>
-        /// The elapsed ticks since this IUpdateable object was last called
-        /// </summary>
-        float Ticks { get; }
-
-        ISimulationManager Manager { get; }
-
-        ISimulationState Sim { get; }
-    }
 }

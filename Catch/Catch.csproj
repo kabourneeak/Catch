@@ -39,7 +39,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
-    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -100,15 +100,19 @@
     <Compile Include="Base\CommandTask.cs" />
     <Compile Include="Base\CoreLabels.cs" />
     <Compile Include="Base\CreateAgentArgs.cs" />
+    <Compile Include="ExecuteEventArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
     <Compile Include="Base\AgentCommandType.cs" />
     <Compile Include="Base\AttackModel.cs" />
+    <Compile Include="Base\IExecuteEventArgs.cs" />
     <Compile Include="Base\ILabelProvider.cs" />
     <Compile Include="Base\IMap.cs" />
     <Compile Include="Base\IMapPath.cs" />
     <Compile Include="Base\IMapTile.cs" />
     <Compile Include="Base\ISimulationManager.cs" />
     <Compile Include="Base\ISimulationState.cs" />
+    <Compile Include="Base\IUpdateEventArgs.cs" />
+    <Compile Include="Base\IUpdateReadinessEventArgs.cs" />
     <Compile Include="Base\IVersionedCollection.cs" />
     <Compile Include="Base\ScheduledOneTimeTask.cs" />
     <Compile Include="Base\SpawnAgentTask.cs" />
@@ -117,6 +121,8 @@
     <Compile Include="Base\ITileAgent.cs" />
     <Compile Include="Base\IUpdatable.cs" />
     <Compile Include="Base\BuiltinAgentProvider.cs" />
+    <Compile Include="UpdateEventArgs.cs" />
+    <Compile Include="UpdateReadinessEventArgs.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Graphics\DrawLevelOfDetail.cs" />
     <Compile Include="Graphics\IDrawable.cs" />
