@@ -21,7 +21,7 @@ namespace Catch.Map
         public MapModel(IConfig config, int rows, int columns)
         {
             _config = config;
-            _tileRadius = config.GetFloat("TileRadius");
+            _tileRadius = config.GetFloat(CoreConfig.TileRadius);
 
             Rows = rows;
             Columns = columns;

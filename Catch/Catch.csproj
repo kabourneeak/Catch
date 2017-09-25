@@ -90,6 +90,7 @@
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="Assets\maps\MapOne.json" />
+    <Content Include="Assets\config.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +99,7 @@
     </Compile>
     <Compile Include="Base\AgentBase.cs" />
     <Compile Include="Base\CommandTask.cs" />
+    <Compile Include="Base\CoreConfig.cs" />
     <Compile Include="Base\CoreLabels.cs" />
     <Compile Include="Base\CreateAgentArgs.cs" />
     <Compile Include="ExecuteEventArgs.cs" />
@@ -121,6 +123,8 @@
     <Compile Include="Base\ITileAgent.cs" />
     <Compile Include="Base\IUpdatable.cs" />
     <Compile Include="Base\BuiltinAgentProvider.cs" />
+    <Compile Include="Services\ConfigUtils.cs" />
+    <Compile Include="Services\JsonConfig.cs" />
     <Compile Include="UpdateEventArgs.cs" />
     <Compile Include="UpdateReadinessEventArgs.cs" />
     <Compile Include="Bootstrapper.cs" />
@@ -189,7 +193,6 @@
     <Compile Include="OverlayController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\RectExtensions.cs" />
-    <Compile Include="Services\CompiledConfig.cs" />
     <Compile Include="Services\EmptyConfig.cs" />
     <Compile Include="Services\IConfig.cs" />
     <Compile Include="Services\TaskExtensions.cs" />

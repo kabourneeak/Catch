@@ -20,7 +20,7 @@ namespace Catch.Map
             _agents = new HashSet<IAgent>();
 
             // copy down config
-            var radius = config.GetFloat("TileRadius");
+            var radius = config.GetFloat(CoreConfig.TileRadius);
 
             // calculate position
             var radiusH = HexUtils.GetRadiusHeight(radius);

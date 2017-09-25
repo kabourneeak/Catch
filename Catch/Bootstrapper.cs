@@ -11,14 +11,14 @@ namespace Catch
     /// </summary>
     public class Bootstrapper
     {
-        private const string CfgMapsFolder = nameof(Bootstrapper) + ".MapsFolder";
-        private const string CfgInitialMap = nameof(Bootstrapper) + ".InitialMap";
+        public static readonly string CfgMapsFolder = ConfigUtils.GetConfigPath(nameof(Bootstrapper), nameof(CfgMapsFolder));
+        public static readonly string CfgInitialMap = ConfigUtils.GetConfigPath(nameof(Bootstrapper), nameof(CfgInitialMap));
 
         private IConfig Config { get; }
 
         public Bootstrapper()
         {
-            Config = new CompiledConfig();
+            Config = new JsonConfig("config.json");
         }
 
         public void BeginGame(IScreenManager screenManager)

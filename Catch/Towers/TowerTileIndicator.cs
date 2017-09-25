@@ -13,8 +13,8 @@ namespace Catch.Towers
     {
         public TowerTileIndicator(IConfig config, Color color)
         {
-            var radius = config.GetFloat("TileRadius");
-            var inset = config.GetFloat("TileRadiusInset");
+            var radius = config.GetFloat(CoreConfig.TileRadius);
+            var inset = config.GetFloat(CoreConfig.TileRadiusInset);
 
             Radius = radius - inset;
             Style = new StyleArgs() { BrushType = BrushType.Solid, Color = color, StrokeWidth = 3 };

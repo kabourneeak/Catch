@@ -1,5 +1,6 @@
 ﻿using Catch.Base;
 using Catch.Graphics;
+using Catch.Services;
 
 namespace Catch.Mobs
 {
@@ -9,9 +10,9 @@ namespace Catch.Mobs
 
         public string AgentType => nameof(BlockMob);
 
-        public BlockMobFactory()
+        public BlockMobFactory(IConfig config)
         {
-            _resources = new BlockMobSharedResources();
+            _resources = new BlockMobSharedResources(config);
         }
 
         public IAgent CreateAgent(CreateAgentArgs args)

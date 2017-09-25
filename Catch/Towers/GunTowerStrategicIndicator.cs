@@ -9,8 +9,8 @@ namespace Catch.Towers
     {
         public GunTowerStrategicIndicator(IConfig config)
         {
-            var radius = config.GetFloat("TileRadius");
-            var inset = config.GetFloat("TileRadiusInset");
+            var radius = config.GetFloat(CoreConfig.TileRadius);
+            var inset = config.GetFloat(CoreConfig.TileRadiusInset);
 
             Radius = radius - inset;
             Style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.RoyalBlue, StrokeWidth = 3 };

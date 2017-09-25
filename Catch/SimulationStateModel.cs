@@ -18,7 +18,7 @@ namespace Catch
             Map = map;
             Config = config;
             OffMap = offMapTile;
-            Player = new PlayerModel();
+            Player = new PlayerModel(config.GetInt(CoreConfig.PlayerTeam));
         }
     }
 }

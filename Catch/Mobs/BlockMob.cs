@@ -1,10 +1,12 @@
 using Catch.Base;
-using Catch.Map;
+using Catch.Services;
 
 namespace Catch.Mobs
 {
     public class BlockMob : AgentBase
     {
+        public static readonly string CfgBlockSize = ConfigUtils.GetConfigPath(nameof(BlockMob), nameof(CfgBlockSize));
+
         public BlockMob(BlockMobSharedResources resources, IMapPath mapPath) : base(nameof(BlockMob))
         {
             // This class can be massively generalized!  e.g., take in a config object and a mob name, and then fill out

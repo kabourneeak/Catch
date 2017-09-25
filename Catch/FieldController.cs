@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using Catch.Base;
 using Catch.Graphics;
 using Catch.Services;
 
@@ -25,7 +26,7 @@ namespace Catch
         public FieldController(LevelStateModel level)
         {
             _level = level;
-            _tileRadius = level.Config.GetFloat("TileRadius");
+            _tileRadius = level.Config.GetFloat(CoreConfig.TileRadius);
 
             _pan = Vector2.Zero;
             _zoom = 1.0f;
