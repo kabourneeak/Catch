@@ -72,12 +72,6 @@ namespace Catch.Towers
             return _ranked.First();
         }
 
-        [Obsolete]
-        public override IAgent GetBestTargetMob()
-        {
-            return GetBestTargetMob(GetBestTargetTile());
-        }
-
         public override IAgent GetBestTargetMob(IMapTile tile)
         {
             IAgent best = null;

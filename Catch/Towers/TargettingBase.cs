@@ -8,9 +8,6 @@ namespace Catch.Towers
     {
         public abstract IMapTile GetBestTargetTile();
 
-        [Obsolete]
-        public abstract IAgent GetBestTargetMob();
-
         public abstract IAgent GetBestTargetMob(IMapTile tile);
 
         /// <returns>The sum of the changes in AgentVersion over all tiles in the targetting 
