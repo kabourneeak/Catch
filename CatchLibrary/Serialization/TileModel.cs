@@ -17,5 +17,11 @@ namespace CatchLibrary.Serialization
         /// </summary>
         [DataMember]
         public string TowerName { get; set; }
+
+        /// <summary>
+        /// The team of the agent which is placed on this tile
+        /// </summary>
+        [DataMember]
+        public int Team { get; set; }
     }
 }

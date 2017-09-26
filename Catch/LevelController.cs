@@ -56,13 +56,14 @@ namespace Catch
              */
             foreach (var tile in map.TileModels)
             {
-                var tileModel = mapSerializationModel.Tiles.GetHex(tile.Coords);
+                var tileEmitModel = mapSerializationModel.Tiles.GetHex(tile.Coords);
                 var towerArgs = new CreateAgentArgs()
                 {
                     Tile = tile,
+                    Team = tileEmitModel.Team
                 };
 
-                var tower = CreateTileAgent(tileModel.TowerName, towerArgs);
+                var tower = CreateTileAgent(tileEmitModel.TowerName, towerArgs);
                 this.Register(tower);
             }
 
@@ -92,7 +93,8 @@ namespace Catch
                     var agentArgs = new CreateAgentArgs()
                     {
                         Path = _level.Map.GetPath(emitScriptEntry.PathName),
-                        Tile = _level.OffMap
+                        Tile = _level.OffMap,
+                        Team = emitScriptEntry.Team
                     };
 
                     var offset = emitScriptEntry.BeginTime + (i * emitScriptEntry.DelayTime);

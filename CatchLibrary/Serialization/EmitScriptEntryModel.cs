@@ -34,5 +34,11 @@ namespace CatchLibrary.Serialization
         /// </summary>
         [DataMember]
         public string AgentTypeName { get; set; }
+
+        /// <summary>
+        /// The team the emitted agent will belong to
+        /// </summary>
+        [DataMember]
+        public int Team { get; set; }
     }
 }

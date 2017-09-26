@@ -18,7 +18,7 @@ namespace MapWriter.Maps
 
         private void AddTiles()
         {
-            Tiles.Populate((hc, v) => new TileModel {Coords = hc, TowerName = "EmptyTower"});
+            Tiles.Populate((hc, v) => new TileModel {Coords = hc, TowerName = "EmptyTower", Team = 0});
 
             Tiles.GetHex(HexCoords.CreateFromOffset(4, 5)).TowerName = "GunTower";
             Tiles.GetHex(HexCoords.CreateFromOffset(5, 5)).TowerName = "GunTower";
@@ -86,7 +86,8 @@ namespace MapWriter.Maps
                 Count = 10,
                 DelayTime = 60,
                 PathName = "testPath",
-                AgentTypeName = "BlockMob"
+                AgentTypeName = "BlockMob",
+                Team = 1
             });
         }
     }
