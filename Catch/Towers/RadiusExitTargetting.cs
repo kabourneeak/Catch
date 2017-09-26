@@ -74,18 +74,21 @@ namespace Catch.Towers
 
         public override IAgent GetBestTargetMob(IMapTile tile)
         {
-            IAgent best = null;
+            IAgent bestTarget = null;
 
-            // TODO filter by team?
-            foreach (var mob in tile.Agents.Where(a => !(a is ITileAgent)))
+            var filteredAgents = tile.Agents
+                .Where(a => !(a is ITileAgent))
+                .Where(a => a.Stats.Team != OwnTeam);
+
+            foreach (var potentialTarget in filteredAgents)
             {
-                if (best == null)
-                    best = mob;
-                else if (best.TileProgress < mob.TileProgress)
-                    best = mob;
+                if (bestTarget == null)
+                    bestTarget = potentialTarget;
+                else if (bestTarget.TileProgress < potentialTarget.TileProgress)
+                    bestTarget = potentialTarget;
             }
 
-            return best;
+            return bestTarget;
         }
 
         public override int GetAgentVersionDelta()

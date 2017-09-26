@@ -75,6 +75,8 @@ namespace Catch.Towers
         private void UpdateInit(IUpdateEventArgs args)
         {
             _targetting = new RadiusExitTargetting(args.Sim.Map, _hostTower.Tile, 1, 1);
+            _targetting.OwnTeam = _hostTower.Stats.Team;
+
             _state = TowerBehaviourState.Searching;
         }
 
