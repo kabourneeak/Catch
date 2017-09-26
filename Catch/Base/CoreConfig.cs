@@ -12,5 +12,6 @@ namespace Catch.Base
         public static readonly string TileRadius = ConfigUtils.GetConfigPath(CorePrefix, nameof(TileRadius));
         public static readonly string TileRadiusInset = ConfigUtils.GetConfigPath(CorePrefix, nameof(TileRadiusInset));
         public static readonly string PlayerTeam = ConfigUtils.GetConfigPath(CorePrefix, nameof(PlayerTeam));
+        public static readonly string TicksPerSecond = ConfigUtils.GetConfigPath(CorePrefix, nameof(TicksPerSecond));
     }
 }

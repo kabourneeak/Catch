@@ -6,58 +6,75 @@ namespace Catch.Towers
 {
     public class GunTowerBaseBehaviour : IBehaviourComponent
     {
-        private const float DefaultGameSpeed = 60.0f;
-        private readonly GunTower _tower;
+        private const float RotationRate = (float)(2 * Math.PI / 60);
+        private const float Twopi = (float)Math.PI * 2;
+
+        private const int InitResolution = 60;
+        private const int SearchResolution = 5;
+        private const int AimingResolution = 60;
+        private const int AttackResolution = 60;
+
+        private readonly float _ticksPerSecond;
+        private readonly GunTower _hostTower;
         private TowerBehaviourState _state;
         private TargettingBase _targetting;
-
-        public GunTowerBaseBehaviour(GunTower tower, IConfig config)
-        {
-            _tower = tower;
-            _state = TowerBehaviourState.Init;
-
-            // TODO get default game speed from config and use for scheduling
-        }
-
-        private const float RotationRate = (float)(2 * Math.PI / 60);
-        private const float Twopi = (float) Math.PI * 2;
-
         private float _rotationVel;
         private float _currentDirection = 0.0f;
+        private IAgent _targetMob;
+        private IMapTile _targetTile;
+
+        public GunTowerBaseBehaviour(GunTower hostTower, IConfig config)
+        {
+            _ticksPerSecond = config.GetFloat(CoreConfig.TicksPerSecond);
+
+            _hostTower = hostTower;
+            _state = TowerBehaviourState.Init;
+        }
 
         public float Update(IUpdateEventArgs args)
         {
+            // Update according to the current state of the agent
             switch (_state)
             {
                 case TowerBehaviourState.Init:
                     UpdateInit(args);
                     break;
                 case TowerBehaviourState.Searching:
-                    // TODO search less often
                     UpdateSearching();
                     break;
                 case TowerBehaviourState.Aiming:
                     UpdateAiming(args.Ticks);
                     break;
-                case TowerBehaviourState.OnTarget:
-                    UpdateOnTarget();
+                case TowerBehaviourState.Attacking:
+                    UpdateAttacking();
                     break;
                 case TowerBehaviourState.Removed:
-                    // do nothing
                     return 0.0f;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            return DefaultGameSpeed / 60;
+            // Reschedule according to the (potentially updated) state of the agent
+            switch (_state)
+            {
+                case TowerBehaviourState.Init:
+                    return _ticksPerSecond / InitResolution;
+                case TowerBehaviourState.Searching:
+                    return _ticksPerSecond / SearchResolution;
+                case TowerBehaviourState.Aiming:
+                    return _ticksPerSecond / AimingResolution;
+                case TowerBehaviourState.Attacking:
+                    return _ticksPerSecond / AttackResolution;
+                case TowerBehaviourState.Removed:
+                    return 0.0f;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
-
-        private IAgent _targetMob;
-        private IMapTile _targetTile;
 
         private void UpdateInit(IUpdateEventArgs args)
         {
-            _targetting = new RadiusExitTargetting(args.Sim.Map, _tower.Tile, 1, 1);
+            _targetting = new RadiusExitTargetting(args.Sim.Map, _hostTower.Tile, 1, 1);
             _state = TowerBehaviourState.Searching;
         }
 
@@ -73,7 +90,7 @@ namespace Catch.Towers
 
             if (_targetMob == null)
             {
-                // no target found, continue searching    
+                // no target found, continue searching
             }
             else
             {
@@ -95,13 +112,13 @@ namespace Catch.Towers
             if (Math.Abs(_currentDirection.Wrap(-targetDirection, 0.0f, Twopi)) <= RotationRate * ticks)
             {
                 _currentDirection = targetDirection;
-                _state = TowerBehaviourState.OnTarget;
+                _state = TowerBehaviourState.Attacking;
             }
 
-            _tower.Rotation = _currentDirection;
+            _hostTower.Rotation = _currentDirection;
         }
 
-        private void UpdateOnTarget()
+        private void UpdateAttacking()
         {
             // check if a better target has appeared
             if (_targetting.GetAgentVersionDelta() > 0)
@@ -132,14 +149,14 @@ namespace Catch.Towers
             
             // continue to point at the target
             _currentDirection = CalcTargetDirection();
-            _tower.Rotation = _currentDirection;
+            _hostTower.Rotation = _currentDirection;
 
             // TODO fire at enemy
         }
 
         private float CalcTargetDirection()
         {
-            var a = _tower.Position;
+            var a = _hostTower.Position;
             var b = _targetMob.Position;
             return (float) Math.Atan2(b.Y - a.Y, b.X - a.X);
         }
@@ -147,7 +164,7 @@ namespace Catch.Towers
         public void OnRemove()
         {
             _state = TowerBehaviourState.Removed;
-            _tower.IsActive = false;
+            _hostTower.IsActive = false;
         }
 
         public void OnHit(AttackModel incomingAttack)
@@ -158,6 +175,6 @@ namespace Catch.Towers
 
     public enum TowerBehaviourState
     {
-        Init, Searching, Aiming, OnTarget, Removed
+        Init, Searching, Aiming, Attacking, Removed
     }
 }

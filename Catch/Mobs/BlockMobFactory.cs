@@ -6,18 +6,20 @@ namespace Catch.Mobs
 {
     public class BlockMobFactory : IAgentFactory
     {
+        private readonly IConfig _config;
         private readonly BlockMobSharedResources _resources;
 
         public string AgentType => nameof(BlockMob);
 
         public BlockMobFactory(IConfig config)
         {
+            _config = config;
             _resources = new BlockMobSharedResources(config);
         }
 
         public IAgent CreateAgent(CreateAgentArgs args)
         {
-            var agent = new BlockMob(_resources, args.Path);
+            var agent = new BlockMob(_config, _resources, args.Path);
             agent.Tile = args.Tile;
             agent.Stats.Team = args.Team;
 

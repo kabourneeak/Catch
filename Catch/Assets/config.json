@@ -5,8 +5,10 @@
   "Core.TileRadius": 60.0,
   "Core.TileRadiusInset": 1.5,
   "Core.PlayerTeam": 0,
+  "Core.TicksPerSecond": 60.0,
 
   "BlockMob.BlockSize": 20,
+  "BlockMob.Velocity": 0.005,
 
   "LastEntry": "I hate trying to remember commas when I'm writing JSON"
 }

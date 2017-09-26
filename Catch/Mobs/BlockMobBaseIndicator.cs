@@ -1,5 +1,7 @@
+using Windows.UI;
 using Catch.Base;
 using Catch.Graphics;
+using Catch.Services;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
@@ -10,10 +12,12 @@ namespace Catch.Mobs
         private readonly int _blockSize;
         private readonly StyleArgs _style;
 
-        public BlockMobBaseIndicator(int blockSize, StyleArgs styleArgs)
+        public BlockMobBaseIndicator(IConfig config)
         {
-            _blockSize = blockSize;
-            _style = styleArgs;
+            _blockSize = config.GetInt(BlockMob.CfgBlockSize);
+
+            var strokeStyle = new CanvasStrokeStyle() { LineJoin = CanvasLineJoin.Round };
+            _style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.Yellow, StrokeWidth = 4, StrokeStyle = strokeStyle };
 
             Layer = DrawLayer.Mob;
         }

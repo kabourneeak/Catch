@@ -1,8 +1,6 @@
-﻿using Windows.UI;
-using Catch.Base;
+﻿using Catch.Base;
 using Catch.Graphics;
 using Catch.Services;
-using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Mobs
 {
@@ -12,14 +10,10 @@ namespace Catch.Mobs
 
         public BlockMobSharedResources(IConfig config)
         {
-            // TODO copy down relevant config
-            Indicators = new IndicatorCollection();
-
-            var blockSize = config.GetInt(BlockMob.CfgBlockSize);
-
-            var strokeStyle = new CanvasStrokeStyle() { LineJoin = CanvasLineJoin.Round };
-            var style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.Yellow, StrokeWidth = 4, StrokeStyle = strokeStyle };
-            Indicators.Add(new BlockMobBaseIndicator(blockSize, style));
+            Indicators = new IndicatorCollection
+            {
+                new BlockMobBaseIndicator(config)
+            };
         }
 
         public void CreateResources(CreateResourcesArgs args)
