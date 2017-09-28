@@ -1,5 +1,8 @@
 ﻿namespace Catch.Base
 {
+    /// <summary>
+    /// The simulation control plane provided to IAgentCommand objects when executing
+    /// </summary>
     public interface IExecuteEventArgs
     {
         ISimulationState Sim { get; }
@@ -8,8 +11,8 @@
 
         ILabelProvider LabelProvider { get; }
 
-        IExtendedAgent SelectedAgent { get; }
+        IAgent SelectedAgent { get; }
 
-        IExtendedTileAgent SelectedTileAgent { get; }
+        ITileAgent SelectedTileAgent { get; }
     }
 }

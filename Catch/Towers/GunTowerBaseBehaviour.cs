@@ -168,7 +168,7 @@ namespace Catch.Towers
             _state = TowerBehaviourState.Removed;
         }
 
-        public void OnHit(AttackModel incomingAttack)
+        public void OnChange(AttackModel attack)
         {
             // do nothing
         }

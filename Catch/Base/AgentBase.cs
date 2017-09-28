@@ -72,15 +72,9 @@ namespace Catch.Base
         public IndicatorCollection Indicators { get; }
         public BaseStatsModel ExtendedStats => _stats;
 
-        public virtual void OnRemove()
-        {
-            Brain.OnRemove();
-        }
+        public void OnRemove() => Brain.OnRemove();
 
-        public void ApplyChange(AttackModel change)
-        {
-            Brain.OnHit(change);
-        }
+        public void OnChange(AttackModel attack) => Brain.OnChange(attack);
 
         #endregion
 

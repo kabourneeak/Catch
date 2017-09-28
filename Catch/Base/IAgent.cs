@@ -2,6 +2,10 @@
 
 namespace Catch.Base
 {
+    /// <summary>
+    /// Basic details of an agent in the simulation
+    /// </summary>
+    /// <seealso cref="IExtendedAgent"/>
     public interface IAgent
     {
         string AgentType { get; }
