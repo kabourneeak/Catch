@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 using CatchLibrary.HexGrid;
 
 namespace Catch.Base
@@ -32,7 +31,7 @@ namespace Catch.Base
         /// <summary>
         /// All agents currently occupying the tile, including the TileAgent
         /// </summary>
-        IEnumerable<IAgent> Agents { get; }
+        IVersionedEnumerable<IAgent> Agents { get; }
 
         /// <summary>
         /// The current version of the agent collection; incremented for every change to the <see cref="Agents"/> collection

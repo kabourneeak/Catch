@@ -65,7 +65,7 @@ namespace Catch.Towers
         {
             foreach (var tile in _ranked)
             {
-                if (tile.Agents.Any(a => !(a is ITileAgent)))
+                if (tile.Agents.Any(a => !(a is IExtendedTileAgent)))
                     return tile;
             }
 
@@ -77,7 +77,7 @@ namespace Catch.Towers
             IAgent bestTarget = null;
 
             var filteredAgents = tile.Agents
-                .Where(a => !(a is ITileAgent))
+                .Where(a => !(a is IExtendedTileAgent))
                 .Where(a => a.Stats.Team != OwnTeam);
 
             foreach (var potentialTarget in filteredAgents)

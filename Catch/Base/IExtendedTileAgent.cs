@@ -3,8 +3,13 @@
     /// <summary>
     /// Indicates an agent which occupies a tile in the game field.
     /// </summary>
-    public interface ITileAgent : IAgent
+    public interface IExtendedTileAgent : ITileAgent, IExtendedAgent
     {
 
+    }
+
+    public interface ITileAgent : IAgent
+    {
+        
     }
 }

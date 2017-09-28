@@ -69,7 +69,7 @@ namespace Catch
             // find agents which are currently on screen
             var culledAgents = _level.Map.TileModels
                 .Where(tm => bottomLeftFieldCoords.X <= tm.Position.X && topRightFieldCoords.X >= tm.Position.X)
-                .SelectMany(tm => tm.Agents)
+                .SelectMany(tm => tm.ExtendedAgents)
                 .ToArray();
 
             // have agents draw themselves layer by layer

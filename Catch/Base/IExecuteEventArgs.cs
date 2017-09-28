@@ -8,8 +8,8 @@
 
         ILabelProvider LabelProvider { get; }
 
-        IAgent SelectedAgent { get; }
+        IExtendedAgent SelectedAgent { get; }
 
-        ITileAgent SelectedTileAgent { get; }
+        IExtendedTileAgent SelectedTileAgent { get; }
     }
 }

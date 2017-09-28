@@ -7,8 +7,13 @@ namespace Catch.Base
     /// The version is _not_ incremented for changes inside objects stored in the collection
     /// </summary>
     /// <typeparam name="T">The type to store in the collection</typeparam>
-    public interface IVersionedCollection<T> : ICollection<T>
+    public interface IVersionedCollection<T> : ICollection<T>, IVersionedEnumerable<T>
     {
-        int Version { get; }    
+
+    }
+
+    public interface IVersionedEnumerable<out T> : IEnumerable<T>
+    {
+        int Version { get; }
     }
 }

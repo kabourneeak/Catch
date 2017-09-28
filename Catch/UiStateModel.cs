@@ -14,9 +14,9 @@ namespace Catch
 
         public HexCoords HoverHexCoords { get; set; }
 
-        public IAgent HoverTower { get; set; }
+        public IExtendedAgent HoverTower { get; set; }
 
-        public IAgent FocusedAgent { get; set; }
+        public IExtendedAgent FocusedAgent { get; set; }
 
         public UiStateModel()
         {

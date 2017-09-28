@@ -108,7 +108,6 @@ namespace Catch.Mobs
         public void OnRemove()
         {
             _state = PathMobBehaviourStates.Removed;
-            _agent.IsActive = false;
         }
 
         public void OnHit(AttackModel incomingAttack)

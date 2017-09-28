@@ -4,9 +4,9 @@ namespace Catch.Towers
 {
     public class BuyTowerCommand : IAgentCommand
     {
-        private readonly IAgent _agent;
+        private readonly IExtendedAgent _agent;
 
-        public BuyTowerCommand(IAgent agent)
+        public BuyTowerCommand(IExtendedAgent agent)
         {
             _agent = agent;
         }

@@ -16,7 +16,7 @@ namespace Catch.Towers
             var labelText = string.Format("{0},{1}", tile.Coords.Q, tile.Coords.R);
             Indicators.Add(resources.GetLabel(labelText));
 
-            Commands.Add(new BuyTowerCommand(this));
+            CommandCollection.Add(new BuyTowerCommand(this));
 
             DisplayName = "Empty Socket";
             DisplayStatus = string.Empty;

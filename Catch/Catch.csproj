@@ -102,6 +102,8 @@
     <Compile Include="Base\CoreConfig.cs" />
     <Compile Include="Base\CoreLabels.cs" />
     <Compile Include="Base\CreateAgentArgs.cs" />
+    <Compile Include="Base\IAgent.cs" />
+    <Compile Include="Base\IBaseStats.cs" />
     <Compile Include="ExecuteEventArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
     <Compile Include="Base\AgentCommandType.cs" />
@@ -118,9 +120,9 @@
     <Compile Include="Base\IVersionedCollection.cs" />
     <Compile Include="Base\ScheduledOneTimeTask.cs" />
     <Compile Include="Base\SpawnAgentTask.cs" />
-    <Compile Include="Base\StatModel.cs" />
+    <Compile Include="Base\BaseStatsModel.cs" />
     <Compile Include="Base\IAgentFactory.cs" />
-    <Compile Include="Base\ITileAgent.cs" />
+    <Compile Include="Base\IExtendedTileAgent.cs" />
     <Compile Include="Base\IUpdatable.cs" />
     <Compile Include="Base\BuiltinAgentProvider.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
@@ -158,7 +160,7 @@
     <Compile Include="Graphics\CreateResourcesArgs.cs" />
     <Compile Include="Graphics\DrawArgs.cs" />
     <Compile Include="Graphics\DrawLayer.cs" />
-    <Compile Include="Base\IAgent.cs" />
+    <Compile Include="Base\IExtendedAgent.cs" />
     <Compile Include="Base\IAgentProvider.cs" />
     <Compile Include="Base\IBehaviourComponent.cs" />
     <Compile Include="Graphics\IGraphicsResource.cs" />

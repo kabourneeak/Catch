@@ -9,6 +9,6 @@ namespace Catch.Base
         /// </summary>
         string AgentType { get; }
 
-        IAgent CreateAgent(CreateAgentArgs args);
+        IExtendedAgent CreateAgent(CreateAgentArgs args);
     }
 }

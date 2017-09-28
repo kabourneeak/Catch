@@ -2,20 +2,11 @@
 
 namespace Catch.Base
 {
-    /// <summary>
-    /// Describe the basic properties that agent which exist in the simulation exhibit
-    /// 
-    /// Rates are expressed in Update units.  A rate of 1.0 means one action per 1.0 Update tick.
-    /// Intensity is a multiplier, where 1.0 is the base value
-    /// </summary>
-    public class StatModel
+    /// <inheritdoc />
+    public class BaseStatsModel : IBaseStats
     {
-        public StatModel()
-        {
-            Reset();
-        }
-
         public int Health { get; set; }
+
         public int MaxHealth { get; set; }
 
         public float ColorResistence { get; set; }
@@ -42,13 +33,9 @@ namespace Catch.Base
 
         public float ResourceProductionRate { get; set; }
 
-        public void Reset()
+        public BaseStatsModel()
         {
-            MaxHealth = 1;
-            Health = 1;
-            Level = 1;
-            MovementSpeed = 0.0f;
-            AttackRate = 0.0f;
+
         }
     }
 }

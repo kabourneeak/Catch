@@ -5,8 +5,8 @@ namespace Catch.Base
     /// </summary>
     public class AttackModel
     {
-        public IAgent Source { get; set; }
-        public IAgent Target { get; set; }
+        public IExtendedAgent Source { get; set; }
+        public IExtendedAgent Target { get; set; }
 
         public AttackType Type { get; set; }
         public bool IsCounterAttack { get; set; }

@@ -166,7 +166,6 @@ namespace Catch.Towers
         public void OnRemove()
         {
             _state = TowerBehaviourState.Removed;
-            _hostTower.IsActive = false;
         }
 
         public void OnHit(AttackModel incomingAttack)

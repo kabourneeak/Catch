@@ -213,7 +213,7 @@ namespace Catch
 
         #region ISimulationManager Implementation
 
-        public void Register(IAgent agent)
+        public void Register(IExtendedAgent agent)
         {
             if (agent == null)
                 throw new ArgumentNullException(nameof(agent));
@@ -231,30 +231,30 @@ namespace Catch
             this._updateController.Register(updatable);
         }
 
-        public IAgent CreateAgent(string agentName, CreateAgentArgs createArgs)
+        public IExtendedAgent CreateAgent(string agentName, CreateAgentArgs createArgs)
         {
             return _agentProvider.CreateAgent(agentName, createArgs);
         }
 
-        public ITileAgent CreateTileAgent(string agentName, CreateAgentArgs createArgs)
+        public IExtendedTileAgent CreateTileAgent(string agentName, CreateAgentArgs createArgs)
         {
-            return (ITileAgent) _agentProvider.CreateAgent(agentName, createArgs);
+            return (IExtendedTileAgent) _agentProvider.CreateAgent(agentName, createArgs);
         }
 
-        public void Remove(IAgent agent)
+        public void Remove(IExtendedAgent agent)
         {
             agent.OnRemove();
 
             UnregisterFromTile(agent);
         }
 
-        public IMapTile Move(IAgent agent, IMapTile tile)
+        public IMapTile Move(IExtendedAgent agent, IMapTile tile)
         {
             UnregisterFromTile(agent);
             return RegisterToTile(agent, tile);
         }
 
-        private IMapTile RegisterToTile(IAgent agent, IMapTile tile)
+        private IMapTile RegisterToTile(IExtendedAgent agent, IMapTile tile)
         {
             if (agent == null)
                 throw new ArgumentNullException(nameof(agent));
@@ -266,10 +266,7 @@ namespace Catch
                 // for the off map tile, we don't care about whether the agent is a tile agent, 
                 // nor whether we have more than one tile agent
 
-                var wasAdded = _level.OffMap.AddAgent(agent);
-
-                if (!wasAdded)
-                    throw new ArgumentException("Attempted to register agent off map, which already contained it", nameof(agent));
+                _level.OffMap.AddAgent(agent);
 
                 return _level.OffMap;
             }
@@ -277,24 +274,21 @@ namespace Catch
             {
                 var tileModel = _level.Map.GetTileModel(tile);
 
-                var wasAdded = tileModel.AddAgent(agent);
+                tileModel.AddAgent(agent);
 
-                if (!wasAdded)
-                    throw new ArgumentException("Attempted to register agent to tile which already contained it", nameof(agent));
-
-                if (agent is ITileAgent tileAgent)
+                if (agent is IExtendedTileAgent tileAgent)
                 {
                     if (tileModel.TileAgent != null)
                         throw new ArgumentException("Attempted to register agent to tile which already has a TileAgent", nameof(tile));
 
-                    tileModel.TileAgent = tileAgent;
+                    tileModel.SetTileAgent(tileAgent);
                 }
 
                 return tileModel;
             }
         }
 
-        private void UnregisterFromTile(IAgent agent)
+        private void UnregisterFromTile(IExtendedAgent agent)
         {
             if (agent.Tile == null)
                 throw new ArgumentNullException(nameof(agent), "Agent tile was set to null");
@@ -309,8 +303,8 @@ namespace Catch
             {
                 tileModel = _level.Map.GetTileModel(agent.Tile);
 
-                if (agent is ITileAgent && object.ReferenceEquals(agent.Tile.TileAgent, agent))
-                    tileModel.TileAgent = null;
+                if (agent is IExtendedTileAgent && object.ReferenceEquals(agent.Tile.TileAgent, agent))
+                    tileModel.SetTileAgent(null);
             }
 
             var wasRemoved = tileModel.RemoveAgent(agent);

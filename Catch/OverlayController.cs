@@ -107,7 +107,7 @@ namespace Catch
         }
 
         private HexCoords _lastHover;
-        private ITileAgent _lastHoverTower;
+        private IExtendedTileAgent _lastHoverTower;
         private readonly StatusBar _statusBar;
         private readonly TowerHoverIndicator _hoverIndicator;
 
@@ -128,7 +128,7 @@ namespace Catch
             {
                 // add new indicator
                 var tile = _level.Map.GetTileModel(_uiState.HoverHexCoords);
-                var tower = tile.TileAgent;
+                var tower = tile.ExtendedTileAgent;
                 tower?.Indicators.Add(_hoverIndicator);
 
                 _uiState.HoverTower = tower;

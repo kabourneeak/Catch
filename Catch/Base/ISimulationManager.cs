@@ -5,16 +5,16 @@
     /// </summary>
     public interface ISimulationManager
     {
-        void Register(IAgent agent);
+        void Register(IExtendedAgent agent);
 
         void Register(IUpdatable updatable);
 
-        IAgent CreateAgent(string agentName, CreateAgentArgs createArgs);
+        IExtendedAgent CreateAgent(string agentName, CreateAgentArgs createArgs);
 
-        ITileAgent CreateTileAgent(string agentName, CreateAgentArgs createArgs);
+        IExtendedTileAgent CreateTileAgent(string agentName, CreateAgentArgs createArgs);
 
-        void Remove(IAgent agent);
+        void Remove(IExtendedAgent agent);
 
-        IMapTile Move(IAgent agent, IMapTile tile);
+        IMapTile Move(IExtendedAgent agent, IMapTile tile);
     }
 }

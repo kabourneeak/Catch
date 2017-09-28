@@ -2,7 +2,7 @@
 
 namespace Catch.Towers
 {
-    public class GunTowerBaseModifier : IStatModifier<StatModel>
+    public class GunTowerBaseModifier : IStatModifier<BaseStatsModel>
     {
         public GunTowerBaseModifier()
         {
@@ -14,7 +14,7 @@ namespace Catch.Towers
 
         public ModifierPriority Priority { get; }
 
-        public void Apply(StatModel statModel)
+        public void Apply(BaseStatsModel statModel)
         {
             statModel.MaxHealth = 100;
             statModel.Health = 100;

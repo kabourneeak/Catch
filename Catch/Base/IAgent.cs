@@ -1,13 +1,9 @@
-﻿using System;
-using System.Numerics;
-using Catch.Graphics;
+﻿using System.Numerics;
 
 namespace Catch.Base
 {
-    public interface IAgent : IUpdatable, IDrawable
+    public interface IAgent
     {
-        #region Properties
-
         string AgentType { get; }
 
         string DisplayName { get; }
@@ -19,15 +15,7 @@ namespace Catch.Base
         /// <summary>
         /// The world coordinates of the center of the agent
         /// </summary>
-        Vector2 Position { get; set; }
-
-        /// <summary>
-        /// Indicates whether the GameObject is participating in the game.  
-        /// Once set to false, the object will be removed from the game on
-        /// the next update cycle.
-        /// </summary>
-        [Obsolete]
-        bool IsActive { get; }
+        Vector2 Position { get; }
 
         IMapTile Tile { get; }
 
@@ -39,29 +27,14 @@ namespace Catch.Base
         /// </summary>
         float TileProgress { get; }
 
-        IVersionedCollection<IStatModifier<StatModel>> BaseModifiers { get; }
+        IVersionedEnumerable<IStatModifier<BaseStatsModel>> BaseModifiers { get; }
 
-        IVersionedCollection<IStatModifier<AttackModel>> AttackModifiers { get; }
+        IVersionedEnumerable<IStatModifier<AttackModel>> AttackModifiers { get; }
 
-        IVersionedCollection<ILabel> Labels { get; }
+        IVersionedEnumerable<ILabel> Labels { get; }
 
-        IndicatorCollection Indicators { get; }
+        IVersionedEnumerable<IAgentCommand> Commands { get; }
 
-        StatModel Stats { get; }
-
-        IVersionedCollection<IAgentCommand> Commands { get; }
-
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        /// Called when the Agent is being removed from the simulation by the simulation manager
-        /// </summary>
-        void OnRemove();
-
-        void OnHit(AttackModel incomingAttack);
-
-        #endregion
+        IBaseStats Stats { get; }
     }
 }

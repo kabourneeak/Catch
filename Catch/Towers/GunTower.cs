@@ -2,13 +2,13 @@
 
 namespace Catch.Towers
 {
-    public class GunTower : TowerBase, ITileAgent
+    public class GunTower : TowerBase, IExtendedTileAgent
     {
         public GunTower(GunTowerSharedResources resources, IMapTile tile) : base(nameof(GunTower), tile)
         {
             // TODO how much of this can we push to the factory?
 
-            BaseModifiers.Add(new GunTowerBaseModifier());
+            BaseModifierCollection.Add(new GunTowerBaseModifier());
 
             Brain = new GunTowerBaseBehaviour(this, resources.Config);
 

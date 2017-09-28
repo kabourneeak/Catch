@@ -25,7 +25,7 @@ namespace Catch.Base
             _agentFactories = LoadAgentFactories();
         }
 
-        public IAgent CreateAgent(string name, CreateAgentArgs args)
+        public IExtendedAgent CreateAgent(string name, CreateAgentArgs args)
         {
             var found = _agentFactories.TryGetValue(name, out IAgentFactory factory);
 

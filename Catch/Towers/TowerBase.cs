@@ -10,7 +10,7 @@ namespace Catch.Towers
     /// and pops a translation to Draw.DrawArgs for the center point of the tower, so that all Indicators can 
     /// draw relatively.
     /// </summary>
-    public abstract class TowerBase : AgentBase, ITileAgent
+    public abstract class TowerBase : AgentBase, IExtendedTileAgent
     {
         public float Rotation { get; set; }
 

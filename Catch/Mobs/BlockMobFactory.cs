@@ -17,11 +17,11 @@ namespace Catch.Mobs
             _resources = new BlockMobSharedResources(config);
         }
 
-        public IAgent CreateAgent(CreateAgentArgs args)
+        public IExtendedAgent CreateAgent(CreateAgentArgs args)
         {
             var agent = new BlockMob(_config, _resources, args.Path);
             agent.Tile = args.Tile;
-            agent.Stats.Team = args.Team;
+            agent.ExtendedStats.Team = args.Team;
 
             return agent;
         }

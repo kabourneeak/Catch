@@ -96,7 +96,7 @@ namespace Catch.LevelUi
 
         private string GetStatusText()
         {
-            if (_uiState.FocusedAgent is ITileAgent tileAgent)
+            if (_uiState.FocusedAgent is IExtendedTileAgent tileAgent)
             {
                 var sb = new StringBuilder();
                 sb.Append(tileAgent.DisplayName);

@@ -15,10 +15,10 @@ namespace Catch.Towers
             _resources = new EmptyTowerSharedResources(config);
         }
 
-        public IAgent CreateAgent(CreateAgentArgs args)
+        public IExtendedAgent CreateAgent(CreateAgentArgs args)
         {
             var agent = new EmptyTower(_resources, args.Tile);
-            agent.Stats.Team = args.Team;
+            agent.ExtendedStats.Team = args.Team;
 
             return agent;
         }

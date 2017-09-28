@@ -8,30 +8,36 @@ namespace Catch.Base
     /// <summary>
     /// Instantiates all of the underlying objects required for a basic Agent.
     /// </summary>
-    public abstract class AgentBase : IAgent
+    public abstract class AgentBase : IExtendedAgent
     {
-        private static readonly IComparer<IStatModifier<StatModel>> StatModelComparer =
-            Comparer<IStatModifier<StatModel>>.Create((x, y) => x.Priority.CompareTo(y.Priority));
+        private static readonly IComparer<IStatModifier<BaseStatsModel>> StatModelComparer =
+            Comparer<IStatModifier<BaseStatsModel>>.Create((x, y) => x.Priority.CompareTo(y.Priority));
 
         private static readonly IComparer<IStatModifier<AttackModel>> AttackModelComparer =
             Comparer<IStatModifier<AttackModel>>.Create((x, y) => x.Priority.CompareTo(y.Priority));
+
+        private readonly IVersionedCollection<IStatModifier<BaseStatsModel>> _baseModifiers;
+        private readonly IVersionedCollection<IStatModifier<AttackModel>> _attackModifiers;
+        private readonly IVersionedCollection<ILabel> _labels;
+        private readonly IVersionedCollection<IAgentCommand> _commands;
+        private readonly BaseStatsModel _stats;
 
         protected AgentBase(string agentType)
         {
             AgentType = agentType;
             Position = new Vector2(0.0f);
+
             Indicators = new IndicatorCollection();
-            BaseModifiers =
-                new VersionedCollection<IStatModifier<StatModel>>(
-                    new SimpleSortedList<IStatModifier<StatModel>>(StatModelComparer));
-            AttackModifiers =
+            _baseModifiers =
+                new VersionedCollection<IStatModifier<BaseStatsModel>>(
+                    new SimpleSortedList<IStatModifier<BaseStatsModel>>(StatModelComparer));
+            _attackModifiers =
                 new VersionedCollection<IStatModifier<AttackModel>>(
                     new SimpleSortedList<IStatModifier<AttackModel>>(AttackModelComparer));
-            Labels = new VersionedCollection<ILabel>(new HashSet<ILabel>());
-            Commands = new VersionedCollection<IAgentCommand>(new HashSet<IAgentCommand>());
-            Stats = new StatModel();
+            _labels = new VersionedCollection<ILabel>(new HashSet<ILabel>());
+            _commands = new VersionedCollection<IAgentCommand>(new HashSet<IAgentCommand>());
 
-            IsActive = true;
+            _stats = new BaseStatsModel();
         }
 
         #region AgentBase Implementation
@@ -40,12 +46,51 @@ namespace Catch.Base
 
         #endregion
 
-        #region IGameObject Implementation
+        #region IAgent Implementation
 
+        public string AgentType { get; }
         public string DisplayName { get; protected set; }
         public string DisplayInfo { get; protected set; }
         public string DisplayStatus { get; protected set; }
         public Vector2 Position { get; set; }
+        public IMapTile Tile { get; set; }
+        public float TileProgress { get; set; }
+        public IVersionedEnumerable<IStatModifier<BaseStatsModel>> BaseModifiers => _baseModifiers;
+        public IVersionedEnumerable<IStatModifier<AttackModel>> AttackModifiers => _attackModifiers;
+        public IVersionedEnumerable<ILabel> Labels => _labels;
+        public IVersionedEnumerable<IAgentCommand> Commands => _commands;
+        public IBaseStats Stats => _stats;
+
+        #endregion
+
+        #region IExtendedAgent Implementation
+
+        public IVersionedCollection<IStatModifier<BaseStatsModel>> BaseModifierCollection => _baseModifiers;
+        public IVersionedCollection<IStatModifier<AttackModel>> AttackModifierCollection => _attackModifiers;
+        public IVersionedCollection<ILabel> LabelCollection => _labels;
+        public IVersionedCollection<IAgentCommand> CommandCollection => _commands;
+        public IndicatorCollection Indicators { get; }
+        public BaseStatsModel ExtendedStats => _stats;
+
+        public virtual void OnRemove()
+        {
+            Brain.OnRemove();
+        }
+
+        public void ApplyChange(AttackModel change)
+        {
+            Brain.OnHit(change);
+        }
+
+        #endregion
+
+        #region IUpdatable Implementation
+
+        public virtual float Update(IUpdateEventArgs args) => Brain.Update(args);
+
+        #endregion
+
+        #region IDrawable Implementation
 
         public virtual void Draw(DrawArgs drawArgs, float rotation)
         {
@@ -57,35 +102,6 @@ namespace Catch.Base
             Indicators.Draw(drawArgs, rotation);
 
             drawArgs.Pop();
-        }
-
-        #endregion
-
-        #region IAgent Implementation
-
-        public string AgentType { get; }
-        public bool IsActive { get; set; }
-        public IMapTile Tile { get; set; }
-        public float TileProgress { get; set; }
-        public IVersionedCollection<IStatModifier<StatModel>> BaseModifiers { get; }
-        public IVersionedCollection<IStatModifier<AttackModel>> AttackModifiers { get; }
-        public IVersionedCollection<ILabel> Labels { get; }
-        public IndicatorCollection Indicators { get; }
-        public IVersionedCollection<IAgentCommand> Commands { get; }
-        public StatModel Stats { get; }
-
-        public virtual float Update(IUpdateEventArgs args) => Brain.Update(args);
-
-        public virtual void OnRemove()
-        {
-            Brain.OnRemove();
-
-            IsActive = false;
-        }
-
-        public virtual void OnHit(AttackModel incomingAttack)
-        {
-            Brain.OnHit(incomingAttack);
         }
 
         #endregion

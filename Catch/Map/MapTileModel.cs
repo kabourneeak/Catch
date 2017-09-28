@@ -10,14 +10,14 @@ namespace Catch.Map
     /// <inheritdoc />
     public class MapTileModel : IMapTile
     {
-        private readonly ISet<IAgent> _agents;
-        private ITileAgent _tileAgent;
+        private readonly IVersionedCollection<IExtendedAgent> _agents;
+        private IExtendedTileAgent _tileAgent;
 
         public MapTileModel(HexCoords coords, IConfig config)
         {
             Coords = coords;
 
-            _agents = new HashSet<IAgent>();
+            _agents = new VersionedCollection<IExtendedAgent>(new HashSet<IExtendedAgent>());
 
             // copy down config
             var radius = config.GetFloat(CoreConfig.TileRadius);
@@ -41,48 +41,34 @@ namespace Catch.Map
         /// Gets or sets the current TileAgent for this map tile. 
         /// Throws ArgumentException if the agent being set at the current TileAgent is not in the <see cref="Agents"/> collection
         /// </summary>
-        public ITileAgent TileAgent
+        public ITileAgent TileAgent => _tileAgent;
+
+        public IExtendedTileAgent ExtendedTileAgent => _tileAgent;
+
+        public void SetTileAgent(IExtendedTileAgent tileAgent)
         {
-            get => _tileAgent;
-            set
-            {
-                if (ReferenceEquals(_tileAgent, value))
-                    return;
+            if (ReferenceEquals(_tileAgent, tileAgent))
+                return;
 
-                if (value != null && !_agents.Contains(value))
-                    throw new ArgumentException("Cannot set TileAgent to value not present in Agents collection");
+            if (tileAgent != null && !_agents.Contains(tileAgent))
+                throw new ArgumentException("Cannot set TileAgent to value not present in Agents collection");
 
-                _tileAgent = value;
+            _tileAgent = tileAgent;
 
-                TileAgentVersion += 1;
-            }
+            TileAgentVersion += 1;
         }
 
-        public bool AddAgent(IAgent agent)
-        {
-            var wasModified = _agents.Add(agent);
+        public void AddAgent(IExtendedAgent agent) => _agents.Add(agent);
 
-            if (wasModified)
-                AgentVersion += 1;
-
-            return wasModified;
-        }
-
-        public bool RemoveAgent(IAgent agent)
-        {
-            var wasModified = _agents.Remove(agent);
-
-            if (wasModified)
-                AgentVersion += 1;
-
-            return wasModified;
-        }
+        public bool RemoveAgent(IExtendedAgent agent) => _agents.Remove(agent);
 
         public int AgentCount => _agents.Count;
 
-        public IEnumerable<IAgent> Agents => _agents;
+        public IVersionedEnumerable<IAgent> Agents => _agents;
 
-        public int AgentVersion { get; private set; }
+        public IVersionedEnumerable<IExtendedAgent> ExtendedAgents => _agents;
+
+        public int AgentVersion => _agents.Version;
 
         public int TileAgentVersion { get; private set; }
 
