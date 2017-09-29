@@ -1,5 +1,4 @@
 ﻿using Catch.Base;
-using Catch.Map;
 
 namespace Catch.Towers
 {
@@ -10,7 +9,6 @@ namespace Catch.Towers
     {
         public EmptyTower(EmptyTowerSharedResources resources, IMapTile tile) : base(nameof(EmptyTower), tile)
         {
-            Brain = resources.Brain;
             Indicators.AddRange(resources.Indicators);
 
             var labelText = string.Format("{0},{1}", tile.Coords.Q, tile.Coords.R);
@@ -21,6 +19,12 @@ namespace Catch.Towers
             DisplayName = "Empty Socket";
             DisplayStatus = string.Empty;
             DisplayInfo = string.Empty;
+        }
+
+        public override float Update(IUpdateEventArgs args)
+        {
+            // indicate that we don't need anymore updates
+            return 0.0f;
         }
     }
 }

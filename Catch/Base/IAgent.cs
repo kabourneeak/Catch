@@ -37,7 +37,7 @@ namespace Catch.Base
 
         IBaseStats Stats { get; }
 
-        #region Methods
+        #region Events
 
         /// <summary>
         /// Called when the agent is attacked by another

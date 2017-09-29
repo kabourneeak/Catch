@@ -4,7 +4,7 @@ using Catch.Base;
 
 namespace Catch.Mobs
 {
-    public class PathMobBehaviour : IBehaviourComponent
+    public class PathMobBehaviour : IUpdatable, IRemoveModifier
     {
         private enum PathMobBehaviourStates
         {
@@ -105,7 +105,9 @@ namespace Catch.Mobs
             }
         }
 
-        public void OnRemove()
+        public ModifierPriority Priority => ModifierPriority.Base;
+
+        public void OnRemove(IExtendedAgent agent)
         {
             _state = PathMobBehaviourStates.Removed;
         }

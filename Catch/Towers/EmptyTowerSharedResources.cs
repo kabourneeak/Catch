@@ -12,8 +12,6 @@ namespace Catch.Towers
 
         public IndicatorCollection Indicators { get; }
 
-        public IBehaviourComponent Brain { get; }
-
         public EmptyTowerSharedResources(IConfig config)
         {
             Indicators = new IndicatorCollection
@@ -22,8 +20,6 @@ namespace Catch.Towers
             };
 
             _labels = new Dictionary<string, LabelIndicator>();
-
-            Brain = new NilBehaviour();
         }
 
         public void CreateResources(CreateResourcesArgs args)

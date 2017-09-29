@@ -12,8 +12,6 @@ namespace Catch.Base
     {
         #region Properties
 
-        IVersionedCollection<IModifier> ModifierCollection { get; }
-
         IVersionedCollection<ILabel> LabelCollection { get; }
 
         IVersionedCollection<IAgentCommand> CommandCollection { get; }
@@ -26,16 +24,13 @@ namespace Catch.Base
 
         #region Methods
 
-        /// <summary>
-        /// Called when the Agent's stats (base specs + labels) need to be recalculated
-        /// </summary>
-        void OnCalculateAgentStats();
+        void AddModifier(IModifier modifier);
 
-        /// <summary>
-        /// Called to have the agent attack another
-        /// </summary>
-        /// <param name="e">Attack parameters</param>
-        void OnAttack(AttackEventArgs e);
+        void RemoveModifier(IModifier modifier);
+
+        #endregion
+
+        #region Events
 
         /// <summary>
         /// Called when the Agent is being removed from the simulation by the simulation manager
