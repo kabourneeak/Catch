@@ -8,7 +8,7 @@ namespace Catch.Towers
         {
             // TODO how much of this can we push to the factory?
 
-            BaseModifierCollection.Add(new GunTowerBaseModifier());
+            ModifierCollection.Add(new GunTowerBaseModifier());
 
             Brain = new GunTowerBaseBehaviour(this, resources.Config);
 

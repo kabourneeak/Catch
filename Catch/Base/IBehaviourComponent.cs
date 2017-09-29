@@ -7,7 +7,5 @@
     public interface IBehaviourComponent : IUpdatable
     {
         void OnRemove();
-
-        void OnChange(AttackModel attack);
     }
 }

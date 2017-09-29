@@ -54,13 +54,5 @@
         /// <param name="tile">The new location</param>
         /// <returns>The newly updated tile which the agent is now registered to</returns>
         IMapTile Move(IExtendedAgent agent, IMapTile tile);
-
-        /// <summary>
-        /// Allows one agent to effect a change against another via an <see cref="AttackModel"/>.
-        /// </summary>
-        /// <param name="source">The agent requesting the change</param>
-        /// <param name="target">The agent targetted by the change</param>
-        /// <param name="attack">Details of the change</param>
-        void Change(IExtendedAgent source, IAgent target, AttackModel attack);
     }
 }

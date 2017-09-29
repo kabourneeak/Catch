@@ -154,6 +154,14 @@ namespace Catch.Towers
             _hostTower.Rotation = _currentDirection;
 
             // TODO fire at enemy
+            var attack = new AttackEventArgs(_hostTower, _targetMob);
+            // need a way for the behaviour component here to invoke particular mods
+            // maybe some other registration method aside from C# events?
+            _hostTower.OnAttack(attack);
+            // need a way to send this attack to the other agent, where it will do whatever it does
+            // keep in mind that much of the attack will already have been applied (since the attack is
+            // already happening, as opposed to whenever the target's next update might be)
+            _targetMob.OnHit(attack);
         }
 
         private float CalcTargetDirection()
@@ -166,11 +174,6 @@ namespace Catch.Towers
         public void OnRemove()
         {
             _state = TowerBehaviourState.Removed;
-        }
-
-        public void OnChange(AttackModel attack)
-        {
-            // do nothing
         }
     }
 

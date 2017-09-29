@@ -254,11 +254,6 @@ namespace Catch
             return RegisterToTile(agent, tile);
         }
 
-        public void Change(IExtendedAgent source, IAgent target, AttackModel attack)
-        {
-            PromoteAgent(target).OnChange(attack);
-        }
-
         private IExtendedAgent PromoteAgent(IAgent agent)
         {
             return agent as IExtendedAgent;

@@ -1,4 +1,5 @@
-﻿using Catch.Graphics;
+﻿using System;
+using Catch.Graphics;
 
 namespace Catch.Base
 {
@@ -11,9 +12,7 @@ namespace Catch.Base
     {
         #region Properties
 
-        IVersionedCollection<IStatModifier<BaseStatsModel>> BaseModifierCollection { get; }
-
-        IVersionedCollection<IStatModifier<AttackModel>> AttackModifierCollection { get; }
+        IVersionedCollection<IModifier> ModifierCollection { get; }
 
         IVersionedCollection<ILabel> LabelCollection { get; }
 
@@ -28,11 +27,20 @@ namespace Catch.Base
         #region Methods
 
         /// <summary>
+        /// Called when the Agent's stats (base specs + labels) need to be recalculated
+        /// </summary>
+        void OnCalculateAgentStats();
+
+        /// <summary>
+        /// Called to have the agent attack another
+        /// </summary>
+        /// <param name="e">Attack parameters</param>
+        void OnAttack(AttackEventArgs e);
+
+        /// <summary>
         /// Called when the Agent is being removed from the simulation by the simulation manager
         /// </summary>
         void OnRemove();
-
-        void OnChange(AttackModel attack);
 
         #endregion
     }

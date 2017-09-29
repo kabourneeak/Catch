@@ -109,10 +109,5 @@ namespace Catch.Mobs
         {
             _state = PathMobBehaviourStates.Removed;
         }
-
-        public void OnChange(AttackModel attack)
-        {
-            // do nothing
-        }
     }
 }

@@ -2,23 +2,20 @@
 
 namespace Catch.Towers
 {
-    public class GunTowerBaseModifier : IStatModifier<BaseStatsModel>
+    public class GunTowerBaseModifier : ICalculateAgentStatsModifier
     {
+        public ModifierPriority Priority => ModifierPriority.Base;
+
         public GunTowerBaseModifier()
         {
-            Intensity = 1.0f;
-            Priority = ModifierPriority.Base;
+
         }
 
-        public float Intensity { get; }
-
-        public ModifierPriority Priority { get; }
-
-        public void Apply(BaseStatsModel statModel)
+        public void OnCalculateAgentStats(IExtendedAgent agent)
         {
-            statModel.MaxHealth = 100;
-            statModel.Health = 100;
-            statModel.Level = 1;
+            agent.ExtendedStats.MaxHealth = 100;
+            agent.ExtendedStats.Health = 100;
+            agent.ExtendedStats.Level = 1;
         }
     }
 }

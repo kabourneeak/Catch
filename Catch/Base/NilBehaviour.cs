@@ -12,10 +12,5 @@
         {
             // do nothing
         }
-
-        public void OnChange(AttackModel attack)
-        {
-            // do nothing
-        }
     }
 }

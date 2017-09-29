@@ -31,14 +31,20 @@ namespace Catch.Base
         /// </summary>
         float TileProgress { get; }
 
-        IVersionedEnumerable<IStatModifier<BaseStatsModel>> BaseModifiers { get; }
-
-        IVersionedEnumerable<IStatModifier<AttackModel>> AttackModifiers { get; }
-
         IVersionedEnumerable<ILabel> Labels { get; }
 
         IVersionedEnumerable<IAgentCommand> Commands { get; }
 
         IBaseStats Stats { get; }
+
+        #region Methods
+
+        /// <summary>
+        /// Called when the agent is attacked by another
+        /// </summary>
+        /// <param name="e">Attack parameters</param>
+        void OnHit(AttackEventArgs e);
+
+        #endregion
     }
 }
