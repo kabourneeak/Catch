@@ -63,8 +63,9 @@ namespace Catch
                     Team = tileEmitModel.Team
                 };
 
-                var tower = CreateTileAgent(tileEmitModel.TowerName, towerArgs);
+                var tower = CreateAgent(tileEmitModel.TowerName, towerArgs);
                 this.Register(tower);
+                this.Site(tower);
             }
 
             /*
@@ -220,6 +221,10 @@ namespace Catch
 
             this._updateController.Register(agent);
 
+            // this is the only way to register an agent to a tile without getting unregister
+            // called. And unregister checks that the agent was properly registered before
+            // unregistering, which forces new agents to go through this method before they
+            // can be moved.
             RegisterToTile(agent, agent.Tile);
         }
 
@@ -236,11 +241,6 @@ namespace Catch
             return _agentProvider.CreateAgent(agentName, createArgs);
         }
 
-        public IExtendedTileAgent CreateTileAgent(string agentName, CreateAgentArgs createArgs)
-        {
-            return (IExtendedTileAgent) _agentProvider.CreateAgent(agentName, createArgs);
-        }
-
         public void Remove(IExtendedAgent agent)
         {
             agent.OnRemove();
@@ -248,18 +248,36 @@ namespace Catch
             UnregisterFromTile(agent);
         }
 
-        public IMapTile Move(IExtendedAgent agent, IMapTile tile)
+        public void Move(IExtendedAgent agent, IMapTile tile)
         {
-            UnregisterFromTile(agent);
-            return RegisterToTile(agent, tile);
+            if (!ReferenceEquals(tile, agent.Tile))
+            {
+                UnregisterFromTile(agent);
+                RegisterToTile(agent, tile);
+            }
         }
 
-        private IExtendedAgent PromoteAgent(IAgent agent)
+        public void Site(IExtendedAgent agent)
         {
-            return agent as IExtendedAgent;
+            if (agent == null)
+                throw new ArgumentNullException(nameof(agent));
+
+            if (object.ReferenceEquals(agent.Tile, _level.OffMap))
+            {
+                // for the off map tile, we don't actually site the agent
+            }
+            else
+            {
+                var tileModel = _level.Map.GetTileModel(agent.Tile);
+
+                if (tileModel.TileAgent != null)
+                    throw new ArgumentException("Attempted to site agent to tile which already has a TileAgent");
+
+                tileModel.SetTileAgent(agent);
+            }
         }
 
-        private IMapTile RegisterToTile(IExtendedAgent agent, IMapTile tile)
+        private void RegisterToTile(IExtendedAgent agent, IMapTile tile)
         {
             if (agent == null)
                 throw new ArgumentNullException(nameof(agent));
@@ -268,12 +286,10 @@ namespace Catch
 
             if (object.ReferenceEquals(tile, _level.OffMap))
             {
-                // for the off map tile, we don't care about whether the agent is a tile agent, 
-                // nor whether we have more than one tile agent
-
                 _level.OffMap.AddAgent(agent);
 
-                return _level.OffMap;
+                // reset tile reference
+                agent.Tile = _level.OffMap;
             }
             else
             {
@@ -281,15 +297,8 @@ namespace Catch
 
                 tileModel.AddAgent(agent);
 
-                if (agent is IExtendedTileAgent tileAgent)
-                {
-                    if (tileModel.TileAgent != null)
-                        throw new ArgumentException("Attempted to register agent to tile which already has a TileAgent", nameof(tile));
-
-                    tileModel.SetTileAgent(tileAgent);
-                }
-
-                return tileModel;
+                // reset tile reference
+                agent.Tile = tileModel;
             }
         }
 
@@ -300,7 +309,7 @@ namespace Catch
 
             MapTileModel tileModel;
 
-            if (object.ReferenceEquals(agent.Tile, _level.OffMap))
+            if (ReferenceEquals(agent.Tile, _level.OffMap))
             {
                 tileModel = _level.OffMap;
             }
@@ -308,7 +317,8 @@ namespace Catch
             {
                 tileModel = _level.Map.GetTileModel(agent.Tile);
 
-                if (agent is IExtendedTileAgent && object.ReferenceEquals(agent.Tile.TileAgent, agent))
+                // un-site the agent, if it was the tile agent
+                if (ReferenceEquals(agent.Tile.TileAgent, agent))
                     tileModel.SetTileAgent(null);
             }
 

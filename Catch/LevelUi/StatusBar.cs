@@ -96,27 +96,27 @@ namespace Catch.LevelUi
 
         private string GetStatusText()
         {
-            if (_uiState.FocusedAgent is IExtendedTileAgent tileAgent)
+            var tileAgent = _uiState.FocusedAgent;
+
+            if (tileAgent == null)
+                return string.Empty;
+
+            var sb = new StringBuilder();
+            sb.Append(tileAgent.DisplayName);
+            sb.Append(": ");
+            sb.Append(tileAgent.DisplayStatus);
+
+            var cmdIndex = 0;
+
+            foreach (var cmd in tileAgent.Commands.Where(c => c.IsVisible))
             {
-                var sb = new StringBuilder();
-                sb.Append(tileAgent.DisplayName);
-                sb.Append(": ");
-                sb.Append(tileAgent.DisplayStatus);
-
-                var cmdIndex = 0;
-
-                foreach (var cmd in tileAgent.Commands.Where(c => c.IsVisible))
-                {
-                    sb.Append("(");
-                    sb.Append(++cmdIndex);
-                    sb.Append(")");
-                    sb.Append(cmd.DisplayName);
-                }
-
-                return sb.ToString();
+                sb.Append("(");
+                sb.Append(++cmdIndex);
+                sb.Append(")");
+                sb.Append(cmd.DisplayName);
             }
 
-            return string.Empty;
+            return sb.ToString();
         }
     }
 }

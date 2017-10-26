@@ -107,7 +107,7 @@ namespace Catch
         }
 
         private HexCoords _lastHover;
-        private IExtendedTileAgent _lastHoverTower;
+        private IExtendedAgent _lastHoverTower;
         private readonly StatusBar _statusBar;
         private readonly TowerHoverIndicator _hoverIndicator;
 
@@ -126,6 +126,8 @@ namespace Catch
 
             if (_level.Map.HasHex(_uiState.HoverHexCoords))
             {
+                // TODO put this indicator on the map tile instead of the agent
+
                 // add new indicator
                 var tile = _level.Map.GetTileModel(_uiState.HoverHexCoords);
                 var tower = tile.ExtendedTileAgent;

@@ -4,10 +4,13 @@ using Catch.Services;
 
 namespace Catch.Towers
 {
-    public class GunTower : TowerBase, IAgentStatsModifier, IRemoveModifier
+    public class GunTower : AgentBase, IAgentStatsModifier, IRemoveModifier
     {
-        public GunTower(GunTowerSharedResources resources, IMapTile tile) : base(nameof(GunTower), tile)
+        public GunTower(GunTowerSharedResources resources, IMapTile tile) : base(nameof(GunTower))
         {
+            Tile = tile;
+            Position = tile.Position;
+
             // initialize properties
             DisplayName = "Gun Tower";
             DisplayStatus = string.Empty;

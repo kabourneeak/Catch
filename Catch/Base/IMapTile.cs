@@ -21,7 +21,7 @@ namespace Catch.Base
         /// <summary>
         /// The fixed agent occupying the tile; null if empty.
         /// </summary>
-        ITileAgent TileAgent { get; }
+        IAgent TileAgent { get; }
 
         /// <summary>
         /// The number of agents currently occupying the tile, including the TileAgent

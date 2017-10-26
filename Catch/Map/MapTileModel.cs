@@ -11,7 +11,7 @@ namespace Catch.Map
     public class MapTileModel : IMapTile
     {
         private readonly IVersionedCollection<IExtendedAgent> _agents;
-        private IExtendedTileAgent _tileAgent;
+        private IExtendedAgent _tileAgent;
 
         public MapTileModel(HexCoords coords, IConfig config)
         {
@@ -41,19 +41,19 @@ namespace Catch.Map
         /// Gets or sets the current TileAgent for this map tile. 
         /// Throws ArgumentException if the agent being set at the current TileAgent is not in the <see cref="Agents"/> collection
         /// </summary>
-        public ITileAgent TileAgent => _tileAgent;
+        public IAgent TileAgent => _tileAgent;
 
-        public IExtendedTileAgent ExtendedTileAgent => _tileAgent;
+        public IExtendedAgent ExtendedTileAgent => _tileAgent;
 
-        public void SetTileAgent(IExtendedTileAgent tileAgent)
+        public void SetTileAgent(IExtendedAgent agent)
         {
-            if (ReferenceEquals(_tileAgent, tileAgent))
+            if (ReferenceEquals(_tileAgent, agent))
                 return;
 
-            if (tileAgent != null && !_agents.Contains(tileAgent))
-                throw new ArgumentException("Cannot set TileAgent to value not present in Agents collection");
+            if (agent != null && !_agents.Contains(agent))
+                throw new ArgumentException("Cannot set TileAgent to agent not present in Agents collection");
 
-            _tileAgent = tileAgent;
+            _tileAgent = agent;
 
             TileAgentVersion += 1;
         }

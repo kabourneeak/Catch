@@ -13,6 +13,6 @@
 
         IAgent SelectedAgent { get; }
 
-        ITileAgent SelectedTileAgent { get; }
+        IAgent SelectedTileAgent { get; }
     }
 }

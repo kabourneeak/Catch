@@ -126,7 +126,6 @@
     <Compile Include="Base\SpawnAgentTask.cs" />
     <Compile Include="Base\BaseStatsModel.cs" />
     <Compile Include="Base\IAgentFactory.cs" />
-    <Compile Include="Base\IExtendedTileAgent.cs" />
     <Compile Include="Base\IUpdatable.cs" />
     <Compile Include="Base\BuiltinAgentProvider.cs" />
     <Compile Include="Graphics\IGraphicsComponent.cs" />
@@ -178,7 +177,6 @@
     <Compile Include="Graphics\StyleArgs.cs" />
     <Compile Include="Towers\TargettingBase.cs" />
     <Compile Include="Map\MapTileModel.cs" />
-    <Compile Include="Towers\TowerBase.cs" />
     <Compile Include="Services\EnumUtils.cs" />
     <Compile Include="FieldController.cs" />
     <Compile Include="Services\FloatExtensions.cs" />

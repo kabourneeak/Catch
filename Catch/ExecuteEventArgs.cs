@@ -12,6 +12,6 @@ namespace Catch
 
         public IAgent SelectedAgent { get; set; }
 
-        public ITileAgent SelectedTileAgent { get; set; }
+        public IAgent SelectedTileAgent { get; set; }
     }
 }

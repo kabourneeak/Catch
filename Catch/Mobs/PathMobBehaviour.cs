@@ -11,13 +11,13 @@ namespace Catch.Mobs
             Init, Advancing, EndOfPath, Removed
         }
 
-        private readonly AgentBase _agent;
+        private readonly IExtendedAgent _agent;
         private readonly IMapPath _mapPath;
         private PathMobBehaviourStates _state;
         private int _pathIndex;
         private float _velocity;
 
-        public PathMobBehaviour(AgentBase agent, IMapPath mapPath, float velocity)
+        public PathMobBehaviour(IExtendedAgent agent, IMapPath mapPath, float velocity)
         {
             _agent = agent;
             _mapPath = mapPath;
@@ -47,7 +47,7 @@ namespace Catch.Mobs
         {
             // move into initial tile
             _pathIndex = 0;
-            _agent.Tile = args.Manager.Move(_agent, _mapPath[_pathIndex]);
+            args.Manager.Move(_agent, _mapPath[_pathIndex]);
             _agent.TileProgress = 0.5f; // start in the center of our source tile
 
             _state = PathMobBehaviourStates.Advancing;
@@ -66,7 +66,7 @@ namespace Catch.Mobs
                 // move to next tile
                 _pathIndex += 1;
                 _agent.TileProgress -= 1.0f;
-                _agent.Tile = args.Manager.Move(_agent, _mapPath[_pathIndex]);
+                args.Manager.Move(_agent, _mapPath[_pathIndex]);
             }
 
             // are we done?

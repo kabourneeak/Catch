@@ -5,10 +5,13 @@ namespace Catch.Towers
     /// <summary>
     /// This tower is empty, but provides Commands for placing new towers.
     /// </summary>
-    public class EmptyTower : TowerBase
+    public class EmptyTower : AgentBase
     {
-        public EmptyTower(EmptyTowerSharedResources resources, IMapTile tile) : base(nameof(EmptyTower), tile)
+        public EmptyTower(EmptyTowerSharedResources resources, IMapTile tile) : base(nameof(EmptyTower))
         {
+            Tile = tile;
+            Position = tile.Position;
+
             Indicators.AddRange(resources.Indicators);
 
             var labelText = string.Format("{0},{1}", tile.Coords.Q, tile.Coords.R);
