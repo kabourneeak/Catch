@@ -49,7 +49,7 @@ namespace Catch
 
         #region IDrawable Implementation
 
-        public void Draw(DrawArgs drawArgs, float rotation)
+        public void Draw(DrawArgs drawArgs)
         {
             // apply view matrix
             drawArgs.PushScale(1.0f, -1.0f);
@@ -79,7 +79,7 @@ namespace Catch
 
                 for (var i = 0; i < culledAgents.Length; ++i)
                 {
-                    culledAgents[i].Draw(drawArgs, 0.0f);
+                    culledAgents[i].GraphicsComponent.Draw(culledAgents[i], drawArgs);
                 }
             }
 

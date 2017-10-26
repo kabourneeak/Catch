@@ -82,9 +82,9 @@ namespace Catch
 
         #region IDrawable Implementation
 
-        public void Draw(DrawArgs drawArgs, float rotation)
+        public void Draw(DrawArgs drawArgs)
         {
-            _statusBar.Draw(drawArgs, rotation);
+            _statusBar.Draw(drawArgs);
         }
 
         #endregion

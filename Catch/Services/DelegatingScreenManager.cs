@@ -88,6 +88,18 @@ namespace Catch.Services
             }
         }
 
+        public void Draw(DrawArgs drawArgs)
+        {
+            int deepestScreen;
+
+            for (deepestScreen = CurrentScreens.Count - 1; deepestScreen >= 0; --deepestScreen)
+                if (!CurrentScreens[deepestScreen].AllowPredecessorDraw())
+                    break;
+
+            for (var screen = deepestScreen; screen < CurrentScreens.Count; ++screen)
+                CurrentScreens[screen].Draw(drawArgs);
+        }
+
         #endregion
 
         #region IGraphicsComponent Implementation
@@ -112,22 +124,6 @@ namespace Catch.Services
             // DestroyResources is delegated to all active screens
             foreach (var screenController in CurrentScreens)
                 screenController.DestroyResources();
-        }
-
-        #endregion
-
-        #region IDrawable Implementation
-
-        public void Draw(DrawArgs drawArgs, float rotation)
-        {
-            int deepestScreen;
-
-            for (deepestScreen = CurrentScreens.Count - 1; deepestScreen >= 0; --deepestScreen)
-                if (!CurrentScreens[deepestScreen].AllowPredecessorDraw())
-                    break;
-
-            for (var screen = deepestScreen; screen < CurrentScreens.Count; ++screen)
-                CurrentScreens[screen].Draw(drawArgs, rotation);
         }
 
         #endregion

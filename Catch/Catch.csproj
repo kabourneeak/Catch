@@ -129,6 +129,8 @@
     <Compile Include="Base\IExtendedTileAgent.cs" />
     <Compile Include="Base\IUpdatable.cs" />
     <Compile Include="Base\BuiltinAgentProvider.cs" />
+    <Compile Include="Graphics\IGraphicsComponent.cs" />
+    <Compile Include="Graphics\RelativePositionGraphicsComponent.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
     <Compile Include="Services\JsonConfig.cs" />
     <Compile Include="UpdateEventArgs.cs" />

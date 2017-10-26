@@ -10,8 +10,15 @@ namespace Catch.Base
     /// Indicators should expect to be drawn relative to their parent object. The parent object
     /// is responsible for setting draw transformations appropriately in DrawArgs.
     /// </summary>
-    public interface IIndicator : IDrawable
+    public interface IIndicator
     {
+        /// <summary>
+        /// Draw this single indicator relative to the current draw arguments
+        /// </summary>
+        /// <param name="drawArgs">The draw device to use</param>
+        /// <param name="rotation">A rotation hint that the indicator can use if appropriate</param>
+        void Draw(DrawArgs drawArgs, float rotation);
+
         /// <summary>
         /// Only draw this indicator if the requested Layer matches
         /// </summary>

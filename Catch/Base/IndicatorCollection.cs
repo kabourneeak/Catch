@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Catch.Graphics;
 
 namespace Catch.Base
@@ -9,7 +8,7 @@ namespace Catch.Base
     /// Maintains a collection of Indicators, and which can be acted upon as 
     /// an indicator itself
     /// </summary>
-    public class IndicatorCollection : IEnumerable<IIndicator>, IIndicator, IGraphicsResource
+    public class IndicatorCollection : IEnumerable<IIndicator>, IGraphicsResource
     {
         private static readonly IComparer<IIndicator> IndicatorComparer =
             Comparer<IIndicator>.Create((x, y) => x.Layer.CompareTo(y.Layer));
@@ -26,24 +25,6 @@ namespace Catch.Base
         public IEnumerator<IIndicator> GetEnumerator() => _indicators.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        #endregion
-
-        #region IIndicator
-
-        public void Draw(DrawArgs drawArgs, float rotation)
-        {
-            foreach (var i in _indicators)
-                if (i.Layer == drawArgs.Layer && i.LevelOfDetail.HasFlag(drawArgs.LevelOfDetail))
-                    i.Draw(drawArgs, rotation);
-        }
-
-        /// <summary>
-        /// Returns the highest DrawLayer in the collection
-        /// </summary>
-        public DrawLayer Layer => _indicators.LastOrDefault()?.Layer ?? DrawLayer.Background;
-
-        public DrawLevelOfDetail LevelOfDetail => DrawLevelOfDetail.All;
 
         #endregion
 
@@ -73,9 +54,6 @@ namespace Catch.Base
              * Sort on add; C# will use Insertion Sort for small collections (< 16 items), 
              * which is efficient when the elements are mostly sorted.
              */
-
-            // TODO now that we draw by layer, do we need to bother sorting this?
-            // stored in a dictionary keyed by layer might be better
 
             _indicators.Sort(IndicatorComparer);
         }

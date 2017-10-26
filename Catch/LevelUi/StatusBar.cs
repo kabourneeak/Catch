@@ -82,7 +82,9 @@ namespace Catch.LevelUi
             _createFrameId = -1;
         }
 
-        public void Draw(DrawArgs drawArgs, float rotation)
+        #endregion
+
+        public void Draw(DrawArgs drawArgs)
         {
             drawArgs.PushTranslation(0, _uiState.WindowSize.Y - _barHeight);
 
@@ -91,8 +93,6 @@ namespace Catch.LevelUi
 
             drawArgs.Pop();
         }
-
-        #endregion
 
         private string GetStatusText()
         {

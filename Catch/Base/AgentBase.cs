@@ -13,10 +13,11 @@ namespace Catch.Base
     /// and delegates to modifiers as appropriate.
     /// </summary>
     public abstract class AgentBase : IExtendedAgent
-    {
+    {        
         private static readonly IComparer<IModifier> StatModelComparer =
             Comparer<IModifier>.Create((x, y) => x.Priority.CompareTo(y.Priority));
 
+        private readonly IGraphicsComponent _graphicsComponent;
         private readonly IVersionedCollection<IModifier> _modifiers;
         private readonly IVersionedCollection<ILabel> _labels;
         private readonly IVersionedCollection<IAgentCommand> _commands;
@@ -27,6 +28,7 @@ namespace Catch.Base
             AgentType = agentType;
             Position = new Vector2(0.0f);
 
+            _graphicsComponent = new RelativePositionGraphicsComponent();
             Indicators = new IndicatorCollection();
             _modifiers = new VersionedCollection<IModifier>(new SimpleSortedList<IModifier>(StatModelComparer));
             _labels = new VersionedCollection<ILabel>(new HashSet<ILabel>());
@@ -42,6 +44,7 @@ namespace Catch.Base
         public string DisplayInfo { get; protected set; }
         public string DisplayStatus { get; protected set; }
         public Vector2 Position { get; set; }
+        public float Rotation { get; set; }
         public IMapTile Tile { get; set; }
         public float TileProgress { get; set; }
         public IVersionedEnumerable<ILabel> Labels => _labels;
@@ -52,6 +55,7 @@ namespace Catch.Base
 
         #region IExtendedAgent Properties
 
+        public IGraphicsComponent GraphicsComponent => _graphicsComponent;
         public IVersionedCollection<ILabel> LabelCollection => _labels;
         public IVersionedCollection<IAgentCommand> CommandCollection => _commands;
         public IndicatorCollection Indicators { get; }
@@ -81,22 +85,6 @@ namespace Catch.Base
         #region IUpdatable Implementation
 
         public abstract float Update(IUpdateEventArgs args);
-
-        #endregion
-
-        #region IDrawable Implementation
-
-        public virtual void Draw(DrawArgs drawArgs, float rotation)
-        {
-            if (Indicators.Count == 0)
-                return;
-
-            drawArgs.PushTranslation(Position);
-
-            Indicators.Draw(drawArgs, rotation);
-
-            drawArgs.Pop();
-        }
 
         #endregion
 

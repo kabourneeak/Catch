@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Numerics;
 using Catch.Graphics;
 
 namespace Catch.Base
@@ -8,15 +8,21 @@ namespace Catch.Base
     /// and other methods for working with the agent.
     /// </summary>
     /// <seealso cref="IAgent"/>
-    public interface IExtendedAgent : IUpdatable, IDrawable, IAgent
+    public interface IExtendedAgent : IUpdatable, IAgent
     {
         #region Properties
+
+        new Vector2 Position { set; get; }
+
+        new IMapTile Tile { set; get; }
+
+        new float TileProgress { get; set; }
+
+        IGraphicsComponent GraphicsComponent { get; }
 
         IVersionedCollection<ILabel> LabelCollection { get; }
 
         IVersionedCollection<IAgentCommand> CommandCollection { get; }
-
-        IndicatorCollection Indicators { get; }
 
         BaseStatsModel ExtendedStats { get; }
 

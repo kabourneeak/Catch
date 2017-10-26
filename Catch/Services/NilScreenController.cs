@@ -27,6 +27,11 @@ namespace Catch.Services
             // do nothing
         }
 
+        public void Draw(DrawArgs drawArgs)
+        {
+            // do nothing
+        }
+
         #endregion
 
         #region IGraphicsResource Implementation
@@ -37,15 +42,6 @@ namespace Catch.Services
         }
 
         public void DestroyResources()
-        {
-            // do nothing
-        }
-
-        #endregion
-
-        #region IDrawable Implementation
-
-        public void Draw(DrawArgs drawArgs, float rotation)
         {
             // do nothing
         }

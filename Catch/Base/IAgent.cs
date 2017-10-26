@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+﻿using Catch.Graphics;
 
 namespace Catch.Base
 {
@@ -6,7 +6,7 @@ namespace Catch.Base
     /// Basic details of an agent in the simulation
     /// </summary>
     /// <seealso cref="IExtendedAgent"/>
-    public interface IAgent
+    public interface IAgent : IDrawable
     {
         string AgentType { get; }
 
@@ -15,11 +15,6 @@ namespace Catch.Base
         string DisplayInfo { get; }
 
         string DisplayStatus { get; }
-
-        /// <summary>
-        /// The world coordinates of the center of the agent
-        /// </summary>
-        Vector2 Position { get; }
 
         IMapTile Tile { get; }
 

@@ -3,7 +3,7 @@ using Catch.Graphics;
 
 namespace Catch.Services
 {
-    public interface IScreenController : IViewportController, IGraphicsResource, IDrawable
+    public interface IScreenController : IViewportController, IGraphicsResource
     {
         void Initialize(Vector2 size);
 
@@ -14,5 +14,7 @@ namespace Catch.Services
         bool AllowPredecessorInput();
 
         void Update(float deviceTicks);
+
+        void Draw(DrawArgs drawArgs);
     }
 }

@@ -200,13 +200,13 @@ namespace Catch
 
         #region IDrawable Implementation
 
-        public void Draw(DrawArgs drawArgs, float rotation)
+        public void Draw(DrawArgs drawArgs)
         {
             // the FieldController draws the field of play; the map, the agents, all the action
-            _fieldController.Draw(drawArgs, rotation);
+            _fieldController.Draw(drawArgs);
 
             // the overlay draws second so that it is on top
-            _overlayController.Draw(drawArgs, rotation);
+            _overlayController.Draw(drawArgs);
         }
 
         #endregion

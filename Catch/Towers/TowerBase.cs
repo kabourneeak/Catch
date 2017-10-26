@@ -1,5 +1,5 @@
-﻿using Catch.Base;
-using Catch.Graphics;
+﻿using System;
+using Catch.Base;
 
 namespace Catch.Towers
 {
@@ -10,27 +10,13 @@ namespace Catch.Towers
     /// and pops a translation to Draw.DrawArgs for the center point of the tower, so that all Indicators can 
     /// draw relatively.
     /// </summary>
+    [Obsolete]
     public abstract class TowerBase : AgentBase, IExtendedTileAgent
     {
-        public float Rotation { get; set; }
-
         protected TowerBase(string agentType, IMapTile tile) : base(agentType)
         {
             Tile = tile;
             Position = tile.Position;
-        }
-
-        public override void Draw(DrawArgs drawArgs, float rotation)
-        {
-            if (Indicators.Count == 0)
-                return;
-
-            drawArgs.PushTranslation(Position);
-
-            // ignore the rotation parameter, and replace by our Rotation
-            Indicators.Draw(drawArgs, Rotation);
-
-            drawArgs.Pop();
         }
     }
 }

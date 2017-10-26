@@ -127,7 +127,7 @@ namespace Catch
             var ds = args.DrawingSession;
             var drawArgs = new DrawArgs(ds, ds.Transform, _frameId);
 
-            _screenManager.Draw(drawArgs, 0.0f);
+            _screenManager.Draw(drawArgs);
         }
 
         #endregion
