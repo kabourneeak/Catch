@@ -10,6 +10,12 @@ namespace Catch.Base
     /// </summary>
     public interface IBaseStats
     {
+        string DisplayName { get; }
+
+        string DisplayInfo { get; }
+
+        string DisplayStatus { get; }
+
         int Health { get; }
 
         int MaxHealth { get; }

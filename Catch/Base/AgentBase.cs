@@ -40,9 +40,6 @@ namespace Catch.Base
         #region IAgent Properties
 
         public string AgentType { get; }
-        public string DisplayName { get; protected set; }
-        public string DisplayInfo { get; protected set; }
-        public string DisplayStatus { get; protected set; }
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
         public IMapTile Tile { get; set; }

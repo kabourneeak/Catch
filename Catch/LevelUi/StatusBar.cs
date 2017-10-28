@@ -102,9 +102,9 @@ namespace Catch.LevelUi
                 return string.Empty;
 
             var sb = new StringBuilder();
-            sb.Append(tileAgent.DisplayName);
+            sb.Append(tileAgent.Stats.DisplayName);
             sb.Append(": ");
-            sb.Append(tileAgent.DisplayStatus);
+            sb.Append(tileAgent.Stats.DisplayStatus);
 
             var cmdIndex = 0;
 

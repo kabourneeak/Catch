@@ -11,11 +11,6 @@ namespace Catch.Towers
             Tile = tile;
             Position = tile.Position;
 
-            // initialize properties
-            DisplayName = "Gun Tower";
-            DisplayStatus = string.Empty;
-            DisplayInfo = string.Empty;
-
             AddModifier(this);
 
             Indicators.AddRange(resources.Indicators);
@@ -187,6 +182,10 @@ namespace Catch.Towers
 
         public void OnCalculateAgentStats(IExtendedAgent agent)
         {
+            agent.ExtendedStats.DisplayName = "Gun Tower";
+            agent.ExtendedStats.DisplayStatus = string.Empty;
+            agent.ExtendedStats.DisplayInfo = string.Empty;
+
             agent.ExtendedStats.MaxHealth = 100;
             agent.ExtendedStats.Health = 100;
             agent.ExtendedStats.Level = 1;

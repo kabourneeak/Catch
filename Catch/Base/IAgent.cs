@@ -1,4 +1,5 @@
-﻿using Catch.Graphics;
+﻿using System;
+using Catch.Graphics;
 
 namespace Catch.Base
 {
@@ -8,14 +9,14 @@ namespace Catch.Base
     /// <seealso cref="IExtendedAgent"/>
     public interface IAgent : IDrawable
     {
+        /// <summary>
+        /// The agent type, set at construction
+        /// </summary>
         string AgentType { get; }
 
-        string DisplayName { get; }
-
-        string DisplayInfo { get; }
-
-        string DisplayStatus { get; }
-
+        /// <summary>
+        /// The map tile the agent is registered to
+        /// </summary>
         IMapTile Tile { get; }
 
         /// <summary>

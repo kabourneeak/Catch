@@ -19,9 +19,9 @@ namespace Catch.Towers
 
             CommandCollection.Add(new BuyTowerCommand(this));
 
-            DisplayName = "Empty Socket";
-            DisplayStatus = string.Empty;
-            DisplayInfo = string.Empty;
+            ExtendedStats.DisplayName = "Empty Socket";
+            ExtendedStats.DisplayStatus = string.Empty;
+            ExtendedStats.DisplayInfo = string.Empty;
         }
 
         public override float Update(IUpdateEventArgs args)

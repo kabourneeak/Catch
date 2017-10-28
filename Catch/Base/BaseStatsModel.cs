@@ -5,6 +5,12 @@ namespace Catch.Base
     /// <inheritdoc />
     public class BaseStatsModel : IBaseStats
     {
+        public string DisplayName { get; set; }
+
+        public string DisplayInfo { get; set; }
+
+        public string DisplayStatus { get; set; }
+
         public int Health { get; set; }
 
         public int MaxHealth { get; set; }
