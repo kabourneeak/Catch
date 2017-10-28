@@ -79,7 +79,7 @@ namespace Catch
 
                 for (var i = 0; i < culledAgents.Length; ++i)
                 {
-                    culledAgents[i].GraphicsComponent.Draw(culledAgents[i], drawArgs);
+                    culledAgents[i].Draw(drawArgs);
                 }
             }
 

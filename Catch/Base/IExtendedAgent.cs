@@ -18,8 +18,6 @@ namespace Catch.Base
 
         new float TileProgress { get; set; }
 
-        IGraphicsComponent GraphicsComponent { get; }
-
         IVersionedCollection<ILabel> LabelCollection { get; }
 
         IVersionedCollection<IAgentCommand> CommandCollection { get; }
@@ -29,6 +27,8 @@ namespace Catch.Base
         #endregion
 
         #region Methods
+
+        void Draw(DrawArgs drawArgs);
 
         void AddModifier(IModifier modifier);
 

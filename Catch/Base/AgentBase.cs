@@ -52,7 +52,6 @@ namespace Catch.Base
 
         #region IExtendedAgent Properties
 
-        public IGraphicsComponent GraphicsComponent => _graphicsComponent;
         public IVersionedCollection<ILabel> LabelCollection => _labels;
         public IVersionedCollection<IAgentCommand> CommandCollection => _commands;
         public IndicatorCollection Indicators { get; }
@@ -79,7 +78,12 @@ namespace Catch.Base
 
         #endregion
 
-        #region IUpdatable Implementation
+        #region Simulation Events
+
+        public void Draw(DrawArgs drawArgs)
+        {
+            _graphicsComponent.Draw(this, drawArgs);
+        }
 
         public abstract float Update(IUpdateEventArgs args);
 
