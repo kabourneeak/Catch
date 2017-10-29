@@ -1,4 +1,5 @@
-﻿using Catch.Base;
+﻿using System;
+using Catch.Base;
 using Catch.Services;
 
 namespace Catch.Level
@@ -15,9 +16,10 @@ namespace Catch.Level
 
         public SimulationStateModel(IConfig config, IMap map, IMapTile offMapTile)
         {
-            Map = map;
-            Config = config;
-            OffMap = offMapTile;
+            Config = config ?? throw new ArgumentNullException(nameof(config));
+            Map = map ?? throw new ArgumentNullException(nameof(map));
+            OffMap = offMapTile ?? throw new ArgumentNullException(nameof(offMapTile));
+
             Player = new PlayerModel(config.GetInt(CoreConfig.PlayerTeam));
         }
     }

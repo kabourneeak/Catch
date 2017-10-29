@@ -1,4 +1,5 @@
-﻿using Catch.Map;
+﻿using System;
+using Catch.Map;
 using Catch.Services;
 using CatchLibrary.HexGrid;
 
@@ -21,8 +22,8 @@ namespace Catch.Level
 
         public LevelStateModel(IConfig config, MapModel map)
         {
-            Config = config;
-            Map = map;
+            Config = config ?? throw new ArgumentNullException(nameof(config));
+            Map = map ?? throw new ArgumentNullException(nameof(map));
             OffMap = new MapTileModel(HexCoords.CreateFromOffset(-100, -100), config);
             Ui = new UiStateModel();
         }

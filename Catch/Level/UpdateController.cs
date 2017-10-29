@@ -12,19 +12,17 @@ namespace Catch.Level
         private const float RegisterDelta = 0.1f;
 
         private readonly MinHeap<float, SchedulerEntry> _queue;
-        private readonly UpdateEventArgs _updateEventArgs;
         private float _elapsedDeviceTicks;
 
         public event EventHandler<IUpdatable> OnRegistered;
         public event EventHandler<IUpdatable> OnDeregistered;
 
-        public UpdateController(ISimulationManager simulationManager, ISimulationState simState, ILabelProvider labelProvider)
+        public UpdateController()
         {
             _queue = new MinHeap<float, SchedulerEntry>();
-            _updateEventArgs = new UpdateEventArgs(simulationManager, simState, labelProvider);
         }
 
-        public void Update(float deviceTicks)
+        public void Update(float deviceTicks, UpdateEventArgs updateEventArgs)
         {
             _elapsedDeviceTicks += deviceTicks;
 
@@ -33,10 +31,10 @@ namespace Catch.Level
                 var entry = _queue.Peek();
 
                 // update event args with info local to the task
-                _updateEventArgs.Ticks = _elapsedDeviceTicks - entry.EnqueueTicks;
+                updateEventArgs.Ticks = _elapsedDeviceTicks - entry.EnqueueTicks;
 
                 // run the task
-                var nextTicks = entry.Task.Update(_updateEventArgs);
+                var nextTicks = entry.Task.Update(updateEventArgs);
 
                 // see if Updatable wants to be scheduled again
                 if (nextTicks > 0)

@@ -26,7 +26,7 @@ namespace Catch.Level
 
         public FieldController(LevelStateModel level)
         {
-            _level = level;
+            _level = level ?? throw new ArgumentNullException(nameof(level));
             _mapGraphicsComponent = new RelativePositionGraphicsComponent();
             _tileRadius = level.Config.GetFloat(CoreConfig.TileRadius);
 

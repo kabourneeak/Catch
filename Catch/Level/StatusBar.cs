@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Windows.Foundation;
 using Windows.UI;
@@ -20,7 +21,7 @@ namespace Catch.Level
 
         public StatusBar(UiStateModel uiState)
         {
-            _uiState = uiState;
+            _uiState = uiState ?? throw new ArgumentNullException(nameof(uiState));
 
             // copy down config
             _barHeight = 26;

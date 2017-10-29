@@ -1,4 +1,5 @@
-﻿using Windows.UI;
+﻿using System;
+using Windows.UI;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.Map;
@@ -20,6 +21,8 @@ namespace Catch.Level
 
         public OverlayGraphicsProvider(IConfig config)
         {
+            if (config == null) throw new ArgumentNullException(nameof(config));
+
             _hoverTileIndicator = new TileOutlineIndicator(config, Colors.Yellow);
             _selectedTileIndicator = new TileAreaIndicator(config, Colors.LightYellow);
             _highlightedTileIndicator = new TileAreaIndicator(config, Colors.PowderBlue);

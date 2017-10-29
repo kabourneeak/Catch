@@ -27,6 +27,11 @@ namespace Catch.Level
 
         public OverlayController(LevelStateModel level, ISimulationManager manager, ISimulationState sim, ILabelProvider labelProvider)
         {
+            if (level == null) throw new ArgumentNullException(nameof(level));
+            if (manager == null) throw new ArgumentNullException(nameof(manager));
+            if (sim == null) throw new ArgumentNullException(nameof(sim));
+            if (labelProvider == null) throw new ArgumentNullException(nameof(labelProvider));
+
             _uiState = level.Ui;
 
             _executeEventArgs = new ExecuteEventArgs()
