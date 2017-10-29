@@ -40,7 +40,7 @@ namespace Catch.Level
 
         private IExtendedAgent CreateGunTowerAgent(CreateAgentArgs args)
         {
-            var agent = new GunTower(_graphicsManager.Resolve<GunTowerGraphicsProvider>(), args.Tile);
+            var agent = new GunTower(_config, _graphicsManager.Resolve<GunTowerGraphicsProvider>(), args.Tile);
             agent.ExtendedStats.Team = args.Team;
 
             return agent;

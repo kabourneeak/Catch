@@ -6,7 +6,7 @@ namespace Catch.Towers
 {
     public class GunTower : AgentBase, IAgentStatsModifier, IRemoveModifier
     {
-        public GunTower(GunTowerGraphicsProvider resources, IMapTile tile) : base(nameof(GunTower))
+        public GunTower(IConfig config, GunTowerGraphicsProvider resources, IMapTile tile) : base(nameof(GunTower))
         {
             Tile = tile;
             Position = tile.Position;
@@ -17,7 +17,7 @@ namespace Catch.Towers
 
             // initialize behaviour
 
-            _ticksPerSecond = resources.Config.GetFloat(CoreConfig.TicksPerSecond);
+            _ticksPerSecond = config.GetFloat(CoreConfig.TicksPerSecond);
 
             _state = TowerBehaviourState.Init;
         }

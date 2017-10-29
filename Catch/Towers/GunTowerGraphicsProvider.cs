@@ -7,14 +7,10 @@ namespace Catch.Towers
 {
     public class GunTowerGraphicsProvider : IGraphicsProvider
     {
-        [Obsolete]
-        public IConfig Config { get; }
-
         public IndicatorCollection Indicators { get; }
 
         public GunTowerGraphicsProvider(IConfig config)
         {
-            Config = config;
             Indicators = new IndicatorCollection();
 
             Indicators.Add(new GunTowerBaseIndicator(config));
