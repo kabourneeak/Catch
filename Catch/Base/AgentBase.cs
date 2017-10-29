@@ -17,7 +17,6 @@ namespace Catch.Base
         private static readonly IComparer<IModifier> StatModelComparer =
             Comparer<IModifier>.Create((x, y) => x.Priority.CompareTo(y.Priority));
 
-        private readonly IGraphicsComponent _graphicsComponent;
         private readonly IVersionedCollection<IModifier> _modifiers;
         private readonly IVersionedCollection<ILabel> _labels;
         private readonly IVersionedCollection<IAgentCommand> _commands;
@@ -28,7 +27,6 @@ namespace Catch.Base
             AgentType = agentType;
             Position = new Vector2(0.0f);
 
-            _graphicsComponent = new RelativePositionGraphicsComponent();
             Indicators = new IndicatorCollection();
             _modifiers = new VersionedCollection<IModifier>(new SimpleSortedList<IModifier>(StatModelComparer));
             _labels = new VersionedCollection<ILabel>(new HashSet<ILabel>());
@@ -36,6 +34,10 @@ namespace Catch.Base
 
             _stats = new BaseStatsModel();
         }
+
+        public IUpdatable PrimaryBehaviour { get; set; }
+
+        public IGraphicsComponent GraphicsComponent { get; set; }
 
         #region IAgent Properties
 
@@ -82,7 +84,7 @@ namespace Catch.Base
 
         public void Draw(DrawArgs drawArgs)
         {
-            _graphicsComponent.Draw(this, drawArgs);
+            GraphicsComponent.Draw(this, drawArgs);
         }
 
         public abstract float Update(IUpdateEventArgs args);

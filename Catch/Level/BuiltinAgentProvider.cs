@@ -41,6 +41,7 @@ namespace Catch.Level
         private IExtendedAgent CreateGunTowerAgent(CreateAgentArgs args)
         {
             var agent = new GunTower(_config, _graphicsManager.Resolve<GunTowerGraphicsProvider>(), args.Tile);
+            agent.GraphicsComponent = new RelativePositionGraphicsComponent();
             agent.ExtendedStats.Team = args.Team;
 
             return agent;
@@ -49,6 +50,7 @@ namespace Catch.Level
         private IExtendedAgent CreateEmptyTower(CreateAgentArgs args)
         {
             var agent = new EmptyTower(_graphicsManager.Resolve<EmptyTowerGraphicsProvider>(), args.Tile);
+            agent.GraphicsComponent = new RelativePositionGraphicsComponent();
             agent.ExtendedStats.Team = args.Team;
 
             return agent;
@@ -57,6 +59,7 @@ namespace Catch.Level
         private IExtendedAgent CreateBlockMob(CreateAgentArgs args)
         {
             var agent = new BlockMob(_config, _graphicsManager.Resolve<BlockMobGraphicsProvider>(), args.Path);
+            agent.GraphicsComponent = new RelativePositionGraphicsComponent();
             agent.Tile = args.Tile;
             agent.ExtendedStats.Team = args.Team;
 
