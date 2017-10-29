@@ -3,7 +3,7 @@ using Catch.Base;
 using Catch.Map;
 using CatchLibrary.HexGrid;
 
-namespace Catch
+namespace Catch.Level
 {
     /// <summary>
     /// Contains the shared state between the LevelController, 

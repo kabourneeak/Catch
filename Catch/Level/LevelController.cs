@@ -6,7 +6,7 @@ using Catch.Map;
 using Catch.Services;
 using CatchLibrary.Serialization;
 
-namespace Catch
+namespace Catch.Level
 {
     /// <summary>
     /// Controls the execution of a level, executing instructions from a map definition

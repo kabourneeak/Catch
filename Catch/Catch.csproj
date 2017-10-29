@@ -108,7 +108,7 @@
     <Compile Include="Base\IAttackModifier.cs" />
     <Compile Include="Base\IHitModifier.cs" />
     <Compile Include="Base\IRemoveModifier.cs" />
-    <Compile Include="ExecuteEventArgs.cs" />
+    <Compile Include="Level\ExecuteEventArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
     <Compile Include="Base\AgentCommandType.cs" />
     <Compile Include="Base\AttackEventArgs.cs" />
@@ -131,18 +131,18 @@
     <Compile Include="Graphics\IGraphicsComponent.cs" />
     <Compile Include="Graphics\IGraphicsProvider.cs" />
     <Compile Include="Graphics\RelativePositionGraphicsComponent.cs" />
-    <Compile Include="LevelUi\OverlayGraphicsProvider.cs" />
+    <Compile Include="Level\OverlayGraphicsProvider.cs" />
     <Compile Include="Map\MapGraphicsProvider.cs" />
     <Compile Include="Map\TileAreaIndicator.cs" />
     <Compile Include="Map\TileOutlineIndicator.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
     <Compile Include="Services\JsonConfig.cs" />
-    <Compile Include="UpdateEventArgs.cs" />
-    <Compile Include="UpdateReadinessEventArgs.cs" />
+    <Compile Include="Level\UpdateEventArgs.cs" />
+    <Compile Include="Level\UpdateReadinessEventArgs.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Graphics\DrawLevelOfDetail.cs" />
     <Compile Include="Graphics\IDrawable.cs" />
-    <Compile Include="LevelStateModel.cs" />
+    <Compile Include="Level\LevelStateModel.cs" />
     <Compile Include="Map\BuiltinMapProvider.cs" />
     <Compile Include="Map\IMapProvider.cs" />
     <Compile Include="Mobs\BlockMobFactory.cs" />
@@ -150,7 +150,7 @@
     <Compile Include="Services\EventArgsBase.cs" />
     <Compile Include="Services\HoverEventArgs.cs" />
     <Compile Include="Services\KeyPressEventArgs.cs" />
-    <Compile Include="LevelUi\StatusBar.cs" />
+    <Compile Include="Level\StatusBar.cs" />
     <Compile Include="Services\LabelProvider.cs" />
     <Compile Include="Services\ListExtensions.cs" />
     <Compile Include="Services\PanByEventArgs.cs" />
@@ -158,7 +158,7 @@
     <Compile Include="Services\SimpleSortedList.cs" />
     <Compile Include="Services\TouchEventArgs.cs" />
     <Compile Include="Services\VersionedCollection.cs" />
-    <Compile Include="SimulationStateModel.cs" />
+    <Compile Include="Level\SimulationStateModel.cs" />
     <Compile Include="Towers\BuyTowerCommand.cs" />
     <Compile Include="Towers\EmptyTowerFactory.cs" />
     <Compile Include="Towers\EmptyTowerSharedResources.cs" />
@@ -182,11 +182,11 @@
     <Compile Include="Towers\TargettingBase.cs" />
     <Compile Include="Map\MapTileModel.cs" />
     <Compile Include="Services\EnumUtils.cs" />
-    <Compile Include="FieldController.cs" />
+    <Compile Include="Level\FieldController.cs" />
     <Compile Include="Services\FloatExtensions.cs" />
     <Compile Include="Services\IScreenController.cs" />
     <Compile Include="Services\IViewportController.cs" />
-    <Compile Include="LevelController.cs" />
+    <Compile Include="Level\LevelController.cs" />
     <Compile Include="Services\DelegatingScreenManager.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -198,7 +198,7 @@
     <Compile Include="Mobs\PathMobBehaviour.cs" />
     <Compile Include="Towers\RadiusExitTargetting.cs" />
     <Compile Include="Services\NilScreenController.cs" />
-    <Compile Include="OverlayController.cs" />
+    <Compile Include="Level\OverlayController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\RectExtensions.cs" />
     <Compile Include="Services\EmptyConfig.cs" />
@@ -207,9 +207,9 @@
     <Compile Include="Towers\GunTower.cs" />
     <Compile Include="Towers\GunTowerBaseIndicator.cs" />
     <Compile Include="Towers\EmptyTower.cs" />
-    <Compile Include="UiStateModel.cs" />
+    <Compile Include="Level\UiStateModel.cs" />
     <Compile Include="Services\ZoomToPointEventArgs.cs" />
-    <Compile Include="UpdateController.cs" />
+    <Compile Include="Level\UpdateController.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

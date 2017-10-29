@@ -4,12 +4,11 @@ using System.Numerics;
 using Windows.System;
 using Catch.Base;
 using Catch.Graphics;
-using Catch.LevelUi;
 using Catch.Map;
 using Catch.Services;
 using CatchLibrary.HexGrid;
 
-namespace Catch
+namespace Catch.Level
 {
     /// <summary>
     /// Handles drawing and event handling for the player control overlay, i.e., the buttons

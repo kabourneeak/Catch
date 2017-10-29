@@ -1,7 +1,7 @@
 ﻿using Catch.Base;
 using Catch.Services;
 
-namespace Catch
+namespace Catch.Level
 {
     public class SimulationStateModel : ISimulationState
     {

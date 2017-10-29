@@ -1,15 +1,13 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
-using Catch.Base;
 using Catch.Graphics;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Text;
 
-namespace Catch.LevelUi
+namespace Catch.Level
 {
     public class StatusBar : IGraphicsResource
     {

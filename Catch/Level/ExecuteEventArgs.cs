@@ -1,6 +1,6 @@
 ﻿using Catch.Base;
 
-namespace Catch
+namespace Catch.Level
 {
     public class ExecuteEventArgs : IExecuteEventArgs
     {

@@ -5,7 +5,7 @@ using Catch.Base;
 using Catch.Graphics;
 using Catch.Services;
 
-namespace Catch
+namespace Catch.Level
 {
     /// <summary>
     /// Handles drawing the field of play, i.e., the map and the agents running around on it.

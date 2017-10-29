@@ -2,7 +2,7 @@
 using Catch.Services;
 using CatchLibrary.HexGrid;
 
-namespace Catch
+namespace Catch.Level
 {
     /// <summary>
     /// The state of the <see cref="LevelController"/>, which is shared with its subsidiary

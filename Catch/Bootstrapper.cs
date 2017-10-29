@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Catch.Level;
 using Catch.Services;
 using CatchLibrary.Serialization;
 using Newtonsoft.Json;

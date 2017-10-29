@@ -2,7 +2,7 @@
 using Catch.Base;
 using CatchLibrary.Heap;
 
-namespace Catch
+namespace Catch.Level
 {
     /// <summary>
     /// Handles the scheduling of Updatable agents and other objects in the simulation

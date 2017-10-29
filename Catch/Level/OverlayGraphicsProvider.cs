@@ -4,7 +4,7 @@ using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;
 
-namespace Catch.LevelUi
+namespace Catch.Level
 {
     public class OverlayGraphicsProvider : IGraphicsProvider
     {
