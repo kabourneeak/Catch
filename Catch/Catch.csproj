@@ -127,9 +127,8 @@
     <Compile Include="Base\ScheduledOneTimeTask.cs" />
     <Compile Include="Base\SpawnAgentTask.cs" />
     <Compile Include="Base\BaseStatsModel.cs" />
-    <Compile Include="Base\IAgentFactory.cs" />
     <Compile Include="Base\IUpdatable.cs" />
-    <Compile Include="Base\BuiltinAgentProvider.cs" />
+    <Compile Include="Level\BuiltinAgentProvider.cs" />
     <Compile Include="Graphics\IGraphicsComponent.cs" />
     <Compile Include="Graphics\IGraphicsProvider.cs" />
     <Compile Include="Graphics\RelativePositionGraphicsComponent.cs" />
@@ -149,7 +148,6 @@
     <Compile Include="Level\LevelStateModel.cs" />
     <Compile Include="Map\BuiltinMapProvider.cs" />
     <Compile Include="Map\IMapProvider.cs" />
-    <Compile Include="Mobs\BlockMobFactory.cs" />
     <Compile Include="Mobs\BlockMobGraphicsProvider.cs" />
     <Compile Include="Services\EventArgsBase.cs" />
     <Compile Include="Services\HoverEventArgs.cs" />
@@ -164,9 +162,7 @@
     <Compile Include="Services\VersionedCollection.cs" />
     <Compile Include="Level\SimulationStateModel.cs" />
     <Compile Include="Towers\BuyTowerCommand.cs" />
-    <Compile Include="Towers\EmptyTowerFactory.cs" />
     <Compile Include="Towers\EmptyTowerGraphicsProvider.cs" />
-    <Compile Include="Towers\GunTowerFactory.cs" />
     <Compile Include="Towers\GunTowerGraphicsProvider.cs" />
     <Compile Include="Towers\GunTowerStrategicIndicator.cs" />
     <Compile Include="Base\PlayerModel.cs" />
