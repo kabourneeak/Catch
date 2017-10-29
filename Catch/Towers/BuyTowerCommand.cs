@@ -37,7 +37,7 @@ namespace Catch.Towers
                 Tile = tile
             };
 
-            var tower = args.Manager.CreateAgent(nameof(GunTower), towerArgs);
+            var tower = args.Manager.CreateAgent(GunTowerBehaviour.AgentTypeName, towerArgs);
 
             args.Manager.Register(tower);
             args.Manager.Site(tower);

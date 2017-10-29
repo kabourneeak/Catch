@@ -138,6 +138,7 @@
     <Compile Include="Map\MapGraphicsProvider.cs" />
     <Compile Include="Map\TileAreaIndicator.cs" />
     <Compile Include="Map\TileOutlineIndicator.cs" />
+    <Compile Include="Mobs\BlockMobBehaviour.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
     <Compile Include="Services\JsonConfig.cs" />
     <Compile Include="Level\UpdateEventArgs.cs" />
@@ -193,7 +194,6 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Mobs\BlockMob.cs" />
     <Compile Include="Mobs\BlockMobBaseIndicator.cs" />
     <Compile Include="Graphics\HexagonIndicator.cs" />
     <Compile Include="Graphics\LabelIndicator.cs" />
@@ -206,9 +206,8 @@
     <Compile Include="Services\EmptyConfig.cs" />
     <Compile Include="Services\IConfig.cs" />
     <Compile Include="Services\TaskExtensions.cs" />
-    <Compile Include="Towers\GunTower.cs" />
     <Compile Include="Towers\GunTowerBaseIndicator.cs" />
-    <Compile Include="Towers\EmptyTower.cs" />
+    <Compile Include="Towers\EmptyTowerBehaviour.cs" />
     <Compile Include="Level\UiStateModel.cs" />
     <Compile Include="Services\ZoomToPointEventArgs.cs" />
     <Compile Include="Level\UpdateController.cs" />

@@ -6,6 +6,8 @@ namespace Catch.Towers
 {
     public class GunTowerBehaviour : IUpdatable, IAgentStatsModifier, IRemoveModifier
     {
+        public const string AgentTypeName = "GunTower";
+
         private readonly IExtendedAgent _host;
 
         public GunTowerBehaviour(IExtendedAgent host, IConfig config, GunTowerGraphicsProvider resources, IMapTile tile)

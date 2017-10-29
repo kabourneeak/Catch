@@ -21,6 +21,8 @@ namespace Catch.Mobs
             _agent = agent;
             _mapPath = mapPath;
             _state = PathMobBehaviourStates.Init;
+
+            Priority = ModifierPriority.Base;
         }
 
         public float Update(IUpdateEventArgs args)
@@ -103,7 +105,7 @@ namespace Catch.Mobs
             }
         }
 
-        public ModifierPriority Priority => ModifierPriority.Base;
+        public ModifierPriority Priority { get; }
 
         public void OnRemove(IExtendedAgent agent)
         {

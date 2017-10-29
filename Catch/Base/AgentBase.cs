@@ -12,7 +12,7 @@ namespace Catch.Base
     /// Provides subclass sandbox methods for common actions that an agent may take,
     /// and delegates to modifiers as appropriate.
     /// </summary>
-    public abstract class AgentBase : IExtendedAgent
+    public class AgentBase : IExtendedAgent
     {        
         private static readonly IComparer<IModifier> StatModelComparer =
             Comparer<IModifier>.Create((x, y) => x.Priority.CompareTo(y.Priority));
@@ -22,7 +22,7 @@ namespace Catch.Base
         private readonly IVersionedCollection<IAgentCommand> _commands;
         private readonly BaseStatsModel _stats;
 
-        protected AgentBase(string agentType)
+        public AgentBase(string agentType)
         {
             AgentType = agentType;
             Position = new Vector2(0.0f);

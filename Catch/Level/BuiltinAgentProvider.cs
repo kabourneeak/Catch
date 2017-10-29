@@ -27,11 +27,11 @@ namespace Catch.Level
         {
             switch (name)
             {
-                case nameof(GunTower):
+                case GunTowerBehaviour.AgentTypeName:
                     return CreateGunTowerAgent(args);
-                case nameof(EmptyTower):
+                case EmptyTowerBehaviour.AgentTypeName:
                     return CreateEmptyTower(args);
-                case nameof(BlockMob):
+                case BlockMobBehaviour.AgentTypeName:
                     return CreateBlockMob(args);
                 default:
                     throw new ArgumentException($"I don't know how to construct an agent with name {name}");
@@ -40,10 +40,10 @@ namespace Catch.Level
 
         private IExtendedAgent CreateGunTowerAgent(CreateAgentArgs args)
         {
-            var agent = new GunTower(_config, _graphicsManager.Resolve<GunTowerGraphicsProvider>(), args.Tile);
+            var agent = new AgentBase(GunTowerBehaviour.AgentTypeName);
+            agent.ExtendedStats.Team = args.Team;
             agent.GraphicsComponent = new RelativePositionGraphicsComponent();
             agent.BehaviourComponent = new GunTowerBehaviour(agent, _config, _graphicsManager.Resolve<GunTowerGraphicsProvider>(), args.Tile);
-            agent.ExtendedStats.Team = args.Team;
 
             if (agent.BehaviourComponent is IModifier modifier)
                 agent.AddModifier(modifier);
@@ -53,10 +53,10 @@ namespace Catch.Level
 
         private IExtendedAgent CreateEmptyTower(CreateAgentArgs args)
         {
-            var agent = new EmptyTower(_graphicsManager.Resolve<EmptyTowerGraphicsProvider>(), args.Tile);
-            agent.GraphicsComponent = new RelativePositionGraphicsComponent();
-            agent.BehaviourComponent = new NilAgentBehaviour();
+            var agent = new AgentBase(EmptyTowerBehaviour.AgentTypeName);
             agent.ExtendedStats.Team = args.Team;
+            agent.GraphicsComponent = new RelativePositionGraphicsComponent();
+            agent.BehaviourComponent = new EmptyTowerBehaviour(agent, _graphicsManager.Resolve<EmptyTowerGraphicsProvider>(), args.Tile);
 
             if (agent.BehaviourComponent is IModifier modifier)
                 agent.AddModifier(modifier);
@@ -66,11 +66,11 @@ namespace Catch.Level
 
         private IExtendedAgent CreateBlockMob(CreateAgentArgs args)
         {
-            var agent = new BlockMob(_config, _graphicsManager.Resolve<BlockMobGraphicsProvider>());
+            var agent = new AgentBase(BlockMobBehaviour.AgentTypeName);
             agent.Tile = args.Tile;
             agent.ExtendedStats.Team = args.Team;
             agent.GraphicsComponent = new RelativePositionGraphicsComponent();
-            agent.BehaviourComponent = new PathMobBehaviour(agent, args.Path);
+            agent.BehaviourComponent = new BlockMobBehaviour(agent, _config, _graphicsManager.Resolve<BlockMobGraphicsProvider>(), args.Path);
 
             if (agent.BehaviourComponent is IModifier modifier)
                 agent.AddModifier(modifier);

@@ -14,7 +14,7 @@ namespace Catch.Mobs
 
         public BlockMobBaseIndicator(IConfig config)
         {
-            _blockSize = config.GetInt(BlockMob.CfgBlockSize);
+            _blockSize = config.GetInt(BlockMobBehaviour.CfgBlockSize);
 
             var strokeStyle = new CanvasStrokeStyle() { LineJoin = CanvasLineJoin.Round };
             _style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.Yellow, StrokeWidth = 4, StrokeStyle = strokeStyle };
