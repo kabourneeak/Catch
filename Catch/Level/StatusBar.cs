@@ -2,93 +2,37 @@
 using System.Linq;
 using System.Text;
 using Windows.Foundation;
-using Windows.UI;
-using Windows.UI.Text;
 using Catch.Graphics;
-using Microsoft.Graphics.Canvas.Brushes;
-using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.Level
 {
-    public class StatusBar : IGraphicsResource
+    /// <summary>
+    /// A subsidiary of the <see cref="OverlayController"/>
+    /// </summary>
+    public class StatusBar
     {
         private readonly UiStateModel _uiState;
+        private readonly StatusBarGraphicsProvider _graphicsProvider;
 
         private readonly int _barHeight;
-        private readonly StyleArgs _bgStyle;
-        private readonly StyleArgs _fgStyle;
-        private readonly CanvasTextFormat _fgTextFormat;
 
-        public StatusBar(UiStateModel uiState)
+        public StatusBar(UiStateModel uiState, IGraphicsManager graphicsManager)
         {
             _uiState = uiState ?? throw new ArgumentNullException(nameof(uiState));
+            if (graphicsManager == null) throw new ArgumentNullException(nameof(graphicsManager));
 
-            // copy down config
+            _graphicsProvider = graphicsManager.Resolve<StatusBarGraphicsProvider>();
+
+            // copy down config (fix in StatusBarGraphicsProvider, too)
             _barHeight = 26;
-
-            _bgStyle = new StyleArgs()
-            {
-                Color = Color.FromArgb(0xFF, 0xAA, 0x84, 0x39),
-                BrushOpacity = 0.75f
-            };
-
-            _fgStyle = new StyleArgs()
-            {
-                Color = Color.FromArgb(0xFF, 0x37, 0x21, 0x44),
-                BrushOpacity = 1.0f
-            };
-
-            _fgTextFormat = new CanvasTextFormat()
-            {
-                VerticalAlignment = CanvasVerticalAlignment.Center,
-                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                FontWeight = FontWeights.Bold,
-                FontSize = _barHeight * 0.75f
-            };
         }
-
-        #region IGraphicsResource implementation
-
-        private int _createFrameId = -1;
-        private ICanvasBrush _bgBrush;
-        private ICanvasBrush _fgBrush;
-
-        public void CreateResources(CreateResourcesArgs args)
-        {
-            if (!(args.IsMandatory || _bgBrush == null))
-                return;
-
-            if (_createFrameId == args.FrameId)
-                return;
-
-            DestroyResources();
-
-            _bgBrush = _bgStyle.CreateBrush(args);
-            _fgBrush = _fgStyle.CreateBrush(args);
-        }
-
-        public void DestroyResources()
-        {
-            if (_bgBrush == null)
-                return;
-
-            _bgBrush.Dispose();
-            _bgBrush = null;
-
-            _fgBrush.Dispose();
-            _fgBrush = null;
-
-            _createFrameId = -1;
-        }
-
-        #endregion
 
         public void Draw(DrawArgs drawArgs)
         {
             drawArgs.PushTranslation(0, _uiState.WindowSize.Y - _barHeight);
 
-            drawArgs.Ds.FillRectangle(new Rect(0,0, _uiState.WindowSize.X, _barHeight), _bgBrush);
-            drawArgs.Ds.DrawText(GetStatusText(), new Rect(0, 0, _uiState.WindowSize.X, _barHeight), _fgBrush, _fgTextFormat);
+            drawArgs.Ds.FillRectangle(new Rect(0,0, _uiState.WindowSize.X, _barHeight), _graphicsProvider.BackgroundBrush);
+            drawArgs.Ds.DrawText(GetStatusText(), new Rect(0, 0, _uiState.WindowSize.X, _barHeight), _graphicsProvider.ForegroundBrush, _graphicsProvider.ForegroundTextFormat);
 
             drawArgs.Pop();
         }

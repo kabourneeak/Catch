@@ -22,6 +22,7 @@ namespace Catch.Level
         private readonly SimulationStateModel _sim;
         private readonly MapGraphicsProvider _mapGraphics;
         private readonly IAgentProvider _agentProvider;
+        private readonly IGraphicsManager _graphicsManager;
         private readonly ISimulationManager _simulationManager;
         private readonly UpdateEventArgs _updateEventArgs;
 
@@ -39,8 +40,9 @@ namespace Catch.Level
 
             var map = mapProvider.CreateMap(mapSerializationModel.Rows, mapSerializationModel.Columns);
 
-            // TODO don't initialize this here
-            _mapGraphics = new MapGraphicsProvider(config);
+            _graphicsManager = new GraphicsManager(config);
+
+            _mapGraphics = _graphicsManager.Resolve<MapGraphicsProvider>();
 
             var labelProvider = new LabelProvider();
             _level = new LevelStateModel(config, map);
@@ -57,9 +59,8 @@ namespace Catch.Level
             InitializeMap(mapSerializationModel, map);
             InitializeEmitScript(mapSerializationModel);
 
-            _overlayController = new OverlayController(_level, _simulationManager, _sim, labelProvider);
+            _overlayController = new OverlayController(_level, _simulationManager, _sim, labelProvider, _graphicsManager);
             _fieldController = new FieldController(_level);
-
         }
 
         private void InitializeMap(MapSerializationModel mapSerializationModel, MapModel map)
@@ -200,16 +201,14 @@ namespace Catch.Level
 
         public void CreateResources(CreateResourcesArgs args)
         {
+            _graphicsManager.CreateResources(args);
             _agentProvider.CreateResources(args);
-            _mapGraphics.CreateResources(args);
-            _overlayController.CreateResources(args);
         }
 
         public void DestroyResources()
         {
+            _graphicsManager.DestroyResources();
             _agentProvider.DestroyResources();
-            _mapGraphics.DestroyResources();
-            _overlayController.DestroyResources();
         }
 
         #endregion

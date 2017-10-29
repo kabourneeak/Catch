@@ -4,7 +4,7 @@ using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.Graphics
 {
-    public class LabelIndicator : IIndicator, IGraphicsResource
+    public class LabelIndicator : IIndicator
     {
         private string Label { get; }
         private Color Colour { get; }

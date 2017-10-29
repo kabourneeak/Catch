@@ -7,7 +7,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Mobs
 {
-    public class BlockMobBaseIndicator : IIndicator, IGraphicsResource
+    public class BlockMobBaseIndicator : IIndicator
     {
         private readonly int _blockSize;
         private readonly StyleArgs _style;

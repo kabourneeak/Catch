@@ -14,44 +14,47 @@ namespace Catch.Level
     /// Handles drawing and event handling for the player control overlay, i.e., the buttons
     /// and things the user will interact with
     /// </summary>
-    public class OverlayController : IGraphicsResource, IViewportController
+    public class OverlayController : IViewportController
     {
         private readonly UiStateModel _uiState;
         private readonly ExecuteEventArgs _executeEventArgs;
         private readonly UpdateReadinessEventArgs _updateReadinessEventArgs;
-        private readonly OverlayGraphicsProvider _graphicsProvider;
+        private readonly OverlayGraphicsProvider _overlayGraphicsProvider;
         private readonly StatusBar _statusBar;
 
         private HexCoords _lastHover;
         private MapTileModel _lastHoverTile;
 
-        public OverlayController(LevelStateModel level, ISimulationManager manager, ISimulationState sim, ILabelProvider labelProvider)
+        public OverlayController(LevelStateModel level,
+            ISimulationManager simulationManager,
+            ISimulationState simulationState,
+            ILabelProvider labelProvider,
+            IGraphicsManager graphicsManager)
         {
             if (level == null) throw new ArgumentNullException(nameof(level));
-            if (manager == null) throw new ArgumentNullException(nameof(manager));
-            if (sim == null) throw new ArgumentNullException(nameof(sim));
+            if (simulationManager == null) throw new ArgumentNullException(nameof(simulationManager));
+            if (simulationState == null) throw new ArgumentNullException(nameof(simulationState));
             if (labelProvider == null) throw new ArgumentNullException(nameof(labelProvider));
 
             _uiState = level.Ui;
 
             _executeEventArgs = new ExecuteEventArgs()
             {
-                Manager = manager,
-                Sim = sim,
+                Manager = simulationManager,
+                Sim = simulationState,
                 LabelProvider = labelProvider
             };
 
             _updateReadinessEventArgs = new UpdateReadinessEventArgs
             {
-                Sim = sim,
+                Sim = simulationState,
                 LabelProvider = labelProvider
             };
 
             // create UI elements
-            _statusBar = new StatusBar(_uiState);
+            _statusBar = new StatusBar(_uiState, graphicsManager);
 
-            // TODO do not instantiate this here
-            _graphicsProvider = new OverlayGraphicsProvider(level.Config);
+            _overlayGraphicsProvider = graphicsManager.Resolve<OverlayGraphicsProvider>();
 
             _lastHover = HexCoords.CreateFromOffset(-1, -1);
         }
@@ -74,26 +77,6 @@ namespace Catch.Level
                 cmd.UpdateReadiness(_updateReadinessEventArgs);
             }
         }
-
-        #region IGraphicsResource Implementation
-
-        public void CreateResources(CreateResourcesArgs args)
-        {
-            _statusBar.CreateResources(args);
-
-            // TODO do not manage this here
-            _graphicsProvider.CreateResources(args);
-        }
-
-        public void DestroyResources()
-        {
-            _statusBar.DestroyResources();
-
-            // TODO do not manage this here
-            _graphicsProvider.DestroyResources();
-        }
-
-        #endregion
 
         #region IDrawable Implementation
 
@@ -129,12 +112,12 @@ namespace Catch.Level
                 return;
 
             // remove previous indicator
-            _lastHoverTile?.Indicators.Remove(_graphicsProvider.HoverTileIndicator);
+            _lastHoverTile?.Indicators.Remove(_overlayGraphicsProvider.HoverTileIndicator);
 
             // add new indicator
             _lastHover = _uiState.HoverHexCoords;
             _lastHoverTile = _uiState.HoverTile;
-            _lastHoverTile?.Indicators.Add(_graphicsProvider.HoverTileIndicator);
+            _lastHoverTile?.Indicators.Add(_overlayGraphicsProvider.HoverTileIndicator);
         }
 
         public void Touch(TouchEventArgs eventArgs)

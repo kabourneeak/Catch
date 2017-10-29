@@ -8,7 +8,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Towers
 {
-    public class GunTowerBaseIndicator : IIndicator, IGraphicsResource
+    public class GunTowerBaseIndicator : IIndicator
     {
         public GunTowerBaseIndicator(IConfig config)
         {

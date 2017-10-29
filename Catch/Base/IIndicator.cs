@@ -10,7 +10,7 @@ namespace Catch.Base
     /// Indicators should expect to be drawn relative to their parent object. The parent object
     /// is responsible for setting draw transformations appropriately in DrawArgs.
     /// </summary>
-    public interface IIndicator
+    public interface IIndicator : IGraphicsResource
     {
         /// <summary>
         /// Draw this single indicator relative to the current draw arguments

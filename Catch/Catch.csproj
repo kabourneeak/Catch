@@ -108,6 +108,8 @@
     <Compile Include="Base\IAttackModifier.cs" />
     <Compile Include="Base\IHitModifier.cs" />
     <Compile Include="Base\IRemoveModifier.cs" />
+    <Compile Include="Level\GraphicsManager.cs" />
+    <Compile Include="Graphics\IGraphicsManager.cs" />
     <Compile Include="Level\ExecuteEventArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
     <Compile Include="Base\AgentCommandType.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="Graphics\RelativePositionGraphicsComponent.cs" />
     <Compile Include="Level\OverlayGraphicsProvider.cs" />
     <Compile Include="Level\SimulationManager.cs" />
+    <Compile Include="Level\StatusBarGraphicsProvider.cs" />
     <Compile Include="Map\MapGraphicsProvider.cs" />
     <Compile Include="Map\TileAreaIndicator.cs" />
     <Compile Include="Map\TileOutlineIndicator.cs" />

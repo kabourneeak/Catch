@@ -5,7 +5,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
 {
-    public class HexagonIndicator : IIndicator, IGraphicsResource
+    public class HexagonIndicator : IIndicator
     {
         public StyleArgs Style { get; protected set; }
         public float Radius { get; protected set; }
