@@ -7,14 +7,14 @@ namespace Catch.Mobs
     public class BlockMobFactory : IAgentFactory
     {
         private readonly IConfig _config;
-        private readonly BlockMobSharedResources _resources;
+        private readonly BlockMobGraphicsProvider _resources;
 
         public string AgentType => nameof(BlockMob);
 
-        public BlockMobFactory(IConfig config)
+        public BlockMobFactory(IConfig config, IGraphicsManager graphicsManager)
         {
             _config = config;
-            _resources = new BlockMobSharedResources(config);
+            _resources = graphicsManager.Resolve<BlockMobGraphicsProvider>();
         }
 
         public IExtendedAgent CreateAgent(CreateAgentArgs args)
@@ -24,16 +24,6 @@ namespace Catch.Mobs
             agent.ExtendedStats.Team = args.Team;
 
             return agent;
-        }
-
-        public void CreateResources(CreateResourcesArgs args)
-        {
-            _resources.CreateResources(args);
-        }
-
-        public void DestroyResources()
-        {
-            _resources.DestroyResources();
         }
     }
 }

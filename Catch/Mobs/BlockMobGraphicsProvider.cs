@@ -4,11 +4,11 @@ using Catch.Services;
 
 namespace Catch.Mobs
 {
-    public class BlockMobSharedResources : IGraphicsResource
+    public class BlockMobGraphicsProvider : IGraphicsProvider
     {
         public IndicatorCollection Indicators { get; }
 
-        public BlockMobSharedResources(IConfig config)
+        public BlockMobGraphicsProvider(IConfig config)
         {
             Indicators = new IndicatorCollection
             {
@@ -18,12 +18,14 @@ namespace Catch.Mobs
 
         public void CreateResources(CreateResourcesArgs args)
         {
-            Indicators.CreateResources(args);
+            foreach (var indicator in Indicators)
+                indicator.CreateResources(args);
         }
 
         public void DestroyResources()
         {
-            Indicators.DestroyResources();
+            foreach (var indicator in Indicators)
+                indicator.DestroyResources();
         }
     }
 }

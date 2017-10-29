@@ -6,7 +6,7 @@ namespace Catch.Towers
 {
     public class GunTower : AgentBase, IAgentStatsModifier, IRemoveModifier
     {
-        public GunTower(GunTowerSharedResources resources, IMapTile tile) : base(nameof(GunTower))
+        public GunTower(GunTowerGraphicsProvider resources, IMapTile tile) : base(nameof(GunTower))
         {
             Tile = tile;
             Position = tile.Position;

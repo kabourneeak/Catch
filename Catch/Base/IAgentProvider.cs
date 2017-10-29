@@ -1,8 +1,6 @@
-﻿using Catch.Graphics;
-
-namespace Catch.Base
+﻿namespace Catch.Base
 {
-    public interface IAgentProvider : IGraphicsResource
+    public interface IAgentProvider
     {
         IExtendedAgent CreateAgent(string name, CreateAgentArgs args);
     }

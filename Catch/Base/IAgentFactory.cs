@@ -1,8 +1,6 @@
-﻿using Catch.Graphics;
-
-namespace Catch.Base
+﻿namespace Catch.Base
 {
-    public interface IAgentFactory : IGraphicsResource
+    public interface IAgentFactory
     {
         /// <summary>
         /// Returns the type of agent that this factory produces

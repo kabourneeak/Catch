@@ -48,7 +48,7 @@ namespace Catch.Level
             _level = new LevelStateModel(config, map);
             _sim = new SimulationStateModel(config, _level.Map, _level.OffMap);
 
-            _agentProvider = new BuiltinAgentProvider(config, labelProvider);
+            _agentProvider = new BuiltinAgentProvider(config, _graphicsManager, labelProvider);
 
             _updateController = new UpdateController();
 
@@ -202,13 +202,11 @@ namespace Catch.Level
         public void CreateResources(CreateResourcesArgs args)
         {
             _graphicsManager.CreateResources(args);
-            _agentProvider.CreateResources(args);
         }
 
         public void DestroyResources()
         {
             _graphicsManager.DestroyResources();
-            _agentProvider.DestroyResources();
         }
 
         #endregion

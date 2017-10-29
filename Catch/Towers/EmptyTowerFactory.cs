@@ -5,13 +5,13 @@ namespace Catch.Towers
 {
     public class EmptyTowerFactory : IAgentFactory
     {
-        private readonly EmptyTowerSharedResources _resources;
+        private readonly EmptyTowerGraphicsProvider _resources;
 
         public string AgentType => nameof(EmptyTower);
 
-        public EmptyTowerFactory()
+        public EmptyTowerFactory(IGraphicsManager graphicsManager)
         {
-            _resources = new EmptyTowerSharedResources();
+            _resources = graphicsManager.Resolve<EmptyTowerGraphicsProvider>();
         }
 
         public IExtendedAgent CreateAgent(CreateAgentArgs args)
@@ -20,16 +20,6 @@ namespace Catch.Towers
             agent.ExtendedStats.Team = args.Team;
 
             return agent;
-        }
-
-        public void CreateResources(CreateResourcesArgs args)
-        {
-            _resources.CreateResources(args);
-        }
-
-        public void DestroyResources()
-        {
-            _resources.DestroyResources();
         }
     }
 }

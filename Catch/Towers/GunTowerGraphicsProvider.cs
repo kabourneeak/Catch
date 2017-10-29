@@ -1,17 +1,18 @@
-﻿using Windows.UI;
+﻿using System;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.Services;
 
 namespace Catch.Towers
 {
-    public class GunTowerSharedResources : IGraphicsResource
+    public class GunTowerGraphicsProvider : IGraphicsProvider
     {
+        [Obsolete]
         public IConfig Config { get; }
 
         public IndicatorCollection Indicators { get; }
 
-        public GunTowerSharedResources(IConfig config)
+        public GunTowerGraphicsProvider(IConfig config)
         {
             Config = config;
             Indicators = new IndicatorCollection();
@@ -22,12 +23,14 @@ namespace Catch.Towers
 
         public void CreateResources(CreateResourcesArgs args)
         {
-            Indicators.CreateResources(args);
+            foreach (var indicator in Indicators)
+                indicator.CreateResources(args);
         }
 
         public void DestroyResources()
         {
-            Indicators.DestroyResources();
+            foreach (var indicator in Indicators)
+                indicator.DestroyResources();
         }
     }
 }

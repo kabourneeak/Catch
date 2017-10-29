@@ -1,18 +1,17 @@
 ﻿using Catch.Base;
 using Catch.Graphics;
-using Catch.Services;
 
 namespace Catch.Towers
 {
     public class GunTowerFactory : IAgentFactory
     {
-        private readonly GunTowerSharedResources _resources;
+        private readonly GunTowerGraphicsProvider _resources;
 
         public string AgentType => nameof(GunTower);
 
-        public GunTowerFactory(IConfig config)
+        public GunTowerFactory(IGraphicsManager graphicsManager)
         {
-            _resources = new GunTowerSharedResources(config);
+            _resources = graphicsManager.Resolve<GunTowerGraphicsProvider>();
         }
 
         public IExtendedAgent CreateAgent(CreateAgentArgs args)
@@ -21,16 +20,6 @@ namespace Catch.Towers
             agent.ExtendedStats.Team = args.Team;
 
             return agent;
-        }
-
-        public void CreateResources(CreateResourcesArgs args)
-        {
-            _resources.CreateResources(args);
-        }
-
-        public void DestroyResources()
-        {
-            _resources.DestroyResources();
         }
     }
 }

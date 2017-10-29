@@ -13,13 +13,15 @@ namespace Catch.Base
     public class BuiltinAgentProvider : IAgentProvider
     {
         private readonly IConfig _config;
+        private readonly IGraphicsManager _graphicsManager;
         private readonly ILabelProvider _labelProvider;
         private readonly Dictionary<string, IAgentFactory> _agentFactories;
 
-        public BuiltinAgentProvider(IConfig config, ILabelProvider labelProvider)
+        public BuiltinAgentProvider(IConfig config, IGraphicsManager graphicsManager, ILabelProvider labelProvider)
         {
-            _config = config;
-            _labelProvider = labelProvider;
+            _config = config ?? throw new ArgumentNullException(nameof(config));
+            _graphicsManager = graphicsManager ?? throw new ArgumentNullException(nameof(graphicsManager));
+            _labelProvider = labelProvider ?? throw new ArgumentNullException(nameof(labelProvider));
 
             // find IAgentFactories
             _agentFactories = LoadAgentFactories();
@@ -35,22 +37,6 @@ namespace Catch.Base
             var agent = factory.CreateAgent(args);
 
             return agent;
-        }
-
-        public void CreateResources(CreateResourcesArgs args)
-        {
-            foreach (var factory in _agentFactories.Values)
-            {
-                factory.CreateResources(args);
-            }
-        }
-
-        public void DestroyResources()
-        {
-            foreach (var factory in _agentFactories.Values)
-            {
-                factory.DestroyResources();
-            }
         }
 
         private Dictionary<string, IAgentFactory> LoadAgentFactories()
@@ -76,6 +62,10 @@ namespace Catch.Base
                     if (ctorArg.ParameterType == typeof(IConfig))
                     {
                         ctorArgs.Add(_config);
+                    }
+                    else if (ctorArg.ParameterType == typeof(IGraphicsManager))
+                    {
+                        ctorArgs.Add(_graphicsManager);
                     }
                     else if (ctorArg.ParameterType == typeof(ILabelProvider))
                     {

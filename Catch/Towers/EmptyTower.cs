@@ -7,7 +7,7 @@ namespace Catch.Towers
     /// </summary>
     public class EmptyTower : AgentBase
     {
-        public EmptyTower(EmptyTowerSharedResources resources, IMapTile tile) : base(nameof(EmptyTower))
+        public EmptyTower(EmptyTowerGraphicsProvider resources, IMapTile tile) : base(nameof(EmptyTower))
         {
             Tile = tile;
             Position = tile.Position;

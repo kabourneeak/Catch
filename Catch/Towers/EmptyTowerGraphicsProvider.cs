@@ -3,11 +3,11 @@ using Catch.Graphics;
 
 namespace Catch.Towers
 {
-    public class EmptyTowerSharedResources : IGraphicsResource
+    public class EmptyTowerGraphicsProvider : IGraphicsProvider
     {
         private readonly Dictionary<string, LabelIndicator> _labels;
 
-        public EmptyTowerSharedResources()
+        public EmptyTowerGraphicsProvider()
         {
             _labels = new Dictionary<string, LabelIndicator>();
         }

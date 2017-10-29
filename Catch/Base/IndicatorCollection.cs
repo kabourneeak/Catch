@@ -8,7 +8,7 @@ namespace Catch.Base
     /// Maintains a collection of Indicators, and which can be acted upon as 
     /// an indicator itself
     /// </summary>
-    public class IndicatorCollection : IEnumerable<IIndicator>, IGraphicsResource
+    public class IndicatorCollection : IEnumerable<IIndicator>
     {
         private static readonly IComparer<IIndicator> IndicatorComparer =
             Comparer<IIndicator>.Create((x, y) => x.Layer.CompareTo(y.Layer));
@@ -25,24 +25,6 @@ namespace Catch.Base
         public IEnumerator<IIndicator> GetEnumerator() => _indicators.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        #endregion
-
-        #region IGraphicsResource
-
-        public void CreateResources(CreateResourcesArgs args)
-        {
-            foreach (var indicator in _indicators)
-                if (indicator is IGraphicsResource gr)
-                    gr.CreateResources(args);
-        }
-
-        public void DestroyResources()
-        {
-            foreach (var indicator in _indicators)
-                if (indicator is IGraphicsResource gr)
-                    gr.DestroyResources();
-        }
 
         #endregion
 
