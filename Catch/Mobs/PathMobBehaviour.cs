@@ -15,13 +15,11 @@ namespace Catch.Mobs
         private readonly IMapPath _mapPath;
         private PathMobBehaviourStates _state;
         private int _pathIndex;
-        private float _velocity;
 
-        public PathMobBehaviour(IExtendedAgent agent, IMapPath mapPath, float velocity)
+        public PathMobBehaviour(IExtendedAgent agent, IMapPath mapPath)
         {
             _agent = agent;
             _mapPath = mapPath;
-            _velocity = velocity;
             _state = PathMobBehaviourStates.Init;
         }
 
@@ -58,7 +56,7 @@ namespace Catch.Mobs
         private float UpdateAdvancing(IUpdateEventArgs args)
         {
             // advance through tile
-            _agent.TileProgress += _velocity * args.Ticks;
+            _agent.TileProgress += _agent.Stats.MovementSpeed * args.Ticks;
 
             // advance to next tile, if necessary
             while (_agent.TileProgress > 1 && _pathIndex < (_mapPath.Count - 1))

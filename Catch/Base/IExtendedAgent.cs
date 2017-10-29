@@ -14,6 +14,8 @@ namespace Catch.Base
 
         new Vector2 Position { set; get; }
 
+        new float Rotation { get; set; }
+
         new IMapTile Tile { set; get; }
 
         new float TileProgress { get; set; }
@@ -33,6 +35,8 @@ namespace Catch.Base
         void AddModifier(IModifier modifier);
 
         void RemoveModifier(IModifier modifier);
+
+        AttackEventArgs CreateAttack(IAgent target);
 
         #endregion
 

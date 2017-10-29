@@ -35,7 +35,7 @@ namespace Catch.Base
             _stats = new BaseStatsModel();
         }
 
-        public IUpdatable PrimaryBehaviour { get; set; }
+        public IUpdatable BehaviourComponent { get; set; }
 
         public IGraphicsComponent GraphicsComponent { get; set; }
 
@@ -87,7 +87,10 @@ namespace Catch.Base
             GraphicsComponent.Draw(this, drawArgs);
         }
 
-        public abstract float Update(IUpdateEventArgs args);
+        public float Update(IUpdateEventArgs args)
+        {
+            return BehaviourComponent.Update(args);
+        }
 
         #endregion
 
@@ -109,7 +112,7 @@ namespace Catch.Base
 
         #endregion
 
-        #region Subclass Sandbox
+        #region Behaviour Sandbox
 
         /// <summary>
         /// Recalculates the agent stats (<see cref="IAgent.Stats"/> and <see cref="IAgent.Labels"/>. 
@@ -117,7 +120,7 @@ namespace Catch.Base
         /// This is called automatically any time a modifier expressing the <see cref="IAgentStatsModifier"/> 
         /// interface is added or removed from the agent.
         /// </summary>
-        protected void CalculateAgentStats()
+        private void CalculateAgentStats()
         {
             foreach (var modifier in _modifiers)
                 if (modifier is IAgentStatsModifier calculateAgentStatsModifier)
@@ -131,7 +134,7 @@ namespace Catch.Base
         /// </summary>
         /// <param name="target">The target of the attack</param>
         /// <returns>An instance of <see cref="AttackEventArgs"/> which can be passed to the target's OnHit event</returns>
-        protected AttackEventArgs CreateAttack(IAgent target)
+        public AttackEventArgs CreateAttack(IAgent target)
         {
             var attack = new AttackEventArgs(this, target);
 

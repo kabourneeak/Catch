@@ -42,7 +42,11 @@ namespace Catch.Level
         {
             var agent = new GunTower(_config, _graphicsManager.Resolve<GunTowerGraphicsProvider>(), args.Tile);
             agent.GraphicsComponent = new RelativePositionGraphicsComponent();
+            agent.BehaviourComponent = new GunTowerBehaviour(agent, _config, _graphicsManager.Resolve<GunTowerGraphicsProvider>(), args.Tile);
             agent.ExtendedStats.Team = args.Team;
+
+            if (agent.BehaviourComponent is IModifier modifier)
+                agent.AddModifier(modifier);
 
             return agent;
         }
@@ -51,17 +55,25 @@ namespace Catch.Level
         {
             var agent = new EmptyTower(_graphicsManager.Resolve<EmptyTowerGraphicsProvider>(), args.Tile);
             agent.GraphicsComponent = new RelativePositionGraphicsComponent();
+            agent.BehaviourComponent = new NilAgentBehaviour();
             agent.ExtendedStats.Team = args.Team;
+
+            if (agent.BehaviourComponent is IModifier modifier)
+                agent.AddModifier(modifier);
 
             return agent;
         }
 
         private IExtendedAgent CreateBlockMob(CreateAgentArgs args)
         {
-            var agent = new BlockMob(_config, _graphicsManager.Resolve<BlockMobGraphicsProvider>(), args.Path);
-            agent.GraphicsComponent = new RelativePositionGraphicsComponent();
+            var agent = new BlockMob(_config, _graphicsManager.Resolve<BlockMobGraphicsProvider>());
             agent.Tile = args.Tile;
             agent.ExtendedStats.Team = args.Team;
+            agent.GraphicsComponent = new RelativePositionGraphicsComponent();
+            agent.BehaviourComponent = new PathMobBehaviour(agent, args.Path);
+
+            if (agent.BehaviourComponent is IModifier modifier)
+                agent.AddModifier(modifier);
 
             return agent;
         }

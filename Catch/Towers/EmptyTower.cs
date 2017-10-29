@@ -17,15 +17,10 @@ namespace Catch.Towers
 
             CommandCollection.Add(new BuyTowerCommand(this));
 
+            // should come from a modifier
             ExtendedStats.DisplayName = "Empty Socket";
             ExtendedStats.DisplayStatus = string.Empty;
             ExtendedStats.DisplayInfo = string.Empty;
-        }
-
-        public override float Update(IUpdateEventArgs args)
-        {
-            // indicate that we don't need anymore updates
-            return 0.0f;
         }
     }
 }
