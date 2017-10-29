@@ -14,7 +14,7 @@ namespace Catch.Towers
 
             Radius = radius - inset;
             Style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.RoyalBlue, StrokeWidth = 3 };
-            Layer = DrawLayer.Base;
+            Layer = DrawLayer.Tower;
             Filled = true;
             LevelOfDetail = DrawLevelOfDetail.Low;
         }

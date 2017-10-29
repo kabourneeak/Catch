@@ -5,8 +5,8 @@ using Windows.System;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.LevelUi;
+using Catch.Map;
 using Catch.Services;
-using Catch.Towers;
 using CatchLibrary.HexGrid;
 
 namespace Catch
@@ -17,14 +17,17 @@ namespace Catch
     /// </summary>
     public class OverlayController : IGraphicsResource, IViewportController
     {
-        private readonly LevelStateModel _level;
         private readonly UiStateModel _uiState;
         private readonly ExecuteEventArgs _executeEventArgs;
         private readonly UpdateReadinessEventArgs _updateReadinessEventArgs;
+        private readonly OverlayGraphicsProvider _graphicsProvider;
+        private readonly StatusBar _statusBar;
+
+        private HexCoords _lastHover;
+        private MapTileModel _lastHoverTile;
 
         public OverlayController(LevelStateModel level, ISimulationManager manager, ISimulationState sim, ILabelProvider labelProvider)
         {
-            _level = level;
             _uiState = level.Ui;
 
             _executeEventArgs = new ExecuteEventArgs()
@@ -42,7 +45,11 @@ namespace Catch
 
             // create UI elements
             _statusBar = new StatusBar(_uiState);
-            _hoverIndicator = new TowerHoverIndicator(_level.Config);
+
+            // TODO do not instantiate this here
+            _graphicsProvider = new OverlayGraphicsProvider(level.Config);
+
+            _lastHover = HexCoords.CreateFromOffset(-1, -1);
         }
 
         public void Initialize()
@@ -53,7 +60,7 @@ namespace Catch
         public void Update(float deviceTicks)
         {
             // copy the focused agent for the duration of this Update/Draw cycle
-            _uiState.FocusedAgent = _lastHoverTower;
+            _uiState.FocusedAgent = _lastHoverTile?.ExtendedTileAgent;
 
             if (_uiState.FocusedAgent == null)
                 return;
@@ -69,13 +76,17 @@ namespace Catch
         public void CreateResources(CreateResourcesArgs args)
         {
             _statusBar.CreateResources(args);
-            _hoverIndicator.CreateResources(args);
+
+            // TODO do not manage this here
+            _graphicsProvider.CreateResources(args);
         }
 
         public void DestroyResources()
         {
             _statusBar.DestroyResources();
-            _hoverIndicator.DestroyResources();
+
+            // TODO do not manage this here
+            _graphicsProvider.DestroyResources();
         }
 
         #endregion
@@ -106,43 +117,20 @@ namespace Catch
             // do nothing
         }
 
-        private HexCoords _lastHover;
-        private IExtendedAgent _lastHoverTower;
-        private readonly StatusBar _statusBar;
-        private readonly TowerHoverIndicator _hoverIndicator;
-
         public void Hover(HoverEventArgs eventArgs)
         {
-            if (_lastHover != null && _lastHover.Equals(_uiState.HoverHexCoords))
-            {
-                if (_lastHoverTower == _uiState.HoverTower)
-                {
-                    return;
-                }
-            }
+            // we are still hovering over the same coordinates as last time, 
+            // nothing to do
+            if (_lastHover.Equals(_uiState.HoverHexCoords))
+                return;
 
             // remove previous indicator
-            _uiState.HoverTower?.Indicators.Remove(_hoverIndicator);
+            _lastHoverTile?.Indicators.Remove(_graphicsProvider.HoverTileIndicator);
 
-            if (_level.Map.HasHex(_uiState.HoverHexCoords))
-            {
-                // TODO put this indicator on the map tile instead of the agent
-
-                // add new indicator
-                var tile = _level.Map.GetTileModel(_uiState.HoverHexCoords);
-                var tower = tile.ExtendedTileAgent;
-                tower?.Indicators.Add(_hoverIndicator);
-
-                _uiState.HoverTower = tower;
-                _lastHover = _uiState.HoverHexCoords;
-                _lastHoverTower = tower;
-            }
-            else
-            {
-                _uiState.HoverTower = null;
-                _lastHover = null;
-                _lastHoverTower = null;
-            }
+            // add new indicator
+            _lastHover = _uiState.HoverHexCoords;
+            _lastHoverTile = _uiState.HoverTile;
+            _lastHoverTile?.Indicators.Add(_graphicsProvider.HoverTileIndicator);
         }
 
         public void Touch(TouchEventArgs eventArgs)

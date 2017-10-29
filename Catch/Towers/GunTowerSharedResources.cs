@@ -16,7 +16,6 @@ namespace Catch.Towers
             Config = config;
             Indicators = new IndicatorCollection();
 
-            Indicators.Add(new TowerTileIndicator(config, Colors.DeepSkyBlue));
             Indicators.Add(new GunTowerBaseIndicator(config));
             Indicators.Add(new GunTowerStrategicIndicator(config));
         }

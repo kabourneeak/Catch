@@ -20,6 +20,7 @@ namespace Catch
 
         private readonly LevelStateModel _level;
         private readonly SimulationStateModel _sim;
+        private readonly MapGraphicsProvider _mapGraphics;
         private readonly IAgentProvider _agentProvider;
 
         #region Construction
@@ -33,6 +34,9 @@ namespace Catch
             var mapProvider = new BuiltinMapProvider(config);
 
             var map = mapProvider.CreateMap(mapSerializationModel.Rows, mapSerializationModel.Columns);
+
+            // TODO don't initialize this here
+            _mapGraphics = new MapGraphicsProvider(config);
 
             var labelProvider = new LabelProvider();
             _level = new LevelStateModel(config, map);
@@ -56,6 +60,8 @@ namespace Catch
              */
             foreach (var tile in map.TileModels)
             {
+                tile.Indicators.Add(_mapGraphics.EmptyTileIndicator);
+
                 var tileEmitModel = mapSerializationModel.Tiles.GetHex(tile.Coords);
                 var towerArgs = new CreateAgentArgs()
                 {
@@ -188,12 +194,14 @@ namespace Catch
         public void CreateResources(CreateResourcesArgs args)
         {
             _agentProvider.CreateResources(args);
+            _mapGraphics.CreateResources(args);
             _overlayController.CreateResources(args);
         }
 
         public void DestroyResources()
         {
             _agentProvider.DestroyResources();
+            _mapGraphics.DestroyResources();
             _overlayController.DestroyResources();
         }
 

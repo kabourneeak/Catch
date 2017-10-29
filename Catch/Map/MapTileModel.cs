@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Catch.Base;
+using Catch.Graphics;
 using Catch.Services;
 using CatchLibrary.HexGrid;
 
 namespace Catch.Map
 {
-    /// <inheritdoc />
-    public class MapTileModel : IMapTile
+    public class MapTileModel : IMapTile, IDrawable
     {
         private readonly IVersionedCollection<IExtendedAgent> _agents;
         private IExtendedAgent _tileAgent;
@@ -29,11 +29,16 @@ namespace Catch.Map
             var y = ((Coords.Column & 1) * radiusH) + ((Coords.Row - (Coords.Column & 1)) * 2 * radiusH);
 
             Position = new Vector2(x, y);
+            Indicators = new IndicatorCollection();
         }
 
         public HexCoords Coords { get; }
 
         public Vector2 Position { get; }
+
+        public float Rotation => 0.0f;
+
+        public IndicatorCollection Indicators { get; }
 
         #region Agent Management 
 

@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using Catch.Base;
+using Catch.Map;
 using CatchLibrary.HexGrid;
 
 namespace Catch
@@ -14,7 +15,7 @@ namespace Catch
 
         public HexCoords HoverHexCoords { get; set; }
 
-        public IExtendedAgent HoverTower { get; set; }
+        public MapTileModel HoverTile { get; set; }
 
         public IExtendedAgent FocusedAgent { get; set; }
 

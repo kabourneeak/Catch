@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using Windows.UI;
-using Catch.Base;
 using Catch.Graphics;
-using Catch.Services;
 
 namespace Catch.Towers
 {
@@ -10,29 +7,21 @@ namespace Catch.Towers
     {
         private readonly Dictionary<string, LabelIndicator> _labels;
 
-        public IndicatorCollection Indicators { get; }
-
-        public EmptyTowerSharedResources(IConfig config)
+        public EmptyTowerSharedResources()
         {
-            Indicators = new IndicatorCollection
-            {
-                new TowerTileIndicator(config, Colors.DarkRed)
-            };
-
             _labels = new Dictionary<string, LabelIndicator>();
         }
 
         public void CreateResources(CreateResourcesArgs args)
         {
-            Indicators.CreateResources(args);
-
             foreach (var label in _labels.Values)
                 label.CreateResources(args);
         }
 
         public void DestroyResources()
         {
-            Indicators.DestroyResources();
+            foreach (var label in _labels.Values)
+                label.DestroyResources();
         }
 
         public LabelIndicator GetLabel(string label)

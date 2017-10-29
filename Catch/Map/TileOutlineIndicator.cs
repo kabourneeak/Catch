@@ -3,15 +3,11 @@ using Catch.Base;
 using Catch.Graphics;
 using Catch.Services;
 
-namespace Catch.Towers
+namespace Catch.Map
 {
-    /// <summary>
-    /// A generic tower indicator which draws the hexagonal tile border
-    /// that the tower occupies.
-    /// </summary>
-    public class TowerTileIndicator : HexagonIndicator, IIndicator
+    public class TileOutlineIndicator : HexagonIndicator, IIndicator
     {
-        public TowerTileIndicator(IConfig config, Color color)
+        public TileOutlineIndicator(IConfig config, Color color)
         {
             var radius = config.GetFloat(CoreConfig.TileRadius);
             var inset = config.GetFloat(CoreConfig.TileRadiusInset);

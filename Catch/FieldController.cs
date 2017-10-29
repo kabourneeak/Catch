@@ -21,11 +21,13 @@ namespace Catch
         private Matrix3x2 _mapTransform;
 
         private readonly LevelStateModel _level;
+        private readonly IGraphicsComponent _mapGraphicsComponent;
         private readonly float _tileRadius;
 
         public FieldController(LevelStateModel level)
         {
             _level = level;
+            _mapGraphicsComponent = new RelativePositionGraphicsComponent();
             _tileRadius = level.Config.GetFloat(CoreConfig.TileRadius);
 
             _pan = Vector2.Zero;
@@ -66,9 +68,12 @@ namespace Catch
             var bottomLeftFieldCoords = TranslateToFieldCoords(_bottomLeftViewLimit);
             var topRightFieldCoords = TranslateToFieldCoords(_topRightViewLimit);
 
-            // find agents which are currently on screen
-            var culledAgents = _level.Map.TileModels
+            // find tiles and agents which are currently on screen
+            var culledTiles = _level.Map.TileModels
                 .Where(tm => bottomLeftFieldCoords.X <= tm.Position.X && topRightFieldCoords.X >= tm.Position.X)
+                .ToArray();
+
+            var culledAgents = culledTiles
                 .SelectMany(tm => tm.ExtendedAgents)
                 .ToArray();
 
@@ -76,6 +81,11 @@ namespace Catch
             foreach (var drawLayer in DrawLayers)
             {
                 drawArgs.Layer = drawLayer;
+
+                for (var i = 0; i < culledTiles.Length; ++i)
+                {
+                    _mapGraphicsComponent.Draw(culledTiles[i], drawArgs);
+                }
 
                 for (var i = 0; i < culledAgents.Length; ++i)
                 {
@@ -120,7 +130,9 @@ namespace Catch
         {
             var fieldCoords = TranslateToFieldCoords(eventArgs.ViewCoords);
 
-            _level.Ui.HoverHexCoords = _level.Map.PointToHexCoords(fieldCoords);
+            var hoverCoords = _level.Map.PointToHexCoords(fieldCoords);
+            _level.Ui.HoverHexCoords = hoverCoords;
+            _level.Ui.HoverTile = _level.Map.HasHex(hoverCoords) ? _level.Map.GetTileModel(hoverCoords) : null;
         }
 
         public void Touch(TouchEventArgs eventArgs)

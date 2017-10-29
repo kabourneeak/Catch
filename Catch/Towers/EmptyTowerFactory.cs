@@ -1,6 +1,5 @@
 ﻿using Catch.Base;
 using Catch.Graphics;
-using Catch.Services;
 
 namespace Catch.Towers
 {
@@ -10,9 +9,9 @@ namespace Catch.Towers
 
         public string AgentType => nameof(EmptyTower);
 
-        public EmptyTowerFactory(IConfig config)
+        public EmptyTowerFactory()
         {
-            _resources = new EmptyTowerSharedResources(config);
+            _resources = new EmptyTowerSharedResources();
         }
 
         public IExtendedAgent CreateAgent(CreateAgentArgs args)

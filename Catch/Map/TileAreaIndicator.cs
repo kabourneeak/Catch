@@ -3,18 +3,19 @@ using Catch.Base;
 using Catch.Graphics;
 using Catch.Services;
 
-namespace Catch.Towers
+namespace Catch.Map
 {
-    public class TowerHoverIndicator : HexagonIndicator, IIndicator
+    public class TileAreaIndicator : HexagonIndicator, IIndicator
     {
-        public TowerHoverIndicator(IConfig config)
+        public TileAreaIndicator(IConfig config, Color color)
         {
             var radius = config.GetFloat(CoreConfig.TileRadius);
             var inset = config.GetFloat(CoreConfig.TileRadiusInset);
 
             Radius = radius - inset;
-            Style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.Yellow, StrokeWidth = 3 };
-            Layer = DrawLayer.Ui;
+            Style = new StyleArgs() { BrushType = BrushType.Solid, Color = color, StrokeWidth = 3 };
+            Layer = DrawLayer.Base;
+            Filled = true;
             LevelOfDetail = DrawLevelOfDetail.All;
         }
     }

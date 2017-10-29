@@ -12,8 +12,6 @@ namespace Catch.Towers
             Tile = tile;
             Position = tile.Position;
 
-            Indicators.AddRange(resources.Indicators);
-
             var labelText = string.Format("{0},{1}", tile.Coords.Q, tile.Coords.R);
             Indicators.Add(resources.GetLabel(labelText));
 
