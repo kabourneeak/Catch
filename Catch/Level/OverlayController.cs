@@ -25,30 +25,24 @@ namespace Catch.Level
         private HexCoords _lastHover;
         private MapTileModel _lastHoverTile;
 
-        public OverlayController(LevelStateModel level,
+        public OverlayController(UiStateModel uiState,
             ISimulationManager simulationManager,
             ISimulationState simulationState,
-            ILabelProvider labelProvider,
             IGraphicsManager graphicsManager)
         {
-            if (level == null) throw new ArgumentNullException(nameof(level));
+            _uiState = uiState ?? throw new ArgumentNullException(nameof(uiState));
             if (simulationManager == null) throw new ArgumentNullException(nameof(simulationManager));
             if (simulationState == null) throw new ArgumentNullException(nameof(simulationState));
-            if (labelProvider == null) throw new ArgumentNullException(nameof(labelProvider));
-
-            _uiState = level.Ui;
 
             _executeEventArgs = new ExecuteEventArgs()
             {
                 Manager = simulationManager,
                 Sim = simulationState,
-                LabelProvider = labelProvider
             };
 
             _updateReadinessEventArgs = new UpdateReadinessEventArgs
             {
                 Sim = simulationState,
-                LabelProvider = labelProvider
             };
 
             // create UI elements

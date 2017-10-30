@@ -10,7 +10,5 @@
         ISimulationManager Manager { get; }
 
         ISimulationState Sim { get; }
-
-        ILabelProvider LabelProvider { get; }
     }
 }

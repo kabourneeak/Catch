@@ -6,13 +6,13 @@ namespace Catch.Level
 {
     public class SimulationManager : ISimulationManager
     {
-        private readonly LevelStateModel _level;
         private readonly UpdateController _updateController;
+        private readonly MapModel _map;
         private readonly IAgentProvider _agentProvider;
 
-        public SimulationManager(LevelStateModel level, UpdateController updateController, IAgentProvider agentProvider)
+        public SimulationManager(UpdateController updateController, MapModel map, IAgentProvider agentProvider)
         {
-            _level = level ?? throw new ArgumentNullException(nameof(level));
+            _map = map ?? throw new ArgumentNullException(nameof(map));
             _updateController = updateController ?? throw new ArgumentNullException(nameof(updateController));
             _agentProvider = agentProvider ?? throw new ArgumentNullException(nameof(agentProvider));
         }
@@ -65,13 +65,13 @@ namespace Catch.Level
             if (agent == null)
                 throw new ArgumentNullException(nameof(agent));
 
-            if (object.ReferenceEquals(agent.Tile, _level.OffMap))
+            if (object.ReferenceEquals(agent.Tile, _map.OffMapTile))
             {
                 // for the off map tile, we don't actually site the agent
             }
             else
             {
-                var tileModel = _level.Map.GetTileModel(agent.Tile);
+                var tileModel = _map.GetTileModel(agent.Tile);
 
                 if (tileModel.TileAgent != null)
                     throw new ArgumentException("Attempted to site agent to tile which already has a TileAgent");
@@ -87,16 +87,16 @@ namespace Catch.Level
             if (tile == null)
                 throw new ArgumentNullException(nameof(tile));
 
-            if (object.ReferenceEquals(tile, _level.OffMap))
+            if (object.ReferenceEquals(tile, _map.OffMapTile))
             {
-                _level.OffMap.AddAgent(agent);
+                _map.OffMapTileModel.AddAgent(agent);
 
                 // reset tile reference
-                agent.Tile = _level.OffMap;
+                agent.Tile = _map.OffMapTileModel;
             }
             else
             {
-                var tileModel = _level.Map.GetTileModel(tile);
+                var tileModel = _map.GetTileModel(tile);
 
                 tileModel.AddAgent(agent);
 
@@ -112,13 +112,13 @@ namespace Catch.Level
 
             MapTileModel tileModel;
 
-            if (ReferenceEquals(agent.Tile, _level.OffMap))
+            if (ReferenceEquals(agent.Tile, _map.OffMapTileModel))
             {
-                tileModel = _level.OffMap;
+                tileModel = _map.OffMapTileModel;
             }
             else
             {
-                tileModel = _level.Map.GetTileModel(agent.Tile);
+                tileModel = _map.GetTileModel(agent.Tile);
 
                 // un-site the agent, if it was the tile agent
                 if (ReferenceEquals(agent.Tile.TileAgent, agent))

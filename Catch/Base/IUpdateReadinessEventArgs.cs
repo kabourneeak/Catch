@@ -3,7 +3,5 @@
     public interface IUpdateReadinessEventArgs
     {
         ISimulationState Sim { get; }
-
-        ILabelProvider LabelProvider { get; }
     }
 }

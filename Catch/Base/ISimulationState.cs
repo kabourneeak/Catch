@@ -12,11 +12,6 @@ namespace Catch.Base
 
         IMap Map { get; }
 
-        /// <summary>
-        /// A place which is off the map that agents can exist when not otherwise placed
-        /// </summary>
-        IMapTile OffMap { get; }
-
         PlayerModel Player { get; }
     }
 }

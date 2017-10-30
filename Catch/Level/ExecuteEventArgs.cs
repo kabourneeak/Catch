@@ -8,8 +8,6 @@ namespace Catch.Level
 
         public ISimulationManager Manager { get; set; }
 
-        public ILabelProvider LabelProvider { get; set; }
-
         public IAgent SelectedAgent { get; set; }
 
         public IAgent SelectedTileAgent { get; set; }

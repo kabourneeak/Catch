@@ -17,6 +17,8 @@ namespace Catch.Base
 
         IEnumerable<IMapTile> Tiles { get; }
 
+        IMapTile OffMapTile { get; }
+
         bool HasHex(HexCoords hc);
 
         IMapTile GetTile(HexCoords hc);

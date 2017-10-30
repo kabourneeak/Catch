@@ -9,8 +9,6 @@
 
         ISimulationManager Manager { get; }
 
-        ILabelProvider LabelProvider { get; }
-
         IAgent SelectedAgent { get; }
 
         IAgent SelectedTileAgent { get; }

@@ -2,6 +2,7 @@
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.4.0",
     "Newtonsoft.Json": "10.0.3",
+    "Unity": "5.1.0",
     "Win2D.uwp": "1.21.0"
   },
   "frameworks": {

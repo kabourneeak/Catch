@@ -11,13 +11,10 @@ namespace Catch.Level
 
         public ISimulationState Sim { get; }
 
-        public ILabelProvider LabelProvider { get; }
-
-        public UpdateEventArgs(ISimulationManager simulationManager, ISimulationState sim, ILabelProvider labelProvider)
+        public UpdateEventArgs(ISimulationManager simulationManager, ISimulationState sim)
         {
             Manager = simulationManager ?? throw new ArgumentNullException(nameof(simulationManager));
             Sim = sim ?? throw new ArgumentNullException(nameof(sim));
-            LabelProvider = labelProvider ?? throw new ArgumentNullException(nameof(labelProvider));
         }
     }
 }

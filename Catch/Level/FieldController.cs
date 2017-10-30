@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using Catch.Base;
 using Catch.Graphics;
+using Catch.Map;
 using Catch.Services;
 
 namespace Catch.Level
@@ -14,21 +15,25 @@ namespace Catch.Level
     {
         private static readonly DrawLayer[] DrawLayers = EnumUtils.GetEnumAsList<DrawLayer>().ToArray();
 
+        private readonly UiStateModel _uiState;
+        private readonly MapModel _map;
+        private readonly IGraphicsComponent _mapGraphicsComponent;
+        private readonly float _tileRadius;
+
         private Vector2 _pan;
         private float _zoom;
         private Vector2 _bottomLeftViewLimit;
         private Vector2 _topRightViewLimit;
         private Matrix3x2 _mapTransform;
 
-        private readonly LevelStateModel _level;
-        private readonly IGraphicsComponent _mapGraphicsComponent;
-        private readonly float _tileRadius;
-
-        public FieldController(LevelStateModel level)
+        public FieldController(IConfig config, UiStateModel uiState, MapModel map)
         {
-            _level = level ?? throw new ArgumentNullException(nameof(level));
+            if (config == null) throw new ArgumentNullException(nameof(config));
+            _uiState = uiState ?? throw new ArgumentNullException(nameof(uiState));
+            _map = map ?? throw new ArgumentNullException(nameof(map));
+
             _mapGraphicsComponent = new RelativePositionGraphicsComponent();
-            _tileRadius = level.Config.GetFloat(CoreConfig.TileRadius);
+            _tileRadius = config.GetFloat(CoreConfig.TileRadius);
 
             _pan = Vector2.Zero;
             _zoom = 1.0f;
@@ -37,11 +42,11 @@ namespace Catch.Level
         public void Initialize()
         {
             _zoom = 1.0f;
-            _pan.X = (_level.Ui.WindowSize.X - _level.Map.Size.X) / 2.0f;
-            _pan.Y = _level.Ui.WindowSize.Y * -1.0f + (_level.Ui.WindowSize.Y - _level.Map.Size.Y) / 2.0f;
+            _pan.X = (_uiState.WindowSize.X - _map.Size.X) / 2.0f;
+            _pan.Y = _uiState.WindowSize.Y * -1.0f + (_uiState.WindowSize.Y - _map.Size.Y) / 2.0f;
 
             _bottomLeftViewLimit = new Vector2(_tileRadius / 2 * -1);
-            _topRightViewLimit = Vector2.Add(_level.Ui.WindowSize, new Vector2(_tileRadius / 2));
+            _topRightViewLimit = Vector2.Add(_uiState.WindowSize, new Vector2(_tileRadius / 2));
         }
 
         public void Update(float deviceTicks)
@@ -69,7 +74,7 @@ namespace Catch.Level
             var topRightFieldCoords = TranslateToFieldCoords(_topRightViewLimit);
 
             // find tiles and agents which are currently on screen
-            var culledTiles = _level.Map.TileModels
+            var culledTiles = _map.TileModels
                 .Where(tm => bottomLeftFieldCoords.X <= tm.Position.X && topRightFieldCoords.X >= tm.Position.X)
                 .ToArray();
 
@@ -130,9 +135,9 @@ namespace Catch.Level
         {
             var fieldCoords = TranslateToFieldCoords(eventArgs.ViewCoords);
 
-            var hoverCoords = _level.Map.PointToHexCoords(fieldCoords);
-            _level.Ui.HoverHexCoords = hoverCoords;
-            _level.Ui.HoverTile = _level.Map.HasHex(hoverCoords) ? _level.Map.GetTileModel(hoverCoords) : null;
+            var hoverCoords = _map.PointToHexCoords(fieldCoords);
+            _uiState.HoverHexCoords = hoverCoords;
+            _uiState.HoverTile = _map.HasHex(hoverCoords) ? _map.GetTileModel(hoverCoords) : null;
         }
 
         public void Touch(TouchEventArgs eventArgs)

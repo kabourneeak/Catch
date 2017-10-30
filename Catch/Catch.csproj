@@ -132,6 +132,7 @@
     <Compile Include="Graphics\IGraphicsComponent.cs" />
     <Compile Include="Graphics\IGraphicsProvider.cs" />
     <Compile Include="Graphics\RelativePositionGraphicsComponent.cs" />
+    <Compile Include="Level\LevelBootstrapper.cs" />
     <Compile Include="Level\OverlayGraphicsProvider.cs" />
     <Compile Include="Level\SimulationManager.cs" />
     <Compile Include="Level\StatusBarGraphicsProvider.cs" />
@@ -146,9 +147,6 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Graphics\DrawLevelOfDetail.cs" />
     <Compile Include="Graphics\IDrawable.cs" />
-    <Compile Include="Level\LevelStateModel.cs" />
-    <Compile Include="Map\BuiltinMapProvider.cs" />
-    <Compile Include="Map\IMapProvider.cs" />
     <Compile Include="Mobs\BlockMobGraphicsProvider.cs" />
     <Compile Include="Services\EventArgsBase.cs" />
     <Compile Include="Services\HoverEventArgs.cs" />

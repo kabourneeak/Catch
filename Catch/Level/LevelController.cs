@@ -1,10 +1,10 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;
 using CatchLibrary.Serialization;
+using Unity;
 
 namespace Catch.Level
 {
@@ -13,20 +13,17 @@ namespace Catch.Level
     /// </summary>
     public class LevelController : IScreenController
     {
+        private readonly IUnityContainer _levelContainer;
         private readonly UpdateController _updateController;
         private readonly FieldController _fieldController;
         private readonly OverlayController _overlayController;
-        private readonly Random _rng = new Random();
 
-        private readonly LevelStateModel _level;
-        private readonly SimulationStateModel _sim;
         private readonly MapGraphicsProvider _mapGraphics;
-        private readonly IAgentProvider _agentProvider;
         private readonly IGraphicsManager _graphicsManager;
         private readonly ISimulationManager _simulationManager;
         private readonly UpdateEventArgs _updateEventArgs;
-
-        private float _elapsedDeviceTicks = 0.0f;
+        private readonly MapModel _map;
+        private readonly UiStateModel _uiState;
 
         #region Construction
 
@@ -35,36 +32,33 @@ namespace Catch.Level
             /*
              * Bootstrap simulation
              */
+            _levelContainer = LevelBootstrapper.CreateContainer(config);
 
-            var mapProvider = new BuiltinMapProvider(config);
-
-            var map = mapProvider.CreateMap(mapSerializationModel.Rows, mapSerializationModel.Columns);
-
-            _graphicsManager = new GraphicsManager(config);
-
+            _graphicsManager = _levelContainer.Resolve<IGraphicsManager>();
             _mapGraphics = _graphicsManager.Resolve<MapGraphicsProvider>();
 
-            var labelProvider = new LabelProvider();
-            _level = new LevelStateModel(config, map);
-            _sim = new SimulationStateModel(config, _level.Map, _level.OffMap);
+            _map = _levelContainer.Resolve<MapModel>();
+            _uiState = _levelContainer.Resolve<UiStateModel>();
 
-            _agentProvider = new BuiltinAgentProvider(config, _graphicsManager, labelProvider);
+            _updateController = _levelContainer.Resolve<UpdateController>();
+            _simulationManager = _levelContainer.Resolve<ISimulationManager>();
 
-            _updateController = new UpdateController();
+            _overlayController = _levelContainer.Resolve<OverlayController>();
+            _fieldController = _levelContainer.Resolve<FieldController>();
 
-            _simulationManager = new SimulationManager(_level, _updateController, _agentProvider);
-
-            _updateEventArgs = new UpdateEventArgs(_simulationManager, _sim, labelProvider);
-
-            InitializeMap(mapSerializationModel, map);
+            /*
+             * Other initialization
+             */
+            InitializeMap(mapSerializationModel, _map);
             InitializeEmitScript(mapSerializationModel);
 
-            _overlayController = new OverlayController(_level, _simulationManager, _sim, labelProvider, _graphicsManager);
-            _fieldController = new FieldController(_level);
+            _updateEventArgs = new UpdateEventArgs(_simulationManager, _levelContainer.Resolve<SimulationStateModel>());
         }
 
         private void InitializeMap(MapSerializationModel mapSerializationModel, MapModel map)
         {
+            map.Initialize(mapSerializationModel.Rows, mapSerializationModel.Columns);
+
             /*
              * Process tile models
              */
@@ -109,8 +103,8 @@ namespace Catch.Level
                 {
                     var agentArgs = new CreateAgentArgs()
                     {
-                        Path = _level.Map.GetPath(emitScriptEntry.PathName),
-                        Tile = _level.OffMap,
+                        Path = _map.GetPath(emitScriptEntry.PathName),
+                        Tile = _map.OffMapTileModel,
                         Team = emitScriptEntry.Team
                     };
 
@@ -128,7 +122,7 @@ namespace Catch.Level
 
         public void Initialize(Vector2 size)
         {
-            _level.Ui.WindowSize = size;
+            _uiState.WindowSize = size;
 
             _overlayController.Initialize();
             _fieldController.Initialize();
@@ -142,8 +136,6 @@ namespace Catch.Level
 
         public void Update(float deviceTicks)
         {
-            _elapsedDeviceTicks += deviceTicks;
-
             _updateController.Update(deviceTicks, _updateEventArgs);
             _fieldController.Update(deviceTicks);
             _overlayController.Update(deviceTicks);
@@ -165,7 +157,7 @@ namespace Catch.Level
 
         public void Resize(Vector2 size)
         {
-            _level.Ui.WindowSize = size;
+            _uiState.WindowSize = size;
 
             _fieldController.Resize(size);
             _overlayController.Resize(size);

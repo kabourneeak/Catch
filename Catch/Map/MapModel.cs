@@ -14,33 +14,32 @@ namespace Catch.Map
     public class MapModel : IMap
     {
         private readonly IConfig _config;
-        private readonly HexGridCollection<MapTileModel> _tiles; 
-        private readonly Dictionary<string, MapPathModel> _paths;
         private readonly float _tileRadius;
 
-        public MapModel(IConfig config, int rows, int columns)
+        private HexGridCollection<MapTileModel> _tiles;
+        private MapTileModel _offMapTile;
+        private Dictionary<string, MapPathModel> _paths;
+
+        public MapModel(IConfig config)
         {
             _config = config;
             _tileRadius = config.GetFloat(CoreConfig.TileRadius);
 
-            Rows = rows;
-            Columns = columns;
-            Size = new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), Rows * 2 * HexUtils.GetRadiusHeight(_tileRadius));
-
-            _tiles = new HexGridCollection<MapTileModel>(Rows, Columns);
-            _tiles.Populate((hc, v) => new MapTileModel(hc, _config));
-
-            _paths = new Dictionary<string, MapPathModel>();
+            Rows = 0;
+            Columns = 0;
+            Size = Vector2.Zero;
         }
 
         #region IMap Implementation
 
-        public int Rows { get; }
-        public int Columns { get; }
+        public int Rows { get; private set; }
+        public int Columns { get; private set; }
 
-        public Vector2 Size { get; }
+        public Vector2 Size { get; private set; }
 
         public IEnumerable<IMapTile> Tiles => _tiles;
+
+        public IMapTile OffMapTile => _offMapTile;
 
         public bool HasHex(HexCoords hc) => _tiles.HasHex(hc);
 
@@ -95,6 +94,20 @@ namespace Catch.Map
 
         #region Management
 
+        public void Initialize(int rows, int columns)
+        {
+            Rows = rows;
+            Columns = columns;
+            Size = new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), Rows * 2 * HexUtils.GetRadiusHeight(_tileRadius));
+
+            _tiles = new HexGridCollection<MapTileModel>(Rows, Columns);
+            _tiles.Populate((hc, v) => new MapTileModel(hc, _config));
+
+            _offMapTile = new MapTileModel(HexCoords.CreateFromOffset(-100, -100), _config);
+
+            _paths = new Dictionary<string, MapPathModel>();
+        }
+
         public void AddPath(MapPathModel pathModel) => _paths.Add(pathModel.Name, pathModel);
 
         public IEnumerable<MapTileModel> TileModels => _tiles;
@@ -102,6 +115,8 @@ namespace Catch.Map
         public MapTileModel GetTileModel(IMapTile tile) => _tiles.GetHex(tile.Coords);
 
         public MapTileModel GetTileModel(HexCoords hc) => _tiles.GetHex(hc);
+
+        public MapTileModel OffMapTileModel => _offMapTile;
 
         #endregion
     }
