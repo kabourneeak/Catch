@@ -109,7 +109,6 @@
     <Compile Include="Base\IHitModifier.cs" />
     <Compile Include="Base\IRemoveModifier.cs" />
     <Compile Include="Level\GraphicsManager.cs" />
-    <Compile Include="Graphics\IGraphicsManager.cs" />
     <Compile Include="Level\ExecuteEventArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
     <Compile Include="Base\AgentCommandType.cs" />

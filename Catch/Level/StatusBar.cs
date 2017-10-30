@@ -16,12 +16,10 @@ namespace Catch.Level
 
         private readonly int _barHeight;
 
-        public StatusBar(UiStateModel uiState, IGraphicsManager graphicsManager)
+        public StatusBar(UiStateModel uiState, StatusBarGraphicsProvider graphicsProvider)
         {
             _uiState = uiState ?? throw new ArgumentNullException(nameof(uiState));
-            if (graphicsManager == null) throw new ArgumentNullException(nameof(graphicsManager));
-
-            _graphicsProvider = graphicsManager.Resolve<StatusBarGraphicsProvider>();
+            _graphicsProvider = graphicsProvider ?? throw new ArgumentNullException(nameof(graphicsProvider));
 
             // copy down config (fix in StatusBarGraphicsProvider, too)
             _barHeight = 26;
