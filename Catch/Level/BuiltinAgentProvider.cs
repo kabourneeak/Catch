@@ -13,68 +13,89 @@ namespace Catch.Level
     /// </summary>
     public class BuiltinAgentProvider : IAgentProvider
     {
-        private readonly IConfig _config;
-        private readonly IUnityContainer _container;
+        private readonly IUnityContainer _providerContainer;
 
-        public BuiltinAgentProvider(IConfig config, IUnityContainer container)
+        public BuiltinAgentProvider(IUnityContainer container)
         {
-            _config = config ?? throw new ArgumentNullException(nameof(config));
-            _container = container ?? throw new ArgumentNullException(nameof(container));
+            if (container == null) throw new ArgumentNullException(nameof(container));
+
+            // Create a child container for agent components
+            _providerContainer = container.CreateChildContainer();
+            BootstrapProviderContainer();
         }
 
         public IExtendedAgent CreateAgent(string name, CreateAgentArgs args)
         {
+            // Create a child container for specific, agent-scoped dependencies to be used
+            // during the construction of this single agent
+            var agentContainer = _providerContainer.CreateChildContainer();
+
+            var agent = new AgentBase(name);
+
+            agentContainer.RegisterInstance<IAgent>(agent);
+            agentContainer.RegisterInstance<IExtendedAgent>(agent);
+
+            if (args.Path != null)
+                agentContainer.RegisterInstance<IMapPath>(args.Path);            
+
+            // configure agent
             switch (name)
             {
                 case GunTowerBehaviour.AgentTypeName:
-                    return CreateGunTowerAgent(args);
+                    return CreateGunTowerAgent(agent, agentContainer, args);
                 case EmptyTowerBehaviour.AgentTypeName:
-                    return CreateEmptyTower(args);
+                    return CreateEmptyTower(agent, agentContainer, args);
                 case BlockMobBehaviour.AgentTypeName:
-                    return CreateBlockMob(args);
+                    return CreateBlockMob(agent, agentContainer, args);
                 default:
                     throw new ArgumentException($"I don't know how to construct an agent with name {name}");
             }
         }
 
-        private IExtendedAgent CreateGunTowerAgent(CreateAgentArgs args)
+        private IExtendedAgent CreateGunTowerAgent(AgentBase agent, IUnityContainer container, CreateAgentArgs args)
         {
-            var agent = new AgentBase(GunTowerBehaviour.AgentTypeName);
-            agent.ExtendedStats.Team = args.Team;
-            agent.GraphicsComponent = new RelativePositionGraphicsComponent();
-            agent.BehaviourComponent = new GunTowerBehaviour(agent, _config, _container.Resolve<GunTowerGraphicsProvider>(), args.Tile);
-
-            if (agent.BehaviourComponent is IModifier modifier)
-                agent.AddModifier(modifier);
-
-            return agent;
-        }
-
-        private IExtendedAgent CreateEmptyTower(CreateAgentArgs args)
-        {
-            var agent = new AgentBase(EmptyTowerBehaviour.AgentTypeName);
-            agent.ExtendedStats.Team = args.Team;
-            agent.GraphicsComponent = new RelativePositionGraphicsComponent();
-            agent.BehaviourComponent = new EmptyTowerBehaviour(agent, _container.Resolve<EmptyTowerGraphicsProvider>(), args.Tile);
-
-            if (agent.BehaviourComponent is IModifier modifier)
-                agent.AddModifier(modifier);
-
-            return agent;
-        }
-
-        private IExtendedAgent CreateBlockMob(CreateAgentArgs args)
-        {
-            var agent = new AgentBase(BlockMobBehaviour.AgentTypeName);
             agent.Tile = args.Tile;
             agent.ExtendedStats.Team = args.Team;
-            agent.GraphicsComponent = new RelativePositionGraphicsComponent();
-            agent.BehaviourComponent = new BlockMobBehaviour(agent, _config, _container.Resolve<BlockMobGraphicsProvider>(), args.Path);
+            agent.GraphicsComponent = container.Resolve<RelativePositionGraphicsComponent>();
+            agent.BehaviourComponent = container.Resolve<GunTowerBehaviour>();
 
             if (agent.BehaviourComponent is IModifier modifier)
                 agent.AddModifier(modifier);
 
             return agent;
+        }
+
+        private IExtendedAgent CreateEmptyTower(AgentBase agent, IUnityContainer container, CreateAgentArgs args)
+        {
+            agent.Tile = args.Tile;
+            agent.ExtendedStats.Team = args.Team;
+            agent.GraphicsComponent = container.Resolve<RelativePositionGraphicsComponent>();
+            agent.BehaviourComponent = container.Resolve<EmptyTowerBehaviour>();
+
+            if (agent.BehaviourComponent is IModifier modifier)
+                agent.AddModifier(modifier);
+
+            return agent;
+        }
+
+        private IExtendedAgent CreateBlockMob(AgentBase agent, IUnityContainer container, CreateAgentArgs args)
+        {
+            agent.Tile = args.Tile;
+            agent.ExtendedStats.Team = args.Team;
+            agent.GraphicsComponent = container.Resolve<RelativePositionGraphicsComponent>();
+            agent.BehaviourComponent = container.Resolve<BlockMobBehaviour>();
+
+            if (agent.BehaviourComponent is IModifier modifier)
+                agent.AddModifier(modifier);
+
+            return agent;
+        }
+
+        private void BootstrapProviderContainer()
+        {
+            UnityUtils.RegisterAllAsTransient(typeof(IGraphicsComponent), _providerContainer);
+            UnityUtils.RegisterAllAsTransient(typeof(IModifier), _providerContainer);
+            UnityUtils.RegisterAllAsTransient(typeof(IUpdatable), _providerContainer);
         }
     }
 }

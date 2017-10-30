@@ -9,12 +9,11 @@ namespace Catch.Towers
     {
         public const string AgentTypeName = "EmptyTower";
 
-        public EmptyTowerBehaviour(IExtendedAgent host, EmptyTowerGraphicsProvider resources, IMapTile tile)
+        public EmptyTowerBehaviour(IExtendedAgent host, EmptyTowerGraphicsProvider resources)
         {
-            host.Tile = tile;
-            host.Position = tile.Position;
+            host.Position = host.Tile.Position;
 
-            var labelText = string.Format("{0},{1}", tile.Coords.Q, tile.Coords.R);
+            var labelText = string.Format("{0},{1}", host.Tile.Coords.Q, host.Tile.Coords.R);
             host.Indicators.Add(resources.GetLabel(labelText));
 
             host.CommandCollection.Add(new BuyTowerCommand(host));

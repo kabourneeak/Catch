@@ -157,6 +157,7 @@
     <Compile Include="Services\IScreenManager.cs" />
     <Compile Include="Services\SimpleSortedList.cs" />
     <Compile Include="Services\TouchEventArgs.cs" />
+    <Compile Include="Services\UnityUtils.cs" />
     <Compile Include="Services\VersionedCollection.cs" />
     <Compile Include="Level\SimulationStateModel.cs" />
     <Compile Include="Towers\BuyTowerCommand.cs" />

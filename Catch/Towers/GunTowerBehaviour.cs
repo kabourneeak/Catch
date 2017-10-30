@@ -10,15 +10,13 @@ namespace Catch.Towers
 
         private readonly IExtendedAgent _host;
 
-        public GunTowerBehaviour(IExtendedAgent host, IConfig config, GunTowerGraphicsProvider resources, IMapTile tile)
+        public GunTowerBehaviour(IExtendedAgent host, IConfig config, GunTowerGraphicsProvider resources)
         {
             _host = host ?? throw new ArgumentNullException(nameof(host));
             if (config == null) throw new ArgumentNullException(nameof(config));
             if (resources == null) throw new ArgumentNullException(nameof(resources));
-            if (tile == null) throw new ArgumentNullException(nameof(tile));
 
-            _host.Tile = tile;
-            _host.Position = tile.Position;
+            _host.Position = _host.Tile.Position;
 
             _host.Indicators.AddRange(resources.Indicators);
 
