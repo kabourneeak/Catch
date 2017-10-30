@@ -24,6 +24,13 @@ namespace Catch.Level
             BootstrapProviderContainer();
         }
 
+        private void BootstrapProviderContainer()
+        {
+            UnityUtils.RegisterAllAsTransient(typeof(IGraphicsComponent), _providerContainer);
+            UnityUtils.RegisterAllAsTransient(typeof(IModifier), _providerContainer);
+            UnityUtils.RegisterAllAsTransient(typeof(IUpdatable), _providerContainer);
+        }
+
         public IExtendedAgent CreateAgent(string name, CreateAgentArgs args)
         {
             // Create a child container for specific, agent-scoped dependencies to be used
@@ -89,13 +96,6 @@ namespace Catch.Level
                 agent.AddModifier(modifier);
 
             return agent;
-        }
-
-        private void BootstrapProviderContainer()
-        {
-            UnityUtils.RegisterAllAsTransient(typeof(IGraphicsComponent), _providerContainer);
-            UnityUtils.RegisterAllAsTransient(typeof(IModifier), _providerContainer);
-            UnityUtils.RegisterAllAsTransient(typeof(IUpdatable), _providerContainer);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Numerics;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.Map;
@@ -81,6 +82,8 @@ namespace Catch.Level
             /*
              * Process paths
              */
+
+            ISet<MapTileModel> allPathTiles = new HashSet<MapTileModel>();
             foreach (var pathModel in mapSerializationModel.Paths)
             {
                 var mapPath = new MapPathModel();
@@ -88,10 +91,17 @@ namespace Catch.Level
 
                 foreach (var pathStep in pathModel.PathSteps)
                 {
-                    mapPath.Add(map.GetTileModel(pathStep.Coords));
+                    var mapTileModel = map.GetTileModel(pathStep.Coords);
+                    allPathTiles.Add(mapTileModel);
+                    mapPath.Add(mapTileModel);
                 }
 
                 map.AddPath(mapPath);
+            }
+
+            foreach (var tile in allPathTiles)
+            {
+                tile.Indicators.Add(_mapGraphics.PathTileIndicator);
             }
         }
 
