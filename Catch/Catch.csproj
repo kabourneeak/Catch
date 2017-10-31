@@ -91,6 +91,7 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="Assets\maps\MapOne.json" />
     <Content Include="Assets\config.json" />
+    <Content Include="Assets\styles.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +109,8 @@
     <Compile Include="Base\IAttackModifier.cs" />
     <Compile Include="Base\IHitModifier.cs" />
     <Compile Include="Base\IRemoveModifier.cs" />
+    <Compile Include="Graphics\ConfiguredHexagonIndicator.cs" />
+    <Compile Include="Graphics\StyleGraphicsProvider.cs" />
     <Compile Include="Level\GraphicsManager.cs" />
     <Compile Include="Level\ExecuteEventArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
