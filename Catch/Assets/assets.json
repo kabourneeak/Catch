@@ -1,14 +1,35 @@
 {
+    "Sprites" : [
+        {
+            "Name" : "GunTowerBodySprite",
+            "Base" : "GunTowerBodySprite"
+        },
+        {
+            "Name" : "GunTowerStrategicSprite",
+            "Base" : "HexagonSprite"
+        }
+    ],
+
     "Indicators" : [
         {
-            "Name" : "GunTowerBaseIndicator",
-            "Base" : "SpriteIndicator",
-          "Config": {
-            "SpriteIndicator.SpriteName": "GunTowerBodySprite",
-            "SpriteIndicator.StyleName": "GunTowerStyle",
-            "SpriteIndicator.Layer": "Tower",
-            "SpriteIndicator.LevelOfDetail": "All"
-          }
+            "Name": "GunTowerBaseIndicator",
+            "Base": "SpriteIndicator",
+            "Config": {
+                "SpriteIndicator.SpriteName": "GunTowerBodySprite",
+                "SpriteIndicator.StyleName": "GunTowerStyle",
+                "SpriteIndicator.Layer": "Tower",
+                "SpriteIndicator.LevelOfDetail": "NormalHigh"
+            }
+        },
+        {
+            "Name": "GunTowerStrategicIndicator",
+            "Base": "SpriteIndicator",
+            "Config": {
+                "SpriteIndicator.SpriteName": "GunTowerStrategicSprite",
+                "SpriteIndicator.StyleName": "GunTowerStyle",
+                "SpriteIndicator.Layer": "Tower",
+                "SpriteIndicator.LevelOfDetail": "Low"
+            }
         },
         {
             "Name" : "MapTileIndicator",

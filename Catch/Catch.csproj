@@ -110,6 +110,7 @@
     <Compile Include="Base\IHitModifier.cs" />
     <Compile Include="Base\IRemoveModifier.cs" />
     <Compile Include="Graphics\ConfiguredHexagonIndicator.cs" />
+    <Compile Include="Graphics\IBrush.cs" />
     <Compile Include="Graphics\StyleGraphicsProvider.cs" />
     <Compile Include="Level\GraphicsManager.cs" />
     <Compile Include="Level\ExecuteEventArgs.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Map\TileOutlineIndicator.cs" />
     <Compile Include="Mobs\BlockMobBehaviour.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
+    <Compile Include="Services\DictionaryConfig.cs" />
     <Compile Include="Services\JsonConfig.cs" />
     <Compile Include="Level\UpdateEventArgs.cs" />
     <Compile Include="Level\UpdateReadinessEventArgs.cs" />
