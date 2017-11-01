@@ -4,7 +4,7 @@ using Catch.Base;
 using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;
-using CatchLibrary.Serialization;
+using CatchLibrary.Serialization.Maps;
 using Unity;
 
 namespace Catch.Level

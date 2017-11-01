@@ -3,7 +3,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using CatchLibrary.HexGrid;
 
-namespace CatchLibrary.Serialization
+namespace CatchLibrary.Serialization.Maps
 {
     [DataContract]
     public class MapSerializationModel

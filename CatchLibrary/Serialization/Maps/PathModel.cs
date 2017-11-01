@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace CatchLibrary.Serialization
+namespace CatchLibrary.Serialization.Maps
 {
     [DataContract]
     public class PathModel

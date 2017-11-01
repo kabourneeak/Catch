@@ -1,5 +1,5 @@
 ﻿using CatchLibrary.HexGrid;
-using CatchLibrary.Serialization;
+using CatchLibrary.Serialization.Maps;
 
 namespace MapWriter.Maps
 {

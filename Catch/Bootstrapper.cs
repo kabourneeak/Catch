@@ -2,7 +2,7 @@
 using System.IO;
 using Catch.Level;
 using Catch.Services;
-using CatchLibrary.Serialization;
+using CatchLibrary.Serialization.Maps;
 using Newtonsoft.Json;
 
 namespace Catch
