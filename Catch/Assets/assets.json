@@ -124,66 +124,35 @@
     "Colors": [
         {
             "Name": "PathTileColor",
-            "A": 255,
-            "R": 12,
-            "G": 156,
-            "B": 209
+            "ColorHex" : "#FF0C9CD1"
         },
         {
             "Name": "EmptyTileColor",
-            "A": 255,
-            "R": 124,
-            "G": 4,
-            "B": 36
+            "ColorHex" : "#FF4C0518"
         },
         {
             "Name": "BlockMobColor",
-            "A": 255,
-            "R": 255,
-            "G": 255,
-            "B": 0
+            "ColorHex" : "#FFFFFF00"
         },
         {
             "Name": "SelectedTileColor",
-            "A": 255,
-            "R": 255,
-            "G": 255,
-            "B": 0
+            "ColorHex" : "#FFFFFF00"
         },
         {
             "Name": "HoverTileColor",
-            "A": 255,
-            "R": 255,
-            "G": 255,
-            "B": 0
+            "ColorHex" : "#FFFFFF00"
         },
         {
             "Name": "HighlightedTileColor",
-            "A": 255,
-            "R": 255,
-            "G": 255,
-            "B": 0
-        },
-        {
-            "Name": "GunTowerColor",
-            "A": 255,
-            "R": 14,
-            "G": 70,
-            "B": 160
+            "ColorHex" : "#FFFFFF00"
         },
         {
             "Name": "StatusBarForegroundColor",
-            "A": 255,
-            "R": 170,
-            "G": 132,
-            "B": 57
+            "ColorHex" : "#FFAA8439"
         },
         {
             "Name": "StatusBarBackgroundColor",
-            "A": 255,
-            "R": 55,
-            "G": 38,
-            "B": 68
+            "ColorHex" : "#FF372644"
         }
     ],
     
@@ -232,7 +201,7 @@
         },
         {
             "Name" : "GunTowerStyle",
-            "ColorName": "GunTowerColor",
+            "ColorHex" : "#FF0E46A0",
             "BrushType": "Solid",
             "BrushOpacity": 1.0,
             "StrokeWidth": 4

@@ -12,6 +12,9 @@ namespace CatchLibrary.Serialization.Assets
         public string ColorName { get; set; }
 
         [DataMember]
+        public string ColorHex { get; set; }
+
+        [DataMember]
         public string BrushType { get; set; }
 
         [DataMember]

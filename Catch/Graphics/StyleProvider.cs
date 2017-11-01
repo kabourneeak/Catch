@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Windows.UI;
 using Catch.Services;
 using CatchLibrary.Serialization.Assets;
@@ -87,7 +88,7 @@ namespace Catch.Graphics
             // load colours
             foreach (var cm in assetModel.Colors)
             {
-                var c = Color.FromArgb(cm.A, cm.R, cm.G, cm.B);
+                var c = ColorFromColorHex(cm.ColorHex);
                 _colors.Add(cm.Name, c);
             }
 
@@ -96,8 +97,24 @@ namespace Catch.Graphics
             {
                 // create brush containers that we can return now, and worry about
                 // creating the brush itself during the create cycle.
-                _styles.Add(sm.Name, new StyleImpl(sm, GetColor(sm.ColorName)));
+
+                // use ColorHex if provided, ColorName otherwise
+                var color = string.IsNullOrWhiteSpace(sm.ColorHex) 
+                    ? GetColor(sm.ColorName) 
+                    : ColorFromColorHex(sm.ColorHex);
+
+                _styles.Add(sm.Name, new StyleImpl(sm, color));
             }
+        }
+
+        private Color ColorFromColorHex(string colorHex)
+        {
+            var a = byte.Parse(colorHex.Substring(1, 2), NumberStyles.HexNumber);
+            var r = byte.Parse(colorHex.Substring(3, 2), NumberStyles.HexNumber);
+            var g = byte.Parse(colorHex.Substring(5, 2), NumberStyles.HexNumber);
+            var b = byte.Parse(colorHex.Substring(7, 2), NumberStyles.HexNumber);
+
+            return Color.FromArgb(a, r, g, b);
         }
 
         private ICanvasBrush CreateBrush(CreateResourcesArgs createArgs, StyleImpl style)
