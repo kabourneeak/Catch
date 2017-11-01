@@ -10,13 +10,16 @@ namespace Catch.Graphics
         private static readonly string CfgHeight = ConfigUtils.GetConfigPath(nameof(BoxSprite), nameof(CfgHeight));
         private static readonly string CfgWidth = ConfigUtils.GetConfigPath(nameof(BoxSprite), nameof(CfgWidth));
         private static readonly string CfgFilled = ConfigUtils.GetConfigPath(nameof(BoxSprite), nameof(CfgFilled));
+        private static readonly string CfgRounded = ConfigUtils.GetConfigPath(nameof(BoxSprite), nameof(CfgRounded));
 
         private int _createFrameId = -1;
+        private CanvasStrokeStyle _strokeStyle;
         private CanvasCachedGeometry _geo;
 
         public float Height { get; }
         public float Width { get; }
         public bool Filled { get; }
+        public bool Rounded { get; }
         public IStyle Style { get; }
 
         public BoxSprite(IConfig config, StyleProvider styleProvider)
@@ -24,6 +27,7 @@ namespace Catch.Graphics
             Height = config.GetFloat(CfgHeight);
             Width = config.GetFloat(CfgWidth);
             Filled = config.GetBool(CfgFilled, false);
+            Rounded = config.GetBool(CfgRounded, false);
             Style = styleProvider.GetStyle(config.GetString(CfgStyleName));
         }
 
@@ -40,12 +44,17 @@ namespace Catch.Graphics
             _createFrameId = args.FrameId;
 
             // create and cache
+            if (Rounded)
+                _strokeStyle = new CanvasStrokeStyle() { LineJoin = CanvasLineJoin.Round };
+            else
+                _strokeStyle = new CanvasStrokeStyle();
+
             var geo = CanvasGeometry.CreateRectangle(args.ResourceCreator, Width / -2.0f, Height / -2.0f, Width, Height);
 
             if (Filled)
                 _geo = CanvasCachedGeometry.CreateFill(geo);
             else
-                _geo = CanvasCachedGeometry.CreateStroke(geo, Style.StrokeWidth, Style.StrokeStyle);
+                _geo = CanvasCachedGeometry.CreateStroke(geo, Style.StrokeWidth, _strokeStyle);
         }
 
         public void DestroyResources()
@@ -55,6 +64,9 @@ namespace Catch.Graphics
 
             _geo.Dispose();
             _geo = null;
+
+            _strokeStyle.Dispose();
+            _strokeStyle = null;
 
             _createFrameId = -1;
         }

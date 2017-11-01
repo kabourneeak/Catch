@@ -5,14 +5,11 @@ using Catch.Services;
 using CatchLibrary.Serialization.Assets;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
-using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
 {
     public class StyleProvider : IProvider, IGraphicsResourceContainer
     {
-        private static readonly CanvasStrokeStyle BaseStrokeStyle = new CanvasStrokeStyle();
-
         private readonly Dictionary<string, Color> _colors;
         private readonly Dictionary<string, StyleImpl> _styles;
 
@@ -160,8 +157,6 @@ namespace Catch.Graphics
 
             public ICanvasBrush Brush { get; set; }
 
-            public CanvasStrokeStyle StrokeStyle { get; }
-
             public float StrokeWidth { get; }
 
             public float Opacity { get; }
@@ -172,7 +167,6 @@ namespace Catch.Graphics
                 StrokeWidth = style.StrokeWidth;
                 Opacity = style.BrushOpacity;
                 Color = color;
-                StrokeStyle = BaseStrokeStyle;
 
                 if (Enum.TryParse(style.BrushType, out BrushType bt))
                 {

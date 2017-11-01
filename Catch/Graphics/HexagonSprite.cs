@@ -12,6 +12,7 @@ namespace Catch.Graphics
         private static readonly string CfgFilled = ConfigUtils.GetConfigPath(nameof(HexagonSprite), nameof(CfgFilled));
 
         private int _createFrameId = -1;
+        private CanvasStrokeStyle _strokeStyle;
         private CanvasCachedGeometry _geo;
 
         public float Radius { get; }
@@ -50,12 +51,14 @@ namespace Catch.Graphics
             pb.EndFigure(CanvasFigureLoop.Closed);
 
             // create and cache
+            _strokeStyle = new CanvasStrokeStyle();
+
             var geo = CanvasGeometry.CreatePath(pb);
 
             if (Filled)
                 _geo = CanvasCachedGeometry.CreateFill(geo);
             else
-                _geo = CanvasCachedGeometry.CreateStroke(geo, Style.StrokeWidth, Style.StrokeStyle);
+                _geo = CanvasCachedGeometry.CreateStroke(geo, Style.StrokeWidth, _strokeStyle);
         }
 
         public void DestroyResources()
@@ -65,6 +68,9 @@ namespace Catch.Graphics
 
             _geo.Dispose();
             _geo = null;
+
+            _strokeStyle.Dispose();
+            _strokeStyle = null;
 
             _createFrameId = -1;
         }

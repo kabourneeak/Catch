@@ -10,6 +10,7 @@ namespace Catch.Towers
         private static readonly string CfgStyleName = ConfigUtils.GetConfigPath(nameof(GunTowerBodySprite), nameof(CfgStyleName));
 
         private int _createFrameId = -1;
+        private CanvasStrokeStyle _strokeStyle;
         private CanvasCachedGeometry _geo;
 
         public IStyle Style { get; }
@@ -31,6 +32,9 @@ namespace Catch.Towers
 
             _createFrameId = args.FrameId;
 
+            // create stroke
+            _strokeStyle = new CanvasStrokeStyle();
+
             // create geometry
             var body = CanvasGeometry.CreateCircle(args.ResourceCreator, new Vector2(0.0f), 24);
             var cannon = CanvasGeometry.CreateRectangle(args.ResourceCreator, 23, -3, 10, 6);
@@ -38,7 +42,7 @@ namespace Catch.Towers
             var comb = body.CombineWith(cannon, Matrix3x2.Identity, CanvasGeometryCombine.Union);
 
             // cache
-            _geo = CanvasCachedGeometry.CreateStroke(comb, Style.StrokeWidth, Style.StrokeStyle);
+            _geo = CanvasCachedGeometry.CreateStroke(comb, Style.StrokeWidth, _strokeStyle);
         }
 
         public void DestroyResources()
@@ -48,6 +52,9 @@ namespace Catch.Towers
 
             _geo.Dispose();
             _geo = null;
+
+            _strokeStyle.Dispose();
+            _strokeStyle = null;
 
             _createFrameId = -1;
         }

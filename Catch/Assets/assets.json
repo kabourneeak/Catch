@@ -47,7 +47,8 @@
             "Config": {
                 "BoxSprite.StyleName": "BlockMobStyle",
                 "BoxSprite.Height": "20",
-                "BoxSprite.Width" : "20"
+                "BoxSprite.Width" : "20",
+                "BoxSprite.Rounded" : "True"
             }
         }
         

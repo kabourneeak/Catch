@@ -28,8 +28,6 @@ namespace Catch.Graphics
 
         public ISprite GetSprite(string spriteName)
         {
-            // TODO make sure that we are actually getting singletons
-
             if (_sprites.TryGetValue(spriteName, out var existingSprite))
             {
                 return existingSprite;
