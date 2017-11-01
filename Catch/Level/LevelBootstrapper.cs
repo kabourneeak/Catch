@@ -30,9 +30,7 @@ namespace Catch.Level
 
             container.RegisterType<GraphicsManager>(
                 new ContainerControlledLifetimeManager(), 
-                new InjectionFactory(c => new GraphicsManager(c.ResolveAll<IGraphicsProvider>())));
-            container.RegisterType<ILabelProvider, LabelProvider>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IAgentProvider, BuiltinAgentProvider>(new ContainerControlledLifetimeManager());
+                new InjectionFactory(c => new GraphicsManager(c.ResolveAll<IProvider>())));
 
             /*
              * Register Models
@@ -54,9 +52,24 @@ namespace Catch.Level
             container.RegisterType<StatusBar>(new ContainerControlledLifetimeManager());
 
             /*
-             * Register Component Implementations
+             * Register Providers
              */
-            UnityUtils.RegisterAllAsSingletons(typeof(IGraphicsProvider), container);
+            UnityUtils.RegisterAllAsSingletons(typeof(IProvider), container);
+
+            container.RegisterType<ILabelProvider>(new ContainerControlledLifetimeManager(),
+                new InjectionFactory(c => c.Resolve<LabelProvider>()));
+            container.RegisterType<IAgentProvider>(new ContainerControlledLifetimeManager(),
+                new InjectionFactory(c => c.Resolve<AgentProvider>()));
+
+
+            /*
+             * Register Agent Components
+             */
+            UnityUtils.RegisterAllAsTransient(typeof(IGraphicsComponent), container);
+            UnityUtils.RegisterAllAsTransient(typeof(IModifier), container);
+            UnityUtils.RegisterAllAsTransient(typeof(IUpdatable), container);
+            UnityUtils.RegisterAllAsTransient(typeof(IIndicator), container);
+            UnityUtils.RegisterAllAsTransient(typeof(ISprite), container);
 
             return container;
         }

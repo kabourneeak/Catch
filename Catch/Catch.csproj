@@ -104,6 +104,7 @@
     <Compile Include="Base\CoreLabels.cs" />
     <Compile Include="Base\CreateAgentArgs.cs" />
     <Compile Include="Base\IAgent.cs" />
+    <Compile Include="Base\IAgentProvider.cs" />
     <Compile Include="Base\IBaseStats.cs" />
     <Compile Include="Base\IAgentStatsModifier.cs" />
     <Compile Include="Base\IAttackModifier.cs" />
@@ -135,10 +136,12 @@
     <Compile Include="Base\SpawnAgentTask.cs" />
     <Compile Include="Base\BaseStatsModel.cs" />
     <Compile Include="Base\IUpdatable.cs" />
-    <Compile Include="Level\BuiltinAgentProvider.cs" />
+    <Compile Include="Level\AgentProvider.cs" />
     <Compile Include="Graphics\IGraphicsComponent.cs" />
     <Compile Include="Graphics\IGraphicsProvider.cs" />
     <Compile Include="Graphics\RelativePositionGraphicsComponent.cs" />
+    <Compile Include="Level\IndicatorProvider.cs" />
+    <Compile Include="Services\IProvider.cs" />
     <Compile Include="Level\LevelBootstrapper.cs" />
     <Compile Include="Level\OverlayGraphicsProvider.cs" />
     <Compile Include="Level\SimulationManager.cs" />
@@ -173,14 +176,11 @@
     <Compile Include="Towers\EmptyTowerGraphicsProvider.cs" />
     <Compile Include="Towers\GunTowerBehaviour.cs" />
     <Compile Include="Towers\GunTowerBodySprite.cs" />
-    <Compile Include="Towers\GunTowerGraphicsProvider.cs" />
-    <Compile Include="Towers\GunTowerStrategicIndicator.cs" />
     <Compile Include="Base\PlayerModel.cs" />
     <Compile Include="Graphics\CreateResourcesArgs.cs" />
     <Compile Include="Graphics\DrawArgs.cs" />
     <Compile Include="Graphics\DrawLayer.cs" />
     <Compile Include="Base\IExtendedAgent.cs" />
-    <Compile Include="Base\IAgentProvider.cs" />
     <Compile Include="Graphics\IGraphicsResource.cs" />
     <Compile Include="Base\IIndicator.cs" />
     <Compile Include="Base\IndicatorCollection.cs" />
@@ -213,7 +213,6 @@
     <Compile Include="Services\EmptyConfig.cs" />
     <Compile Include="Services\IConfig.cs" />
     <Compile Include="Services\TaskExtensions.cs" />
-    <Compile Include="Towers\GunTowerBaseIndicator.cs" />
     <Compile Include="Towers\EmptyTowerBehaviour.cs" />
     <Compile Include="Level\UiStateModel.cs" />
     <Compile Include="Services\ZoomToPointEventArgs.cs" />

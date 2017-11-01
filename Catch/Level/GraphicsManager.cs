@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Catch.Graphics;
+using Catch.Services;
 
 namespace Catch.Level
 {
@@ -11,11 +12,11 @@ namespace Catch.Level
     /// </summary>
     public class GraphicsManager : IGraphicsResource
     {
-        private readonly List<IGraphicsProvider> _providers;
+        private readonly List<IGraphicsResource> _providers;
 
-        public GraphicsManager(IEnumerable<IGraphicsProvider> providers)
+        public GraphicsManager(IEnumerable<IProvider> providers)
         {
-            _providers = providers.ToList();
+            _providers = providers.OfType<IGraphicsResource>().ToList();
         }
 
         public void CreateResources(CreateResourcesArgs args)

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Catch.Graphics;
+using Catch.Services;
 
 namespace Catch.Towers
 {
-    public class EmptyTowerGraphicsProvider : IGraphicsProvider
+    public class EmptyTowerGraphicsProvider : IProvider, IGraphicsProvider
     {
         private readonly Dictionary<string, LabelIndicator> _labels;
 

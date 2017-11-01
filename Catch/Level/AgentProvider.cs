@@ -11,31 +11,20 @@ namespace Catch.Level
     /// <summary>
     /// Provides agents built into the program
     /// </summary>
-    public class BuiltinAgentProvider : IAgentProvider
+    public class AgentProvider : IProvider, IAgentProvider
     {
-        private readonly IUnityContainer _providerContainer;
+        private readonly IUnityContainer _container;
 
-        public BuiltinAgentProvider(IUnityContainer container)
+        public AgentProvider(IUnityContainer container)
         {
-            if (container == null) throw new ArgumentNullException(nameof(container));
-
-            // Create a child container for agent components
-            _providerContainer = container.CreateChildContainer();
-            BootstrapProviderContainer();
-        }
-
-        private void BootstrapProviderContainer()
-        {
-            UnityUtils.RegisterAllAsTransient(typeof(IGraphicsComponent), _providerContainer);
-            UnityUtils.RegisterAllAsTransient(typeof(IModifier), _providerContainer);
-            UnityUtils.RegisterAllAsTransient(typeof(IUpdatable), _providerContainer);
+            _container = container ?? throw new ArgumentNullException(nameof(container));
         }
 
         public IExtendedAgent CreateAgent(string name, CreateAgentArgs args)
         {
             // Create a child container for specific, agent-scoped dependencies to be used
             // during the construction of this single agent
-            var agentContainer = _providerContainer.CreateChildContainer();
+            var agentContainer = _container.CreateChildContainer();
 
             var agent = new AgentBase(name);
 

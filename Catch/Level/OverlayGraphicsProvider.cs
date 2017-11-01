@@ -7,7 +7,7 @@ using Catch.Services;
 
 namespace Catch.Level
 {
-    public class OverlayGraphicsProvider : IGraphicsProvider
+    public class OverlayGraphicsProvider : IProvider, IGraphicsProvider
     {
         private readonly TileOutlineIndicator _hoverTileIndicator;
         private readonly TileAreaIndicator _selectedTileIndicator;

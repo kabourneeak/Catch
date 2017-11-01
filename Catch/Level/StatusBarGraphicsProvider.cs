@@ -1,10 +1,11 @@
 ﻿using Windows.UI.Text;
 using Catch.Graphics;
+using Catch.Services;
 using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.Level
 {
-    public class StatusBarGraphicsProvider : IGraphicsProvider
+    public class StatusBarGraphicsProvider : IProvider, IGraphicsProvider
     {
         public IStyle BackgroundStyle { get; private set; }
 

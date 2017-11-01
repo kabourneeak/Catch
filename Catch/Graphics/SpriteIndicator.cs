@@ -12,7 +12,7 @@ namespace Catch.Graphics
         private static readonly string CfgSpriteName = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgSpriteName));
         private static readonly string CfgUseRotation = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgUseRotation));
         private static readonly string CfgLayer = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgLayer));
-        private static readonly string CfgLayerOfDetail = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgLayerOfDetail));
+        private static readonly string CfgLevelOfDetail = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgLevelOfDetail));
 
         public ISprite Sprite { get; }
 
@@ -35,7 +35,7 @@ namespace Catch.Graphics
                 throw new ArgumentException($"Could not parse {strCfgLayer} as DrawLayer");
             }
 
-            var strCfgLod = config.GetString(CfgLayerOfDetail);
+            var strCfgLod = config.GetString(CfgLevelOfDetail);
             if (Enum.TryParse(strCfgLod, out DrawLevelOfDetail lod))
             {
                 LevelOfDetail = lod;

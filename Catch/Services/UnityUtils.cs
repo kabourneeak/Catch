@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Catch.Level;
 using Unity;
 using Unity.Lifetime;
 
@@ -41,7 +40,7 @@ namespace Catch.Services
         public static void RegisterAllAsTransient(Type ofType, IUnityContainer container)
         {
             // Get the current assembly through the current class
-            var currentAssembly = typeof(BuiltinAgentProvider).GetTypeInfo().Assembly;
+            var currentAssembly = typeof(UnityUtils).GetTypeInfo().Assembly;
 
             // Filter the defined classes according to the interfaces they implement
             var implTypeInfos = currentAssembly

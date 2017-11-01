@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Windows.UI;
+using Catch.Services;
 using CatchLibrary.Serialization.Assets;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
@@ -8,7 +9,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
 {
-    public class StyleProvider : IGraphicsProvider
+    public class StyleProvider : IProvider, IGraphicsProvider
     {
         private static readonly CanvasStrokeStyle BaseStrokeStyle = new CanvasStrokeStyle();
 

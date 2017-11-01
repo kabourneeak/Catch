@@ -4,7 +4,7 @@ using Catch.Base;
 
 namespace Catch.Services
 {
-    public class LabelProvider : ILabelProvider
+    public class LabelProvider : IProvider, ILabelProvider
     {
         private readonly Dictionary<string, IPredicate> _predicates = new Dictionary<string, IPredicate>();
         private readonly Dictionary<string, IFact> _facts = new Dictionary<string, IFact>();

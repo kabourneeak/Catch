@@ -1,5 +1,6 @@
 ﻿using System;
 using Catch.Base;
+using Catch.Level;
 using Catch.Services;
 
 namespace Catch.Towers
@@ -10,15 +11,16 @@ namespace Catch.Towers
 
         private readonly IExtendedAgent _host;
 
-        public GunTowerBehaviour(IExtendedAgent host, IConfig config, GunTowerGraphicsProvider resources)
+        public GunTowerBehaviour(IExtendedAgent host, IConfig config, IndicatorProvider indicatorProvider)
         {
             _host = host ?? throw new ArgumentNullException(nameof(host));
             if (config == null) throw new ArgumentNullException(nameof(config));
-            if (resources == null) throw new ArgumentNullException(nameof(resources));
+            if (indicatorProvider == null) throw new ArgumentNullException(nameof(indicatorProvider));
 
             _host.Position = _host.Tile.Position;
 
-            _host.Indicators.AddRange(resources.Indicators);
+            _host.Indicators.Add(indicatorProvider.GetIndicator("GunTowerBaseIndicator", host));
+            _host.Indicators.Add(indicatorProvider.GetIndicator("GunTowerStrategicIndicator", host));
 
             // initialize behaviour
             _ticksPerSecond = config.GetFloat(CoreConfig.TicksPerSecond);

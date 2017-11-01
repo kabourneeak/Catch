@@ -4,7 +4,7 @@ using Catch.Services;
 
 namespace Catch.Mobs
 {
-    public class BlockMobGraphicsProvider : IGraphicsProvider
+    public class BlockMobGraphicsProvider : IProvider, IGraphicsProvider
     {
         public IndicatorCollection Indicators { get; }
 
