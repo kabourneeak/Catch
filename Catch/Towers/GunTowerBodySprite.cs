@@ -1,22 +1,23 @@
-using System.Numerics;
-using Catch.Base;
+﻿using System.Numerics;
 using Catch.Graphics;
 using Catch.Services;
 using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Towers
 {
-    public class GunTowerBaseIndicator : IIndicator
+    public class GunTowerBodySprite : ISprite
     {
-        private readonly IStyle _style;
-
-        public GunTowerBaseIndicator(IConfig config, IStyle style)
-        {
-            _style = style;
-        }
+        private static readonly string CfgStyleName = ConfigUtils.GetConfigPath(nameof(GunTowerBodySprite), nameof(CfgStyleName));
 
         private int _createFrameId = -1;
         private CanvasCachedGeometry _geo;
+
+        public IStyle Style { get; }
+
+        public GunTowerBodySprite(IConfig config, StyleProvider styleProvider)
+        {
+            Style = styleProvider.GetStyle(config.GetString(CfgStyleName));
+        }
 
         public void CreateResources(CreateResourcesArgs args)
         {
@@ -30,10 +31,6 @@ namespace Catch.Towers
 
             _createFrameId = args.FrameId;
 
-            // define style
-            var strokeStyle = new CanvasStrokeStyle() { };
-            var strokeWidth = 4;
-
             // create geometry
             var body = CanvasGeometry.CreateCircle(args.ResourceCreator, new Vector2(0.0f), 24);
             var cannon = CanvasGeometry.CreateRectangle(args.ResourceCreator, 23, -3, 10, 6);
@@ -41,7 +38,7 @@ namespace Catch.Towers
             var comb = body.CombineWith(cannon, Matrix3x2.Identity, CanvasGeometryCombine.Union);
 
             // cache
-            _geo = CanvasCachedGeometry.CreateStroke(comb, strokeWidth, strokeStyle);
+            _geo = CanvasCachedGeometry.CreateStroke(comb, Style.StrokeWidth, Style.StrokeStyle);
         }
 
         public void DestroyResources()
@@ -55,18 +52,19 @@ namespace Catch.Towers
             _createFrameId = -1;
         }
 
-        public void Draw(DrawArgs drawArgs, float rotation)
+        public void Draw(DrawArgs drawArgs)
         {
-            drawArgs.PushRotation(rotation);
-
-            drawArgs.Ds.DrawCachedGeometry(_geo, _style.Brush);
-
-            drawArgs.Pop();
+            drawArgs.Ds.DrawCachedGeometry(_geo, Style.Brush);
         }
 
-        public DrawLayer Layer => DrawLayer.Tower;
+        public void Draw(DrawArgs drawArgs, Vector2 offset)
+        {
+            drawArgs.Ds.DrawCachedGeometry(_geo, offset, Style.Brush);
+        }
 
-        public DrawLevelOfDetail LevelOfDetail => DrawLevelOfDetail.NormalHigh;
-
+        public void Draw(DrawArgs drawArgs, float offsetX, float offsetY)
+        {
+            drawArgs.Ds.DrawCachedGeometry(_geo, offsetX, offsetY, Style.Brush);
+        }
     }
 }

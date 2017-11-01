@@ -109,7 +109,11 @@
     <Compile Include="Base\IAttackModifier.cs" />
     <Compile Include="Base\IHitModifier.cs" />
     <Compile Include="Base\IRemoveModifier.cs" />
-    <Compile Include="Graphics\ConfiguredHexagonIndicator.cs" />
+    <Compile Include="Graphics\BoxSprite.cs" />
+    <Compile Include="Graphics\HexagonSprite.cs" />
+    <Compile Include="Graphics\ISprite.cs" />
+    <Compile Include="Graphics\SpriteProvider.cs" />
+    <Compile Include="Graphics\SpriteIndicator.cs" />
     <Compile Include="Graphics\IStyle.cs" />
     <Compile Include="Graphics\StyleProvider.cs" />
     <Compile Include="Level\GraphicsManager.cs" />
@@ -168,6 +172,7 @@
     <Compile Include="Towers\BuyTowerCommand.cs" />
     <Compile Include="Towers\EmptyTowerGraphicsProvider.cs" />
     <Compile Include="Towers\GunTowerBehaviour.cs" />
+    <Compile Include="Towers\GunTowerBodySprite.cs" />
     <Compile Include="Towers\GunTowerGraphicsProvider.cs" />
     <Compile Include="Towers\GunTowerStrategicIndicator.cs" />
     <Compile Include="Base\PlayerModel.cs" />

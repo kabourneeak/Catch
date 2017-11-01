@@ -2,11 +2,19 @@
     "Sprites" : [
         {
             "Name" : "GunTowerBodySprite",
-            "Base" : "GunTowerBodySprite"
+            "Base" : "GunTowerBodySprite",
+            "Config": {
+                "GunTowerBodySprite.StyleName": "GunTowerStyle"
+            }
         },
         {
             "Name" : "GunTowerStrategicSprite",
-            "Base" : "HexagonSprite"
+            "Base" : "HexagonSprite",
+            "Config": {
+                "HexagonSprite.StyleName": "GunTowerStyle",
+                "HexagonSprite.Filled": "True",
+                "HexagonSprite.Radius": "57"
+            }
         }
     ],
 
@@ -16,7 +24,7 @@
             "Base": "SpriteIndicator",
             "Config": {
                 "SpriteIndicator.SpriteName": "GunTowerBodySprite",
-                "SpriteIndicator.StyleName": "GunTowerStyle",
+                "SpriteIndicator.UseRotation": "True",
                 "SpriteIndicator.Layer": "Tower",
                 "SpriteIndicator.LevelOfDetail": "NormalHigh"
             }
@@ -26,7 +34,6 @@
             "Base": "SpriteIndicator",
             "Config": {
                 "SpriteIndicator.SpriteName": "GunTowerStrategicSprite",
-                "SpriteIndicator.StyleName": "GunTowerStyle",
                 "SpriteIndicator.Layer": "Tower",
                 "SpriteIndicator.LevelOfDetail": "Low"
             }
@@ -36,7 +43,6 @@
             "Base" : "SpriteIndicator",
             "Config" : {
                 "SpriteIndicator.SpriteName" : "HexagonSprite",
-                "SpriteIndicator.StyleName" : "MapTileStyle",
                 "SpriteIndicator.Layer" : "Base",
                 "SpriteIndicator.LevelOfDetail" : "All"                
             }
@@ -46,7 +52,6 @@
             "Base" : "SpriteIndicator",
             "Config" : {
                 "SpriteIndicator.SpriteName" : "HexagonSprite",
-                "SpriteIndicator.StyleName" : "MapTileStyle",
                 "SpriteIndicator.Layer" : "Base",
                 "SpriteIndicator.LevelOfDetail" : "All"                
             }
@@ -191,7 +196,8 @@
             "PrimaryBehaviour": "GunTowerBaseBehaviour",
             "DrawComponent": "RelativePositionDrawComponent",
             "Indicators": [
-                "GunTowerBaseIndicator"
+                "GunTowerBaseIndicator",
+                "GunTowerStrategicIndicator"
             ],
             "Modifiers": [
                 "GunTowerLevel4BaseModifier"
