@@ -19,7 +19,6 @@ namespace Catch.Level
         private readonly FieldController _fieldController;
         private readonly OverlayController _overlayController;
 
-        private readonly MapGraphicsProvider _mapGraphics;
         private readonly GraphicsResourceManager _graphicsResourceManager;
         private readonly ISimulationManager _simulationManager;
         private readonly UpdateEventArgs _updateEventArgs;
@@ -36,7 +35,6 @@ namespace Catch.Level
             _levelContainer = LevelBootstrapper.CreateContainer(config);
 
             _graphicsResourceManager = _levelContainer.Resolve<GraphicsResourceManager>();
-            _mapGraphics = _levelContainer.Resolve<MapGraphicsProvider>();
 
             _map = _levelContainer.Resolve<MapModel>();
             _uiState = _levelContainer.Resolve<UiStateModel>();
@@ -58,6 +56,8 @@ namespace Catch.Level
 
         private void InitializeMap(MapSerializationModel mapSerializationModel, MapModel map)
         {
+            var indicatorProvider = _levelContainer.Resolve<IndicatorProvider>();
+
             map.Initialize(mapSerializationModel.Rows, mapSerializationModel.Columns);
 
             /*
@@ -65,7 +65,7 @@ namespace Catch.Level
              */
             foreach (var tile in map.TileModels)
             {
-                tile.Indicators.Add(_mapGraphics.EmptyTileIndicator);
+                tile.Indicators.Add(indicatorProvider.GetIndicator("EmptyTileIndicator", tile));
 
                 var tileEmitModel = mapSerializationModel.Tiles.GetHex(tile.Coords);
                 var towerArgs = new CreateAgentArgs()
@@ -101,7 +101,7 @@ namespace Catch.Level
 
             foreach (var tile in allPathTiles)
             {
-                tile.Indicators.Add(_mapGraphics.PathTileIndicator);
+                tile.Indicators.Add(indicatorProvider.GetIndicator("PathTileIndicator", tile));
             }
         }
 

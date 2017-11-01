@@ -1,5 +1,6 @@
 ﻿using System;
 using Catch.Base;
+using Catch.Level;
 using Catch.Services;
 
 namespace Catch.Mobs
@@ -12,19 +13,21 @@ namespace Catch.Mobs
 
         private readonly IConfig _config;
 
-        public BlockMobBehaviour(IExtendedAgent host, IConfig config, BlockMobGraphicsProvider resources, IMapPath path) : base(host, path)
+        public BlockMobBehaviour(IExtendedAgent host, IConfig config, IndicatorProvider indicatorProvider, IMapPath path) : base(host, path)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
             _config = config ?? throw new ArgumentNullException(nameof(config));
-            if (resources == null) throw new ArgumentNullException(nameof(resources));
+            if (indicatorProvider == null) throw new ArgumentNullException(nameof(indicatorProvider));
             if (path == null) throw new ArgumentNullException(nameof(path));
 
-            host.Indicators.AddRange(resources.Indicators);
+            host.Indicators.Add(indicatorProvider.GetIndicator("BlockMobBaseIndicator"));
         }
 
         public void OnCalculateAgentStats(IExtendedAgent agent)
         {
-            agent.ExtendedStats.MovementSpeed = _config.GetFloat(CfgVelocity);
+            // TODO this should come from a base modifier somewhere
+
+            agent.ExtendedStats.MovementSpeed = 0.005f;
         }
     }
 }

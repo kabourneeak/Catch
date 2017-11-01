@@ -30,6 +30,22 @@ namespace Catch.Level
             }
         }
 
+        public IIndicator GetIndicator(string indicatorName)
+        {
+            if (_indicatorModels.TryGetValue(indicatorName, out var im))
+            {
+                var scopedContainer = _container.CreateChildContainer();
+
+                scopedContainer.RegisterInstance<IConfig>(_configs[indicatorName]);
+
+                var indicator = scopedContainer.Resolve<IIndicator>(im.Base);
+
+                return indicator;
+            }
+
+            throw new ArgumentException($"The indicator {indicatorName} is not defined");
+        }
+
         public IIndicator GetIndicator(string indicatorName, IExtendedAgent host)
         {
             if (_indicatorModels.TryGetValue(indicatorName, out var im))
@@ -38,6 +54,23 @@ namespace Catch.Level
 
                 scopedContainer.RegisterInstance<IAgent>(host);
                 scopedContainer.RegisterInstance<IExtendedAgent>(host);
+                scopedContainer.RegisterInstance<IConfig>(_configs[indicatorName]);
+
+                var indicator = scopedContainer.Resolve<IIndicator>(im.Base);
+
+                return indicator;
+            }
+
+            throw new ArgumentException($"The indicator {indicatorName} is not defined");
+        }
+
+        public IIndicator GetIndicator(string indicatorName, IMapTile mapTile)
+        {
+            if (_indicatorModels.TryGetValue(indicatorName, out var im))
+            {
+                var scopedContainer = _container.CreateChildContainer();
+
+                scopedContainer.RegisterInstance<IMapTile>(mapTile);
                 scopedContainer.RegisterInstance<IConfig>(_configs[indicatorName]);
 
                 var indicator = scopedContainer.Resolve<IIndicator>(im.Base);

@@ -1,4 +1,6 @@
 ﻿using Catch.Base;
+using Catch.Graphics;
+using Catch.Level;
 
 namespace Catch.Towers
 {
@@ -9,12 +11,14 @@ namespace Catch.Towers
     {
         public const string AgentTypeName = "EmptyTower";
 
-        public EmptyTowerBehaviour(IExtendedAgent host, EmptyTowerGraphicsProvider resources)
+        public EmptyTowerBehaviour(IExtendedAgent host, IndicatorProvider indicatorProvider)
         {
             host.Position = host.Tile.Position;
 
+            var labelIndicator = (TextIndicator) indicatorProvider.GetIndicator("EmptyTileLabel");
             var labelText = string.Format("{0},{1}", host.Tile.Coords.Q, host.Tile.Coords.R);
-            host.Indicators.Add(resources.GetLabel(labelText));
+            labelIndicator.SetLabelText(labelText);
+            host.Indicators.Add(labelIndicator);
 
             host.CommandCollection.Add(new BuyTowerCommand(host));
         }

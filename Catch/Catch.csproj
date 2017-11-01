@@ -113,6 +113,8 @@
     <Compile Include="Graphics\BoxSprite.cs" />
     <Compile Include="Graphics\HexagonSprite.cs" />
     <Compile Include="Graphics\ISprite.cs" />
+    <Compile Include="Graphics\TextResourceProvider.cs" />
+    <Compile Include="Graphics\TextResource.cs" />
     <Compile Include="Graphics\SpriteProvider.cs" />
     <Compile Include="Graphics\SpriteIndicator.cs" />
     <Compile Include="Graphics\IStyle.cs" />
@@ -143,12 +145,7 @@
     <Compile Include="Level\IndicatorProvider.cs" />
     <Compile Include="Services\IProvider.cs" />
     <Compile Include="Level\LevelBootstrapper.cs" />
-    <Compile Include="Level\OverlayGraphicsProvider.cs" />
     <Compile Include="Level\SimulationManager.cs" />
-    <Compile Include="Level\StatusBarGraphicsProvider.cs" />
-    <Compile Include="Map\MapGraphicsProvider.cs" />
-    <Compile Include="Map\TileAreaIndicator.cs" />
-    <Compile Include="Map\TileOutlineIndicator.cs" />
     <Compile Include="Mobs\BlockMobBehaviour.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
     <Compile Include="Services\DictionaryConfig.cs" />
@@ -158,7 +155,6 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Graphics\DrawLevelOfDetail.cs" />
     <Compile Include="Graphics\IDrawable.cs" />
-    <Compile Include="Mobs\BlockMobGraphicsProvider.cs" />
     <Compile Include="Services\EventArgsBase.cs" />
     <Compile Include="Services\HoverEventArgs.cs" />
     <Compile Include="Services\KeyPressEventArgs.cs" />
@@ -173,7 +169,6 @@
     <Compile Include="Services\VersionedCollection.cs" />
     <Compile Include="Level\SimulationStateModel.cs" />
     <Compile Include="Towers\BuyTowerCommand.cs" />
-    <Compile Include="Towers\EmptyTowerGraphicsProvider.cs" />
     <Compile Include="Towers\GunTowerBehaviour.cs" />
     <Compile Include="Towers\GunTowerBodySprite.cs" />
     <Compile Include="Base\PlayerModel.cs" />
@@ -201,9 +196,7 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Mobs\BlockMobBaseIndicator.cs" />
-    <Compile Include="Graphics\HexagonIndicator.cs" />
-    <Compile Include="Graphics\LabelIndicator.cs" />
+    <Compile Include="Graphics\TextIndicator.cs" />
     <Compile Include="Mobs\PathMobBehaviour.cs" />
     <Compile Include="Towers\RadiusExitTargetting.cs" />
     <Compile Include="Services\NilScreenController.cs" />

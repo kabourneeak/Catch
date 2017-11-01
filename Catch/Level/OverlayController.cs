@@ -19,22 +19,22 @@ namespace Catch.Level
         private readonly UiStateModel _uiState;
         private readonly ExecuteEventArgs _executeEventArgs;
         private readonly UpdateReadinessEventArgs _updateReadinessEventArgs;
-        private readonly OverlayGraphicsProvider _graphicsProvider;
         private readonly StatusBar _statusBar;
 
         private HexCoords _lastHover;
         private MapTileModel _lastHoverTile;
+        private IIndicator _hoverTileIndicator;
 
         public OverlayController(UiStateModel uiState,
             ISimulationManager simulationManager,
             ISimulationState simulationState,
-            OverlayGraphicsProvider graphicsProvider,
+            IndicatorProvider indicatorProvider,
             StatusBar statusBar)
         {
             _uiState = uiState ?? throw new ArgumentNullException(nameof(uiState));
             if (simulationManager == null) throw new ArgumentNullException(nameof(simulationManager));
             if (simulationState == null) throw new ArgumentNullException(nameof(simulationState));
-            _graphicsProvider = graphicsProvider ?? throw new ArgumentNullException(nameof(graphicsProvider));
+            if (indicatorProvider == null) throw new ArgumentNullException(nameof(indicatorProvider));
             _statusBar = statusBar ?? throw new ArgumentNullException(nameof(statusBar));
 
             _executeEventArgs = new ExecuteEventArgs()
@@ -49,6 +49,7 @@ namespace Catch.Level
             };
 
             _lastHover = HexCoords.CreateFromOffset(-1, -1);
+            _hoverTileIndicator = indicatorProvider.GetIndicator("HoverTileIndicator");
         }
 
         public void Initialize()
@@ -104,12 +105,12 @@ namespace Catch.Level
                 return;
 
             // remove previous indicator
-            _lastHoverTile?.Indicators.Remove(_graphicsProvider.HoverTileIndicator);
+            _lastHoverTile?.Indicators.Remove(_hoverTileIndicator);
 
             // add new indicator
             _lastHover = _uiState.HoverHexCoords;
             _lastHoverTile = _uiState.HoverTile;
-            _lastHoverTile?.Indicators.Add(_graphicsProvider.HoverTileIndicator);
+            _lastHoverTile?.Indicators.Add(_hoverTileIndicator);
         }
 
         public void Touch(TouchEventArgs eventArgs)

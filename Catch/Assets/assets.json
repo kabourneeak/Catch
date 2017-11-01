@@ -13,9 +13,44 @@
             "Config": {
                 "HexagonSprite.StyleName": "GunTowerStyle",
                 "HexagonSprite.Filled": "True",
-                "HexagonSprite.Radius": "57"
+                "HexagonSprite.Radius": "58.5"
+            }
+        },
+        {
+            "Name" : "EmptyTileSprite",
+            "Base" : "HexagonSprite",
+            "Config": {
+                "HexagonSprite.StyleName": "EmptyTileStyle",
+                "HexagonSprite.Radius": "58.5"
+            }
+        },
+        {
+            "Name" : "PathTileSprite",
+            "Base" : "HexagonSprite",
+            "Config": {
+                "HexagonSprite.StyleName": "PathTileStyle",
+                "HexagonSprite.Filled": "True",
+                "HexagonSprite.Radius": "58.5"
+            }
+        },
+        {
+            "Name" : "HoverTileSprite",
+            "Base" : "HexagonSprite",
+            "Config": {
+                "HexagonSprite.StyleName": "HoverTileStyle",
+                "HexagonSprite.Radius": "58.5"
+            }
+        },
+        {
+            "Name" : "BlockMobSprite",
+            "Base" : "BoxSprite",
+            "Config": {
+                "BoxSprite.StyleName": "BlockMobStyle",
+                "BoxSprite.Height": "20",
+                "BoxSprite.Width" : "20"
             }
         }
+        
     ],
 
     "Indicators" : [
@@ -37,12 +72,21 @@
                 "SpriteIndicator.Layer": "Tower",
                 "SpriteIndicator.LevelOfDetail": "Low"
             }
+        },        
+        {
+            "Name": "BlockMobBaseIndicator",
+            "Base": "SpriteIndicator",
+            "Config": {
+                "SpriteIndicator.SpriteName": "BlockMobSprite",
+                "SpriteIndicator.Layer": "Mob",
+                "SpriteIndicator.LevelOfDetail": "NormalHigh"
+            }
         },
         {
-            "Name" : "MapTileIndicator",
+            "Name" : "EmptyTileIndicator",
             "Base" : "SpriteIndicator",
             "Config" : {
-                "SpriteIndicator.SpriteName" : "HexagonSprite",
+                "SpriteIndicator.SpriteName" : "EmptyTileSprite",
                 "SpriteIndicator.Layer" : "Base",
                 "SpriteIndicator.LevelOfDetail" : "All"                
             }
@@ -51,9 +95,27 @@
             "Name" : "PathTileIndicator",
             "Base" : "SpriteIndicator",
             "Config" : {
-                "SpriteIndicator.SpriteName" : "HexagonSprite",
+                "SpriteIndicator.SpriteName" : "PathTileSprite",
                 "SpriteIndicator.Layer" : "Base",
                 "SpriteIndicator.LevelOfDetail" : "All"                
+            }
+        },
+        {
+            "Name" : "HoverTileIndicator",
+            "Base" : "SpriteIndicator",
+            "Config" : {
+                "SpriteIndicator.SpriteName" : "HoverTileSprite",
+                "SpriteIndicator.Layer" : "Ui",
+                "SpriteIndicator.LevelOfDetail" : "All"                
+            }
+        },
+        {
+            "Name" : "EmptyTileLabel",
+            "Base" : "TextIndicator",
+            "Config" : {
+                "TextIndicator.StyleName" : "EmptyTileStyle",
+                "TextIndicator.Layer" : "Ui",
+                "TextIndicator.LevelOfDetail" : "NormalHigh"                
             }
         }
     ],

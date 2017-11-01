@@ -40,7 +40,7 @@ namespace Catch.Graphics
             _createFrameId = args.FrameId;
 
             // create and cache
-            var geo = CanvasGeometry.CreateRectangle(args.ResourceCreator, Width / 2.0f, Height / 2.0f, Width, Height);
+            var geo = CanvasGeometry.CreateRectangle(args.ResourceCreator, Width / -2.0f, Height / -2.0f, Width, Height);
 
             if (Filled)
                 _geo = CanvasCachedGeometry.CreateFill(geo);

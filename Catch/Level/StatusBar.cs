@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Text;
 using Windows.Foundation;
+using Windows.UI.Text;
 using Catch.Graphics;
+using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.Level
 {
@@ -12,25 +14,38 @@ namespace Catch.Level
     public class StatusBar
     {
         private readonly UiStateModel _uiState;
-        private readonly StatusBarGraphicsProvider _graphicsProvider;
+        private readonly IStyle _fgStyle;
+        private readonly IStyle _bgStyle;
 
         private readonly int _barHeight;
+        private CanvasTextFormat _fgTextFormat;
 
-        public StatusBar(UiStateModel uiState, StatusBarGraphicsProvider graphicsProvider)
+        public StatusBar(UiStateModel uiState, StyleProvider styleProvider)
         {
             _uiState = uiState ?? throw new ArgumentNullException(nameof(uiState));
-            _graphicsProvider = graphicsProvider ?? throw new ArgumentNullException(nameof(graphicsProvider));
+            if (styleProvider == null) throw new ArgumentNullException(nameof(styleProvider));
 
-            // copy down config (fix in StatusBarGraphicsProvider, too)
+            // copy down config
             _barHeight = 26;
+
+            _fgStyle = styleProvider.GetStyle("StatusBarForegroundStyle");
+            _bgStyle = styleProvider.GetStyle("StatusBarBackgroundStyle");
+
+            _fgTextFormat = new CanvasTextFormat()
+            {
+                VerticalAlignment = CanvasVerticalAlignment.Center,
+                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                FontWeight = FontWeights.Bold,
+                FontSize = _barHeight * 0.75f
+            };
         }
 
         public void Draw(DrawArgs drawArgs)
         {
             drawArgs.PushTranslation(0, _uiState.WindowSize.Y - _barHeight);
 
-            drawArgs.Ds.FillRectangle(new Rect(0,0, _uiState.WindowSize.X, _barHeight), _graphicsProvider.BackgroundStyle.Brush);
-            drawArgs.Ds.DrawText(GetStatusText(), new Rect(0, 0, _uiState.WindowSize.X, _barHeight), _graphicsProvider.ForegroundStyle.Brush, _graphicsProvider.ForegroundTextFormat);
+            drawArgs.Ds.FillRectangle(new Rect(0,0, _uiState.WindowSize.X, _barHeight), _bgStyle.Brush);
+            drawArgs.Ds.DrawText(GetStatusText(), new Rect(0, 0, _uiState.WindowSize.X, _barHeight), _fgStyle.Brush, _fgTextFormat);
 
             drawArgs.Pop();
         }
