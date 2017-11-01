@@ -6,7 +6,7 @@ using Unity;
 
 namespace Catch.Graphics
 {
-    public class SpriteProvider : IProvider, IGraphicsProvider
+    public class SpriteProvider : IProvider, IGraphicsResourceContainer
     {
         private readonly IConfig _config;
         private readonly IUnityContainer _container;

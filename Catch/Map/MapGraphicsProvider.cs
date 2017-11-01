@@ -5,7 +5,7 @@ using Catch.Services;
 
 namespace Catch.Map
 {
-    public class MapGraphicsProvider : IProvider, IGraphicsProvider
+    public class MapGraphicsProvider : IProvider, IGraphicsResourceContainer
     {
         private readonly TileOutlineIndicator _emptyTileIndicator;
         private readonly TileAreaIndicator _pathTileIndicator;

@@ -117,7 +117,7 @@
     <Compile Include="Graphics\SpriteIndicator.cs" />
     <Compile Include="Graphics\IStyle.cs" />
     <Compile Include="Graphics\StyleProvider.cs" />
-    <Compile Include="Level\GraphicsManager.cs" />
+    <Compile Include="Level\GraphicsResourceManager.cs" />
     <Compile Include="Level\ExecuteEventArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
     <Compile Include="Base\AgentCommandType.cs" />
@@ -138,7 +138,7 @@
     <Compile Include="Base\IUpdatable.cs" />
     <Compile Include="Level\AgentProvider.cs" />
     <Compile Include="Graphics\IGraphicsComponent.cs" />
-    <Compile Include="Graphics\IGraphicsProvider.cs" />
+    <Compile Include="Graphics\IGraphicsResourceContainer.cs" />
     <Compile Include="Graphics\RelativePositionGraphicsComponent.cs" />
     <Compile Include="Level\IndicatorProvider.cs" />
     <Compile Include="Services\IProvider.cs" />

@@ -4,7 +4,7 @@ using Catch.Services;
 
 namespace Catch.Towers
 {
-    public class EmptyTowerGraphicsProvider : IProvider, IGraphicsProvider
+    public class EmptyTowerGraphicsProvider : IProvider, IGraphicsResourceContainer
     {
         private readonly Dictionary<string, LabelIndicator> _labels;
 

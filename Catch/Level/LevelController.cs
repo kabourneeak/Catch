@@ -20,7 +20,7 @@ namespace Catch.Level
         private readonly OverlayController _overlayController;
 
         private readonly MapGraphicsProvider _mapGraphics;
-        private readonly GraphicsManager _graphicsManager;
+        private readonly GraphicsResourceManager _graphicsResourceManager;
         private readonly ISimulationManager _simulationManager;
         private readonly UpdateEventArgs _updateEventArgs;
         private readonly MapModel _map;
@@ -35,7 +35,7 @@ namespace Catch.Level
              */
             _levelContainer = LevelBootstrapper.CreateContainer(config);
 
-            _graphicsManager = _levelContainer.Resolve<GraphicsManager>();
+            _graphicsResourceManager = _levelContainer.Resolve<GraphicsResourceManager>();
             _mapGraphics = _levelContainer.Resolve<MapGraphicsProvider>();
 
             _map = _levelContainer.Resolve<MapModel>();
@@ -203,12 +203,12 @@ namespace Catch.Level
 
         public void CreateResources(CreateResourcesArgs args)
         {
-            _graphicsManager.CreateResources(args);
+            _graphicsResourceManager.CreateResources(args);
         }
 
         public void DestroyResources()
         {
-            _graphicsManager.DestroyResources();
+            _graphicsResourceManager.DestroyResources();
         }
 
         #endregion

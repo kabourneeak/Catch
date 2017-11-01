@@ -5,7 +5,7 @@ using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.Level
 {
-    public class StatusBarGraphicsProvider : IProvider, IGraphicsProvider
+    public class StatusBarGraphicsProvider : IProvider, IGraphicsResourceContainer
     {
         public IStyle BackgroundStyle { get; private set; }
 

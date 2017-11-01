@@ -8,13 +8,13 @@ namespace Catch.Level
     /// <summary>
     /// A simple class to be reponsible for delegating Graphics Resource events
     /// from the <see cref="LevelController"/> to all instances of 
-    /// <see cref="IGraphicsProvider"/>
+    /// <see cref="IGraphicsResourceContainer"/>
     /// </summary>
-    public class GraphicsManager : IGraphicsResource
+    public class GraphicsResourceManager : IGraphicsResource
     {
         private readonly List<IGraphicsResource> _providers;
 
-        public GraphicsManager(IEnumerable<IProvider> providers)
+        public GraphicsResourceManager(IEnumerable<IProvider> providers)
         {
             _providers = providers.OfType<IGraphicsResource>().ToList();
         }

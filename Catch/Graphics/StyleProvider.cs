@@ -9,7 +9,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
 {
-    public class StyleProvider : IProvider, IGraphicsProvider
+    public class StyleProvider : IProvider, IGraphicsResourceContainer
     {
         private static readonly CanvasStrokeStyle BaseStrokeStyle = new CanvasStrokeStyle();
 

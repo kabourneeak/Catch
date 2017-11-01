@@ -1,5 +1,4 @@
 ﻿using System;
-using Windows.UI;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.Map;
@@ -7,7 +6,7 @@ using Catch.Services;
 
 namespace Catch.Level
 {
-    public class OverlayGraphicsProvider : IProvider, IGraphicsProvider
+    public class OverlayGraphicsProvider : IProvider, IGraphicsResourceContainer
     {
         private readonly TileOutlineIndicator _hoverTileIndicator;
         private readonly TileAreaIndicator _selectedTileIndicator;

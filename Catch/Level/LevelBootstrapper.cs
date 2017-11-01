@@ -28,9 +28,9 @@ namespace Catch.Level
             // used during provision of agents, components to provide dependencies and scoped containers
             container.RegisterInstance<IUnityContainer>(container);
 
-            container.RegisterType<GraphicsManager>(
+            container.RegisterType<GraphicsResourceManager>(
                 new ContainerControlledLifetimeManager(), 
-                new InjectionFactory(c => new GraphicsManager(c.ResolveAll<IProvider>())));
+                new InjectionFactory(c => new GraphicsResourceManager(c.ResolveAll<IProvider>())));
 
             /*
              * Register Models
