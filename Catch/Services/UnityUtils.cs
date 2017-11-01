@@ -19,20 +19,22 @@ namespace Catch.Services
                 .DefinedTypes
                 .Where(type => type.ImplementedInterfaces.Any(inter => inter == ofType));
 
+            // First register the concrete types
             foreach (var implTypeInfo in implTypeInfos)
             {
                 var implType = implTypeInfo.AsType();
 
-                // Unity does not share instances for multiple registrations when using 
-                // named registrations, so we need to instantiate it now and register the 
-                // instances instead.
-                var inst = container.Resolve(implType);
-
                 // register as the concrete type
-                container.RegisterInstance(implType, inst);
+                container.RegisterType(implType, new ContainerControlledLifetimeManager());
+            }
+
+            // Then, instantiate and register by name so we can looked them all up in ResolveAll
+            foreach (var implTypeInfo in implTypeInfos)
+            {
+                var implType = implTypeInfo.AsType();
 
                 // register as the interface type (for resolve all)
-                container.RegisterInstance(ofType, implTypeInfo.Name, inst);
+                container.RegisterInstance(ofType, implTypeInfo.Name, container.Resolve(implType));
             }
         }
 
