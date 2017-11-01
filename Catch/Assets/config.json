@@ -5,6 +5,7 @@
 
   "Core.TileRadius": 60.0,
   "Core.TileRadiusInset": 1.5,
+  "Core.TileRadiusAfterInset" : 58.5,
   "Core.PlayerTeam": 0,
   "Core.TicksPerSecond": 60.0,
 

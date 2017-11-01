@@ -19,7 +19,7 @@ namespace Catch
 
         public Bootstrapper()
         {
-            Config = new JsonConfig("config.json");
+            Config = DictionaryConfig.FromJson("config.json", new EmptyConfig());
         }
 
         public void BeginGame(IScreenManager screenManager)

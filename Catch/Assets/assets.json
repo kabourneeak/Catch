@@ -13,7 +13,7 @@
             "Config": {
                 "HexagonSprite.StyleName": "GunTowerStyle",
                 "HexagonSprite.Filled": "True",
-                "HexagonSprite.Radius": "58.5"
+                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
             }
         },
         {
@@ -21,7 +21,7 @@
             "Base" : "HexagonSprite",
             "Config": {
                 "HexagonSprite.StyleName": "EmptyTileStyle",
-                "HexagonSprite.Radius": "58.5"
+                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
             }
         },
         {
@@ -30,7 +30,7 @@
             "Config": {
                 "HexagonSprite.StyleName": "PathTileStyle",
                 "HexagonSprite.Filled": "True",
-                "HexagonSprite.Radius": "58.5"
+                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
             }
         },
         {
@@ -38,7 +38,7 @@
             "Base" : "HexagonSprite",
             "Config": {
                 "HexagonSprite.StyleName": "HoverTileStyle",
-                "HexagonSprite.Radius": "58.5"
+                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
             }
         },
         {

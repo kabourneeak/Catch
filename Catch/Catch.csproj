@@ -149,7 +149,6 @@
     <Compile Include="Mobs\BlockMobBehaviour.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
     <Compile Include="Services\DictionaryConfig.cs" />
-    <Compile Include="Services\JsonConfig.cs" />
     <Compile Include="Level\UpdateEventArgs.cs" />
     <Compile Include="Level\UpdateReadinessEventArgs.cs" />
     <Compile Include="Bootstrapper.cs" />
