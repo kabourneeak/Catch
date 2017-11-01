@@ -8,11 +8,11 @@ namespace Catch.Mobs
     {
         public IndicatorCollection Indicators { get; }
 
-        public BlockMobGraphicsProvider(IConfig config)
+        public BlockMobGraphicsProvider(IConfig config, StyleProvider styleProvider)
         {
             Indicators = new IndicatorCollection
             {
-                new BlockMobBaseIndicator(config)
+                new BlockMobBaseIndicator(config, styleProvider)
             };
         }
 

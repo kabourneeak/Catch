@@ -56,10 +56,66 @@
     "Colors": [
         {
             "Name": "PathTileColor",
-            "R": 0,
-            "G": 0,
-            "B": 255,
-            "A": 255
+            "A": 255,
+            "R": 12,
+            "G": 156,
+            "B": 209
+        },
+        {
+            "Name": "EmptyTileColor",
+            "A": 255,
+            "R": 124,
+            "G": 4,
+            "B": 36
+        },
+        {
+            "Name": "BlockMobColor",
+            "A": 255,
+            "R": 255,
+            "G": 255,
+            "B": 0
+        },
+        {
+            "Name": "SelectedTileColor",
+            "A": 255,
+            "R": 255,
+            "G": 255,
+            "B": 0
+        },
+        {
+            "Name": "HoverTileColor",
+            "A": 255,
+            "R": 255,
+            "G": 255,
+            "B": 0
+        },
+        {
+            "Name": "HighlightedTileColor",
+            "A": 255,
+            "R": 255,
+            "G": 255,
+            "B": 0
+        },
+        {
+            "Name": "GunTowerColor",
+            "A": 255,
+            "R": 14,
+            "G": 70,
+            "B": 160
+        },
+        {
+            "Name": "StatusBarForegroundColor",
+            "A": 255,
+            "R": 170,
+            "G": 132,
+            "B": 57
+        },
+        {
+            "Name": "StatusBarBackgroundColor",
+            "A": 255,
+            "R": 55,
+            "G": 38,
+            "B": 68
         }
     ],
     
@@ -70,6 +126,62 @@
             "BrushType": "Solid",
             "BrushOpacity": 1.0,
             "StrokeWidth": 1
+        },
+        {
+            "Name" : "BlockMobStyle",
+            "ColorName": "BlockMobColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 4
+        },
+        {
+            "Name" : "HoverTileStyle",
+            "ColorName": "HoverTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        },
+        {
+            "Name" : "SelectedTileStyle",
+            "ColorName": "SelectedTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        },
+        {
+            "Name" : "HighlightedTileStyle",
+            "ColorName": "HighlightedTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        },
+        {
+            "Name" : "EmptyTileStyle",
+            "ColorName": "EmptyTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        },
+        {
+            "Name" : "GunTowerStyle",
+            "ColorName": "GunTowerColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 4
+        },
+        {
+            "Name" : "StatusBarForegroundStyle",
+            "ColorName": "StatusBarForegroundColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 4
+        },
+        {
+            "Name" : "StatusBarBackgroundStyle",
+            "ColorName": "StatusBarBackgroundColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 4
         }
     ],
     

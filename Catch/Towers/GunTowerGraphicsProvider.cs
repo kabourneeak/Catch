@@ -9,12 +9,12 @@ namespace Catch.Towers
     {
         public IndicatorCollection Indicators { get; }
 
-        public GunTowerGraphicsProvider(IConfig config)
+        public GunTowerGraphicsProvider(IConfig config, StyleProvider styleProvider)
         {
             Indicators = new IndicatorCollection();
 
-            Indicators.Add(new GunTowerBaseIndicator(config));
-            Indicators.Add(new GunTowerStrategicIndicator(config));
+            Indicators.Add(new GunTowerBaseIndicator(config, styleProvider.GetStyle("GunTowerStyle")));
+            Indicators.Add(new GunTowerStrategicIndicator(config, styleProvider.GetStyle("GunTowerStyle")));
         }
 
         public void CreateResources(CreateResourcesArgs args)

@@ -10,14 +10,15 @@ namespace Catch.Towers
 {
     public class GunTowerBaseIndicator : IIndicator
     {
-        public GunTowerBaseIndicator(IConfig config)
-        {
+        private readonly IStyle _style;
 
+        public GunTowerBaseIndicator(IConfig config, IStyle style)
+        {
+            _style = style;
         }
 
         private int _createFrameId = -1;
         private CanvasCachedGeometry _geo;
-        private ICanvasBrush _brush;
 
         public void CreateResources(CreateResourcesArgs args)
         {
@@ -34,9 +35,6 @@ namespace Catch.Towers
             // define style
             var strokeStyle = new CanvasStrokeStyle() { };
             var strokeWidth = 4;
-
-            // define brush
-            _brush = new CanvasSolidColorBrush(args.ResourceCreator, Colors.RoyalBlue);
 
             // create geometry
             var body = CanvasGeometry.CreateCircle(args.ResourceCreator, new Vector2(0.0f), 24);
@@ -63,7 +61,7 @@ namespace Catch.Towers
         {
             drawArgs.PushRotation(rotation);
 
-            drawArgs.Ds.DrawCachedGeometry(_geo, _brush);
+            drawArgs.Ds.DrawCachedGeometry(_geo, _style.Brush);
 
             drawArgs.Pop();
         }

@@ -14,10 +14,12 @@ namespace Catch.Map
 
         public IIndicator PathTileIndicator => _pathTileIndicator;
 
-        public MapGraphicsProvider(IConfig config)
+        public MapGraphicsProvider(IConfig config, StyleProvider styleProvider)
         {
-            _emptyTileIndicator = new TileOutlineIndicator(config, Colors.DarkRed);
-            _pathTileIndicator = new TileAreaIndicator(config, Colors.CornflowerBlue);
+            var color = Colors.DarkRed;
+
+            _emptyTileIndicator = new TileOutlineIndicator(config, styleProvider.GetStyle("EmptyTileStyle"));
+            _pathTileIndicator = new TileAreaIndicator(config, styleProvider.GetStyle("PathTileStyle"));
         }
 
         public void CreateResources(CreateResourcesArgs args)

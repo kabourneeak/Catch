@@ -110,8 +110,8 @@
     <Compile Include="Base\IHitModifier.cs" />
     <Compile Include="Base\IRemoveModifier.cs" />
     <Compile Include="Graphics\ConfiguredHexagonIndicator.cs" />
-    <Compile Include="Graphics\IBrush.cs" />
-    <Compile Include="Graphics\StyleGraphicsProvider.cs" />
+    <Compile Include="Graphics\IStyle.cs" />
+    <Compile Include="Graphics\StyleProvider.cs" />
     <Compile Include="Level\GraphicsManager.cs" />
     <Compile Include="Level\ExecuteEventArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
@@ -183,7 +183,6 @@
     <Compile Include="Map\MapPathModel.cs" />
     <Compile Include="Base\IModifier.cs" />
     <Compile Include="Base\ModifierPriority.cs" />
-    <Compile Include="Graphics\StyleArgs.cs" />
     <Compile Include="Towers\NilAgentBehaviour.cs" />
     <Compile Include="Towers\TargettingBase.cs" />
     <Compile Include="Map\MapTileModel.cs" />

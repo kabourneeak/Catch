@@ -19,13 +19,13 @@ namespace Catch.Level
 
         public IIndicator HighlightedTileIndicator => _highlightedTileIndicator;
 
-        public OverlayGraphicsProvider(IConfig config)
+        public OverlayGraphicsProvider(IConfig config, StyleProvider styleProvider)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
 
-            _hoverTileIndicator = new TileOutlineIndicator(config, Colors.Yellow);
-            _selectedTileIndicator = new TileAreaIndicator(config, Colors.LightYellow);
-            _highlightedTileIndicator = new TileAreaIndicator(config, Colors.PowderBlue);
+            _hoverTileIndicator = new TileOutlineIndicator(config, styleProvider.GetStyle("HoverTileStyle"));
+            _selectedTileIndicator = new TileAreaIndicator(config, styleProvider.GetStyle("SelectedTileStyle"));
+            _highlightedTileIndicator = new TileAreaIndicator(config, styleProvider.GetStyle("SelectedTileStyle"));
         }
 
         public void CreateResources(CreateResourcesArgs args)

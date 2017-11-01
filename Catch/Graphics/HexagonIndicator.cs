@@ -1,13 +1,12 @@
 using Catch.Base;
 using CatchLibrary.HexGrid;
-using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
 {
     public class HexagonIndicator : IIndicator
     {
-        public StyleArgs Style { get; protected set; }
+        public IStyle Style { get; protected set; }
         public float Radius { get; protected set; }
         public bool Filled { get; protected set; }
 
@@ -18,7 +17,6 @@ namespace Catch.Graphics
 
         private int _createFrameId = -1;
         private CanvasCachedGeometry _geo;
-        private ICanvasBrush _brush;
 
         public void CreateResources(CreateResourcesArgs args)
         {
@@ -31,10 +29,6 @@ namespace Catch.Graphics
             DestroyResources();
 
             _createFrameId = args.FrameId;
-
-            // define brush
-            _brush = Style.CreateBrush(args);
-            _brush.Opacity = Style.BrushOpacity;
 
             // define path
             var pb = new CanvasPathBuilder(args.ResourceCreator);
@@ -74,7 +68,7 @@ namespace Catch.Graphics
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {
-            drawArgs.Ds.DrawCachedGeometry(_geo, _brush);
+            drawArgs.Ds.DrawCachedGeometry(_geo, Style.Brush);
         }
     }
 }

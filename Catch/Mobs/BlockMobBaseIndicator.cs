@@ -1,8 +1,6 @@
-using Windows.UI;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.Services;
-using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Mobs
@@ -10,21 +8,19 @@ namespace Catch.Mobs
     public class BlockMobBaseIndicator : IIndicator
     {
         private readonly int _blockSize;
-        private readonly StyleArgs _style;
+        private readonly IStyle _style;
 
-        public BlockMobBaseIndicator(IConfig config)
+        public BlockMobBaseIndicator(IConfig config, StyleProvider styleProvider)
         {
             _blockSize = config.GetInt(BlockMobBehaviour.CfgBlockSize);
 
-            var strokeStyle = new CanvasStrokeStyle() { LineJoin = CanvasLineJoin.Round };
-            _style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.Yellow, StrokeWidth = 4, StrokeStyle = strokeStyle };
+            _style = styleProvider.GetStyle("BlockMobStyle");
 
             Layer = DrawLayer.Mob;
         }
 
         private int _createFrameId = -1;
         private CanvasCachedGeometry _geo;
-        private ICanvasBrush _brush;
 
         public void CreateResources(CreateResourcesArgs args)
         {
@@ -38,9 +34,6 @@ namespace Catch.Mobs
 
             _createFrameId = args.FrameId;
             
-            // define brush
-            _brush = _style.CreateBrush(args);
-
             // create and cache
             var offset = _blockSize / 2.0f;
             var geo = CanvasGeometry.CreateRectangle(args.ResourceCreator, -offset, -offset, _blockSize, _blockSize);
@@ -61,7 +54,7 @@ namespace Catch.Mobs
 
         public void Draw(DrawArgs drawArgs, float rotation)
         {
-            drawArgs.Ds.DrawCachedGeometry(_geo, _brush);
+            drawArgs.Ds.DrawCachedGeometry(_geo, _style.Brush);
         }
 
         public DrawLayer Layer { get; }

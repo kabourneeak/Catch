@@ -12,7 +12,7 @@ namespace Catch.Graphics
         public static readonly string CfgLayer = ConfigUtils.GetConfigPath(nameof(ConfiguredHexagonIndicator), nameof(CfgLayer));
         public static readonly string CfgLayerOfDetail = ConfigUtils.GetConfigPath(nameof(ConfiguredHexagonIndicator), nameof(CfgLayerOfDetail));
 
-        public ConfiguredHexagonIndicator(IConfig config, StyleGraphicsProvider styles)
+        public ConfiguredHexagonIndicator(IConfig config, StyleProvider styles)
         {
             var radius = config.GetFloat(CoreConfig.TileRadius);
             var inset = config.GetFloat(CoreConfig.TileRadiusInset);

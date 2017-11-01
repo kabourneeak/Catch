@@ -29,8 +29,8 @@ namespace Catch.Level
         {
             drawArgs.PushTranslation(0, _uiState.WindowSize.Y - _barHeight);
 
-            drawArgs.Ds.FillRectangle(new Rect(0,0, _uiState.WindowSize.X, _barHeight), _graphicsProvider.BackgroundBrush);
-            drawArgs.Ds.DrawText(GetStatusText(), new Rect(0, 0, _uiState.WindowSize.X, _barHeight), _graphicsProvider.ForegroundBrush, _graphicsProvider.ForegroundTextFormat);
+            drawArgs.Ds.FillRectangle(new Rect(0,0, _uiState.WindowSize.X, _barHeight), _graphicsProvider.BackgroundStyle.Brush);
+            drawArgs.Ds.DrawText(GetStatusText(), new Rect(0, 0, _uiState.WindowSize.X, _barHeight), _graphicsProvider.ForegroundStyle.Brush, _graphicsProvider.ForegroundTextFormat);
 
             drawArgs.Pop();
         }

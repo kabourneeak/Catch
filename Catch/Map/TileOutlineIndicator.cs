@@ -7,13 +7,13 @@ namespace Catch.Map
 {
     public class TileOutlineIndicator : HexagonIndicator, IIndicator
     {
-        public TileOutlineIndicator(IConfig config, Color color)
+        public TileOutlineIndicator(IConfig config, IStyle style)
         {
             var radius = config.GetFloat(CoreConfig.TileRadius);
             var inset = config.GetFloat(CoreConfig.TileRadiusInset);
 
             Radius = radius - inset;
-            Style = new StyleArgs() { BrushType = BrushType.Solid, Color = color, StrokeWidth = 3 };
+            Style = style;
             Layer = DrawLayer.Base;
             LevelOfDetail = DrawLevelOfDetail.All;
         }

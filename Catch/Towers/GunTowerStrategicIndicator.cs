@@ -7,13 +7,13 @@ namespace Catch.Towers
 {
     public class GunTowerStrategicIndicator : HexagonIndicator, IIndicator
     {
-        public GunTowerStrategicIndicator(IConfig config)
+        public GunTowerStrategicIndicator(IConfig config, IStyle style)
         {
             var radius = config.GetFloat(CoreConfig.TileRadius);
             var inset = config.GetFloat(CoreConfig.TileRadiusInset);
 
             Radius = radius - inset;
-            Style = new StyleArgs() { BrushType = BrushType.Solid, Color = Colors.RoyalBlue, StrokeWidth = 3 };
+            Style = style;
             Layer = DrawLayer.Tower;
             Filled = true;
             LevelOfDetail = DrawLevelOfDetail.Low;
