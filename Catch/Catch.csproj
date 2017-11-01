@@ -91,7 +91,7 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="Assets\maps\MapOne.json" />
     <Content Include="Assets\config.json" />
-    <Content Include="Assets\styles.json" />
+    <Content Include="Assets\assets.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

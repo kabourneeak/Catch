@@ -1,8 +1,7 @@
 ﻿{
   "Bootstrapper.MapsFolder": "Assets\\maps",
   "Bootstrapper.InitialMap": "MapOne.json",
-
-  "StyleGraphicsProvider.StylesJson":  "Assets\\styles.json",
+  "LevelBootstrapper.Assets" :  "Assets\\assets.json",
 
   "Core.TileRadius": 60.0,
   "Core.TileRadiusInset": 1.5,

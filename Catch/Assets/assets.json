@@ -1,0 +1,71 @@
+{
+    "Indicators" : [
+        {
+            "Name" : "GunTowerBaseIndicator",
+            "Base" : "SpriteIndicator",
+          "Config": {
+            "SpriteIndicator.SpriteName": "GunTowerBodySprite",
+            "SpriteIndicator.StyleName": "GunTowerStyle",
+            "SpriteIndicator.Layer": "Tower",
+            "SpriteIndicator.LevelOfDetail": "All"
+          }
+        },
+        {
+            "Name" : "MapTileIndicator",
+            "Base" : "SpriteIndicator",
+            "Config" : {
+                "SpriteIndicator.SpriteName" : "HexagonSprite",
+                "SpriteIndicator.StyleName" : "MapTileStyle",
+                "SpriteIndicator.Layer" : "Base",
+                "SpriteIndicator.LevelOfDetail" : "All"                
+            }
+        },
+        {
+            "Name" : "PathTileIndicator",
+            "Base" : "SpriteIndicator",
+            "Config" : {
+                "SpriteIndicator.SpriteName" : "HexagonSprite",
+                "SpriteIndicator.StyleName" : "MapTileStyle",
+                "SpriteIndicator.Layer" : "Base",
+                "SpriteIndicator.LevelOfDetail" : "All"                
+            }
+        }
+    ],
+
+    "Colors": [
+        {
+            "Name": "PathTileColor",
+            "R": 0,
+            "G": 0,
+            "B": 255,
+            "A": 255
+        }
+    ],
+    
+    "Styles": [
+        {
+            "Name": "PathTileStyle",
+            "ColorName": "PathTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 1
+        }
+    ],
+    
+    "Agents": [
+        {
+            "Name": "GunTower",
+            "PrimaryBehaviour": "GunTowerBaseBehaviour",
+            "DrawComponent": "RelativePositionDrawComponent",
+            "Indicators": [
+                "GunTowerBaseIndicator"
+            ],
+            "Modifiers": [
+                "GunTowerLevel4BaseModifier"
+            ],
+            "Commands": [
+                "UpgradeTowerCommand"
+            ]
+        }
+    ]
+}

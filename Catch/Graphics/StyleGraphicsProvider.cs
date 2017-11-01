@@ -1,27 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Windows.UI;
 using Catch.Services;
-using CatchLibrary.Serialization;
-using Newtonsoft.Json;
+using CatchLibrary.Serialization.Assets;
 
 namespace Catch.Graphics
 {
     public class StyleGraphicsProvider : IGraphicsProvider
     {
-        private static readonly string CfgStylesJson = ConfigUtils.GetConfigPath(nameof(StyleGraphicsProvider), nameof(CfgStylesJson));
-
         private readonly Dictionary<string, Color> _colors;
         private readonly Dictionary<string, StyleArgs> _styles;
 
-        public StyleGraphicsProvider(IConfig config)
+        public StyleGraphicsProvider(IConfig config, AssetModel assetModel)
         {
             _colors = new Dictionary<string, Color>();
             _styles = new Dictionary<string, StyleArgs>();
 
-            var fileName = config.GetString(CfgStylesJson);
-            LoadStyles(fileName);
+            LoadStyles(assetModel);
         }
 
         public Color GetColor(string colorName)
@@ -54,20 +49,19 @@ namespace Catch.Graphics
             // no nothing
         }
 
-        private void LoadStyles(string fileName)
+        private void LoadStyles(AssetModel assetModel)
         {
-            var stylePack = JsonConvert.DeserializeObject<StylePackModel>(File.ReadAllText(fileName));
-
             // load colours
-            foreach (var cm in stylePack.Colors)
+            foreach (var cm in assetModel.Colors)
             {
                 var c = Color.FromArgb(cm.A, cm.R, cm.G, cm.B);
                 _colors.Add(cm.Name, c);
             }
 
             // load styles
-            foreach (var sm in stylePack.Styles)
+            foreach (var sm in assetModel.Styles)
             {
+                // TODO either make StyleArgs readonly, or start providing brushes instead of styles
                 var style = new StyleArgs
                 {                   
                     BrushType = BrushType.Solid,  // TODO support other brush types
