@@ -13,7 +13,7 @@ namespace Catch.Components
     public class IndicatorProvider : IProvider
     {
         private readonly IUnityContainer _container;
-        private readonly Dictionary<string, ComponentModel> _indicatorModels;
+        private readonly Dictionary<string, ComponentModel> _models;
         private readonly Dictionary<string, IConfig> _configs;
 
         public IndicatorProvider(IConfig config, AssetModel assetModel, IUnityContainer container)
@@ -21,18 +21,18 @@ namespace Catch.Components
             _configs = new Dictionary<string, IConfig>();
             _container = container;
 
-            _indicatorModels = new Dictionary<string, ComponentModel>();
+            _models = new Dictionary<string, ComponentModel>();
 
-            foreach (var im in assetModel.Indicators)
+            foreach (var model in assetModel.Indicators)
             {
-                _indicatorModels.Add(im.Name, im);
-                _configs.Add(im.Name, new DictionaryConfig(im.Config, config));
+                _models.Add(model.Name, model);
+                _configs.Add(model.Name, new DictionaryConfig(model.Config, config));
             }
         }
 
         public IIndicator GetIndicator(string indicatorName)
         {
-            if (_indicatorModels.TryGetValue(indicatorName, out var im))
+            if (_models.TryGetValue(indicatorName, out var im))
             {
                 var scopedContainer = _container.CreateChildContainer();
 
@@ -48,7 +48,7 @@ namespace Catch.Components
 
         public IIndicator GetIndicator(string indicatorName, IExtendedAgent host)
         {
-            if (_indicatorModels.TryGetValue(indicatorName, out var im))
+            if (_models.TryGetValue(indicatorName, out var im))
             {
                 var scopedContainer = _container.CreateChildContainer();
 
@@ -66,7 +66,7 @@ namespace Catch.Components
 
         public IIndicator GetIndicator(string indicatorName, IMapTile mapTile)
         {
-            if (_indicatorModels.TryGetValue(indicatorName, out var im))
+            if (_models.TryGetValue(indicatorName, out var im))
             {
                 var scopedContainer = _container.CreateChildContainer();
 

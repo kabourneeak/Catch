@@ -103,6 +103,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\AgentBase.cs" />
+    <Compile Include="Components\BaseModifier.cs" />
     <Compile Include="Components\CommandTask.cs" />
     <Compile Include="Base\CoreConfig.cs" />
     <Compile Include="Base\CoreLabels.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Base\IAttackModifier.cs" />
     <Compile Include="Base\IHitModifier.cs" />
     <Compile Include="Base\IRemoveModifier.cs" />
+    <Compile Include="Components\ModifierProvider.cs" />
     <Compile Include="Graphics\BoxSprite.cs" />
     <Compile Include="Graphics\HexagonSprite.cs" />
     <Compile Include="Graphics\ISprite.cs" />
