@@ -1,0 +1,35 @@
+{
+    "Colors" : [
+        {
+            "Name": "StatusBarForegroundColor",
+            "ColorHex" : "#FFAA8439"
+        },
+        {
+            "Name": "StatusBarBackgroundColor",
+            "ColorHex" : "#FF372644"
+        }
+    ],
+
+    "Styles" : [
+        {
+            "Name" : "StatusBarForegroundStyle",
+            "ColorName": "StatusBarForegroundColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 4
+        },
+        {
+            "Name" : "StatusBarBackgroundStyle",
+            "ColorName": "StatusBarBackgroundColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 4
+        }
+    ],
+
+    "Sprites" : [],
+
+    "Indicators" : [],
+    
+    "Agents" : []
+}

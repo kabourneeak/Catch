@@ -1,0 +1,81 @@
+{
+    "Colors" : [],    
+    
+    "Styles": [
+        {
+            "Name" : "GunTowerStyle",
+            "ColorHex" : "#FF0E46A0",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 4
+        }
+    ],
+
+    "Sprites" : [
+        {
+            "Name" : "GunTowerBodySprite",
+            "Base" : "GunTowerBodySprite",
+            "Config": {
+                "GunTowerBodySprite.StyleName": "GunTowerStyle"
+            }
+        },
+        {
+            "Name" : "GunTowerStrategicSprite",
+            "Base" : "HexagonSprite",
+            "Config": {
+                "HexagonSprite.StyleName": "GunTowerStyle",
+                "HexagonSprite.Filled": "True",
+                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
+            }
+        }
+    ],
+
+    "Indicators" : [
+        {
+            "Name": "GunTowerBaseIndicator",
+            "Base": "SpriteIndicator",
+            "Config": {
+                "SpriteIndicator.SpriteName": "GunTowerBodySprite",
+                "SpriteIndicator.UseRotation": "True",
+                "SpriteIndicator.Layer": "Tower",
+                "SpriteIndicator.LevelOfDetail": "NormalHigh"
+            }
+        },
+        {
+            "Name": "GunTowerStrategicIndicator",
+            "Base": "SpriteIndicator",
+            "Config": {
+                "SpriteIndicator.SpriteName": "GunTowerStrategicSprite",
+                "SpriteIndicator.Layer": "Tower",
+                "SpriteIndicator.LevelOfDetail": "Low"
+            }
+        },        
+        {
+            "Name": "BlockMobBaseIndicator",
+            "Base": "SpriteIndicator",
+            "Config": {
+                "SpriteIndicator.SpriteName": "BlockMobSprite",
+                "SpriteIndicator.Layer": "Mob",
+                "SpriteIndicator.LevelOfDetail": "NormalHigh"
+            }
+        }
+    ],
+
+    "Agents": [
+        {
+            "Name": "GunTower",
+            "PrimaryBehaviour": "GunTowerBaseBehaviour",
+            "DrawComponent": "RelativePositionDrawComponent",
+            "Indicators": [
+                "GunTowerBaseIndicator",
+                "GunTowerStrategicIndicator"
+            ],
+            "Modifiers": [
+                "GunTowerLevel4BaseModifier"
+            ],
+            "Commands": [
+                "UpgradeTowerCommand"
+            ]
+        }
+    ]
+}

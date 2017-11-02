@@ -1,0 +1,35 @@
+{
+    "Colors" : [
+        {
+            "Name": "BlockMobColor",
+            "ColorHex" : "#FFFFFF00"
+        }
+    ],
+
+    "Styles" : [
+        {
+            "Name" : "BlockMobStyle",
+            "ColorName": "BlockMobColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 4
+        }
+    ],
+
+    "Sprites" : [
+        {
+            "Name" : "BlockMobSprite",
+            "Base" : "BoxSprite",
+            "Config": {
+                "BoxSprite.StyleName": "BlockMobStyle",
+                "BoxSprite.Height": "20",
+                "BoxSprite.Width" : "20",
+                "BoxSprite.Rounded" : "True"
+            }
+        }
+    ],
+
+    "Indicators" : [],
+    
+    "Agents" : []
+}

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.Map;
@@ -13,7 +14,7 @@ namespace Catch.Level
 {
     public static class LevelBootstrapper
     {
-        private static readonly string CfgAssets = ConfigUtils.GetConfigPath(nameof(LevelBootstrapper), nameof(CfgAssets));
+        private static readonly string CfgModelsFolder = ConfigUtils.GetConfigPath(nameof(LevelBootstrapper), nameof(CfgModelsFolder));
 
         public static IUnityContainer CreateContainer(IConfig config)
         {
@@ -40,7 +41,7 @@ namespace Catch.Level
             container.RegisterType<UiStateModel>(new ContainerControlledLifetimeManager());
             container.RegisterType<SimulationStateModel>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISimulationState, SimulationStateModel>(new ContainerControlledLifetimeManager());
-            container.RegisterInstance<AssetModel>(LoadAssetModel(config));
+            container.RegisterInstance<AssetModel>(LoadAssetModels(config));
 
             /*
              * Register controllers
@@ -74,12 +75,47 @@ namespace Catch.Level
             return container;
         }
 
-        private static AssetModel LoadAssetModel(IConfig config)
+        private static AssetModel LoadAssetModels(IConfig config)
         {
-            var filename = config.GetString(CfgAssets);
-            var assetModel = JsonConvert.DeserializeObject<AssetModel>(File.ReadAllText(filename));
+            var modelsFolderName = config.GetString(CfgModelsFolder);
 
-            return assetModel;
+            var appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+            var modelsFolder = appInstalledFolder.GetFolderAsync(modelsFolderName)
+                    .GetAwaiter()
+                    .GetResult();
+
+            var modelFiles = modelsFolder.GetFilesAsync()
+                .GetAwaiter()
+                .GetResult();
+
+            var overallAssetModel = new AssetModel();
+
+            foreach (var modelFile in modelFiles)
+            {
+                try
+                {
+                    var assetModel = JsonConvert.DeserializeObject<AssetModel>(File.ReadAllText(modelFile.Path));
+
+                    overallAssetModel.Agents.AddRange(assetModel.Agents);
+                    overallAssetModel.Behaviours.AddRange(assetModel.Behaviours);
+                    overallAssetModel.Colors.AddRange(assetModel.Colors);
+                    overallAssetModel.Commands.AddRange(assetModel.Commands);
+                    overallAssetModel.Indicators.AddRange(assetModel.Indicators);
+                    overallAssetModel.Modifiers.AddRange(assetModel.Modifiers);
+                    overallAssetModel.Sprites.AddRange(assetModel.Sprites);
+                    overallAssetModel.Styles.AddRange(assetModel.Styles);
+                }
+                catch (IOException)
+                {
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    throw new IOException($"Error processing model file {modelFile.Path}", e);
+                }
+            }
+
+            return overallAssetModel;  
         }
     }
 }

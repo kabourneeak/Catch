@@ -1,0 +1,131 @@
+{
+    "Colors" : [
+        {
+            "Name": "PathTileColor",
+            "ColorHex" : "#FF0C9CD1"
+        },
+        {
+            "Name": "EmptyTileColor",
+            "ColorHex" : "#FF4C0518"
+        },
+        {
+            "Name": "SelectedTileColor",
+            "ColorHex" : "#FFFFFF00"
+        },
+        {
+            "Name": "HoverTileColor",
+            "ColorHex" : "#FFFFFF00"
+        },
+        {
+            "Name": "HighlightedTileColor",
+            "ColorHex" : "#FFFFFF00"
+        }
+    ],
+
+    "Styles" : [
+        {
+            "Name": "PathTileStyle",
+            "ColorName": "PathTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 1
+        },
+        {
+            "Name" : "HoverTileStyle",
+            "ColorName": "HoverTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        },
+        {
+            "Name" : "SelectedTileStyle",
+            "ColorName": "SelectedTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        },
+        {
+            "Name" : "HighlightedTileStyle",
+            "ColorName": "HighlightedTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        },
+        {
+            "Name" : "EmptyTileStyle",
+            "ColorName": "EmptyTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        }
+    ],
+
+    "Sprites" : [
+        {
+            "Name" : "EmptyTileSprite",
+            "Base" : "HexagonSprite",
+            "Config": {
+                "HexagonSprite.StyleName": "EmptyTileStyle",
+                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
+            }
+        },
+        {
+            "Name" : "PathTileSprite",
+            "Base" : "HexagonSprite",
+            "Config": {
+                "HexagonSprite.StyleName": "PathTileStyle",
+                "HexagonSprite.Filled": "True",
+                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
+            }
+        },
+        {
+            "Name" : "HoverTileSprite",
+            "Base" : "HexagonSprite",
+            "Config": {
+                "HexagonSprite.StyleName": "HoverTileStyle",
+                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
+            }
+        }
+    ],
+
+    "Indicators" : [
+        {
+            "Name" : "EmptyTileIndicator",
+            "Base" : "SpriteIndicator",
+            "Config" : {
+                "SpriteIndicator.SpriteName" : "EmptyTileSprite",
+                "SpriteIndicator.Layer" : "Base",
+                "SpriteIndicator.LevelOfDetail" : "All"                
+            }
+        },
+        {
+            "Name" : "PathTileIndicator",
+            "Base" : "SpriteIndicator",
+            "Config" : {
+                "SpriteIndicator.SpriteName" : "PathTileSprite",
+                "SpriteIndicator.Layer" : "Base",
+                "SpriteIndicator.LevelOfDetail" : "All"                
+            }
+        },
+        {
+            "Name" : "HoverTileIndicator",
+            "Base" : "SpriteIndicator",
+            "Config" : {
+                "SpriteIndicator.SpriteName" : "HoverTileSprite",
+                "SpriteIndicator.Layer" : "Ui",
+                "SpriteIndicator.LevelOfDetail" : "All"                
+            }
+        },
+        {
+            "Name" : "EmptyTileLabel",
+            "Base" : "TextIndicator",
+            "Config" : {
+                "TextIndicator.StyleName" : "EmptyTileStyle",
+                "TextIndicator.Layer" : "Ui",
+                "TextIndicator.LevelOfDetail" : "NormalHigh"                
+            }
+        }        
+    ],
+
+    "Agents" : []
+}

@@ -1,7 +1,7 @@
 ﻿{
   "Bootstrapper.MapsFolder": "Assets\\maps",
   "Bootstrapper.InitialMap": "MapOne.json",
-  "LevelBootstrapper.Assets" :  "Assets\\assets.json",
+  "LevelBootstrapper.ModelsFolder" :  "Assets\\models",
 
   "Core.TileRadius": 60.0,
   "Core.TileRadiusInset": 1.5,

@@ -91,7 +91,11 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="Assets\maps\MapOne.json" />
     <Content Include="Assets\config.json" />
-    <Content Include="Assets\assets.json" />
+    <None Include="Assets\models\BlankAssets.json" />
+    <Content Include="Assets\models\BlockMobAssets.json" />
+    <Content Include="Assets\models\GunTowerAssets.json" />
+    <Content Include="Assets\models\MapAssets.json" />
+    <Content Include="Assets\models\StatusBarAssets.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
