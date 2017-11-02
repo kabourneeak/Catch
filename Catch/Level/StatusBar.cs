@@ -18,7 +18,7 @@ namespace Catch.Level
         private readonly IStyle _bgStyle;
 
         private readonly int _barHeight;
-        private CanvasTextFormat _fgTextFormat;
+        private readonly CanvasTextFormat _fgTextFormat;
 
         public StatusBar(UiStateModel uiState, StyleProvider styleProvider)
         {

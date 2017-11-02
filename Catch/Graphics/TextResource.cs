@@ -31,15 +31,14 @@ namespace Catch.Graphics
 
             _createFrameId = args.FrameId;
 
-            // TODO move these options down to the LabelIndicator
-
-            var format = new CanvasTextFormat()
+            using (var format = new CanvasTextFormat())
             {
-                VerticalAlignment = CanvasVerticalAlignment.Center,
-                HorizontalAlignment = CanvasHorizontalAlignment.Center
-            };
-
-            Label = new CanvasTextLayout(args.ResourceCreator, Text, format, 100, 100);
+                // TODO move these options down to the LabelIndicator
+                format.VerticalAlignment = CanvasVerticalAlignment.Center;
+                format.HorizontalAlignment = CanvasHorizontalAlignment.Center;
+                
+                Label = new CanvasTextLayout(args.ResourceCreator, Text, format, 100, 100);
+            }
         }
 
         public void DestroyResources()
