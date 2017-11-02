@@ -137,5 +137,34 @@
         }
     ],
 
-    "Agents" : []
+    "Behaviours" : [
+        {
+            "Name" : "EmptyTowerBehaviour",
+            "Base" : "NilAgentBehaviour"
+        }
+    ],
+
+    "Commands" : [
+        {
+            "Name" : "BuyGunTowerCmd",
+            "Base" : "BuyTowerCommand"
+        }
+    ],
+
+    "Agents" : [
+        {
+            "Name": "EmptyTower",
+            "PrimaryBehaviourName": "EmptyTowerBehaviour",
+            "IndicatorNames": [
+                "EmptyTileIndicator",
+                "EmptyTileLabel"
+            ],
+            "ModifierNames": [
+                "EmptyTowerBaseModifier"
+            ],
+            "CommandNames": [
+                "BuyGunTowerCmd"
+            ]
+        }
+    ]
 }

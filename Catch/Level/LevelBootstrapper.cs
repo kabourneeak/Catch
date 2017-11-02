@@ -68,10 +68,11 @@ namespace Catch.Level
              * Register Agent Components
              */
             UnityUtils.RegisterAllAsTransient(typeof(IGraphicsComponent), container);
+            UnityUtils.RegisterAllAsTransient(typeof(ISprite), container);
+            UnityUtils.RegisterAllAsTransient(typeof(IIndicator), container);
+            UnityUtils.RegisterAllAsTransient(typeof(IAgentCommand), container);
             UnityUtils.RegisterAllAsTransient(typeof(IModifier), container);
             UnityUtils.RegisterAllAsTransient(typeof(IUpdatable), container);
-            UnityUtils.RegisterAllAsTransient(typeof(IIndicator), container);
-            UnityUtils.RegisterAllAsTransient(typeof(ISprite), container);
 
             return container;
         }

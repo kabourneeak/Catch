@@ -10,15 +10,15 @@ namespace CatchLibrary.Serialization.Assets
         public string Name { get; set; }
 
         [DataMember]
-        public string PrimaryBehaviour { get; set; }
+        public string PrimaryBehaviourName { get; set; }
 
         [DataMember]
-        public List<string> Indicators { get; set; } = new List<string>();
+        public List<string> IndicatorNames { get; set; } = new List<string>();
 
         [DataMember]
-        public List<string> Modifiers { get; set; } = new List<string>();
+        public List<string> ModifierNames { get; set; } = new List<string>();
 
         [DataMember]
-        public List<string> Commands { get; set; } = new List<string>();
+        public List<string> CommandNames { get; set; } = new List<string>();
     }
 }

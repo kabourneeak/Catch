@@ -53,5 +53,23 @@
         }
     ],
 
-    "Agents" : []
+    "Behaviours" : [
+        {
+            "Name" : "BlockMobBehaviour",
+            "Base" : "PathMobBehaviour"
+        }
+    ],
+
+    "Agents" : [
+        {
+            "Name": "BlockMob",
+            "PrimaryBehaviourName": "BlockMobBehaviour",
+            "IndicatorNames": [
+                "BlockMobBaseIndicator"
+            ],
+            "ModifierNames": [
+                "BlockMobBaseModifier"
+            ]
+        }
+    ]
 }

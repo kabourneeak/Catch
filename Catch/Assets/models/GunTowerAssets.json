@@ -64,20 +64,23 @@
         }
     ],
 
+    "Behaviours" : [
+        {
+            "Name" : "GunTowerBehaviour",
+            "Base" : "GunTowerBehaviour"
+        }
+    ],
+
     "Agents": [
         {
             "Name": "GunTower",
-            "PrimaryBehaviour": "GunTowerBaseBehaviour",
-            "DrawComponent": "RelativePositionDrawComponent",
-            "Indicators": [
+            "PrimaryBehaviourName": "GunTowerBehaviour",
+            "IndicatorNames": [
                 "GunTowerBaseIndicator",
                 "GunTowerStrategicIndicator"
             ],
-            "Modifiers": [
+            "ModifierNames": [
                 "GunTowerBaseModifier"
-            ],
-            "Commands": [
-                "UpgradeTowerCommand"
             ]
         }
     ]

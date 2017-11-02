@@ -48,7 +48,7 @@ namespace Catch.Components
 
         public IIndicator GetIndicator(string indicatorName, IExtendedAgent host)
         {
-            if (_models.TryGetValue(indicatorName, out var im))
+            if (_models.TryGetValue(indicatorName, out var model))
             {
                 var scopedContainer = _container.CreateChildContainer();
 
@@ -56,7 +56,7 @@ namespace Catch.Components
                 scopedContainer.RegisterInstance<IExtendedAgent>(host);
                 scopedContainer.RegisterInstance<IConfig>(_configs[indicatorName]);
 
-                var indicator = scopedContainer.Resolve<IIndicator>(im.Base);
+                var indicator = scopedContainer.Resolve<IIndicator>(model.Base);
 
                 return indicator;
             }
@@ -66,14 +66,14 @@ namespace Catch.Components
 
         public IIndicator GetIndicator(string indicatorName, IMapTile mapTile)
         {
-            if (_models.TryGetValue(indicatorName, out var im))
+            if (_models.TryGetValue(indicatorName, out var model))
             {
                 var scopedContainer = _container.CreateChildContainer();
 
                 scopedContainer.RegisterInstance<IMapTile>(mapTile);
                 scopedContainer.RegisterInstance<IConfig>(_configs[indicatorName]);
 
-                var indicator = scopedContainer.Resolve<IIndicator>(im.Base);
+                var indicator = scopedContainer.Resolve<IIndicator>(model.Base);
 
                 return indicator;
             }

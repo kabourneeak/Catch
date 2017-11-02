@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Catch.Base;
 using Catch.Graphics;
 using Catch.Mobs;
 using Catch.Services;
 using Catch.Towers;
+using CatchLibrary.Serialization.Assets;
 using Unity;
 
 namespace Catch.Components
@@ -13,11 +15,33 @@ namespace Catch.Components
     /// </summary>
     public class AgentProvider : IProvider, IAgentProvider
     {
+        private readonly IndicatorProvider _indicatorProvider;
+        private readonly ModifierProvider _modifierProvider;
+        private readonly CommandProvider _commandProvider;
+        private readonly BehaviourProvider _behaviourProvider;
         private readonly IUnityContainer _container;
 
-        public AgentProvider(IUnityContainer container)
+        private readonly Dictionary<string, AgentModel> _models;
+
+        public AgentProvider(AssetModel assetModel,
+            IndicatorProvider indicatorProvider,
+            ModifierProvider modifierProvider,
+            CommandProvider commandProvider,
+            BehaviourProvider behaviourProvider,
+            IUnityContainer container)
         {
+            _indicatorProvider = indicatorProvider;
+            _modifierProvider = modifierProvider;
+            _commandProvider = commandProvider;
+            _behaviourProvider = behaviourProvider;
             _container = container ?? throw new ArgumentNullException(nameof(container));
+
+            _models = new Dictionary<string, AgentModel>();
+
+            foreach (var model in assetModel.Agents)
+            {
+                _models.Add(model.Name, model);
+            }
         }
 
         public IExtendedAgent CreateAgent(string name, CreateAgentArgs args)
@@ -31,60 +55,38 @@ namespace Catch.Components
             agentContainer.RegisterInstance<IAgent>(agent);
             agentContainer.RegisterInstance<IExtendedAgent>(agent);
 
+
+            // TODO this will not be scoped to the other providers
             if (args.Path != null)
-                agentContainer.RegisterInstance<IMapPath>(args.Path);            
+                agentContainer.RegisterInstance<IMapPath>(args.Path);
 
-            // configure agent
-            switch (name)
+            // assemble agent
+            if (_models.TryGetValue(name, out var model))
             {
-                case GunTowerBehaviour.AgentTypeName:
-                    return CreateGunTowerAgent(agent, agentContainer, args);
-                case EmptyTowerBehaviour.AgentTypeName:
-                    return CreateEmptyTower(agent, agentContainer, args);
-                case BlockMobBehaviour.AgentTypeName:
-                    return CreateBlockMob(agent, agentContainer, args);
-                default:
-                    throw new ArgumentException($"I don't know how to construct an agent with name {name}");
+                agent.Tile = args.Tile;
+                agent.ExtendedStats.Team = args.Team;
+
+                agent.GraphicsComponent = agentContainer.Resolve<RelativePositionGraphicsComponent>();
+
+                foreach (var indicatorName in model.IndicatorNames)
+                    agent.Indicators.Add(_indicatorProvider.GetIndicator(indicatorName, agent));
+
+                foreach (var modifierName in model.ModifierNames)
+                    agent.AddModifier(_modifierProvider.GetModifier(modifierName, agent));
+
+                foreach (var commandName in model.CommandNames)
+                    agent.CommandCollection.Add(_commandProvider.GetCommand(commandName, agent));
+
+                // add behaviours
+                agent.BehaviourComponent = _behaviourProvider.GetBehaviour(model.PrimaryBehaviourName, agent);
+
+                if (agent.BehaviourComponent is IModifier modifier)
+                    agent.AddModifier(modifier);
+
+                return agent;
             }
-        }
 
-        private IExtendedAgent CreateGunTowerAgent(AgentBase agent, IUnityContainer container, CreateAgentArgs args)
-        {
-            agent.Tile = args.Tile;
-            agent.ExtendedStats.Team = args.Team;
-            agent.GraphicsComponent = container.Resolve<RelativePositionGraphicsComponent>();
-            agent.BehaviourComponent = container.Resolve<GunTowerBehaviour>();
-
-            if (agent.BehaviourComponent is IModifier modifier)
-                agent.AddModifier(modifier);
-
-            return agent;
-        }
-
-        private IExtendedAgent CreateEmptyTower(AgentBase agent, IUnityContainer container, CreateAgentArgs args)
-        {
-            agent.Tile = args.Tile;
-            agent.ExtendedStats.Team = args.Team;
-            agent.GraphicsComponent = container.Resolve<RelativePositionGraphicsComponent>();
-            agent.BehaviourComponent = container.Resolve<EmptyTowerBehaviour>();
-
-            if (agent.BehaviourComponent is IModifier modifier)
-                agent.AddModifier(modifier);
-
-            return agent;
-        }
-
-        private IExtendedAgent CreateBlockMob(AgentBase agent, IUnityContainer container, CreateAgentArgs args)
-        {
-            agent.Tile = args.Tile;
-            agent.ExtendedStats.Team = args.Team;
-            agent.GraphicsComponent = container.Resolve<RelativePositionGraphicsComponent>();
-            agent.BehaviourComponent = container.Resolve<BlockMobBehaviour>();
-
-            if (agent.BehaviourComponent is IModifier modifier)
-                agent.AddModifier(modifier);
-
-            return agent;
+            throw new ArgumentException($"The agent {name} is not defined");
         }
     }
 }

@@ -7,41 +7,42 @@ using Unity;
 
 namespace Catch.Components
 {
-    public class ModifierProvider : IProvider
+    public class CommandProvider : IProvider
     {
         private readonly IUnityContainer _container;
+
         private readonly Dictionary<string, ComponentModel> _models;
         private readonly Dictionary<string, IConfig> _configs;
 
-        public ModifierProvider(IConfig config, AssetModel assetModel, IUnityContainer container)
+        public CommandProvider(IConfig config, AssetModel assetModel, IUnityContainer container)
         {
             _container = container;
             _models = new Dictionary<string, ComponentModel>();
             _configs = new Dictionary<string, IConfig>();
 
-            foreach (var model in assetModel.Modifiers)
+            foreach (var model in assetModel.Commands)
             {
                 _models.Add(model.Name, model);
                 _configs.Add(model.Name, new DictionaryConfig(model.Config, config));
             }
         }
 
-        public IModifier GetModifier(string modifierName, IExtendedAgent host)
+        public IAgentCommand GetCommand(string commandName, IExtendedAgent host)
         {
-            if (_models.TryGetValue(modifierName, out var model))
+            if (_models.TryGetValue(commandName, out var model))
             {
                 var scopedContainer = _container.CreateChildContainer();
 
                 scopedContainer.RegisterInstance<IAgent>(host);
                 scopedContainer.RegisterInstance<IExtendedAgent>(host);
-                scopedContainer.RegisterInstance<IConfig>(_configs[modifierName]);
+                scopedContainer.RegisterInstance<IConfig>(_configs[commandName]);
 
-                var modifier = scopedContainer.Resolve<IModifier>(model.Base);
+                var command = scopedContainer.Resolve<IAgentCommand>(model.Base);
 
-                return modifier;
+                return command;
             }
 
-            throw new ArgumentException($"The modifier {modifierName} is not defined");
+            throw new ArgumentException($"The command {commandName} is not defined");
         }
     }
 }

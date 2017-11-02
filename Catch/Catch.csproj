@@ -104,6 +104,8 @@
     </Compile>
     <Compile Include="Components\AgentBase.cs" />
     <Compile Include="Components\BaseModifier.cs" />
+    <Compile Include="Components\BehaviourProvider.cs" />
+    <Compile Include="Components\CommandProvider.cs" />
     <Compile Include="Components\CommandTask.cs" />
     <Compile Include="Base\CoreConfig.cs" />
     <Compile Include="Base\CoreLabels.cs" />
