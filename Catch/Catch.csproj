@@ -96,6 +96,7 @@
     <Content Include="Assets\models\GunTowerAssets.json" />
     <Content Include="Assets\models\MapAssets.json" />
     <Content Include="Assets\models\StatusBarAssets.json" />
+    <Content Include="Assets\models\SocketTowerAssets.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +188,7 @@
     <Compile Include="Base\IModifier.cs" />
     <Compile Include="Base\ModifierPriority.cs" />
     <Compile Include="Towers\NilAgentBehaviour.cs" />
+    <Compile Include="Towers\SocketTowerBehaviour.cs" />
     <Compile Include="Towers\TargettingBase.cs" />
     <Compile Include="Map\MapTileModel.cs" />
     <Compile Include="Services\EnumUtils.cs" />

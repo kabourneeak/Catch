@@ -1,0 +1,91 @@
+{
+    "Colors" : [
+        {
+            "Name": "SocketTileColor",
+            "ColorHex" : "#FF7B0BD1"
+        }
+    ],
+
+    "Styles" : [
+        {
+            "Name" : "SocketTileStyle",
+            "ColorName": "SocketTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        }
+    ],
+
+    "Sprites" : [
+        {
+            "Name" : "SocketTileSprite",
+            "Base" : "HexagonSprite",
+            "Config": {
+                "HexagonSprite.StyleName": "SocketTileStyle",
+                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
+            }
+        }
+    ],
+
+    "Indicators" : [
+        {
+            "Name" : "SocketTileIndicator",
+            "Base" : "SpriteIndicator",
+            "Config" : {
+                "SpriteIndicator.SpriteName" : "SocketTileSprite",
+                "SpriteIndicator.Layer" : "Tower",
+                "SpriteIndicator.LevelOfDetail" : "All"                
+            }
+        },
+        {
+            "Name" : "SocketTileText",
+            "Base" : "TextIndicator",
+            "Config" : {
+                "TextIndicator.StyleName" : "SocketTileStyle",
+                "TextIndicator.Layer" : "Ui",
+                "TextIndicator.LevelOfDetail" : "NormalHigh"                
+            }
+        } 
+    ],
+
+    "Modifiers" : [
+        {
+            "Name" : "SocketTowerBaseModifier",
+            "Base" : "BaseModifier",
+            "Config" : {
+                "BaseModifier.DisplayName" : "Socket Tower"
+            }
+        }
+    ],
+    
+    "Behaviours" : [
+        {
+            "Name" : "SocketTowerBehaviour",
+            "Base" : "SocketTowerBehaviour",
+            "Config" : {
+                "SocketTowerBehaviour.TextIndicatorName" : "SocketTileText"
+            }
+        }
+    ],
+    
+    "Commands" : [        {
+            "Name" : "BuyGunTowerCmd",
+            "Base" : "BuyTowerCommand"
+        }
+    ],
+    
+    "Agents" : [
+        {
+            "Name": "SocketTower",
+            "PrimaryBehaviourName": "SocketTowerBehaviour",
+            "IndicatorNames": [
+            ],
+            "ModifierNames": [
+                "SocketTowerBaseModifier"
+            ],
+            "CommandNames": [
+                "BuyGunTowerCmd"
+            ]
+        }
+    ]
+}

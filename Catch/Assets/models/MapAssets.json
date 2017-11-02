@@ -6,7 +6,7 @@
         },
         {
             "Name": "EmptyTileColor",
-            "ColorHex" : "#FF4C0518"
+            "ColorHex" : "#FF5E5A5B"
         },
         {
             "Name": "SelectedTileColor",
@@ -95,7 +95,7 @@
             "Config" : {
                 "SpriteIndicator.SpriteName" : "EmptyTileSprite",
                 "SpriteIndicator.Layer" : "Base",
-                "SpriteIndicator.LevelOfDetail" : "All"                
+                "SpriteIndicator.LevelOfDetail" : "NormalHigh"
             }
         },
         {
@@ -104,7 +104,7 @@
             "Config" : {
                 "SpriteIndicator.SpriteName" : "PathTileSprite",
                 "SpriteIndicator.Layer" : "Base",
-                "SpriteIndicator.LevelOfDetail" : "All"                
+                "SpriteIndicator.LevelOfDetail" : "All"
             }
         },
         {
@@ -113,58 +113,20 @@
             "Config" : {
                 "SpriteIndicator.SpriteName" : "HoverTileSprite",
                 "SpriteIndicator.Layer" : "Ui",
-                "SpriteIndicator.LevelOfDetail" : "All"                
+                "SpriteIndicator.LevelOfDetail" : "All"
             }
-        },
-        {
-            "Name" : "EmptyTileLabel",
-            "Base" : "TextIndicator",
-            "Config" : {
-                "TextIndicator.StyleName" : "EmptyTileStyle",
-                "TextIndicator.Layer" : "Ui",
-                "TextIndicator.LevelOfDetail" : "NormalHigh"                
-            }
-        }        
+        }
     ],
 
     "Modifiers" : [
-        {
-            "Name" : "EmptyTowerBaseModifier",
-            "Base" : "BaseModifier",
-            "Config" : {
-                "BaseModifier.DisplayName" : "Empty Tower"
-            }
-        }
     ],
 
     "Behaviours" : [
-        {
-            "Name" : "EmptyTowerBehaviour",
-            "Base" : "NilAgentBehaviour"
-        }
     ],
 
     "Commands" : [
-        {
-            "Name" : "BuyGunTowerCmd",
-            "Base" : "BuyTowerCommand"
-        }
     ],
 
     "Agents" : [
-        {
-            "Name": "EmptyTower",
-            "PrimaryBehaviourName": "EmptyTowerBehaviour",
-            "IndicatorNames": [
-                "EmptyTileIndicator",
-                "EmptyTileLabel"
-            ],
-            "ModifierNames": [
-                "EmptyTowerBaseModifier"
-            ],
-            "CommandNames": [
-                "BuyGunTowerCmd"
-            ]
-        }
     ]
 }
