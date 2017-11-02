@@ -11,17 +11,12 @@ namespace Catch.Towers
 
         private readonly IExtendedAgent _host;
 
-        public GunTowerBehaviour(IExtendedAgent host, IConfig config, IndicatorProvider indicatorProvider, ModifierProvider modifierProvider)
+        public GunTowerBehaviour(IExtendedAgent host, IConfig config)
         {
             _host = host ?? throw new ArgumentNullException(nameof(host));
             if (config == null) throw new ArgumentNullException(nameof(config));
-            if (indicatorProvider == null) throw new ArgumentNullException(nameof(indicatorProvider));
 
             _host.Position = _host.Tile.Position;
-
-            _host.Indicators.Add(indicatorProvider.GetIndicator("GunTowerBaseIndicator", host));
-            _host.Indicators.Add(indicatorProvider.GetIndicator("GunTowerStrategicIndicator", host));
-            _host.AddModifier(modifierProvider.GetModifier("GunTowerBaseModifier", host));
 
             // initialize behaviour
             _ticksPerSecond = config.GetFloat(CoreConfig.TicksPerSecond);

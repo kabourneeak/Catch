@@ -1,4 +1,8 @@
-﻿namespace Catch.Services
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Catch.Services
 {
     /// <summary>
     /// Provides "read-only" configuration data to consumers, although it cannot 
@@ -28,5 +32,7 @@
         bool GetBool(string key, bool def);
 
         bool HasKey(string key);
+
+        IEnumerable<KeyValuePair<string, string>> GetOwnEntries();
     }
 }

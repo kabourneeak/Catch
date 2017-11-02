@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Catch.Services
@@ -66,6 +67,24 @@ namespace Catch.Services
 
         public bool HasKey(string key) =>
             _dict.ContainsKey(key) || _parentConfig.HasKey(key);
+
+        public IEnumerable<KeyValuePair<string, string>> GetOwnEntries() => _dict;
+
+        /// <summary>
+        /// Add all entries from the given dictionary to this one, 
+        /// overwriting any conflicting keys
+        /// </summary>
+        /// <param name="otherConfig">The other IConfig instance to copy from from</param>
+        public void AddEntries(IConfig otherConfig)
+        {
+            foreach (var entry in otherConfig.GetOwnEntries())
+            {
+                if (_dict.ContainsKey(entry.Key))
+                    _dict[entry.Key] = entry.Value;
+                else
+                    _dict.Add(entry.Key, entry.Value);
+            }
+        }
 
         public static DictionaryConfig FromJson(string filename, IConfig parentConfig)
         {

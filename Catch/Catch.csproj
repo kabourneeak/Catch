@@ -104,8 +104,6 @@
     </Compile>
     <Compile Include="Components\AgentBase.cs" />
     <Compile Include="Components\BaseModifier.cs" />
-    <Compile Include="Components\BehaviourProvider.cs" />
-    <Compile Include="Components\CommandProvider.cs" />
     <Compile Include="Components\CommandTask.cs" />
     <Compile Include="Base\CoreConfig.cs" />
     <Compile Include="Base\CoreLabels.cs" />
@@ -117,7 +115,6 @@
     <Compile Include="Base\IAttackModifier.cs" />
     <Compile Include="Base\IHitModifier.cs" />
     <Compile Include="Base\IRemoveModifier.cs" />
-    <Compile Include="Components\ModifierProvider.cs" />
     <Compile Include="Graphics\BoxSprite.cs" />
     <Compile Include="Graphics\HexagonSprite.cs" />
     <Compile Include="Graphics\ISprite.cs" />
@@ -150,11 +147,9 @@
     <Compile Include="Graphics\IGraphicsComponent.cs" />
     <Compile Include="Graphics\IGraphicsResourceContainer.cs" />
     <Compile Include="Graphics\RelativePositionGraphicsComponent.cs" />
-    <Compile Include="Components\IndicatorProvider.cs" />
     <Compile Include="Services\IProvider.cs" />
     <Compile Include="Level\LevelBootstrapper.cs" />
     <Compile Include="Level\SimulationManager.cs" />
-    <Compile Include="Mobs\BlockMobBehaviour.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
     <Compile Include="Services\DictionaryConfig.cs" />
     <Compile Include="Level\UpdateEventArgs.cs" />
@@ -213,7 +208,6 @@
     <Compile Include="Services\EmptyConfig.cs" />
     <Compile Include="Services\IConfig.cs" />
     <Compile Include="Services\TaskExtensions.cs" />
-    <Compile Include="Towers\EmptyTowerBehaviour.cs" />
     <Compile Include="Level\UiStateModel.cs" />
     <Compile Include="Services\ZoomToPointEventArgs.cs" />
     <Compile Include="Level\UpdateController.cs" />

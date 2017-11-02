@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Catch.Services
 {
@@ -34,5 +35,7 @@ namespace Catch.Services
         public bool GetBool(string key, bool def) => def;
 
         public bool HasKey(string key) => false;
+
+        public IEnumerable<KeyValuePair<string, string>> GetOwnEntries() => Enumerable.Empty<KeyValuePair<string, string>>();
     }
 }
