@@ -1,6 +1,6 @@
 {
-    "Colors" : [],    
-    
+    "Colors" : [],
+
     "Styles": [
         {
             "Name" : "GunTowerStyle",
@@ -49,14 +49,17 @@
                 "SpriteIndicator.Layer": "Tower",
                 "SpriteIndicator.LevelOfDetail": "Low"
             }
-        },        
+        }
+    ],
+
+    "Modifiers" : [
         {
-            "Name": "BlockMobBaseIndicator",
-            "Base": "SpriteIndicator",
-            "Config": {
-                "SpriteIndicator.SpriteName": "BlockMobSprite",
-                "SpriteIndicator.Layer": "Mob",
-                "SpriteIndicator.LevelOfDetail": "NormalHigh"
+            "Name" : "GunTowerBaseModifier",
+            "Base" : "BaseModifier",
+            "Config" : {
+                "BaseModifier.DisplayName" : "Gun Tower",
+                "BaseModifier.Level" : 1,
+                "BaseModifier.MaxHealth" : "100"
             }
         }
     ],
@@ -71,7 +74,7 @@
                 "GunTowerStrategicIndicator"
             ],
             "Modifiers": [
-                "GunTowerLevel4BaseModifier"
+                "GunTowerBaseModifier"
             ],
             "Commands": [
                 "UpgradeTowerCommand"

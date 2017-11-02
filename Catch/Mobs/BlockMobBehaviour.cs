@@ -5,7 +5,7 @@ using Catch.Services;
 
 namespace Catch.Mobs
 {
-    public class BlockMobBehaviour : PathMobBehaviour, IAgentStatsModifier
+    public class BlockMobBehaviour : PathMobBehaviour
     {
         public const string AgentTypeName = "BlockMob";
         public static readonly string CfgBlockSize = ConfigUtils.GetConfigPath(AgentTypeName, nameof(CfgBlockSize));
@@ -13,7 +13,11 @@ namespace Catch.Mobs
 
         private readonly IConfig _config;
 
-        public BlockMobBehaviour(IExtendedAgent host, IConfig config, IndicatorProvider indicatorProvider, IMapPath path) : base(host, path)
+        public BlockMobBehaviour(IExtendedAgent host,
+            IConfig config,
+            IndicatorProvider indicatorProvider,
+            ModifierProvider modifierProvider,
+            IMapPath path) : base(host, path)
         {
             if (host == null) throw new ArgumentNullException(nameof(host));
             _config = config ?? throw new ArgumentNullException(nameof(config));
@@ -21,13 +25,7 @@ namespace Catch.Mobs
             if (path == null) throw new ArgumentNullException(nameof(path));
 
             host.Indicators.Add(indicatorProvider.GetIndicator("BlockMobBaseIndicator"));
-        }
-
-        public void OnCalculateAgentStats(IExtendedAgent agent)
-        {
-            // TODO this should come from a base modifier somewhere
-
-            agent.ExtendedStats.MovementSpeed = 0.005f;
+            host.AddModifier(modifierProvider.GetModifier("BlockMobBaseModifier", host));
         }
     }
 }

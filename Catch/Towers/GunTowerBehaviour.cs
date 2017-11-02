@@ -5,13 +5,13 @@ using Catch.Services;
 
 namespace Catch.Towers
 {
-    public class GunTowerBehaviour : IUpdatable, IAgentStatsModifier, IRemoveModifier
+    public class GunTowerBehaviour : IUpdatable, IRemoveModifier
     {
         public const string AgentTypeName = "GunTower";
 
         private readonly IExtendedAgent _host;
 
-        public GunTowerBehaviour(IExtendedAgent host, IConfig config, IndicatorProvider indicatorProvider)
+        public GunTowerBehaviour(IExtendedAgent host, IConfig config, IndicatorProvider indicatorProvider, ModifierProvider modifierProvider)
         {
             _host = host ?? throw new ArgumentNullException(nameof(host));
             if (config == null) throw new ArgumentNullException(nameof(config));
@@ -21,6 +21,7 @@ namespace Catch.Towers
 
             _host.Indicators.Add(indicatorProvider.GetIndicator("GunTowerBaseIndicator", host));
             _host.Indicators.Add(indicatorProvider.GetIndicator("GunTowerStrategicIndicator", host));
+            _host.AddModifier(modifierProvider.GetModifier("GunTowerBaseModifier", host));
 
             // initialize behaviour
             _ticksPerSecond = config.GetFloat(CoreConfig.TicksPerSecond);
@@ -185,17 +186,6 @@ namespace Catch.Towers
         #region Modifier implementations
 
         public ModifierPriority Priority => ModifierPriority.Base;
-
-        public void OnCalculateAgentStats(IExtendedAgent agent)
-        {
-            agent.ExtendedStats.DisplayName = "Gun Tower";
-            agent.ExtendedStats.DisplayStatus = string.Empty;
-            agent.ExtendedStats.DisplayInfo = string.Empty;
-
-            agent.ExtendedStats.MaxHealth = 100;
-            agent.ExtendedStats.Health = 100;
-            agent.ExtendedStats.Level = 1;
-        }
 
         public void OnRemove(IExtendedAgent agent)
         {

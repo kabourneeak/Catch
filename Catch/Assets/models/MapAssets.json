@@ -127,5 +127,15 @@
         }        
     ],
 
+    "Modifiers" : [
+        {
+            "Name" : "EmptyTowerBaseModifier",
+            "Base" : "BaseModifier",
+            "Config" : {
+                "BaseModifier.DisplayName" : "Empty Tower"
+            }
+        }
+    ],
+
     "Agents" : []
 }

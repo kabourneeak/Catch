@@ -29,7 +29,29 @@
         }
     ],
 
-    "Indicators" : [],
-    
+    "Indicators" : [
+        {
+            "Name": "BlockMobBaseIndicator",
+            "Base": "SpriteIndicator",
+            "Config": {
+                "SpriteIndicator.SpriteName": "BlockMobSprite",
+                "SpriteIndicator.Layer": "Mob",
+                "SpriteIndicator.LevelOfDetail": "NormalHigh"
+            }
+        }
+    ],
+
+    "Modifiers" : [
+        {
+            "Name" : "BlockMobBaseModifier",
+            "Base" : "BaseModifier",
+            "Config" : {
+                "BaseModifier.DisplayName" : "Block Mob",
+                "BaseModifier.MaxHealth" : "100",
+                "BaseModifier.MovementSpeed" : "0.005"
+            }
+        }
+    ],
+
     "Agents" : []
 }

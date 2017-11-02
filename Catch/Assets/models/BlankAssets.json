@@ -6,6 +6,12 @@
     "Sprites" : [],
 
     "Indicators" : [],
+
+    "Modifiers" : [],
+    
+    "Behaviours" : [],
+    
+    "Commands" : [],
     
     "Agents" : []
 }
