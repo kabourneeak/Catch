@@ -1,6 +1,6 @@
 ﻿using Catch.Base;
+using Catch.Components;
 using Catch.Graphics;
-using Catch.Level;
 
 namespace Catch.Towers
 {

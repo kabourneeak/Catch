@@ -102,8 +102,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Base\AgentBase.cs" />
-    <Compile Include="Base\CommandTask.cs" />
+    <Compile Include="Components\AgentBase.cs" />
+    <Compile Include="Components\CommandTask.cs" />
     <Compile Include="Base\CoreConfig.cs" />
     <Compile Include="Base\CoreLabels.cs" />
     <Compile Include="Base\CreateAgentArgs.cs" />
@@ -138,15 +138,15 @@
     <Compile Include="Base\IUpdateEventArgs.cs" />
     <Compile Include="Base\IUpdateReadinessEventArgs.cs" />
     <Compile Include="Base\IVersionedCollection.cs" />
-    <Compile Include="Base\ScheduledOneTimeTask.cs" />
-    <Compile Include="Base\SpawnAgentTask.cs" />
+    <Compile Include="Components\ScheduledOneTimeTask.cs" />
+    <Compile Include="Components\SpawnAgentTask.cs" />
     <Compile Include="Base\BaseStatsModel.cs" />
     <Compile Include="Base\IUpdatable.cs" />
-    <Compile Include="Level\AgentProvider.cs" />
+    <Compile Include="Components\AgentProvider.cs" />
     <Compile Include="Graphics\IGraphicsComponent.cs" />
     <Compile Include="Graphics\IGraphicsResourceContainer.cs" />
     <Compile Include="Graphics\RelativePositionGraphicsComponent.cs" />
-    <Compile Include="Level\IndicatorProvider.cs" />
+    <Compile Include="Components\IndicatorProvider.cs" />
     <Compile Include="Services\IProvider.cs" />
     <Compile Include="Level\LevelBootstrapper.cs" />
     <Compile Include="Level\SimulationManager.cs" />
@@ -246,6 +246,7 @@
       <Name>CatchLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

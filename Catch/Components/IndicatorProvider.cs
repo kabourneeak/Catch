@@ -5,7 +5,7 @@ using Catch.Services;
 using CatchLibrary.Serialization.Assets;
 using Unity;
 
-namespace Catch.Level
+namespace Catch.Components
 {
     /// <summary>
     /// Creates transient instances of <see cref="IIndicator"/>

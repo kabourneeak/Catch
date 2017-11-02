@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using Windows.System;
 using Catch.Base;
+using Catch.Components;
 using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;

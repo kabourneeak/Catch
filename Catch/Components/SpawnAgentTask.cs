@@ -1,4 +1,6 @@
-﻿namespace Catch.Base
+﻿using Catch.Base;
+
+namespace Catch.Components
 {
     public class SpawnAgentTask : ScheduledOneTimeTask
     {

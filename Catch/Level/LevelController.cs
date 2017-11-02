@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 using Catch.Base;
+using Catch.Components;
 using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;

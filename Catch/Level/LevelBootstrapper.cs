@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Catch.Base;
+using Catch.Components;
 using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;

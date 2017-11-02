@@ -1,4 +1,6 @@
-﻿namespace Catch.Base
+﻿using Catch.Base;
+
+namespace Catch.Components
 {
     /// <summary>
     /// A task that will fire once after a given amount of time has elapsed, before

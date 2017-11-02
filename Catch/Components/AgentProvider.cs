@@ -6,7 +6,7 @@ using Catch.Services;
 using Catch.Towers;
 using Unity;
 
-namespace Catch.Level
+namespace Catch.Components
 {
     /// <summary>
     /// Provides agents built into the program

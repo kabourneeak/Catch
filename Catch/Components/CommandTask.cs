@@ -1,4 +1,6 @@
-﻿namespace Catch.Base
+﻿using Catch.Base;
+
+namespace Catch.Components
 {
     /// <summary>
     /// A task that will fire once as soon as it is first called to Update, 
