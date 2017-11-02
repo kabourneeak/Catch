@@ -11,10 +11,10 @@ namespace Catch.Components
     /// <summary>
     /// Provides agents built into the program
     /// </summary>
-    public class AgentProvider : IProvider, IAgentProvider
+    public class AgentProvider : IProvider, IAgentProvider, IIndicatorProvider
     {
         private readonly IConfig _parentConfig;
-        private readonly IUnityContainer _container;
+        private readonly IUnityContainer _providerScope;
 
         private readonly Dictionary<string, AgentModel> _agentModels;
         private readonly Dictionary<string, ComponentModel> _componentModels;
@@ -24,7 +24,7 @@ namespace Catch.Components
         {
             _parentConfig = parentConfig ?? throw new ArgumentNullException(nameof(parentConfig));
             if (assetModel == null) throw new ArgumentNullException(nameof(assetModel));
-            _container = container ?? throw new ArgumentNullException(nameof(container));
+            _providerScope = container ?? throw new ArgumentNullException(nameof(container));
 
             // load models
             _agentModels = new Dictionary<string, AgentModel>();
@@ -67,7 +67,7 @@ namespace Catch.Components
             // Create a child container for specific, agent-scoped dependencies to be used
             // during the construction of this single agent
             // We make a new scope each time incase one of the components keeps a reference
-            var agentContainer = _container.CreateChildContainer();
+            var agentContainer = _providerScope.CreateChildContainer();
 
             agentContainer.RegisterInstance<IUnityContainer>(agentContainer);
             agentContainer.RegisterInstance<IAgent>(agent);
@@ -99,6 +99,38 @@ namespace Catch.Components
             return agent;
         }
 
+        #region IIndicatorProvider Implementation
+
+        public IIndicator GetIndicator(string name)
+        {
+            return GetComponent<IIndicator>(name, _providerScope);
+        }
+
+        public IIndicator GetIndicator(string name, IExtendedAgent agent)
+        {
+            return GetComponent<IIndicator>(name, agent);
+        }
+
+        public IIndicator GetIndicator(string name, IMapTile tile)
+        {
+            // TODO deduplicate code from GetComponent
+
+            if (!_componentModels.TryGetValue(name, out var model))
+                throw new ArgumentException($"The component {name} is not defined");
+
+            // Components themselves gain yet another scope, to keep them isolated
+            // from multiple components of the same type being used in one agent
+            var componentScope = _providerScope.CreateChildContainer();
+
+            componentScope.RegisterInstance<IUnityContainer>(componentScope);
+            componentScope.RegisterInstance<IConfig>(GetConfig(name, _parentConfig));
+            componentScope.RegisterInstance<IMapTile>(tile);
+
+            return componentScope.Resolve<IIndicator>(model.Base);
+        }
+
+        #endregion
+
         public T GetComponent<T>(string name, IExtendedAgent agent)
         {
             // TODO consider keeping the original agent scopes in a ConditionalWeakTable 
@@ -111,7 +143,7 @@ namespace Catch.Components
 
             // Components themselves gain yet another scope, to keep them isolated
             // from multiple components of the same type being used in one agent
-            var componentScope = _container.CreateChildContainer();
+            var componentScope = _providerScope.CreateChildContainer();
 
             componentScope.RegisterInstance<IUnityContainer>(componentScope);
             componentScope.RegisterInstance<IAgent>(agent);

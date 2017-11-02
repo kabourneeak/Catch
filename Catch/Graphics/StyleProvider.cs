@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Windows.UI;
-using Catch.Services;
+using Catch.Base;
 using CatchLibrary.Serialization.Assets;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;

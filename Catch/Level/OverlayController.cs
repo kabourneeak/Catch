@@ -29,7 +29,7 @@ namespace Catch.Level
         public OverlayController(UiStateModel uiState,
             ISimulationManager simulationManager,
             ISimulationState simulationState,
-            IndicatorProvider indicatorProvider,
+            IIndicatorProvider indicatorProvider,
             StatusBar statusBar)
         {
             _uiState = uiState ?? throw new ArgumentNullException(nameof(uiState));

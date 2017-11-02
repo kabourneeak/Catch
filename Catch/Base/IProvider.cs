@@ -1,4 +1,4 @@
-﻿namespace Catch.Services
+﻿namespace Catch.Base
 {
     /// <summary>
     /// Marking interface for injectable providers

@@ -60,6 +60,8 @@ namespace Catch.Level
 
             container.RegisterType<ILabelProvider>(new ContainerControlledLifetimeManager(),
                 new InjectionFactory(c => c.Resolve<LabelProvider>()));
+            container.RegisterType<IIndicatorProvider>(new ContainerControlledLifetimeManager(),
+                new InjectionFactory(c => c.Resolve<AgentProvider>()));
             container.RegisterType<IAgentProvider>(new ContainerControlledLifetimeManager(),
                 new InjectionFactory(c => c.Resolve<AgentProvider>()));
 

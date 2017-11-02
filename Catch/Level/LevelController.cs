@@ -57,7 +57,7 @@ namespace Catch.Level
 
         private void InitializeMap(MapSerializationModel mapSerializationModel, MapModel map)
         {
-            var indicatorProvider = _levelContainer.Resolve<IndicatorProvider>();
+            var indicatorProvider = _levelContainer.Resolve<IIndicatorProvider>();
 
             map.Initialize(mapSerializationModel.Rows, mapSerializationModel.Columns);
 

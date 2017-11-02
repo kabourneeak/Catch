@@ -102,6 +102,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Base\IAgentProvider.cs" />
+    <Compile Include="Base\IIndicatorProvider.cs" />
     <Compile Include="Components\AgentBase.cs" />
     <Compile Include="Components\BaseModifier.cs" />
     <Compile Include="Components\CommandTask.cs" />
@@ -109,7 +111,6 @@
     <Compile Include="Base\CoreLabels.cs" />
     <Compile Include="Base\CreateAgentArgs.cs" />
     <Compile Include="Base\IAgent.cs" />
-    <Compile Include="Base\IAgentProvider.cs" />
     <Compile Include="Base\IBaseStats.cs" />
     <Compile Include="Base\IAgentStatsModifier.cs" />
     <Compile Include="Base\IAttackModifier.cs" />
@@ -147,7 +148,7 @@
     <Compile Include="Graphics\IGraphicsComponent.cs" />
     <Compile Include="Graphics\IGraphicsResourceContainer.cs" />
     <Compile Include="Graphics\RelativePositionGraphicsComponent.cs" />
-    <Compile Include="Services\IProvider.cs" />
+    <Compile Include="Base\IProvider.cs" />
     <Compile Include="Level\LevelBootstrapper.cs" />
     <Compile Include="Level\SimulationManager.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
