@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 using Catch.Base;
-using Catch.Graphics;
 using Catch.Services;
+using Unity;
 
 namespace Catch.Components
 {
@@ -23,12 +23,12 @@ namespace Catch.Components
         private readonly IVersionedCollection<IAgentCommand> _commands;
         private readonly BaseStatsModel _stats;
 
-        public AgentBase(string agentType)
+        public AgentBase(string agentType, IUnityContainer container)
         {
             AgentType = agentType;
             Position = new Vector2(0.0f);
 
-            Indicators = new IndicatorCollection();
+            Indicators = container.Resolve<IndicatorCollection>();
             _modifiers = new VersionedCollection<IModifier>(new SimpleSortedList<IModifier>(StatModelComparer));
             _labels = new VersionedCollection<ILabel>(new HashSet<ILabel>());
             _commands = new VersionedCollection<IAgentCommand>(new HashSet<IAgentCommand>());
@@ -37,8 +37,6 @@ namespace Catch.Components
         }
 
         public IUpdatable BehaviourComponent { get; set; }
-
-        public IGraphicsComponent GraphicsComponent { get; set; }
 
         #region IAgent Properties
 
@@ -82,11 +80,6 @@ namespace Catch.Components
         #endregion
 
         #region Simulation Events
-
-        public void Draw(DrawArgs drawArgs)
-        {
-            GraphicsComponent.Draw(this, drawArgs);
-        }
 
         public float Update(IUpdateEventArgs args)
         {

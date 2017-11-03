@@ -32,7 +32,7 @@
     "Indicators" : [
         {
             "Name": "BlockMobBaseIndicator",
-            "Base": "SpriteIndicator",
+            "Base": "AgentPositionSpriteIndicator",
             "Config": {
                 "SpriteIndicator.SpriteName": "BlockMobSprite",
                 "SpriteIndicator.Layer": "Mob",

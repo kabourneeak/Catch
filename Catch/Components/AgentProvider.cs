@@ -62,14 +62,16 @@ namespace Catch.Components
              * assemble agent
              */
 
-            var agent = new AgentBase(name);
-
             // Create a child container for specific, agent-scoped dependencies to be used
             // during the construction of this single agent
             // We make a new scope each time incase one of the components keeps a reference
             var agentContainer = _providerScope.CreateChildContainer();
 
             agentContainer.RegisterInstance<IUnityContainer>(agentContainer);
+
+            // create agent
+            var agent = new AgentBase(name, agentContainer);
+
             agentContainer.RegisterInstance<IAgent>(agent);
             agentContainer.RegisterInstance<IExtendedAgent>(agent);
 
@@ -78,8 +80,6 @@ namespace Catch.Components
 
             agent.Tile = args.Tile;
             agent.ExtendedStats.Team = args.Team;
-
-            agent.GraphicsComponent = agentContainer.Resolve<RelativePositionGraphicsComponent>();
 
             foreach (var indicatorName in agentModel.IndicatorNames)
                 agent.Indicators.Add(GetComponent<IIndicator>(indicatorName, agentContainer));
@@ -160,6 +160,7 @@ namespace Catch.Components
 
             // Components themselves gain yet another scope, to keep them isolated
             // from multiple components of the same type being used in one agent
+            // TODO use a dependency override instead of creating a new container for the config?
             var componentScope = parentScope.CreateChildContainer();
 
             componentScope.RegisterInstance<IUnityContainer>(componentScope);

@@ -105,6 +105,7 @@
     </Compile>
     <Compile Include="Base\IAgentProvider.cs" />
     <Compile Include="Base\IIndicatorProvider.cs" />
+    <Compile Include="Base\IIndicatorRegistry.cs" />
     <Compile Include="Components\AgentBase.cs" />
     <Compile Include="Components\BaseModifier.cs" />
     <Compile Include="Components\CommandTask.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Base\IAttackModifier.cs" />
     <Compile Include="Base\IHitModifier.cs" />
     <Compile Include="Base\IRemoveModifier.cs" />
+    <Compile Include="Graphics\AgentPositionSpriteIndicator.cs" />
     <Compile Include="Graphics\BoxSprite.cs" />
     <Compile Include="Graphics\HexagonSprite.cs" />
     <Compile Include="Graphics\ISprite.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="Graphics\SpriteIndicator.cs" />
     <Compile Include="Graphics\IStyle.cs" />
     <Compile Include="Graphics\StyleProvider.cs" />
+    <Compile Include="Graphics\UncachedTextIndicator.cs" />
     <Compile Include="Level\GraphicsResourceManager.cs" />
     <Compile Include="Level\ExecuteEventArgs.cs" />
     <Compile Include="Base\IAgentCommand.cs" />
@@ -146,10 +149,9 @@
     <Compile Include="Base\BaseStatsModel.cs" />
     <Compile Include="Base\IUpdatable.cs" />
     <Compile Include="Components\AgentProvider.cs" />
-    <Compile Include="Graphics\IGraphicsComponent.cs" />
     <Compile Include="Graphics\IGraphicsResourceContainer.cs" />
-    <Compile Include="Graphics\RelativePositionGraphicsComponent.cs" />
     <Compile Include="Base\IProvider.cs" />
+    <Compile Include="Level\IndicatorRegistry.cs" />
     <Compile Include="Level\LevelBootstrapper.cs" />
     <Compile Include="Level\SimulationManager.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
@@ -158,7 +160,6 @@
     <Compile Include="Level\UpdateReadinessEventArgs.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Graphics\DrawLevelOfDetail.cs" />
-    <Compile Include="Graphics\IDrawable.cs" />
     <Compile Include="Services\EventArgsBase.cs" />
     <Compile Include="Services\HoverEventArgs.cs" />
     <Compile Include="Services\KeyPressEventArgs.cs" />

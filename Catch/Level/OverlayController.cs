@@ -111,7 +111,12 @@ namespace Catch.Level
             // add new indicator
             _lastHover = _uiState.HoverHexCoords;
             _lastHoverTile = _uiState.HoverTile;
-            _lastHoverTile?.Indicators.Add(_hoverTileIndicator);
+
+            if (_lastHoverTile != null)
+            {
+                _hoverTileIndicator.Position = _lastHoverTile.Position;
+                _lastHoverTile.Indicators.Add(_hoverTileIndicator);
+            }
         }
 
         public void Touch(TouchEventArgs eventArgs)

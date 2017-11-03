@@ -13,8 +13,7 @@ namespace Catch.Towers
 
         public SocketTowerBehaviour(IConfig config, IExtendedAgent host, IIndicatorProvider indicatorProvider)
         {
-            host.Position = host.Tile.Position;
-
+            // set label
             var labelIndicatorName = config.GetString(CfgTextIndicatorName);
             var labelIndicator = (TextIndicator)indicatorProvider.GetIndicator(labelIndicatorName);
 
@@ -22,6 +21,12 @@ namespace Catch.Towers
             labelIndicator.SetLabelText(labelText);
 
             host.Indicators.Add(labelIndicator);
+
+            // set position
+            host.Position = host.Tile.Position;
+
+            foreach (var indicator in host.Indicators)
+                indicator.Position = host.Position;
         }
     }
 }

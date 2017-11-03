@@ -33,7 +33,7 @@
     "Indicators" : [
         {
             "Name": "GunTowerBaseIndicator",
-            "Base": "SpriteIndicator",
+            "Base": "AgentPositionSpriteIndicator",
             "Config": {
                 "SpriteIndicator.SpriteName": "GunTowerBodySprite",
                 "SpriteIndicator.UseRotation": "True",
@@ -43,7 +43,7 @@
         },
         {
             "Name": "GunTowerStrategicIndicator",
-            "Base": "SpriteIndicator",
+            "Base": "AgentPositionSpriteIndicator",
             "Config": {
                 "SpriteIndicator.SpriteName": "GunTowerStrategicSprite",
                 "SpriteIndicator.Layer": "Tower",

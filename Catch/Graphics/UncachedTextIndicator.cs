@@ -2,20 +2,22 @@
 using System.Numerics;
 using Catch.Base;
 using Catch.Services;
+using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.Graphics
 {
-    public class TextIndicator : IIndicator
+    [Obsolete]
+    public class UncachedTextIndicator : IIndicator
     {
-        private static readonly string CfgStyleName = ConfigUtils.GetConfigPath(nameof(TextIndicator), nameof(CfgStyleName));
-        private static readonly string CfgLayer = ConfigUtils.GetConfigPath(nameof(TextIndicator), nameof(CfgLayer));
-        private static readonly string CfgLevelOfDetail = ConfigUtils.GetConfigPath(nameof(TextIndicator), nameof(CfgLevelOfDetail));
+        private static readonly string CfgStyleName = ConfigUtils.GetConfigPath(nameof(UncachedTextIndicator), nameof(CfgStyleName));
+        private static readonly string CfgLayer = ConfigUtils.GetConfigPath(nameof(UncachedTextIndicator), nameof(CfgLayer));
+        private static readonly string CfgLevelOfDetail = ConfigUtils.GetConfigPath(nameof(UncachedTextIndicator), nameof(CfgLevelOfDetail));
 
-        private readonly TextResourceProvider _labelProvider;
         private string _labelText;
-        private TextResource _textResource;
 
         public Vector2 Position { get; set; }
+
+        public float Rotation { get; set; }
 
         public string Label => _labelText;
 
@@ -25,11 +27,11 @@ namespace Catch.Graphics
 
         public DrawLevelOfDetail LevelOfDetail { get; }
 
-        public TextIndicator(IConfig config, TextResourceProvider labelProvider, StyleProvider styleProvider)
+        public UncachedTextIndicator(IConfig config, StyleProvider styleProvider)
         {
             // TODO add more configuration for text size, etc
+
             _labelText = string.Empty;
-            _labelProvider = labelProvider;
             Style = styleProvider.GetStyle(config.GetString(CfgStyleName));
 
             var strCfgLayer = config.GetString(CfgLayer);
@@ -51,22 +53,28 @@ namespace Catch.Graphics
             {
                 throw new ArgumentException($"Could not parse {strCfgLod} as DrawLevelOfDetail");
             }
-        }
 
+        }
         public void SetLabelText(string text)
         {
             _labelText = text.Trim();
-            _textResource = _labelProvider.GetLabel(_labelText);
         }
 
         public void Draw(DrawArgs drawArgs)
         {
-            drawArgs.PushTranslation(this.Position);
-            // TODO can I do this flip when I create the resource, instead of on every draw?
-            drawArgs.PushScale(1.0f, -1.0f);
-            drawArgs.Ds.DrawTextLayout(_textResource.Label, -50.0f, -50.0f, Style.Brush);
-            drawArgs.Pop();
-            drawArgs.Pop();
+            if (Label.Length > 0)
+            {
+                using (var format = new CanvasTextFormat())
+                {
+                    // TODO set formatting options
+                    format.VerticalAlignment = CanvasVerticalAlignment.Center;
+                    format.HorizontalAlignment = CanvasHorizontalAlignment.Center;
+
+                    drawArgs.PushScale(1.0f, -1.0f);
+                    drawArgs.Ds.DrawText(_labelText, -50.0f, -50.0f, Style.Brush, format);
+                    drawArgs.Pop();
+                }
+            }
         }
     }
 }

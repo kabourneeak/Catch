@@ -17,7 +17,7 @@ namespace Catch.Level
 
         private readonly UiStateModel _uiState;
         private readonly MapModel _map;
-        private readonly IGraphicsComponent _mapGraphicsComponent;
+        private readonly IIndicatorRegistry _indicatorRegistry;
         private readonly float _tileRadius;
 
         private Vector2 _pan;
@@ -26,13 +26,13 @@ namespace Catch.Level
         private Vector2 _topRightViewLimit;
         private Matrix3x2 _mapTransform;
 
-        public FieldController(IConfig config, UiStateModel uiState, MapModel map)
+        public FieldController(IConfig config, UiStateModel uiState, MapModel map, IIndicatorRegistry indicatorRegistry)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
+            _indicatorRegistry = indicatorRegistry ?? throw new ArgumentNullException(nameof(indicatorRegistry));
             _uiState = uiState ?? throw new ArgumentNullException(nameof(uiState));
             _map = map ?? throw new ArgumentNullException(nameof(map));
 
-            _mapGraphicsComponent = new RelativePositionGraphicsComponent();
             _tileRadius = config.GetFloat(CoreConfig.TileRadius);
 
             _pan = Vector2.Zero;
@@ -73,13 +73,9 @@ namespace Catch.Level
             var bottomLeftFieldCoords = TranslateToFieldCoords(_bottomLeftViewLimit);
             var topRightFieldCoords = TranslateToFieldCoords(_topRightViewLimit);
 
-            // find tiles and agents which are currently on screen
-            var culledTiles = _map.TileModels
+            // find indicators which are currently on screen
+            var culledIndicators = _indicatorRegistry.Indicators
                 .Where(tm => bottomLeftFieldCoords.X <= tm.Position.X && topRightFieldCoords.X >= tm.Position.X)
-                .ToArray();
-
-            var culledAgents = culledTiles
-                .SelectMany(tm => tm.ExtendedAgents)
                 .ToArray();
 
             // have agents draw themselves layer by layer
@@ -87,14 +83,13 @@ namespace Catch.Level
             {
                 drawArgs.Layer = drawLayer;
 
-                for (var i = 0; i < culledTiles.Length; ++i)
+                for (var i = 0; i < culledIndicators.Length; ++i)
                 {
-                    _mapGraphicsComponent.Draw(culledTiles[i], drawArgs);
-                }
-
-                for (var i = 0; i < culledAgents.Length; ++i)
-                {
-                    culledAgents[i].Draw(drawArgs);
+                    if (culledIndicators[i].Layer == drawArgs.Layer
+                        && culledIndicators[i].LevelOfDetail.HasFlag(drawArgs.LevelOfDetail))
+                    {
+                        culledIndicators[i].Draw(drawArgs);
+                    }
                 }
             }
 

@@ -30,6 +30,8 @@ namespace Catch.Level
             // used during provision of agents, components to provide dependencies and scoped containers
             container.RegisterInstance<IUnityContainer>(container);
 
+            container.RegisterType<IIndicatorRegistry, IndicatorRegistry>(new ContainerControlledLifetimeManager());
+
             container.RegisterType<GraphicsResourceManager>(
                 new ContainerControlledLifetimeManager(), 
                 new InjectionFactory(c => new GraphicsResourceManager(c.ResolveAll<IProvider>())));
@@ -69,12 +71,14 @@ namespace Catch.Level
             /*
              * Register Agent Components
              */
-            UnityUtils.RegisterAllAsTransient(typeof(IGraphicsComponent), container);
             UnityUtils.RegisterAllAsTransient(typeof(ISprite), container);
             UnityUtils.RegisterAllAsTransient(typeof(IIndicator), container);
             UnityUtils.RegisterAllAsTransient(typeof(IAgentCommand), container);
             UnityUtils.RegisterAllAsTransient(typeof(IModifier), container);
             UnityUtils.RegisterAllAsTransient(typeof(IUpdatable), container);
+
+            container.RegisterType<IndicatorCollection>(new TransientLifetimeManager());
+            container.RegisterType<MapTileModel>(new TransientLifetimeManager());
 
             return container;
         }

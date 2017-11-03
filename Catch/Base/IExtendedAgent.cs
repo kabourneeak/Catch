@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Catch.Graphics;
 
 namespace Catch.Base
 {
@@ -12,11 +11,11 @@ namespace Catch.Base
     {
         #region Properties
 
-        new Vector2 Position { set; get; }
+        new Vector2 Position { get; set; }
 
         new float Rotation { get; set; }
 
-        new IMapTile Tile { set; get; }
+        new IMapTile Tile { get; set; }
 
         new float TileProgress { get; set; }
 
@@ -29,8 +28,6 @@ namespace Catch.Base
         #endregion
 
         #region Methods
-
-        void Draw(DrawArgs drawArgs);
 
         void AddModifier(IModifier modifier);
 

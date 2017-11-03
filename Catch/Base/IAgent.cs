@@ -1,5 +1,4 @@
-﻿using System;
-using Catch.Graphics;
+﻿using System.Numerics;
 
 namespace Catch.Base
 {
@@ -7,12 +6,24 @@ namespace Catch.Base
     /// Basic details of an agent in the simulation
     /// </summary>
     /// <seealso cref="IExtendedAgent"/>
-    public interface IAgent : IDrawable
+    public interface IAgent
     {
         /// <summary>
         /// The agent type, set at construction
         /// </summary>
         string AgentType { get; }
+
+        /// <summary>
+        /// The world coordinates of the center of the agent
+        /// </summary>
+        Vector2 Position { get; }
+
+        /// <summary>
+        /// The logical rotation of the object. Each indicator will decide for itself whether it 
+        /// will use this information (e.g., a tower body might be rotated, but its health bar 
+        /// stays at the top)
+        /// </summary>
+        float Rotation { get; }
 
         /// <summary>
         /// The map tile the agent is registered to
@@ -32,6 +43,11 @@ namespace Catch.Base
         IVersionedEnumerable<IAgentCommand> Commands { get; }
 
         IBaseStats Stats { get; }
+
+        /// <summary>
+        /// The graphical indications that should be drawn for this object
+        /// </summary>
+        IndicatorCollection Indicators { get; }
 
         #region Events
 

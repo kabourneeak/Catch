@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using Catch.Base;
 using Catch.Services;
 
@@ -10,16 +11,28 @@ namespace Catch.Graphics
     public class SpriteIndicator : IIndicator
     {
         private static readonly string CfgSpriteName = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgSpriteName));
+        private static readonly string CfgUseTranslation = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgUseTranslation));
         private static readonly string CfgUseRotation = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgUseRotation));
         private static readonly string CfgLayer = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgLayer));
         private static readonly string CfgLevelOfDetail = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgLevelOfDetail));
 
-        public ISprite Sprite { get; }
+        public Vector2 Position { get; set; }
 
-        public bool UseRotation { get; }
+        public float Rotation { get; set; }
+
+        public DrawLayer Layer { get; protected set; }
+
+        public DrawLevelOfDetail LevelOfDetail { get; protected set; }
+
+        protected ISprite Sprite { get; }
+
+        protected bool UseTranslation { get; set; }
+
+        protected bool UseRotation { get; set; }
 
         public SpriteIndicator(IConfig config, SpriteProvider spriteProvider)
         {
+            UseTranslation = config.GetBool(CfgUseTranslation, false);
             UseRotation = config.GetBool(CfgUseRotation, false);
 
             var spriteName = config.GetString(CfgSpriteName);
@@ -46,34 +59,24 @@ namespace Catch.Graphics
             }
         }
 
-        public void CreateResources(CreateResourcesArgs args)
+        public virtual void Draw(DrawArgs drawArgs)
         {
-            // do nothing
-        }
+            if (UseTranslation || UseRotation)
+                drawArgs.PushTranslation(this.Position);
 
-        public void DestroyResources()
-        {
-            // do nothing
-        }
-
-        public void Draw(DrawArgs drawArgs, float rotation)
-        {
             if (UseRotation)
-            {
-                drawArgs.PushRotation(rotation);
+                drawArgs.PushRotation(this.Rotation);
 
+            if (UseTranslation || UseRotation)
                 Sprite.Draw(drawArgs);
-
-                drawArgs.Pop();
-            }
             else
-            {
-                Sprite.Draw(drawArgs);
-            }
+                Sprite.Draw(drawArgs, Position);
+
+            if (UseRotation)
+                drawArgs.Pop();
+
+            if (UseTranslation || UseRotation)
+                drawArgs.Pop();
         }
-
-        public DrawLayer Layer { get; }
-
-        public DrawLevelOfDetail LevelOfDetail { get; }
     }
 }

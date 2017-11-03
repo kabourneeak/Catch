@@ -1,3 +1,4 @@
+using System.Numerics;
 using Catch.Graphics;
 
 namespace Catch.Base
@@ -16,8 +17,12 @@ namespace Catch.Base
         /// Draw this single indicator relative to the current draw arguments
         /// </summary>
         /// <param name="drawArgs">The draw device to use</param>
-        /// <param name="rotation">A rotation hint that the indicator can use if appropriate</param>
-        void Draw(DrawArgs drawArgs, float rotation);
+        void Draw(DrawArgs drawArgs);
+
+        /// <summary>
+        /// The world coordinates of the center of the agent
+        /// </summary>
+        Vector2 Position { get; set; }
 
         /// <summary>
         /// Only draw this indicator if the requested Layer matches

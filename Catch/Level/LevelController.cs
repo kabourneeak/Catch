@@ -66,7 +66,9 @@ namespace Catch.Level
              */
             foreach (var tile in map.TileModels)
             {
-                tile.Indicators.Add(indicatorProvider.GetIndicator("EmptyTileIndicator", tile));
+                var ind = (SpriteIndicator) indicatorProvider.GetIndicator("EmptyTileIndicator", tile);
+                ind.Position = tile.Position;
+                tile.Indicators.Add(ind);
 
                 var tileEmitModel = mapSerializationModel.Tiles.GetHex(tile.Coords);
                 var towerArgs = new CreateAgentArgs()
@@ -102,7 +104,9 @@ namespace Catch.Level
 
             foreach (var tile in allPathTiles)
             {
-                tile.Indicators.Add(indicatorProvider.GetIndicator("PathTileIndicator", tile));
+                var ind = (SpriteIndicator) indicatorProvider.GetIndicator("PathTileIndicator", tile);
+                ind.Position = tile.Position;
+                tile.Indicators.Add(ind);
             }
         }
 

@@ -9,12 +9,14 @@ namespace Catch.Level
         private readonly UpdateController _updateController;
         private readonly MapModel _map;
         private readonly IAgentProvider _agentProvider;
+        private readonly IIndicatorRegistry _indicatorRegistry;
 
-        public SimulationManager(UpdateController updateController, MapModel map, IAgentProvider agentProvider)
+        public SimulationManager(UpdateController updateController, MapModel map, IAgentProvider agentProvider, IIndicatorRegistry indicatorRegistry)
         {
             _map = map ?? throw new ArgumentNullException(nameof(map));
             _updateController = updateController ?? throw new ArgumentNullException(nameof(updateController));
             _agentProvider = agentProvider ?? throw new ArgumentNullException(nameof(agentProvider));
+            _indicatorRegistry = indicatorRegistry ?? throw new ArgumentNullException(nameof(indicatorRegistry));
         }
 
         public void Register(IExtendedAgent agent)
@@ -49,6 +51,8 @@ namespace Catch.Level
             agent.OnRemove();
 
             UnregisterFromTile(agent);
+
+            _indicatorRegistry.Unregister(agent.Indicators);
         }
 
         public void Move(IExtendedAgent agent, IMapTile tile)
