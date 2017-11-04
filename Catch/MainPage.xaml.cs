@@ -215,7 +215,7 @@ namespace Catch
             var screenDelta = Vector2.Zero;
 
             screenDelta.X = (float) args.Delta.Translation.X;
-            screenDelta.Y = (float) args.Delta.Translation.Y * -1.0f;
+            screenDelta.Y = (float) args.Delta.Translation.Y;
             _screenManager.PanBy(new PanByEventArgs(screenDelta));
 
             _screenManager.ZoomToPoint(new ZoomToPointEventArgs(args.Position.ToVector2(), args.Delta.Scale - 1.0f));

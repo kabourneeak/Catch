@@ -1,4 +1,5 @@
-﻿using Microsoft.Graphics.Canvas.Text;
+﻿using System.Numerics;
+using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.Graphics
 {
@@ -13,6 +14,8 @@ namespace Catch.Graphics
         public CanvasTextLayout Label { get; private set; }
 
         public string Text { get; }
+
+        public Vector2 Offset { get; set; }
 
         public TextResource(string text)
         {
@@ -38,6 +41,8 @@ namespace Catch.Graphics
                 format.HorizontalAlignment = CanvasHorizontalAlignment.Center;
                 
                 Label = new CanvasTextLayout(args.ResourceCreator, Text, format, 100, 100);
+
+                Offset = new Vector2(-50.0f, -50.0f);
             }
         }
 

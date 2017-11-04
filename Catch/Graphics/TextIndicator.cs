@@ -61,12 +61,7 @@ namespace Catch.Graphics
 
         public void Draw(DrawArgs drawArgs)
         {
-            drawArgs.PushTranslation(this.Position);
-            // TODO can I do this flip when I create the resource, instead of on every draw?
-            drawArgs.PushScale(1.0f, -1.0f);
-            drawArgs.Ds.DrawTextLayout(_textResource.Label, -50.0f, -50.0f, Style.Brush);
-            drawArgs.Pop();
-            drawArgs.Pop();
+            drawArgs.Ds.DrawTextLayout(_textResource.Label, Position.X + _textResource.Offset.X, Position.Y + _textResource.Offset.Y, Style.Brush);
         }
     }
 }

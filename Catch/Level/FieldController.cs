@@ -43,7 +43,7 @@ namespace Catch.Level
         {
             _zoom = 1.0f;
             _pan.X = (_uiState.WindowSize.X - _map.Size.X) / 2.0f;
-            _pan.Y = _uiState.WindowSize.Y * -1.0f + (_uiState.WindowSize.Y - _map.Size.Y) / 2.0f;
+            _pan.Y = (_uiState.WindowSize.Y - _map.Size.Y) / 2.0f;
 
             _bottomLeftViewLimit = new Vector2(_tileRadius / 2 * -1);
             _topRightViewLimit = Vector2.Add(_uiState.WindowSize, new Vector2(_tileRadius / 2));
@@ -59,7 +59,6 @@ namespace Catch.Level
         public void Draw(DrawArgs drawArgs)
         {
             // apply view matrix
-            drawArgs.PushScale(1.0f, -1.0f);
             drawArgs.PushScale(_zoom);
             drawArgs.PushTranslation(_pan);
 
@@ -94,7 +93,6 @@ namespace Catch.Level
             }
 
             // restore view matrix
-            drawArgs.Pop();
             drawArgs.Pop();
             drawArgs.Pop();
         }
