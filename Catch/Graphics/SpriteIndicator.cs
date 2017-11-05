@@ -16,9 +16,23 @@ namespace Catch.Graphics
         private static readonly string CfgLayer = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgLayer));
         private static readonly string CfgLevelOfDetail = ConfigUtils.GetConfigPath(nameof(SpriteIndicator), nameof(CfgLevelOfDetail));
 
-        public Vector2 Position { get; set; }
+        private readonly string _spriteName;
 
-        public float Rotation { get; set; }
+        /// <summary>
+        /// The position the indicator should be drawn at, relative to the current transform,
+        /// or the amount that the transform should be translated by when <see cref="UseTranslation"/>
+        /// is true.
+        /// </summary>
+        public virtual Vector2 Position { get; set; }
+
+        /// <summary>
+        /// The offset to apply to the <see cref="Position"/> at the time of drawing. The offset
+        /// is not applied as part of the transform if <see cref="UseTranslation"/> is true, but is
+        /// still applied at the time of drawing.
+        /// </summary>
+        public Vector2 Offset { get; set; }
+
+        public virtual float Rotation { get; set; }
 
         public DrawLayer Layer { get; protected set; }
 
@@ -35,8 +49,8 @@ namespace Catch.Graphics
             UseTranslation = config.GetBool(CfgUseTranslation, false);
             UseRotation = config.GetBool(CfgUseRotation, false);
 
-            var spriteName = config.GetString(CfgSpriteName);
-            Sprite = spriteProvider.GetSprite(spriteName);
+            _spriteName = config.GetString(CfgSpriteName);
+            Sprite = spriteProvider.GetSprite(_spriteName);
 
             var strCfgLayer = config.GetString(CfgLayer);
             if (Enum.TryParse(strCfgLayer, out DrawLayer layer))
@@ -68,9 +82,9 @@ namespace Catch.Graphics
                 drawArgs.PushRotation(this.Rotation);
 
             if (UseTranslation || UseRotation)
-                Sprite.Draw(drawArgs);
+                Sprite.Draw(drawArgs, Offset);
             else
-                Sprite.Draw(drawArgs, Position);
+                Sprite.Draw(drawArgs, Position + Offset);
 
             if (UseRotation)
                 drawArgs.Pop();
@@ -78,5 +92,7 @@ namespace Catch.Graphics
             if (UseTranslation || UseRotation)
                 drawArgs.Pop();
         }
+
+        public override string ToString() => $"{nameof(SpriteIndicator)} {_spriteName}";
     }
 }

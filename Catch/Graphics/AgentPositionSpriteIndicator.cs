@@ -1,4 +1,6 @@
-﻿using Catch.Base;
+﻿using System;
+using System.Numerics;
+using Catch.Base;
 using Catch.Services;
 
 namespace Catch.Graphics
@@ -10,17 +12,21 @@ namespace Catch.Graphics
     {
         private readonly IAgent _host;
 
+        public override Vector2 Position
+        {
+            get => _host.Position;
+            set => throw new InvalidOperationException();
+        }
+
+        public override float Rotation
+        {
+            get => _host.Rotation;
+            set => throw new InvalidOperationException();
+        }
+
         public AgentPositionSpriteIndicator(IConfig config, SpriteProvider spriteProvider, IAgent host) : base(config, spriteProvider)
         {
             _host = host;
-        }
-
-        public override void Draw(DrawArgs drawArgs)
-        {
-            Position = _host.Position;
-            Rotation = _host.Rotation;
-
-            base.Draw(drawArgs);
         }
     }
 }
