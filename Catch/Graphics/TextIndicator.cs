@@ -61,7 +61,10 @@ namespace Catch.Graphics
 
         public void Draw(DrawArgs drawArgs)
         {
-            drawArgs.Ds.DrawTextLayout(_textResource.Label, Position.X + _textResource.Offset.X, Position.Y + _textResource.Offset.Y, Style.Brush);
+            if (!_textResource.IsCreated)
+                _textResource.CreateResources(drawArgs.ResourceCreator);
+
+            drawArgs.Ds.DrawTextLayout(_textResource.Label, Position + _textResource.Offset, Style.Brush);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Catch.Services;
 using CatchLibrary.HexGrid;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Graphics
@@ -11,7 +12,6 @@ namespace Catch.Graphics
         private static readonly string CfgRadius = ConfigUtils.GetConfigPath(nameof(HexagonSprite), nameof(CfgRadius));
         private static readonly string CfgFilled = ConfigUtils.GetConfigPath(nameof(HexagonSprite), nameof(CfgFilled));
 
-        private int _createFrameId = -1;
         private CanvasStrokeStyle _strokeStyle;
         private CanvasCachedGeometry _geo;
 
@@ -26,20 +26,12 @@ namespace Catch.Graphics
             Style = styleProvider.GetStyle(config.GetString(CfgStyleName));
         }
 
-        public void CreateResources(CreateResourcesArgs args)
+        public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
-            if (!(args.IsMandatory || _geo == null))
-                return;
-
-            if (_createFrameId == args.FrameId)
-                return;
-
             DestroyResources();
 
-            _createFrameId = args.FrameId;
-
             // define path
-            var pb = new CanvasPathBuilder(args.ResourceCreator);
+            var pb = new CanvasPathBuilder(resourceCreator);
             var radiusH = HexUtils.GetRadiusHeight(Radius);
 
             pb.BeginFigure(-1 * Radius * HexUtils.COS60, radiusH);
@@ -71,22 +63,29 @@ namespace Catch.Graphics
 
             _strokeStyle.Dispose();
             _strokeStyle = null;
-
-            _createFrameId = -1;
         }
 
         public void Draw(DrawArgs drawArgs)
         {
+            if (_geo == null)
+                CreateResources(drawArgs.ResourceCreator);
+
             drawArgs.Ds.DrawCachedGeometry(_geo, Style.Brush);
         }
 
         public void Draw(DrawArgs drawArgs, Vector2 offset)
         {
+            if (_geo == null)
+                CreateResources(drawArgs.ResourceCreator);
+
             drawArgs.Ds.DrawCachedGeometry(_geo, offset, Style.Brush);
         }
 
         public void Draw(DrawArgs drawArgs, float offsetX, float offsetY)
         {
+            if (_geo == null)
+                CreateResources(drawArgs.ResourceCreator);
+
             drawArgs.Ds.DrawCachedGeometry(_geo, offsetX, offsetY, Style.Brush);
         }
     }

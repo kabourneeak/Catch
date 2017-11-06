@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 
 namespace Catch.Graphics
@@ -9,30 +10,22 @@ namespace Catch.Graphics
     /// </summary>
     public class TextResource : IGraphicsResource
     {
-        private int _createFrameId = -1;
-
         public CanvasTextLayout Label { get; private set; }
 
         public string Text { get; }
 
         public Vector2 Offset { get; set; }
 
+        public bool IsCreated => Label == null;
+
         public TextResource(string text)
         {
             Text = text;
         }
 
-        public void CreateResources(CreateResourcesArgs args)
+        public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
-            if (!(args.IsMandatory || Label == null))
-                return;
-
-            if (_createFrameId == args.FrameId)
-                return;
-
             DestroyResources();
-
-            _createFrameId = args.FrameId;
 
             using (var format = new CanvasTextFormat())
             {
@@ -40,7 +33,7 @@ namespace Catch.Graphics
                 format.VerticalAlignment = CanvasVerticalAlignment.Center;
                 format.HorizontalAlignment = CanvasHorizontalAlignment.Center;
                 
-                Label = new CanvasTextLayout(args.ResourceCreator, Text, format, 100, 100);
+                Label = new CanvasTextLayout(resourceCreator, Text, format, 100, 100);
 
                 Offset = new Vector2(-50.0f, -50.0f);
             }
@@ -53,8 +46,6 @@ namespace Catch.Graphics
 
             Label.Dispose();
             Label = null;
-
-            _createFrameId = -1;
         }
     }
 }

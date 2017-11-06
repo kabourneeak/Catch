@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Catch.Base;
 using Catch.Services;
 using CatchLibrary.Serialization.Assets;
+using Microsoft.Graphics.Canvas;
 using Unity;
 
 namespace Catch.Graphics
@@ -44,10 +45,10 @@ namespace Catch.Graphics
             }
         }
 
-        public void CreateResources(CreateResourcesArgs args)
+        public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
             foreach (var sprite in _sprites.Values)
-                sprite.CreateResources(args);
+                sprite.CreateResources(resourceCreator);
         }
 
         public void DestroyResources()

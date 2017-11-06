@@ -6,6 +6,7 @@ using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;
 using CatchLibrary.Serialization.Maps;
+using Microsoft.Graphics.Canvas;
 using Unity;
 
 namespace Catch.Level
@@ -206,9 +207,9 @@ namespace Catch.Level
 
         #region IGraphicsResource Implementation
 
-        public void CreateResources(CreateResourcesArgs args)
+        public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
-            _graphicsResourceManager.CreateResources(args);
+            _graphicsResourceManager.CreateResources(resourceCreator);
         }
 
         public void DestroyResources()

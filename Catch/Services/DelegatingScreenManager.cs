@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Catch.Graphics;
+using Microsoft.Graphics.Canvas;
 
 namespace Catch.Services
 {
@@ -15,8 +16,8 @@ namespace Catch.Services
     /// </summary>
     public class DelegatingScreenManager : IScreenManager, IScreenController
     {
-        private bool _forceCreateResources;
         private Vector2 WindowSize { get; set; }
+
         private IScreenController RequestedScreen { get; set; }
 
         private List<IScreenController> CurrentScreens { get; }
@@ -71,8 +72,7 @@ namespace Catch.Services
             {
                 // feed initializing events to new screen controller
                 RequestedScreen.Initialize(WindowSize);
-                _forceCreateResources = true;
-
+                
                 CurrentScreens.Add(RequestedScreen);
                 _reverseScreens = CurrentScreens.ReverseIterator().ToArray();
 
@@ -104,19 +104,10 @@ namespace Catch.Services
 
         #region IGraphicsComponent Implementation
 
-        public void CreateResources(CreateResourcesArgs args)
+        public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
-            // CreateResources must be mandatory when there is a controller change, as the new controller
-            // will not have received an "organic" CreateResources from the Win2d device.
-            if (_forceCreateResources)
-            {
-                args.SetMandatory();
-                _forceCreateResources = false;
-            }
-
-            // CreateResources is delegated to all active screens
             foreach (var screenController in CurrentScreens)
-                screenController.CreateResources(args);
+                screenController.CreateResources(resourceCreator);
         }
 
         public void DestroyResources()

@@ -5,7 +5,6 @@ using Windows.UI;
 using Catch.Base;
 using CatchLibrary.Serialization.Assets;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Brushes;
 
 namespace Catch.Graphics
 {
@@ -13,6 +12,8 @@ namespace Catch.Graphics
     {
         private readonly Dictionary<string, Color> _colors;
         private readonly Dictionary<string, StyleImpl> _styles;
+
+        private ICanvasResourceCreator _resourceCreator;
 
         public StyleProvider(AssetModel assetModel)
         {
@@ -44,27 +45,14 @@ namespace Catch.Graphics
 
         #region IGraphicsResource
 
-        private bool _isCreated;
-        private int _createFrameId;
-
-        public void CreateResources(CreateResourcesArgs args)
+        public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
-            if (!(args.IsMandatory || _isCreated == false))
-                return;
-
-            if (_createFrameId == args.FrameId)
-                return;
-
             DestroyResources();
 
-            _createFrameId = args.FrameId;
+            _resourceCreator = resourceCreator;
 
             foreach (var style in _styles.Values)
-            {
-                style.Brush = CreateBrush(args, style);
-            }
-
-            _isCreated = true;
+                style.CreateResources(resourceCreator);
         }
 
         public void DestroyResources()
@@ -77,8 +65,6 @@ namespace Catch.Graphics
                     style.Brush = null;
                 }
             }
-
-            _isCreated = false;
         }
 
         #endregion
@@ -115,90 +101,6 @@ namespace Catch.Graphics
             var b = byte.Parse(colorHex.Substring(7, 2), NumberStyles.HexNumber);
 
             return Color.FromArgb(a, r, g, b);
-        }
-
-        private ICanvasBrush CreateBrush(CreateResourcesArgs createArgs, StyleImpl style)
-        {
-            return CreateBrush(createArgs.ResourceCreator, style);
-        }
-
-        private ICanvasBrush CreateBrush(ICanvasResourceCreator resourceCreator, StyleImpl style)
-        {
-            switch (style.BrushType)
-            {
-                case BrushType.Solid:
-                    return CreateSolidBrush(resourceCreator, style);
-                case BrushType.LinearGradient:
-                    return CreateLinearGradientBrush(resourceCreator, style);
-                case BrushType.RadialGradient:
-                    return CreateRadialGradientBrush(resourceCreator, style);
-                case BrushType.Image:
-                    return CreateImageBrush(resourceCreator, style);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        private ICanvasBrush CreateSolidBrush(ICanvasResourceCreator resourceCreator, StyleImpl style)
-        {
-            var brush = new CanvasSolidColorBrush(resourceCreator, style.Color)
-            {
-                Opacity = style.Opacity
-            };
-
-            return brush;
-        }
-
-        private ICanvasBrush CreateLinearGradientBrush(ICanvasResourceCreator resourceCreator, StyleImpl style)
-        {
-            throw new NotImplementedException();
-        }
-
-        private ICanvasBrush CreateRadialGradientBrush(ICanvasResourceCreator resourceCreator, StyleImpl style)
-        {
-            throw new NotImplementedException();
-        }
-
-        private ICanvasBrush CreateImageBrush(ICanvasResourceCreator resourceCreator, StyleImpl style)
-        {
-            throw new NotImplementedException();
-        }
-
-        private class StyleImpl : IStyle
-        {
-            public string Name { get; }
-
-            public Color Color { get; }
-
-            public BrushType BrushType { get; }
-
-            public ICanvasBrush Brush { get; set; }
-
-            public float StrokeWidth { get; }
-
-            public float Opacity { get; }
-
-            public StyleImpl(StyleModel style, Color color)
-            {
-                Name = style.Name;
-                StrokeWidth = style.StrokeWidth;
-                Opacity = style.BrushOpacity;
-                Color = color;
-
-                if (Enum.TryParse(style.BrushType, out BrushType bt))
-                {
-                    BrushType = bt;
-                }
-                else
-                {
-                    throw new ArgumentException($"Could not parse BrushType {style.BrushType}");
-                }
-            }
-        }
-
-        private enum BrushType
-        {
-            Solid, LinearGradient, RadialGradient, Image
         }
     }
 }

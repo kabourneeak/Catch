@@ -32,6 +32,8 @@ namespace Catch.Graphics
 
         public DrawLevelOfDetail LevelOfDetail { get; set; }
 
+        public ICanvasResourceCreator ResourceCreator => _ds.Device;
+
         public CanvasDrawingSession Ds
         {
             get

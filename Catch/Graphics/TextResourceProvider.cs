@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Catch.Base;
+using Microsoft.Graphics.Canvas;
 
 namespace Catch.Graphics
 {
@@ -23,10 +24,10 @@ namespace Catch.Graphics
             return label;
         }
 
-        public void CreateResources(CreateResourcesArgs args)
+        public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
             foreach (var label in _labels)
-                label.CreateResources(args);
+                label.CreateResources(resourceCreator);
         }
 
         public void DestroyResources()

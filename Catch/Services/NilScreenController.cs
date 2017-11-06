@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using Catch.Graphics;
+using Microsoft.Graphics.Canvas;
 
 namespace Catch.Services
 {
@@ -36,7 +37,7 @@ namespace Catch.Services
 
         #region IGraphicsResource Implementation
 
-        public void CreateResources(CreateResourcesArgs args)
+        public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
             // do nothing
         }

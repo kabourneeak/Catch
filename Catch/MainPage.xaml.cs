@@ -93,12 +93,7 @@ namespace Catch
 
         private void OnCreateResources(ICanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
-            _frameId += 1;
-
-            var resourceCreator = sender.Device;
-            var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, true);
-
-            _screenManager.CreateResources(createArgs);
+            _screenManager.CreateResources(sender.Device);
         }
 
         private void OnUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
@@ -116,14 +111,6 @@ namespace Catch
         {
             _frameId += 1;
 
-            // send non-mandatory CreateResources
-            // TODO we might be able to remove this by making other resources self-initializing
-            var resourceCreator = sender.Device;
-            var createArgs = new CreateResourcesArgs(resourceCreator, _frameId, false);
-
-            _screenManager.CreateResources(createArgs);
-
-            // send draw
             var ds = args.DrawingSession;
             var drawArgs = new DrawArgs(ds, ds.Transform, _frameId);
 

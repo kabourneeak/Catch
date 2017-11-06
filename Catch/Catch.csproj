@@ -120,8 +120,10 @@
     <Compile Include="Base\IRemoveModifier.cs" />
     <Compile Include="Graphics\AgentPositionSpriteIndicator.cs" />
     <Compile Include="Graphics\BoxSprite.cs" />
+    <Compile Include="Graphics\BrushType.cs" />
     <Compile Include="Graphics\HexagonSprite.cs" />
     <Compile Include="Graphics\ISprite.cs" />
+    <Compile Include="Graphics\StyleImpl.cs" />
     <Compile Include="Graphics\TextResourceProvider.cs" />
     <Compile Include="Graphics\TextResource.cs" />
     <Compile Include="Graphics\SpriteProvider.cs" />
@@ -177,7 +179,6 @@
     <Compile Include="Towers\GunTowerBehaviour.cs" />
     <Compile Include="Towers\GunTowerBodySprite.cs" />
     <Compile Include="Base\PlayerModel.cs" />
-    <Compile Include="Graphics\CreateResourcesArgs.cs" />
     <Compile Include="Graphics\DrawArgs.cs" />
     <Compile Include="Graphics\DrawLayer.cs" />
     <Compile Include="Base\IExtendedAgent.cs" />

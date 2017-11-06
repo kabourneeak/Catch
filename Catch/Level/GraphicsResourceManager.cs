@@ -2,6 +2,7 @@
 using System.Linq;
 using Catch.Base;
 using Catch.Graphics;
+using Microsoft.Graphics.Canvas;
 
 namespace Catch.Level
 {
@@ -19,10 +20,10 @@ namespace Catch.Level
             _providers = providers.OfType<IGraphicsResource>().ToList();
         }
 
-        public void CreateResources(CreateResourcesArgs args)
+        public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
             foreach (var provider in _providers)
-                provider.CreateResources(args);
+                provider.CreateResources(resourceCreator);
         }
 
         public void DestroyResources()

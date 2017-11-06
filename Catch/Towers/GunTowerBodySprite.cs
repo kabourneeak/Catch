@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Catch.Graphics;
 using Catch.Services;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Catch.Towers
@@ -9,7 +10,6 @@ namespace Catch.Towers
     {
         private static readonly string CfgStyleName = ConfigUtils.GetConfigPath(nameof(GunTowerBodySprite), nameof(CfgStyleName));
 
-        private int _createFrameId = -1;
         private CanvasStrokeStyle _strokeStyle;
         private CanvasCachedGeometry _geo;
 
@@ -20,24 +20,16 @@ namespace Catch.Towers
             Style = styleProvider.GetStyle(config.GetString(CfgStyleName));
         }
 
-        public void CreateResources(CreateResourcesArgs args)
+        public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
-            if (!(args.IsMandatory || _geo == null))
-                return;
-
-            if (_createFrameId == args.FrameId)
-                return;
-
             DestroyResources();
-
-            _createFrameId = args.FrameId;
 
             // create stroke
             _strokeStyle = new CanvasStrokeStyle();
 
             // create geometry
-            var body = CanvasGeometry.CreateCircle(args.ResourceCreator, new Vector2(0.0f), 24);
-            var cannon = CanvasGeometry.CreateRectangle(args.ResourceCreator, 23, -3, 10, 6);
+            var body = CanvasGeometry.CreateCircle(resourceCreator, new Vector2(0.0f), 24);
+            var cannon = CanvasGeometry.CreateRectangle(resourceCreator, 23, -3, 10, 6);
 
             var comb = body.CombineWith(cannon, Matrix3x2.Identity, CanvasGeometryCombine.Union);
 
@@ -55,22 +47,29 @@ namespace Catch.Towers
 
             _strokeStyle.Dispose();
             _strokeStyle = null;
-
-            _createFrameId = -1;
         }
 
         public void Draw(DrawArgs drawArgs)
         {
+            if (_geo == null)
+                CreateResources(drawArgs.ResourceCreator);
+
             drawArgs.Ds.DrawCachedGeometry(_geo, Style.Brush);
         }
 
         public void Draw(DrawArgs drawArgs, Vector2 offset)
         {
+            if (_geo == null)
+                CreateResources(drawArgs.ResourceCreator);
+
             drawArgs.Ds.DrawCachedGeometry(_geo, offset, Style.Brush);
         }
 
         public void Draw(DrawArgs drawArgs, float offsetX, float offsetY)
         {
+            if (_geo == null)
+                CreateResources(drawArgs.ResourceCreator);
+
             drawArgs.Ds.DrawCachedGeometry(_geo, offsetX, offsetY, Style.Brush);
         }
     }
