@@ -20,6 +20,8 @@ namespace Catch.Towers
             Style = styleProvider.GetStyle(config.GetString(CfgStyleName));
         }
 
+        public bool IsCreated => _geo != null;
+
         public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
             DestroyResources();

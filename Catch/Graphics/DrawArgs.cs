@@ -30,6 +30,10 @@ namespace Catch.Graphics
         /// </summary>
         public DrawLayer Layer { get; set; }
 
+        /// <summary>
+        /// The Level Of Detail which should be drawn. Complex Drawables which should appear with less 
+        /// complexity when zoomed out should draw only the components of the specified LoD.
+        /// </summary>
         public DrawLevelOfDetail LevelOfDetail { get; set; }
 
         public ICanvasResourceCreator ResourceCreator => _ds.Device;

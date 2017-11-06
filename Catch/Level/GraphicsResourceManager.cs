@@ -11,13 +11,15 @@ namespace Catch.Level
     /// from the <see cref="LevelController"/> to all instances of 
     /// <see cref="IGraphicsResourceContainer"/>
     /// </summary>
-    public class GraphicsResourceManager : IGraphicsResource
+    public class GraphicsResourceManager : IGraphicsResourceContainer
     {
-        private readonly List<IGraphicsResource> _providers;
+        private readonly List<IGraphicsResourceContainer> _providers;
 
         public GraphicsResourceManager(IEnumerable<IProvider> providers)
         {
-            _providers = providers.OfType<IGraphicsResource>().ToList();
+            _providers = providers.OfType<IGraphicsResourceContainer>()
+                .Where(p => !(p is GraphicsResourceManager))
+                .ToList();
         }
 
         public void CreateResources(ICanvasResourceCreator resourceCreator)

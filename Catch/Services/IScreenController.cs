@@ -3,7 +3,7 @@ using Catch.Graphics;
 
 namespace Catch.Services
 {
-    public interface IScreenController : IViewportController, IGraphicsResource
+    public interface IScreenController : IViewportController, IGraphicsResourceContainer
     {
         void Initialize(Vector2 size);
 

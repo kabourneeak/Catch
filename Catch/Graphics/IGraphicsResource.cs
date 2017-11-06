@@ -7,6 +7,8 @@ namespace Catch.Graphics
     /// </summary>
     public interface IGraphicsResource
     {
+        bool IsCreated { get; }
+
         /// <summary>
         /// When called, an IGraphicsResource should create and cache any resources, e.g., 
         /// with Win2D CanvasCachedGeometry
