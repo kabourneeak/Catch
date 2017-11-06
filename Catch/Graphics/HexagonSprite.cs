@@ -80,7 +80,7 @@ namespace Catch.Graphics
 
         public void Draw(DrawArgs drawArgs, Vector2 offset)
         {
-            if (_geo == null)
+            if (!IsCreated)
                 CreateResources(drawArgs.ResourceCreator);
 
             if (!Style.IsCreated)
@@ -91,7 +91,7 @@ namespace Catch.Graphics
 
         public void Draw(DrawArgs drawArgs, float offsetX, float offsetY)
         {
-            if (_geo == null)
+            if (!IsCreated)
                 CreateResources(drawArgs.ResourceCreator);
 
             if (!Style.IsCreated)

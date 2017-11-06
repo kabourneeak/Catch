@@ -7,6 +7,12 @@ namespace Catch.Graphics
     /// </summary>
     public interface IGraphicsResource
     {
+        /// <summary>
+        /// Indicates whether this resource has been created on the graphics hardware. This
+        /// may become false over the course of the program. Consumers must check this flag
+        /// and call <see cref="CreateResources"/> if it is false before drawing with this
+        /// resource.
+        /// </summary>
         bool IsCreated { get; }
 
         /// <summary>

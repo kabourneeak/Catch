@@ -13,8 +13,6 @@ namespace Catch.Graphics
         private readonly Dictionary<string, Color> _colors;
         private readonly Dictionary<string, StyleImpl> _styles;
 
-        private ICanvasResourceCreator _resourceCreator;
-
         public StyleProvider(AssetModel assetModel)
         {
             _colors = new Dictionary<string, Color>();
@@ -48,8 +46,6 @@ namespace Catch.Graphics
         public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
             DestroyResources();
-
-            _resourceCreator = resourceCreator;
 
             foreach (var style in _styles.Values)
                 style.CreateResources(resourceCreator);
