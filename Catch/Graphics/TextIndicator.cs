@@ -64,6 +64,9 @@ namespace Catch.Graphics
             if (!_textResource.IsCreated)
                 _textResource.CreateResources(drawArgs.ResourceCreator);
 
+            if (!Style.IsCreated)
+                Style.CreateResources(drawArgs.ResourceCreator);
+
             drawArgs.Ds.DrawTextLayout(_textResource.Label, Position + _textResource.Offset, Style.Brush);
         }
     }

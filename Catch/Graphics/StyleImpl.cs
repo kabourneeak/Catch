@@ -9,25 +9,12 @@ namespace Catch.Graphics
     public class StyleImpl : IStyle, IGraphicsResource
     {
         private ICanvasBrush _brush;
-        private ICanvasResourceCreator _resourceCreator;
 
         public string Name { get; }
 
         public Color Color { get; }
 
-        public ICanvasBrush Brush
-        {
-            get {
-                if (!IsCreated)
-                {
-                    // TODO this is stupid
-                    CreateResources(_resourceCreator);
-                }
-
-                return _brush;
-            }
-            set => _brush = value;
-        }
+        public ICanvasBrush Brush => _brush;
 
         public float StrokeWidth { get; }
 
@@ -57,8 +44,6 @@ namespace Catch.Graphics
         public void CreateResources(ICanvasResourceCreator resourceCreator)
         {
             DestroyResources();
-
-            _resourceCreator = resourceCreator;
 
             _brush = CreateBrush(resourceCreator);
         }

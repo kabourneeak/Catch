@@ -3,7 +3,7 @@ using Microsoft.Graphics.Canvas.Brushes;
 
 namespace Catch.Graphics
 {
-    public interface IStyle
+    public interface IStyle : IGraphicsResource
     {
         string Name { get; }
         

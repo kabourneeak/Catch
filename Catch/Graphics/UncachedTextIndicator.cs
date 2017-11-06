@@ -64,6 +64,9 @@ namespace Catch.Graphics
         {
             if (Label.Length > 0)
             {
+                if (!Style.IsCreated)
+                    Style.CreateResources(drawArgs.ResourceCreator);
+
                 using (var format = new CanvasTextFormat())
                 {
                     // TODO set formatting options

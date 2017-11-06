@@ -56,6 +56,9 @@ namespace Catch.Towers
             if (_geo == null)
                 CreateResources(drawArgs.ResourceCreator);
 
+            if (!Style.IsCreated)
+                Style.CreateResources(drawArgs.ResourceCreator);
+
             drawArgs.Ds.DrawCachedGeometry(_geo, Style.Brush);
         }
 
@@ -64,6 +67,9 @@ namespace Catch.Towers
             if (_geo == null)
                 CreateResources(drawArgs.ResourceCreator);
 
+            if (!Style.IsCreated)
+                Style.CreateResources(drawArgs.ResourceCreator);
+
             drawArgs.Ds.DrawCachedGeometry(_geo, offset, Style.Brush);
         }
 
@@ -71,6 +77,9 @@ namespace Catch.Towers
         {
             if (_geo == null)
                 CreateResources(drawArgs.ResourceCreator);
+
+            if (!Style.IsCreated)
+                Style.CreateResources(drawArgs.ResourceCreator);
 
             drawArgs.Ds.DrawCachedGeometry(_geo, offsetX, offsetY, Style.Brush);
         }

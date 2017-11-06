@@ -16,7 +16,7 @@ namespace Catch.Graphics
 
         public Vector2 Offset { get; set; }
 
-        public bool IsCreated => Label == null;
+        public bool IsCreated => Label != null;
 
         public TextResource(string text)
         {

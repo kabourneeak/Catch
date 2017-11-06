@@ -42,6 +42,12 @@ namespace Catch.Level
 
         public void Draw(DrawArgs drawArgs)
         {
+            if (!_fgStyle.IsCreated)
+                _fgStyle.CreateResources(drawArgs.ResourceCreator);
+
+            if (!_bgStyle.IsCreated)
+                _bgStyle.CreateResources(drawArgs.ResourceCreator);
+
             drawArgs.PushTranslation(0, _uiState.WindowSize.Y - _barHeight);
 
             drawArgs.Ds.FillRectangle(new Rect(0,0, _uiState.WindowSize.X, _barHeight), _bgStyle.Brush);

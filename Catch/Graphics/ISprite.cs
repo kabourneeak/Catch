@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 
 namespace Catch.Graphics
 {
@@ -8,6 +9,7 @@ namespace Catch.Graphics
 
         void Draw(DrawArgs drawArgs, Vector2 offset);
 
+        [Obsolete]
         void Draw(DrawArgs drawArgs, float offsetX, float offsetY);
     }
 }

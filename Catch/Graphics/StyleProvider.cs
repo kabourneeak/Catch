@@ -59,11 +59,8 @@ namespace Catch.Graphics
         {
             foreach (var style in _styles.Values)
             {
-                if (style.Brush != null)
-                {
-                    style.Brush.Dispose();
-                    style.Brush = null;
-                }
+                if (style.IsCreated)
+                    style.DestroyResources();
             }
         }
 
