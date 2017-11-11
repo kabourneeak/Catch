@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using CatchLibrary.HexGrid;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace CatchTests
 {
-    public class HexGridCollectionAdapter : HexGridCollection<object>
+    internal class HexGridCollectionAdapter : HexGridCollection<object>
     {
         public HexGridCollectionAdapter(int rows, int columns) : base(rows, columns)
         {
@@ -14,24 +14,14 @@ namespace CatchTests
             Populate((hc, v) => new BigInteger(i++));
         }
 
-        public List<object> GetAllHexes()
-        {
-            return Hexes;
-        }
-
         public new HexCoords GetNeighbourCoords(HexCoords coords, HexDirection direction)
         {
             return base.GetNeighbourCoords(coords, direction);
         }
 
-        public new int GetListOffset(HexCoords hc)
+        public new int GetOffset(HexCoords hc)
         {
-            return base.GetListOffset(hc);
-        }
-
-        public new bool IsInCollection(HexCoords hc)
-        {
-            return base.IsInCollection(hc);
+            return base.GetOffset(hc);
         }
     }
 
@@ -43,7 +33,7 @@ namespace CatchTests
         {
             var hgc = new HexGridCollectionAdapter(3,3);
 
-            var hexes = hgc.GetAllHexes();
+            var hexes = hgc.ToList();
 
             Assert.AreEqual(hexes.Count, 3 * 3);
         }
@@ -53,17 +43,17 @@ namespace CatchTests
         {
             var hgc = new HexGridCollectionAdapter(3 ,3);
 
-            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(0, 0)), 0);
-            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(1, 0)), 1);
-            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(2, 0)), 2);
+            Assert.AreEqual(hgc.GetOffset(HexCoords.CreateFromOffset(0, 0)), 0);
+            Assert.AreEqual(hgc.GetOffset(HexCoords.CreateFromOffset(1, 0)), 1);
+            Assert.AreEqual(hgc.GetOffset(HexCoords.CreateFromOffset(2, 0)), 2);
 
-            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(0, 1)), 3);
-            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(1, 1)), 4);
-            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(2, 1)), 5);
+            Assert.AreEqual(hgc.GetOffset(HexCoords.CreateFromOffset(0, 1)), 3);
+            Assert.AreEqual(hgc.GetOffset(HexCoords.CreateFromOffset(1, 1)), 4);
+            Assert.AreEqual(hgc.GetOffset(HexCoords.CreateFromOffset(2, 1)), 5);
 
-            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(0, 2)), 6);
-            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(1, 2)), 7);
-            Assert.AreEqual(hgc.GetListOffset(HexCoords.CreateFromOffset(2, 2)), 8);
+            Assert.AreEqual(hgc.GetOffset(HexCoords.CreateFromOffset(0, 2)), 6);
+            Assert.AreEqual(hgc.GetOffset(HexCoords.CreateFromOffset(1, 2)), 7);
+            Assert.AreEqual(hgc.GetOffset(HexCoords.CreateFromOffset(2, 2)), 8);
         }
 
         [TestMethod]
@@ -71,30 +61,30 @@ namespace CatchTests
         {
             var hgc = new HexGridCollectionAdapter(3, 3);
 
-            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(0, 0)));
-            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(1, 0)));
-            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(2, 0)));
-            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(0, 1)));
-            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(1, 1)));
-            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(2, 1)));
-            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(0, 2)));
-            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(1, 2)));
-            Assert.IsTrue(hgc.IsInCollection(HexCoords.CreateFromOffset(2, 2)));
+            Assert.IsTrue(hgc.HasHex(HexCoords.CreateFromOffset(0, 0)));
+            Assert.IsTrue(hgc.HasHex(HexCoords.CreateFromOffset(1, 0)));
+            Assert.IsTrue(hgc.HasHex(HexCoords.CreateFromOffset(2, 0)));
+            Assert.IsTrue(hgc.HasHex(HexCoords.CreateFromOffset(0, 1)));
+            Assert.IsTrue(hgc.HasHex(HexCoords.CreateFromOffset(1, 1)));
+            Assert.IsTrue(hgc.HasHex(HexCoords.CreateFromOffset(2, 1)));
+            Assert.IsTrue(hgc.HasHex(HexCoords.CreateFromOffset(0, 2)));
+            Assert.IsTrue(hgc.HasHex(HexCoords.CreateFromOffset(1, 2)));
+            Assert.IsTrue(hgc.HasHex(HexCoords.CreateFromOffset(2, 2)));
 
-            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(-1, 0)));
-            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(0, -1)));
+            Assert.IsFalse(hgc.HasHex(HexCoords.CreateFromOffset(-1, 0)));
+            Assert.IsFalse(hgc.HasHex(HexCoords.CreateFromOffset(0, -1)));
 
             // everything in row 3 is out of bounds
-            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(3, 0)));
-            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(3, 1)));
-            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(3, 2)));
-            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(3, 3)));
+            Assert.IsFalse(hgc.HasHex(HexCoords.CreateFromOffset(3, 0)));
+            Assert.IsFalse(hgc.HasHex(HexCoords.CreateFromOffset(3, 1)));
+            Assert.IsFalse(hgc.HasHex(HexCoords.CreateFromOffset(3, 2)));
+            Assert.IsFalse(hgc.HasHex(HexCoords.CreateFromOffset(3, 3)));
 
             // everything in column 3 is out of bounds
-            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(0, 3)));
-            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(1, 3)));
-            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(2, 3)));
-            Assert.IsFalse(hgc.IsInCollection(HexCoords.CreateFromOffset(3, 3)));
+            Assert.IsFalse(hgc.HasHex(HexCoords.CreateFromOffset(0, 3)));
+            Assert.IsFalse(hgc.HasHex(HexCoords.CreateFromOffset(1, 3)));
+            Assert.IsFalse(hgc.HasHex(HexCoords.CreateFromOffset(2, 3)));
+            Assert.IsFalse(hgc.HasHex(HexCoords.CreateFromOffset(3, 3)));
         }
 
         [TestMethod]
@@ -102,7 +92,7 @@ namespace CatchTests
         {
             var hgc = new HexGridCollectionAdapter(3, 3);
 
-            var allHexes = hgc.GetAllHexes();
+            var allHexes = hgc.ToList();
 
             // this assumes that hexagons are generated column by column
             var i = 0;
