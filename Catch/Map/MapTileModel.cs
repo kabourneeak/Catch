@@ -12,7 +12,7 @@ namespace Catch.Map
         private readonly IVersionedCollection<IExtendedAgent> _agents;
         private IExtendedAgent _tileAgent;
 
-        public MapTileModel(HexCoords coords, IConfig config, IndicatorCollection indicatorCollection)
+        public MapTileModel(HexCoords coords, IConfig config, IIndicatorProvider indicatorProvider)
         {
             Coords = coords;
 
@@ -28,7 +28,7 @@ namespace Catch.Map
             var y = ((Coords.Column & 1) * radiusH) + ((Coords.Row - (Coords.Column & 1)) * 2 * radiusH);
 
             Position = new Vector2(x, y);
-            Indicators = indicatorCollection;
+            Indicators = indicatorProvider.CreateIndicatorCollection();
         }
 
         public HexCoords Coords { get; }

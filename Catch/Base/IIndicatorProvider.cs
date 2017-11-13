@@ -7,5 +7,7 @@
         IIndicator GetIndicator(string name, IExtendedAgent agent);
 
         IIndicator GetIndicator(string name, IMapTile tile);
+
+        IndicatorCollection CreateIndicatorCollection();
     }
 }

@@ -129,6 +129,11 @@ namespace Catch.Components
             return componentScope.Resolve<IIndicator>(model.Base);
         }
 
+        public IndicatorCollection CreateIndicatorCollection()
+        {
+            return new IndicatorCollection(_providerScope.Resolve<IIndicatorRegistry>());
+        }
+
         #endregion
 
         public T GetComponent<T>(string name, IExtendedAgent agent)

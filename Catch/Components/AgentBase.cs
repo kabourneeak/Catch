@@ -2,7 +2,6 @@
 using System.Numerics;
 using Catch.Base;
 using Catch.Services;
-using Unity;
 
 namespace Catch.Components
 {
@@ -23,12 +22,12 @@ namespace Catch.Components
         private readonly IVersionedCollection<IAgentCommand> _commands;
         private readonly BaseStatsModel _stats;
 
-        public AgentBase(string agentType, IUnityContainer container)
+        public AgentBase(string agentType, IIndicatorProvider indicatorProvider)
         {
             AgentType = agentType;
             Position = new Vector2(0.0f);
 
-            Indicators = container.Resolve<IndicatorCollection>();
+            Indicators = indicatorProvider.CreateIndicatorCollection();
             _modifiers = new VersionedCollection<IModifier>(new SimpleSortedList<IModifier>(StatModelComparer));
             _labels = new VersionedCollection<ILabel>(new HashSet<ILabel>());
             _commands = new VersionedCollection<IAgentCommand>(new HashSet<IAgentCommand>());
