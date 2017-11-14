@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Catch.Graphics;
 
 namespace Catch.Base
 {
@@ -12,8 +13,8 @@ namespace Catch.Base
 
         void Unregister(IEnumerable<IIndicator> indicators);
 
-        int Version { get; }
+        int GetVersion(DrawLevelOfDetail lod, DrawLayer layer);
 
-        IEnumerable<IIndicator> Indicators { get; }
+        IEnumerable<IIndicator> GetIndicators(DrawLevelOfDetail lod, DrawLayer layer);
     }
 }

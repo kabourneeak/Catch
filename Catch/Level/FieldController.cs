@@ -70,26 +70,24 @@ namespace Catch.Level
 
             // calculate visible field coords
             var bottomLeftFieldCoords = TranslateToFieldCoords(_bottomLeftViewLimit);
+            var blx = bottomLeftFieldCoords.X;
+            var bly = bottomLeftFieldCoords.Y;
             var topRightFieldCoords = TranslateToFieldCoords(_topRightViewLimit);
-
-            // find indicators which are currently on screen
-            var culledIndicators = _indicatorRegistry.Indicators
-                .Where(tm => bottomLeftFieldCoords.X <= tm.Position.X && topRightFieldCoords.X >= tm.Position.X)
-                .ToArray();
+            var urx = topRightFieldCoords.X;
+            var ury = topRightFieldCoords.Y;
 
             // have agents draw themselves layer by layer
             foreach (var drawLayer in DrawLayers)
             {
                 drawArgs.Layer = drawLayer;
 
-                for (var i = 0; i < culledIndicators.Length; ++i)
-                {
-                    if (culledIndicators[i].Layer == drawArgs.Layer
-                        && culledIndicators[i].LevelOfDetail.HasFlag(drawArgs.LevelOfDetail))
-                    {
-                        culledIndicators[i].Draw(drawArgs);
-                    }
-                }
+                // find indicators which are currently on screen
+                var culledIndicators = _indicatorRegistry
+                    .GetIndicators(drawArgs.LevelOfDetail, drawArgs.Layer)
+                    .Where(tm => blx <= tm.Position.X && tm.Position.X <= urx && bly <= tm.Position.Y && tm.Position.Y <= ury);
+
+                foreach (var indicator in culledIndicators)
+                    indicator.Draw(drawArgs);
             }
 
             // restore view matrix
