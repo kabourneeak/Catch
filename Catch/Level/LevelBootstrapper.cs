@@ -36,6 +36,8 @@ namespace Catch.Level
                 new ContainerControlledLifetimeManager(), 
                 new InjectionFactory(c => new GraphicsResourceManager(c.ResolveAll<IProvider>())));
 
+            container.RegisterType<MapLoader>();
+
             /*
              * Register Models
              */
@@ -76,9 +78,6 @@ namespace Catch.Level
             UnityUtils.RegisterAllAsTransient(typeof(IAgentCommand), container);
             UnityUtils.RegisterAllAsTransient(typeof(IModifier), container);
             UnityUtils.RegisterAllAsTransient(typeof(IUpdatable), container);
-
-            container.RegisterType<IndicatorCollection>(new TransientLifetimeManager());
-            container.RegisterType<MapTileModel>(new TransientLifetimeManager());
 
             return container;
         }

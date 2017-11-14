@@ -108,7 +108,7 @@ namespace Catch.Level
 
         public void ZoomToPoint(ZoomToPointEventArgs eventArgs)
         {
-            var newZoom = Math.Max(0.4f, Math.Min(2.0f, _zoom + eventArgs.ZoomDelta));
+            var newZoom = Math.Max(0.1f, Math.Min(2.0f, _zoom + eventArgs.ZoomDelta));
 
             var zoomCenter = TranslateToFieldCoords(eventArgs.ViewCoords);
             _pan = Vector2.Add(_pan, zoomCenter);

@@ -1,59 +1,15 @@
 {
     "Colors" : [
         {
-            "Name": "PathTileColor",
-            "ColorHex" : "#FF0C9CD1"
-        },
-        {
-            "Name": "EmptyTileColor",
-            "ColorHex" : "#FF5E5A5B"
-        },
-        {
-            "Name": "SelectedTileColor",
-            "ColorHex" : "#FFFFFF00"
-        },
-        {
-            "Name": "HoverTileColor",
-            "ColorHex" : "#FFFFFF00"
-        },
-        {
-            "Name": "HighlightedTileColor",
-            "ColorHex" : "#FFFFFF00"
+            "Name": "MapDesignPurpleColor",
+            "ColorHex" : "#FF9842F4"
         }
     ],
 
     "Styles" : [
         {
-            "Name": "PathTileStyle",
-            "ColorName": "PathTileColor",
-            "BrushType": "Solid",
-            "BrushOpacity": 1.0,
-            "StrokeWidth": 1
-        },
-        {
-            "Name" : "HoverTileStyle",
-            "ColorName": "HoverTileColor",
-            "BrushType": "Solid",
-            "BrushOpacity": 1.0,
-            "StrokeWidth": 3
-        },
-        {
-            "Name" : "SelectedTileStyle",
-            "ColorName": "SelectedTileColor",
-            "BrushType": "Solid",
-            "BrushOpacity": 1.0,
-            "StrokeWidth": 3
-        },
-        {
-            "Name" : "HighlightedTileStyle",
-            "ColorName": "HighlightedTileColor",
-            "BrushType": "Solid",
-            "BrushOpacity": 1.0,
-            "StrokeWidth": 3
-        },
-        {
-            "Name" : "EmptyTileStyle",
-            "ColorName": "EmptyTileColor",
+            "Name" : "MapDesignPurpleStyle",
+            "ColorName": "MapDesignPurpleColor",
             "BrushType": "Solid",
             "BrushOpacity": 1.0,
             "StrokeWidth": 3
@@ -62,27 +18,19 @@
 
     "Sprites" : [
         {
-            "Name" : "EmptyTileSprite",
+            "Name" : "MapDesignPurpleSprite",
             "Base" : "HexagonSprite",
             "Config": {
-                "HexagonSprite.StyleName": "EmptyTileStyle",
+                "HexagonSprite.StyleName": "MapDesignPurpleStyle",
                 "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
             }
         },
         {
-            "Name" : "PathTileSprite",
+            "Name" : "MapDesignPurpleStrategicSprite",
             "Base" : "HexagonSprite",
             "Config": {
-                "HexagonSprite.StyleName": "PathTileStyle",
+                "HexagonSprite.StyleName": "MapDesignPurpleStyle",
                 "HexagonSprite.Filled": "True",
-                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
-            }
-        },
-        {
-            "Name" : "HoverTileSprite",
-            "Base" : "HexagonSprite",
-            "Config": {
-                "HexagonSprite.StyleName": "HoverTileStyle",
                 "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
             }
         }
@@ -90,30 +38,21 @@
 
     "Indicators" : [
         {
-            "Name" : "EmptyTileIndicator",
+            "Name" : "MapDesignPurpleIndicator",
             "Base" : "SpriteIndicator",
             "Config" : {
-                "SpriteIndicator.SpriteName" : "EmptyTileSprite",
+                "SpriteIndicator.SpriteName" : "MapDesignPurpleSprite",
                 "SpriteIndicator.Layer" : "Base",
                 "SpriteIndicator.LevelOfDetail" : "NormalHigh"
             }
         },
         {
-            "Name" : "PathTileIndicator",
+            "Name" : "MapDesignPurpleStrategicIndicator",
             "Base" : "SpriteIndicator",
             "Config" : {
-                "SpriteIndicator.SpriteName" : "PathTileSprite",
+                "SpriteIndicator.SpriteName" : "MapDesignPurpleStrategicSprite",
                 "SpriteIndicator.Layer" : "Base",
-                "SpriteIndicator.LevelOfDetail" : "All"
-            }
-        },
-        {
-            "Name" : "HoverTileIndicator",
-            "Base" : "SpriteIndicator",
-            "Config" : {
-                "SpriteIndicator.SpriteName" : "HoverTileSprite",
-                "SpriteIndicator.Layer" : "Ui",
-                "SpriteIndicator.LevelOfDetail" : "All"
+                "SpriteIndicator.LevelOfDetail" : "Low"
             }
         }
     ],

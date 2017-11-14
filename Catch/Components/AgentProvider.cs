@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Catch.Base;
-using Catch.Graphics;
 using Catch.Services;
 using CatchLibrary.Serialization.Assets;
 using Unity;
@@ -70,7 +69,7 @@ namespace Catch.Components
             agentContainer.RegisterInstance<IUnityContainer>(agentContainer);
 
             // create agent
-            var agent = new AgentBase(name, agentContainer);
+            var agent = new AgentBase(name, agentContainer.Resolve<IIndicatorProvider>());
 
             agentContainer.RegisterInstance<IAgent>(agent);
             agentContainer.RegisterInstance<IExtendedAgent>(agent);

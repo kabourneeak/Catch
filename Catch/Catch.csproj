@@ -97,6 +97,7 @@
     <Content Include="Assets\models\MapAssets.json" />
     <Content Include="Assets\models\StatusBarAssets.json" />
     <Content Include="Assets\models\SocketTowerAssets.json" />
+    <Content Include="Assets\models\FieldUiAssets.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +157,7 @@
     <Compile Include="Level\IndicatorRegistry.cs" />
     <Compile Include="Level\LevelBootstrapper.cs" />
     <Compile Include="Level\SimulationManager.cs" />
+    <Compile Include="Map\MapLoader.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
     <Compile Include="Services\DictionaryConfig.cs" />
     <Compile Include="Level\UpdateEventArgs.cs" />

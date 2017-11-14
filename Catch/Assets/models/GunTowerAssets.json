@@ -20,6 +20,14 @@
             }
         },
         {
+            "Name" : "GunTowerPresenceSprite",
+            "Base" : "HexagonSprite",
+            "Config": {
+                "HexagonSprite.StyleName": "GunTowerStyle",
+                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
+            }
+        },
+        {
             "Name" : "GunTowerStrategicSprite",
             "Base" : "HexagonSprite",
             "Config": {
@@ -38,6 +46,15 @@
                 "SpriteIndicator.SpriteName": "GunTowerBodySprite",
                 "SpriteIndicator.UseRotation": "True",
                 "SpriteIndicator.Layer": "Tower",
+                "SpriteIndicator.LevelOfDetail": "NormalHigh"
+            }
+        },
+        {
+            "Name": "GunTowerPresenceIndicator",
+            "Base": "AgentPositionSpriteIndicator",
+            "Config": {
+                "SpriteIndicator.SpriteName": "GunTowerPresenceSprite",
+                "SpriteIndicator.Layer": "Background",
                 "SpriteIndicator.LevelOfDetail": "NormalHigh"
             }
         },
@@ -76,6 +93,7 @@
             "Name": "GunTower",
             "PrimaryBehaviourName": "GunTowerBehaviour",
             "IndicatorNames": [
+                "GunTowerPresenceIndicator",
                 "GunTowerBaseIndicator",
                 "GunTowerStrategicIndicator"
             ],

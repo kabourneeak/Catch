@@ -1,0 +1,71 @@
+{
+    "Colors" : [
+        {
+            "Name": "SelectedTileColor",
+            "ColorHex" : "#FFFFFF00"
+        },
+        {
+            "Name": "HoverTileColor",
+            "ColorHex" : "#FFFFFF00"
+        },
+        {
+            "Name": "HighlightedTileColor",
+            "ColorHex" : "#FFFFFF00"
+        }        
+    ],
+
+    "Styles" : [
+        {
+            "Name" : "HoverTileStyle",
+            "ColorName": "HoverTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        },
+        {
+            "Name" : "SelectedTileStyle",
+            "ColorName": "SelectedTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        },
+        {
+            "Name" : "HighlightedTileStyle",
+            "ColorName": "HighlightedTileColor",
+            "BrushType": "Solid",
+            "BrushOpacity": 1.0,
+            "StrokeWidth": 3
+        }        
+    ],
+
+    "Sprites" : [
+        {
+            "Name" : "HoverTileSprite",
+            "Base" : "HexagonSprite",
+            "Config": {
+                "HexagonSprite.StyleName": "HoverTileStyle",
+                "HexagonSprite.Radius": "Core.TileRadiusAfterInset"
+            }
+        }        
+    ],
+
+    "Indicators" : [
+        {
+            "Name" : "HoverTileIndicator",
+            "Base" : "SpriteIndicator",
+            "Config" : {
+                "SpriteIndicator.SpriteName" : "HoverTileSprite",
+                "SpriteIndicator.Layer" : "Ui",
+                "SpriteIndicator.LevelOfDetail" : "All"
+            }
+        }        
+    ],
+
+    "Modifiers" : [],
+    
+    "Behaviours" : [],
+    
+    "Commands" : [],
+    
+    "Agents" : []
+}

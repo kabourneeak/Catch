@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 using CatchLibrary.HexGrid;
 
 namespace CatchLibrary.Serialization.Maps
@@ -11,6 +12,12 @@ namespace CatchLibrary.Serialization.Maps
         /// </summary>
         [DataMember]
         public HexCoords Coords { get; set; }
+
+        /// <summary>
+        /// A set of indicators to create on this tile
+        /// </summary>
+        [DataMember]
+        public List<string> IndicatorNames { get; set; } = new List<string>();
 
         /// <summary>
         /// The agent to place on this tile

@@ -4,8 +4,6 @@ using System.Numerics;
 using Catch.Base;
 using Catch.Services;
 using CatchLibrary.HexGrid;
-using Unity;
-using Unity.Resolution;
 
 namespace Catch.Map
 {
@@ -15,17 +13,15 @@ namespace Catch.Map
     /// </summary>
     public class MapModel : IMap
     {
-        private readonly IUnityContainer _container;
         private readonly float _tileRadius;
 
         private HexGridCollection<MapTileModel> _tiles;
         private MapTileModel _offMapTile;
         private Dictionary<string, MapPathModel> _paths;
 
-        public MapModel(IConfig config, IUnityContainer container)
+        public MapModel(IConfig config)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
-            _container = container ?? throw new ArgumentNullException(nameof(container));
 
             _tileRadius = config.GetFloat(CoreConfig.TileRadius);
 
@@ -105,12 +101,13 @@ namespace Catch.Map
             Size = new Vector2((float)(Columns * _tileRadius * 1.5 + _tileRadius / 2), Rows * 2 * HexUtils.GetRadiusHeight(_tileRadius));
 
             _tiles = new HexGridCollection<MapTileModel>(Rows, Columns);
-            _tiles.Populate((hc, v) => _container.Resolve<MapTileModel>(new DependencyOverride<HexCoords>(hc)));
-
-            _offMapTile = _container.Resolve<MapTileModel>(
-                    new DependencyOverride<HexCoords>(HexCoords.CreateFromOffset(-100, -100)));
-
             _paths = new Dictionary<string, MapPathModel>();
+        }
+
+        public void Populate(Func<HexCoords, MapTileModel, MapTileModel> populator)
+        {
+            _tiles.Populate(populator);
+            _offMapTile = populator(HexCoords.CreateFromOffset(-100, -100), default(MapTileModel));
         }
 
         public void AddPath(MapPathModel pathModel) => _paths.Add(pathModel.Name, pathModel);

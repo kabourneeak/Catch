@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 using Catch.Base;
-using Catch.Components;
 using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;
@@ -16,15 +14,12 @@ namespace Catch.Level
     /// </summary>
     public class LevelController : IScreenController
     {
-        private readonly IUnityContainer _levelContainer;
         private readonly UpdateController _updateController;
         private readonly FieldController _fieldController;
         private readonly OverlayController _overlayController;
 
         private readonly GraphicsResourceManager _graphicsResourceManager;
-        private readonly ISimulationManager _simulationManager;
         private readonly UpdateEventArgs _updateEventArgs;
-        private readonly MapModel _map;
         private readonly UiStateModel _uiState;
 
         #region Construction
@@ -34,102 +29,27 @@ namespace Catch.Level
             /*
              * Bootstrap simulation
              */
-            _levelContainer = LevelBootstrapper.CreateContainer(config);
+            var levelContainer = LevelBootstrapper.CreateContainer(config);
 
-            _graphicsResourceManager = _levelContainer.Resolve<GraphicsResourceManager>();
+            _graphicsResourceManager = levelContainer.Resolve<GraphicsResourceManager>();
 
-            _map = _levelContainer.Resolve<MapModel>();
-            _uiState = _levelContainer.Resolve<UiStateModel>();
+            _uiState = levelContainer.Resolve<UiStateModel>();
 
-            _updateController = _levelContainer.Resolve<UpdateController>();
-            _simulationManager = _levelContainer.Resolve<ISimulationManager>();
+            _updateController = levelContainer.Resolve<UpdateController>();
+            _overlayController = levelContainer.Resolve<OverlayController>();
+            _fieldController = levelContainer.Resolve<FieldController>();
 
-            _overlayController = _levelContainer.Resolve<OverlayController>();
-            _fieldController = _levelContainer.Resolve<FieldController>();
-
+            var map = levelContainer.Resolve<MapModel>();
+            var mapLoader = levelContainer.Resolve<MapLoader>();
+            mapLoader.InitializeMap(map, mapSerializationModel);
+            
             /*
              * Other initialization
              */
-            InitializeMap(mapSerializationModel, _map);
-            InitializeEmitScript(mapSerializationModel);
 
-            _updateEventArgs = new UpdateEventArgs(_simulationManager, _levelContainer.Resolve<SimulationStateModel>());
-        }
-
-        private void InitializeMap(MapSerializationModel mapSerializationModel, MapModel map)
-        {
-            var indicatorProvider = _levelContainer.Resolve<IIndicatorProvider>();
-
-            map.Initialize(mapSerializationModel.Rows, mapSerializationModel.Columns);
-
-            /*
-             * Process tile models
-             */
-            foreach (var tile in map.TileModels)
-            {
-                var ind = (SpriteIndicator) indicatorProvider.GetIndicator("EmptyTileIndicator", tile);
-                ind.Position = tile.Position;
-                tile.Indicators.Add(ind);
-
-                var tileEmitModel = mapSerializationModel.Tiles.GetHex(tile.Coords);
-                var towerArgs = new CreateAgentArgs()
-                {
-                    Tile = tile,
-                    Team = tileEmitModel.Team
-                };
-
-                var tower = _simulationManager.CreateAgent(tileEmitModel.TowerName, towerArgs);
-                _simulationManager.Register(tower);
-                _simulationManager.Site(tower);
-            }
-
-            /*
-             * Process paths
-             */
-
-            ISet<MapTileModel> allPathTiles = new HashSet<MapTileModel>();
-            foreach (var pathModel in mapSerializationModel.Paths)
-            {
-                var mapPath = new MapPathModel();
-                mapPath.Name = pathModel.PathName;
-
-                foreach (var pathStep in pathModel.PathSteps)
-                {
-                    var mapTileModel = map.GetTileModel(pathStep.Coords);
-                    allPathTiles.Add(mapTileModel);
-                    mapPath.Add(mapTileModel);
-                }
-
-                map.AddPath(mapPath);
-            }
-
-            foreach (var tile in allPathTiles)
-            {
-                var ind = (SpriteIndicator) indicatorProvider.GetIndicator("PathTileIndicator", tile);
-                ind.Position = tile.Position;
-                tile.Indicators.Add(ind);
-            }
-        }
-
-        private void InitializeEmitScript(MapSerializationModel mapSerializationModel)
-        {
-            foreach (var emitScriptEntry in mapSerializationModel.EmitScript)
-            {
-                for (var i = 0; i < emitScriptEntry.Count; ++i)
-                {
-                    var agentArgs = new CreateAgentArgs()
-                    {
-                        Path = _map.GetPath(emitScriptEntry.PathName),
-                        Tile = _map.OffMapTileModel,
-                        Team = emitScriptEntry.Team
-                    };
-
-                    var offset = emitScriptEntry.BeginTime + (i * emitScriptEntry.DelayTime);
-                    var task = new SpawnAgentTask(offset, emitScriptEntry.AgentTypeName, agentArgs);
-
-                    _simulationManager.Register(task);
-                }
-            }
+            var simulationManager = levelContainer.Resolve<ISimulationManager>();
+            var simulationStateModel = levelContainer.Resolve<SimulationStateModel>();
+            _updateEventArgs = new UpdateEventArgs(simulationManager, simulationStateModel);
         }
 
         #endregion
@@ -155,6 +75,15 @@ namespace Catch.Level
             _updateController.Update(deviceTicks, _updateEventArgs);
             _fieldController.Update(deviceTicks);
             _overlayController.Update(deviceTicks);
+        }
+
+        public void Draw(DrawArgs drawArgs)
+        {
+            // the FieldController draws the field of play; the map, the agents, all the action
+            _fieldController.Draw(drawArgs);
+
+            // the overlay draws second so that it is on top
+            _overlayController.Draw(drawArgs);
         }
 
         #endregion
@@ -218,19 +147,5 @@ namespace Catch.Level
         }
 
         #endregion
-
-        #region IDrawable Implementation
-
-        public void Draw(DrawArgs drawArgs)
-        {
-            // the FieldController draws the field of play; the map, the agents, all the action
-            _fieldController.Draw(drawArgs);
-
-            // the overlay draws second so that it is on top
-            _overlayController.Draw(drawArgs);
-        }
-
-        #endregion
-
     }
 }
