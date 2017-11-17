@@ -5,6 +5,7 @@ using Catch.Base;
 using Catch.Graphics;
 using Catch.Map;
 using Catch.Services;
+using CatchLibrary.HexGrid;
 
 namespace Catch.Level
 {
@@ -17,8 +18,10 @@ namespace Catch.Level
 
         private readonly UiStateModel _uiState;
         private readonly MapModel _map;
+        private readonly PrerenderProvider _prerenderProvider;
         private readonly IIndicatorRegistry _indicatorRegistry;
         private readonly float _tileRadius;
+        private readonly float _tileRadiusH;
 
         private Vector2 _pan;
         private float _zoom;
@@ -26,14 +29,16 @@ namespace Catch.Level
         private Vector2 _topRightViewLimit;
         private Matrix3x2 _mapTransform;
 
-        public FieldController(IConfig config, UiStateModel uiState, MapModel map, IIndicatorRegistry indicatorRegistry)
+        public FieldController(IConfig config, UiStateModel uiState, MapModel map, IIndicatorRegistry indicatorRegistry, PrerenderProvider prerenderProvider)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
-            _indicatorRegistry = indicatorRegistry ?? throw new ArgumentNullException(nameof(indicatorRegistry));
             _uiState = uiState ?? throw new ArgumentNullException(nameof(uiState));
             _map = map ?? throw new ArgumentNullException(nameof(map));
+            _prerenderProvider = prerenderProvider ?? throw new ArgumentNullException(nameof(config));
+            _indicatorRegistry = indicatorRegistry ?? throw new ArgumentNullException(nameof(indicatorRegistry));
 
             _tileRadius = config.GetFloat(CoreConfig.TileRadius);
+            _tileRadiusH = HexUtils.GetRadiusHeight(_tileRadius);
 
             _pan = Vector2.Zero;
             _zoom = 1.0f;
@@ -58,12 +63,15 @@ namespace Catch.Level
 
         public void Draw(DrawArgs drawArgs)
         {
+            _prerenderProvider.CreatePrerenders(drawArgs, _map.Size);
+
             // apply view matrix
             drawArgs.PushScale(_zoom);
             drawArgs.PushTranslation(_pan);
 
             // apply level of detail
-            drawArgs.LevelOfDetail = _zoom > 0.5 ? DrawLevelOfDetail.Normal : DrawLevelOfDetail.Low;
+            var drawLod = _zoom > 0.5 ? DrawLevelOfDetail.Normal : DrawLevelOfDetail.Low;
+            drawArgs.LevelOfDetail = drawLod;
 
             // calculate viewport transform, used for zoom/pan
             Matrix3x2.Invert(drawArgs.CurrentTransform, out _mapTransform);
@@ -81,13 +89,22 @@ namespace Catch.Level
             {
                 drawArgs.Layer = drawLayer;
 
-                // find indicators which are currently on screen
-                var culledIndicators = _indicatorRegistry
-                    .GetIndicators(drawArgs.LevelOfDetail, drawArgs.Layer)
-                    .Where(tm => blx <= tm.Position.X && tm.Position.X <= urx && bly <= tm.Position.Y && tm.Position.Y <= ury);
+                var prerender = _prerenderProvider.GetPrerender(drawLod, drawLayer);
 
-                foreach (var indicator in culledIndicators)
-                    indicator.Draw(drawArgs);
+                if (prerender != null)
+                {
+                    drawArgs.Ds.DrawImage(prerender, -_tileRadius, -2.0f * _tileRadiusH);
+                }
+                else
+                {
+                    // find indicators which are currently on screen
+                    var culledIndicators = _indicatorRegistry
+                        .GetIndicators(drawLod, drawLayer)
+                        .Where(tm => blx <= tm.Position.X && tm.Position.X <= urx && bly <= tm.Position.Y && tm.Position.Y <= ury);
+
+                    foreach (var indicator in culledIndicators)
+                        indicator.Draw(drawArgs);
+                }
             }
 
             // restore view matrix

@@ -42,7 +42,7 @@
             "Base" : "SpriteIndicator",
             "Config" : {
                 "SpriteIndicator.SpriteName" : "MapDesignPurpleSprite",
-                "SpriteIndicator.Layer" : "Base",
+                "SpriteIndicator.Layer" : "Background",
                 "SpriteIndicator.LevelOfDetail" : "NormalHigh"
             }
         },
@@ -51,7 +51,7 @@
             "Base" : "SpriteIndicator",
             "Config" : {
                 "SpriteIndicator.SpriteName" : "MapDesignPurpleStrategicSprite",
-                "SpriteIndicator.Layer" : "Base",
+                "SpriteIndicator.Layer" : "Background",
                 "SpriteIndicator.LevelOfDetail" : "Low"
             }
         }

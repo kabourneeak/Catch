@@ -38,6 +38,8 @@ namespace Catch.Level
 
             container.RegisterType<MapLoader>();
 
+            container.RegisterType<PrerenderProvider>(new ContainerControlledLifetimeManager());
+
             /*
              * Register Models
              */

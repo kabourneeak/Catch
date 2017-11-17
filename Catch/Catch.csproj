@@ -156,6 +156,8 @@
     <Compile Include="Base\IProvider.cs" />
     <Compile Include="Level\IndicatorRegistry.cs" />
     <Compile Include="Level\LevelBootstrapper.cs" />
+    <Compile Include="Level\PrerenderedLayer.cs" />
+    <Compile Include="Level\PrerenderProvider.cs" />
     <Compile Include="Level\SimulationManager.cs" />
     <Compile Include="Map\MapLoader.cs" />
     <Compile Include="Services\ConfigUtils.cs" />
