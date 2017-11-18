@@ -35,7 +35,7 @@
             "Base": "AgentPositionSpriteIndicator",
             "Config": {
                 "SpriteIndicator.SpriteName": "BlockMobSprite",
-                "SpriteIndicator.Layer": "Mob",
+                "SpriteIndicator.Layer": "Agent",
                 "SpriteIndicator.LevelOfDetail": "NormalHigh"
             }
         }

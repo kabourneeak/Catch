@@ -100,7 +100,7 @@ namespace Catch.Level
 
         private void UnregisterFromLodCollection(IVersionedCollection<IIndicator>[] lodCollection, IIndicator indicator)
         {
-            lodCollection[(int)indicator.Layer].Remove(indicator);
+            lodCollection[(int) indicator.Layer].Remove(indicator);
         }
     }
 }
